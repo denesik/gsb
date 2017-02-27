@@ -4,37 +4,46 @@
 #include <Magnum/Image.h>
 #include <Magnum/PixelFormat.h>
 #include <Magnum/Trade/ImageData.h>
+#include "TextureAtlas.h"
+
 
 Game::Game(const Arguments & arguments)
 	: Platform::Application{ arguments, Configuration{}.setTitle("Magnum Textured Triangle Example").setWindowFlags(Configuration::WindowFlag::Resizable) }
 {
-  static const Vector2 data[] = {
-    { -0.5f, -0.5f },{ 0.0f, 0.0f }, /* Left vertex position and texture coordinate */
-    { 0.5f, -0.5f },{ 1.0f, 0.0f }, /* Right vertex position and texture coordinate */
-    { 0.0f,  0.5f },{ 0.5f, 1.0f }  /* Top vertex position and texture coordinate */
+  static const Vector2 triangle_data[] = {
+    { -1.0f, -1.0f },{ 0.0f, 0.0f }, // низ лево
+    { 1.0f, -1.0f },{ 1.0f, 0.0f }, // низ право
+    { 1.0f, 1.0f },{ 1.0f, 1.0f }, // верх право
+    { 1.0f, 1.0f },{ 1.0f, 1.0f }, // верх право
+    { -1.0f, 1.0f },{ 0.0f, 1.0f }, // верх лево
+    { -1.0f, -1.0f },{ 0.0f, 0.0f }, // низ лево
   };
 
-  _buffer.setData(data, BufferUsage::StaticDraw);
+  _buffer.setData(triangle_data, BufferUsage::StaticDraw);
   _mesh.setPrimitive(MeshPrimitive::Triangles)
-    .setCount(3)
+    .setCount(6)
     .addVertexBuffer(_buffer, 0, TexturedTriangleShader::Position{}, TexturedTriangleShader::TextureCoordinates{});
 
-	/* Load TGA importer plugin */
-	PluginManager::Manager<Trade::AbstractImporter> manager{ MAGNUM_PLUGINS_IMPORTER_DIR };
-	std::unique_ptr<Trade::AbstractImporter> importer = manager.loadAndInstantiate("TgaImporter");
-	if (!importer) std::exit(1);
+  if (false)
+  {
+    PluginManager::Manager<Trade::AbstractImporter> manager{ MAGNUM_PLUGINS_IMPORTER_DIR };
+    std::unique_ptr<Trade::AbstractImporter> importer = manager.loadAndInstantiate("TgaImporter");
+    if (!importer) std::exit(1);
 
-	if (!importer->openFile("data\\stone.tga"))
-		std::exit(2);
+    if (!importer->openFile("data\\stone.tga"))
+      std::exit(2);
 
-  std::optional<Trade::ImageData2D> image = importer->image2D(0);
-  CORRADE_INTERNAL_ASSERT(image);
+    std::optional<Trade::ImageData2D> image = importer->image2D(0);
+    CORRADE_INTERNAL_ASSERT(image);
 
-  _texture.setWrapping(Sampler::Wrapping::ClampToEdge)
-    .setMagnificationFilter(Sampler::Filter::Linear)
-    .setMinificationFilter(Sampler::Filter::Linear)
-    .setStorage(1, TextureFormat::RGB8, image->size())
-    .setSubImage(0, {}, *image);
+    _texture.setWrapping(Sampler::Wrapping::ClampToEdge)
+      .setMagnificationFilter(Sampler::Filter::Linear)
+      .setMinificationFilter(Sampler::Filter::Linear)
+      .setStorage(1, TextureFormat::RGB8, image->size())
+      .setSubImage(0, {}, *image);
+  }
+
+  atlas.LoadDirectory("data");
 }
 
 void Game::drawEvent()
@@ -42,10 +51,10 @@ void Game::drawEvent()
 	defaultFramebuffer.clear(FramebufferClear::Color);
 
   _shader.setColor({ 1.0f, 0.7f, 0.7f })
-    .setTexture(_texture);
+    .setTexture(atlas.Texture());
   _mesh.draw(_shader);
 
-  if (true)
+  //if (false)
   {
     mImguiPort.NewFrame(windowSize(), defaultFramebuffer.viewport().size());
 

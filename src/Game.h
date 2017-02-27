@@ -16,6 +16,7 @@
 #include "tools\FpsCounter.h"
 #include "../ImguiPort.h"
 #include "../imgui/imgui.h"
+#include "TextureAtlas.h"
 
 using namespace Magnum;
 
@@ -58,5 +59,7 @@ private:
   bool show_test_window = false;
   bool show_another_window = false;
   ImVec4 clear_color = ImColor(114, 144, 154);
+
+  TextureAtlas atlas;
 };
 
