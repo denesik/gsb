@@ -7,6 +7,7 @@
 #include "TextureAtlas.h"
 #include <Magnum/Renderer.h>
 #include <Magnum/Math/Matrix4.h>
+#include "../TesselatorSolidBlock.h"
 
 
 Game::Game(const Arguments & arguments)
@@ -14,55 +15,34 @@ Game::Game(const Arguments & arguments)
 {
   atlas.LoadDirectory("data");
 
-  static const Vector3 quad_vertex[] = 
-  {
-    { 0.0f, 0.0f, 0.0f }, // низ лево
-    { 0.0f, 1.0f, 0.0f }, // низ право
-    { 1.0f, 1.0f, 0.0f }, // верх право
-    { 1.0f, 0.0f, 0.0f }, // верх лево
-  };
-  static const Vector2 quad_texture[] =
-  {
-    { 0.0f, 0.0f },
-    { 0.0f, 1.0f },
-    { 1.0f, 1.0f },
-    { 1.0f, 0.0f }
-  };
+  std::vector<TesselatorVertex> vertex_data;
+  std::vector<UnsignedInt> index_data;
 
-  std::vector<Float> vertex_data;
-  for (int i = 0; i < 4; ++i)
-  {
-    vertex_data.emplace_back(quad_vertex[i].x());
-    vertex_data.emplace_back(quad_vertex[i].y());
-    vertex_data.emplace_back(quad_vertex[i].z());
-    vertex_data.emplace_back(quad_texture[i].x());
-    vertex_data.emplace_back(quad_texture[i].y());
-  }
-
-  static UnsignedInt indexCubeSide[] =
-  {
-    0, 3, 2, 2, 1, 0
-  };
+  UnsignedInt index = 0;
+  TesselatorSolidBlock().PushBack(vertex_data, index_data, index);
 
   mVertexBuffer.setData(vertex_data, BufferUsage::StaticDraw);
-  mIndexBuffer.setData(indexCubeSide, BufferUsage::StaticDraw);
+  mIndexBuffer.setData(index_data, BufferUsage::StaticDraw);
 
   mMesh.setPrimitive(MeshPrimitive::Triangles);
   mMesh.addVertexBuffer(mVertexBuffer, 0, TexturedTriangleShader::Position{}, TexturedTriangleShader::TextureCoordinates{});
   mMesh.setIndexBuffer(mIndexBuffer, 0, Mesh::IndexType::UnsignedInt);
-  mMesh.setCount(6);
+  mMesh.setCount(mIndexBuffer.size());
+
+  mTimeline.start();
 }
 
 void Game::drawEvent()
 {
-  //Renderer::enable(Renderer::Feature::DepthTest);
+  mTimeline.nextFrame();
+  Renderer::enable(Renderer::Feature::DepthTest);
   //Renderer::enable(Renderer::Feature::FaceCulling);
 
   mProjection = Matrix4::perspectiveProjection(35.0_degf, Vector2{ defaultFramebuffer.viewport().size() }.aspectRatio(), 0.01f, 100.0f)
     //* Matrix4::translation(Vector3::zAxis(-10.0f))
     ;
 
-	defaultFramebuffer.clear(FramebufferClear::Color);
+	defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
 
   mShader.setColor({ 1.0f, 0.7f, 0.7f })
     .setTexture(atlas.Texture())
@@ -119,7 +99,7 @@ void Game::keyPressEvent(KeyEvent& event)
 {
   mImguiPort.keyPressEvent(event);
 
-  float val = (0.1f);
+  float val = 15.0f * mTimeline.previousFrameDuration();
 
   if (event.key() == KeyEvent::Key::A)
     mView = mView * Math::Matrix4<Float>::translation(Vector3::xAxis(-val));
@@ -138,11 +118,21 @@ void Game::keyPressEvent(KeyEvent& event)
 
   if (event.key() == KeyEvent::Key::Right)
     mView = mView * Math::Matrix4<Float>::rotationY(Rad(-val));
+
+  if (event.key() == KeyEvent::Key::Up)
+    mView = mView * Math::Matrix4<Float>::rotationX(Rad(val));
+
+  if (event.key() == KeyEvent::Key::Down)
+    mView = mView * Math::Matrix4<Float>::rotationX(Rad(-val));
+
+  event.setAccepted();
 }
 
 void Game::keyReleaseEvent(KeyEvent& event)
 {
   mImguiPort.keyReleaseEvent(event);
+
+  event.setAccepted();
 }
 
 Game::~Game()

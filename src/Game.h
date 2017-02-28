@@ -18,6 +18,7 @@
 #include "TextureAtlas.h"
 #include <Magnum/Magnum.h>
 #include <Magnum/Math/Matrix4.h>
+#include <Magnum/Timeline.h>
 
 
 using namespace Magnum;
@@ -65,5 +66,7 @@ private:
   Matrix4 mProjection;
   Matrix4 mModel;
   Matrix4 mView;
+
+  Timeline mTimeline;
 };
 
