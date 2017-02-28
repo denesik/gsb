@@ -60,9 +60,9 @@ void ImguiPort::Load()
     .setStorage(0, TextureFormat::RGBA, image.size())
     .setImage(0, TextureFormat::RGBA, image);
 
-    mesh.setPrimitive(MeshPrimitive::Triangles);
-    mesh.addVertexBuffer(mVertexBuffer, 0, ImguiShader::Position{}, ImguiShader::TextureCoordinates{}, 
-      ImguiShader::Color(ImguiShader::Color::Components::Four, ImguiShader::Color::DataType::UnsignedByte, ImguiShader::Color::DataOption::Normalized));
+  mesh.setPrimitive(MeshPrimitive::Triangles);
+  mesh.addVertexBuffer(mVertexBuffer, 0, ImguiShader::Position{}, ImguiShader::TextureCoordinates{},
+    ImguiShader::Color(ImguiShader::Color::Components::Four, ImguiShader::Color::DataType::UnsignedByte, ImguiShader::Color::DataOption::Normalized));
 }
 
 void ImguiPort::keyPressReleaseEvent(const Platform::Application::KeyEvent& event, bool value)

@@ -10,7 +10,7 @@ using namespace Magnum;
 
 class TexturedTriangleShader : public AbstractShaderProgram {
 public:
-	typedef Attribute<0, Vector2> Position;
+	typedef Attribute<0, Vector3> Position;
 	typedef Attribute<1, Vector2> TextureCoordinates;
 
 	explicit TexturedTriangleShader();

@@ -13,10 +13,11 @@
 
 #include "TexturedTriangleShader.h"
 #include "configure.h"
-#include "tools\FpsCounter.h"
 #include "../ImguiPort.h"
 #include "../imgui/imgui.h"
 #include "TextureAtlas.h"
+#include <Magnum/Magnum.h>
+
 
 using namespace Magnum;
 
@@ -47,13 +48,6 @@ public:
   void textEditingEvent(TextEditingEvent& event) override;
 
 private:
-	Buffer _buffer;
-	Mesh _mesh;
-	TexturedTriangleShader _shader;
-	Texture2D _texture;
-
-	FpsCounter mFpsCounter;
-
   ImguiPort mImguiPort;
 
   bool show_test_window = false;
@@ -61,5 +55,12 @@ private:
   ImVec4 clear_color = ImColor(114, 144, 154);
 
   TextureAtlas atlas;
+
+  Buffer mVertexBuffer;
+  Buffer mIndexBuffer;
+  Mesh mMesh;
+  TexturedTriangleShader mShader;
+
+  Matrix4 mProjection;
 };
 

@@ -5,54 +5,67 @@
 #include <Magnum/PixelFormat.h>
 #include <Magnum/Trade/ImageData.h>
 #include "TextureAtlas.h"
+#include <Magnum/Renderer.h>
+#include <Magnum/Math/Matrix4.h>
 
 
 Game::Game(const Arguments & arguments)
 	: Platform::Application{ arguments, Configuration{}.setTitle("Magnum Textured Triangle Example").setWindowFlags(Configuration::WindowFlag::Resizable) }
 {
-  static const Vector2 triangle_data[] = {
-    { -1.0f, -1.0f },{ 0.0f, 0.0f }, // низ лево
-    { 1.0f, -1.0f },{ 1.0f, 0.0f }, // низ право
-    { 1.0f, 1.0f },{ 1.0f, 1.0f }, // верх право
-    { 1.0f, 1.0f },{ 1.0f, 1.0f }, // верх право
-    { -1.0f, 1.0f },{ 0.0f, 1.0f }, // верх лево
-    { -1.0f, -1.0f },{ 0.0f, 0.0f }, // низ лево
+  atlas.LoadDirectory("data");
+
+  static const Vector3 quad_vertex[] = 
+  {
+    { 0.0f, 0.0f, 0.0f }, // низ лево
+    { 0.0f, 1.0f, 0.0f }, // низ право
+    { 1.0f, 1.0f, 0.0f }, // верх право
+    { 1.0f, 0.0f, 0.0f }, // верх лево
+  };
+  static const Vector2 quad_texture[] =
+  {
+    { 0.0f, 0.0f },
+    { 0.0f, 1.0f },
+    { 1.0f, 1.0f },
+    { 1.0f, 0.0f }
   };
 
-  _buffer.setData(triangle_data, BufferUsage::StaticDraw);
-  _mesh.setPrimitive(MeshPrimitive::Triangles)
-    .setCount(6)
-    .addVertexBuffer(_buffer, 0, TexturedTriangleShader::Position{}, TexturedTriangleShader::TextureCoordinates{});
-
-  if (false)
+  std::vector<Float> vertex_data;
+  for (int i = 0; i < 4; ++i)
   {
-    PluginManager::Manager<Trade::AbstractImporter> manager{ MAGNUM_PLUGINS_IMPORTER_DIR };
-    std::unique_ptr<Trade::AbstractImporter> importer = manager.loadAndInstantiate("TgaImporter");
-    if (!importer) std::exit(1);
-
-    if (!importer->openFile("data\\stone.tga"))
-      std::exit(2);
-
-    std::optional<Trade::ImageData2D> image = importer->image2D(0);
-    CORRADE_INTERNAL_ASSERT(image);
-
-    _texture.setWrapping(Sampler::Wrapping::ClampToEdge)
-      .setMagnificationFilter(Sampler::Filter::Linear)
-      .setMinificationFilter(Sampler::Filter::Linear)
-      .setStorage(1, TextureFormat::RGB8, image->size())
-      .setSubImage(0, {}, *image);
+    vertex_data.emplace_back(quad_vertex[i].x());
+    vertex_data.emplace_back(quad_vertex[i].y());
+    vertex_data.emplace_back(quad_vertex[i].z());
+    vertex_data.emplace_back(quad_texture[i].x());
+    vertex_data.emplace_back(quad_texture[i].y());
   }
 
-  atlas.LoadDirectory("data");
+  static UnsignedInt indexCubeSide[] =
+  {
+    0, 3, 2, 2, 1, 0
+  };
+
+  mVertexBuffer.setData(vertex_data, BufferUsage::StaticDraw);
+  mIndexBuffer.setData(indexCubeSide, BufferUsage::StaticDraw);
+
+  mMesh.setPrimitive(MeshPrimitive::Triangles);
+  mMesh.addVertexBuffer(mVertexBuffer, 0, TexturedTriangleShader::Position{}, TexturedTriangleShader::TextureCoordinates{});
+  mMesh.setIndexBuffer(mIndexBuffer, 0, Mesh::IndexType::UnsignedInt);
+  mMesh.setCount(6);
 }
 
 void Game::drawEvent()
 {
+  //Renderer::enable(Renderer::Feature::DepthTest);
+  //Renderer::enable(Renderer::Feature::FaceCulling);
+
+  mProjection = Matrix4::perspectiveProjection(35.0_degf, Vector2{ defaultFramebuffer.viewport().size() }.aspectRatio(), 0.01f, 100.0f)*
+    Matrix4::translation(Vector3::zAxis(-10.0f));
+
 	defaultFramebuffer.clear(FramebufferClear::Color);
 
-  _shader.setColor({ 1.0f, 0.7f, 0.7f })
+  mShader.setColor({ 1.0f, 0.7f, 0.7f })
     .setTexture(atlas.Texture());
-  _mesh.draw(_shader);
+  mMesh.draw(mShader);
 
   //if (false)
   {
