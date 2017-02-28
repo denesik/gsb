@@ -58,13 +58,16 @@ void Game::drawEvent()
   //Renderer::enable(Renderer::Feature::DepthTest);
   //Renderer::enable(Renderer::Feature::FaceCulling);
 
-  mProjection = Matrix4::perspectiveProjection(35.0_degf, Vector2{ defaultFramebuffer.viewport().size() }.aspectRatio(), 0.01f, 100.0f)*
-    Matrix4::translation(Vector3::zAxis(-10.0f));
+  mProjection = Matrix4::perspectiveProjection(35.0_degf, Vector2{ defaultFramebuffer.viewport().size() }.aspectRatio(), 0.01f, 100.0f)
+    //* Matrix4::translation(Vector3::zAxis(-10.0f))
+    ;
 
 	defaultFramebuffer.clear(FramebufferClear::Color);
 
   mShader.setColor({ 1.0f, 0.7f, 0.7f })
-    .setTexture(atlas.Texture());
+    .setTexture(atlas.Texture())
+    .setProjection(mProjection * mView.inverted() * mModel);
+
   mMesh.draw(mShader);
 
   //if (false)
@@ -115,6 +118,26 @@ void Game::viewportEvent(const Vector2i& size)
 void Game::keyPressEvent(KeyEvent& event)
 {
   mImguiPort.keyPressEvent(event);
+
+  float val = (0.1f);
+
+  if (event.key() == KeyEvent::Key::A)
+    mView = mView * Math::Matrix4<Float>::translation(Vector3::xAxis(-val));
+
+  if (event.key() == KeyEvent::Key::D)
+    mView = mView * Math::Matrix4<Float>::translation(Vector3::xAxis(val));
+
+  if (event.key() == KeyEvent::Key::W)
+    mView = mView * Math::Matrix4<Float>::translation(Vector3::zAxis(-val));
+
+  if (event.key() == KeyEvent::Key::S)
+    mView = mView * Math::Matrix4<Float>::translation(Vector3::zAxis(val));
+
+  if (event.key() == KeyEvent::Key::Left)
+    mView = mView * Math::Matrix4<Float>::rotationY(Rad(val));
+
+  if (event.key() == KeyEvent::Key::Right)
+    mView = mView * Math::Matrix4<Float>::rotationY(Rad(-val));
 }
 
 void Game::keyReleaseEvent(KeyEvent& event)

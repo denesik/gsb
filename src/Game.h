@@ -17,6 +17,7 @@
 #include "../imgui/imgui.h"
 #include "TextureAtlas.h"
 #include <Magnum/Magnum.h>
+#include <Magnum/Math/Matrix4.h>
 
 
 using namespace Magnum;
@@ -62,5 +63,7 @@ private:
   TexturedTriangleShader mShader;
 
   Matrix4 mProjection;
+  Matrix4 mModel;
+  Matrix4 mView;
 };
 

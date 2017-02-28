@@ -27,6 +27,7 @@
     <ClCompile Include="src\TextureAtlas.cpp" />
     <ClCompile Include="src\TexturedTriangleShader.cpp" />
     <ClCompile Include="src\tools\FpsCounter.cpp" />
+    <ClCompile Include="src\Transformation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImguiPort.h" />
@@ -35,6 +36,7 @@
     <ClInclude Include="src\TextureAtlas.h" />
     <ClInclude Include="src\TexturedTriangleShader.h" />
     <ClInclude Include="src\tools\FpsCounter.h" />
+    <ClInclude Include="src\Transformation.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DAD5E604-35AB-4716-B43E-119A61C427FC}</ProjectGuid>

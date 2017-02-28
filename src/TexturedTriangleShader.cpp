@@ -27,6 +27,7 @@ TexturedTriangleShader::TexturedTriangleShader()
     CORRADE_INTERNAL_ASSERT_OUTPUT(link());
 
     _colorUniform = uniformLocation("color");
+    mUniformProjection = uniformLocation("projectionMatrix");
 
     setUniform(uniformLocation("textureData"), TextureLayer);
 }

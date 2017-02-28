@@ -5,6 +5,7 @@
 #include <Magnum/AbstractShaderProgram.h>
 #include <Magnum/Texture.h>
 #include <Magnum/Math/Color.h>
+#include <Magnum/Math/Matrix4.h>
 
 using namespace Magnum;
 
@@ -20,6 +21,11 @@ public:
 		return *this;
 	}
 
+  TexturedTriangleShader& setProjection(const Matrix4& mat) {
+    setUniform(mUniformProjection, mat);
+    return *this;
+  }
+
 	TexturedTriangleShader& setTexture(Texture2D& texture) {
 		texture.bind(TextureLayer);
 		return *this;
@@ -29,6 +35,8 @@ private:
 	enum : Int { TextureLayer = 0 };
 
 	Int _colorUniform;
+
+  Int mUniformProjection;
 };
 
 
