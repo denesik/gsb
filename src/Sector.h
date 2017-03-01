@@ -9,17 +9,23 @@
 
 #include "BlockStaticPart.h"
 #include <array>
-#include "SectorTesselator.h"
+#include "SectorCompiler.h"
 #include "tools\CoordSystem.h"
+#include <Magnum/AbstractShaderProgram.h>
 
+class World;
 
 class Sector
 {
 public:
-  Sector(const BlocksDataBase &dataBase);
+  Sector(World *morld);
   ~Sector();
 
-  void RunTesselator();
+  bool NeedCompile() const;
+
+  void RunCompiler();
+
+  void Draw(Magnum::AbstractShaderProgram& shader);
 
 private:
   std::array<BlockId, SECTOR_CAPACITY> mStaticBlocks;
@@ -30,7 +36,11 @@ private:
   Magnum::Mesh mMesh;
 
 public:
-  SectorTesselator mSectorTesselator;
+  SectorCompiler mSectorTesselator;
+
+  World *mWorld;
+
+  bool mNeedCompile = true;
 };
 
 

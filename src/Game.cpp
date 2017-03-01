@@ -10,6 +10,7 @@
 #include "TesselatorSolidBlock.h"
 #include "BlocksDataBase.h"
 #include "Sector.h"
+#include "World.h"
 
 
 Game::Game(const Arguments & arguments)
@@ -17,34 +18,14 @@ Game::Game(const Arguments & arguments)
 {
   atlas.LoadDirectory("data");
 
-  std::vector<TesselatorVertex> vertex_data;
-  std::vector<UnsignedInt> index_data;
-
-  UnsignedInt index = 0;
-  BlocksDataBase blocksDataBase(atlas);
-
-//  static_cast<const TesselatorSolidBlock *>(blocksDataBase.GetBlockStaticPart(2)->GetTesselator().get())->PushBack(vertex_data, index_data, index);
-
-  Sector sector(blocksDataBase);
-
-
-  Timeline testTime;
-  testTime.start();
-  sector.RunTesselator();
-  testTime.nextFrame();
-  sectorGeneratingTime = testTime.previousFrameDuration();
-
-//   mVertexBuffer.setData(vertex_data, BufferUsage::StaticDraw);
-//   mIndexBuffer.setData(index_data, BufferUsage::StaticDraw);
-  mVertexBuffer.setData(sector.mSectorTesselator.vertex_data, BufferUsage::StaticDraw);
-  mIndexBuffer.setData(sector.mSectorTesselator.index_data, BufferUsage::StaticDraw);
-
-  mMesh.setPrimitive(MeshPrimitive::Triangles);
-  mMesh.addVertexBuffer(mVertexBuffer, 0, StandartShader::Position{}, StandartShader::TextureCoordinates{});
-  mMesh.setIndexBuffer(mIndexBuffer, 0, Mesh::IndexType::UnsignedInt);
-  mMesh.setCount(sector.mSectorTesselator.index_data.size());
+  mBlocksDataBase = std::make_unique<BlocksDataBase>(atlas);
+  mWorld = std::make_unique<World>(*mBlocksDataBase);
+  mDrawableArea = std::make_unique<DrawableArea>(mWorld.get(), SPos{});
 
   mTimeline.start();
+
+  mView = mView * Math::Matrix4<Float>::rotationY(Rad(-90));
+  mView = mView * Math::Matrix4<Float>::translation(Vector3::yAxis(40));
 }
 
 void Game::drawEvent()
@@ -53,9 +34,7 @@ void Game::drawEvent()
   Renderer::enable(Renderer::Feature::DepthTest);
   //Renderer::enable(Renderer::Feature::FaceCulling);
 
-  mProjection = Matrix4::perspectiveProjection(60.0_degf, Vector2{ defaultFramebuffer.viewport().size() }.aspectRatio(), 0.01f, 100.0f)
-    //* Matrix4::translation(Vector3::zAxis(-10.0f))
-    ;
+  mProjection = Matrix4::perspectiveProjection(60.0_degf, Vector2{ defaultFramebuffer.viewport().size() }.aspectRatio(), 0.01f, 100.0f);
 
 	defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
 
@@ -63,7 +42,7 @@ void Game::drawEvent()
     .setTexture(atlas.Texture())
     .setProjection(mProjection * mView.inverted() * mModel);
 
-  mMesh.draw(mShader);
+  mDrawableArea->Draw(mShader);
 
   //if (false)
   {

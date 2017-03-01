@@ -19,7 +19,11 @@
 #include <Magnum/Magnum.h>
 #include <Magnum/Math/Matrix4.h>
 #include <Magnum/Timeline.h>
-
+#include <memory>
+#include "DrawableArea.h"
+#include "BlocksDataBase.h"
+#include "Sector.h"
+#include "World.h"
 
 using namespace Magnum;
 
@@ -70,5 +74,9 @@ private:
   Timeline mTimeline;
 
   float sectorGeneratingTime = 0;
+
+  std::unique_ptr<DrawableArea> mDrawableArea;
+  std::unique_ptr<BlocksDataBase> mBlocksDataBase;
+  std::unique_ptr<World> mWorld;
 };
 

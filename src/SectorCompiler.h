@@ -10,11 +10,11 @@
 #include <Magnum/Magnum.h>
 #include "BlocksDataBase.h"
 
-class SectorTesselator
+class SectorCompiler
 {
 public:
-  SectorTesselator(const BlocksDataBase &dataBase);
-  ~SectorTesselator();
+  SectorCompiler(const BlocksDataBase &dataBase);
+  ~SectorCompiler();
 
   void SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data);
 

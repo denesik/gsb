@@ -1,10 +1,10 @@
-#include "SectorTesselator.h"
+#include "SectorCompiler.h"
 #include "TesselatorSolidBlock.h"
 
 
 
 
-SectorTesselator::SectorTesselator(const BlocksDataBase &dataBase)
+SectorCompiler::SectorCompiler(const BlocksDataBase &dataBase)
   : mDataBase(dataBase)
 {
   vertex_data.reserve(40000);
@@ -19,11 +19,11 @@ SectorTesselator::SectorTesselator(const BlocksDataBase &dataBase)
   mBlocks.fill(0);
 }
 
-SectorTesselator::~SectorTesselator()
+SectorCompiler::~SectorCompiler()
 {
 }
 
-void SectorTesselator::SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data)
+void SectorCompiler::SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data)
 {
   for (size_t i = 0; i < SECTOR_CAPACITY; ++i)
   {
@@ -31,7 +31,7 @@ void SectorTesselator::SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &dat
   }
 }
 
-void SectorTesselator::Run()
+void SectorCompiler::Run()
 {
   vertex_data.clear();
   index_data.clear();
@@ -54,12 +54,12 @@ void SectorTesselator::Run()
       }
 }
 
-bool SectorTesselator::IsDone() const
+bool SectorCompiler::IsDone() const
 {
   return true;
 }
 
-void SectorTesselator::ProcessSolidBlock(IndexType index, const STPos &pos)
+void SectorCompiler::ProcessSolidBlock(IndexType index, const STPos &pos)
 {
   // Рисовать сторону если тесселятор у смежного блока отсутствует или другого типа.
   int side = TesselatorSolidBlock::NONE;
