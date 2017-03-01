@@ -1,12 +1,13 @@
 #include "DrawableArea.h"
 #include "World.h"
+#include "tools\CoordSystem.h"
 
 
 
 DrawableArea::DrawableArea(World *world, const SPos &pos, unsigned int radius)
   : mWorld(world), mPos(pos)
 {
-  UpdateRadius(radius);
+  UpdateRadius(10);
   UpdatePos(mPos);
 }
 
@@ -26,6 +27,13 @@ void DrawableArea::SetPos(const SPos &pos)
 
 void DrawableArea::Draw(Magnum::AbstractShaderProgram& shader)
 {
+//   bool load = false;
+//   if (mTimer.Elapsed() > 1.0 / 60.0)
+//   {
+//     mTimer.Start();
+//     load = true;
+//   }
+
   for (auto &site : mSectors)
   {
     auto sector = std::get<2>(site).lock();
@@ -59,7 +67,7 @@ void DrawableArea::UpdateRadius(unsigned int radius)
   SPos pos(begin);
   //pos.z = 0;
   for (pos.z() = begin; pos.z() <= end; ++pos.z())
-    for (pos.y() = begin; pos.y() <= end; ++pos.y())
+    for (pos.y() = 0; pos.y() < SECTOR_COUNT_HEIGHT; ++pos.y())
       for (pos.x() = begin; pos.x() <= end; ++pos.x())
       {
         mSectors.emplace_back(pos, SPos{}, std::weak_ptr<Sector>{});

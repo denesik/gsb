@@ -17,6 +17,8 @@ enum
 
   TESSELATOR_SIZE = SECTOR_SIZE + 2,
   TESSELATOR_CAPACITY = TESSELATOR_SIZE * TESSELATOR_SIZE * TESSELATOR_SIZE,
+
+  SECTOR_COUNT_HEIGHT = 8,
 };
 
 typedef Magnum::Vector3   WPos;     // Мировые координаты.

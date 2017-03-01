@@ -33,6 +33,7 @@
     <ClCompile Include="src\TesselatorSolidBlock.cpp" />
     <ClCompile Include="src\TextureAtlas.cpp" />
     <ClCompile Include="src\StandartShader.cpp" />
+    <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\tools\FpsCounter.cpp" />
     <ClCompile Include="src\Transformation.cpp" />
     <ClCompile Include="src\World.cpp" />
@@ -50,6 +51,7 @@
     <ClInclude Include="src\TesselatorSolidBlock.h" />
     <ClInclude Include="src\TextureAtlas.h" />
     <ClInclude Include="src\StandartShader.h" />
+    <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\tools\CoordSystem.h" />
     <ClInclude Include="src\tools\FpsCounter.h" />
     <ClInclude Include="src\Transformation.h" />

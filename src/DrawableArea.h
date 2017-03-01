@@ -7,6 +7,8 @@
 #include <tuple>
 #include "Sector.h"
 #include <Magnum\AbstractShaderProgram.h>
+#include "Timer.h"
+
 
 class World;
 
@@ -27,6 +29,7 @@ private:
   SPos mPos;
 
   std::vector<std::tuple<SPos, SPos, std::weak_ptr<Sector>>> mSectors;
+  Timer mTimer;
 
 private:
   void UpdateRadius(unsigned int radius);
