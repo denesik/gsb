@@ -68,5 +68,7 @@ private:
   Matrix4 mView;
 
   Timeline mTimeline;
+
+  float sectorGeneratingTime = 0;
 };
 

@@ -8,10 +8,10 @@ BlocksDataBase::BlocksDataBase(const TextureAtlas &atlas)
 {
   mBlocks.resize(0xFFFF);
 
-  mBlocks[2] = std::make_unique<BlockStaticPart>();
+  mBlocks[1] = std::make_unique<BlockStaticPart>();
   auto tesselator = std::make_unique<TesselatorSolidBlock>();
   tesselator->SetTexture(mAtlas.GetTextureCoord("data/test_texture.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }));
-  mBlocks[2]->SetTesselator(std::move(tesselator));
+  mBlocks[1]->SetTesselator(std::move(tesselator));
 }
 
 

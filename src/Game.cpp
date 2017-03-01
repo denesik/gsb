@@ -26,7 +26,13 @@ Game::Game(const Arguments & arguments)
 //  static_cast<const TesselatorSolidBlock *>(blocksDataBase.GetBlockStaticPart(2)->GetTesselator().get())->PushBack(vertex_data, index_data, index);
 
   Sector sector(blocksDataBase);
+
+
+  Timeline testTime;
+  testTime.start();
   sector.RunTesselator();
+  testTime.nextFrame();
+  sectorGeneratingTime = testTime.previousFrameDuration();
 
 //   mVertexBuffer.setData(vertex_data, BufferUsage::StaticDraw);
 //   mIndexBuffer.setData(index_data, BufferUsage::StaticDraw);
@@ -73,6 +79,7 @@ void Game::drawEvent()
       if (ImGui::Button("Test Window")) show_test_window ^= 1;
       if (ImGui::Button("Another Window")) show_another_window ^= 1;
       ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+      ImGui::Text("Sector tesselation time: %.4f", sectorGeneratingTime);
     }
 
     // 2. Show another simple window, this time using an explicit Begin/End pair

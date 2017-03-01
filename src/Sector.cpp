@@ -8,7 +8,7 @@ Sector::Sector(const BlocksDataBase &dataBase)
   mStaticBlocks.fill(0);
 
   // generate sector
-  mStaticBlocks.fill(2);
+  mStaticBlocks.fill(1);
 }
 
 
