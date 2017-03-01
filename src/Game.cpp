@@ -7,7 +7,8 @@
 #include "TextureAtlas.h"
 #include <Magnum/Renderer.h>
 #include <Magnum/Math/Matrix4.h>
-#include "../TesselatorSolidBlock.h"
+#include "TesselatorSolidBlock.h"
+#include "BlocksDataBase.h"
 
 
 Game::Game(const Arguments & arguments)
@@ -19,7 +20,9 @@ Game::Game(const Arguments & arguments)
   std::vector<UnsignedInt> index_data;
 
   UnsignedInt index = 0;
-  TesselatorSolidBlock().PushBack(vertex_data, index_data, index);
+  BlocksDataBase blocksDataBase(atlas);
+
+  static_cast<const TesselatorSolidBlock *>(blocksDataBase.GetBlockStaticPart(2)->GetTesselator().get())->PushBack(vertex_data, index_data, index);
 
   mVertexBuffer.setData(vertex_data, BufferUsage::StaticDraw);
   mIndexBuffer.setData(index_data, BufferUsage::StaticDraw);
@@ -38,7 +41,7 @@ void Game::drawEvent()
   Renderer::enable(Renderer::Feature::DepthTest);
   //Renderer::enable(Renderer::Feature::FaceCulling);
 
-  mProjection = Matrix4::perspectiveProjection(35.0_degf, Vector2{ defaultFramebuffer.viewport().size() }.aspectRatio(), 0.01f, 100.0f)
+  mProjection = Matrix4::perspectiveProjection(60.0_degf, Vector2{ defaultFramebuffer.viewport().size() }.aspectRatio(), 0.01f, 100.0f)
     //* Matrix4::translation(Vector3::zAxis(-10.0f))
     ;
 

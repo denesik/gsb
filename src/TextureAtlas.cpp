@@ -8,6 +8,7 @@
 #include <Magnum/TextureTools/Atlas.h>
 #include <Magnum/TextureFormat.h>
 #include <Magnum/PixelFormat.h>
+#include <algorithm>
 
 using namespace Corrade::Utility;
 using namespace Magnum;
@@ -76,5 +77,16 @@ void TextureAtlas::LoadDirectory(const std::string &directory)
 Magnum::Texture2D & TextureAtlas::Texture()
 {
   return _texture;
+}
+
+std::optional<Magnum::Range2D> TextureAtlas::GetTextureCoord(const std::string &name) const
+{
+  auto it = std::find(file_names.begin(), file_names.end(), name);
+  if (it != file_names.end())
+  {
+    auto index = std::distance(file_names.begin(), it);
+    return{ coordinates[index] };
+  }
+  return{};
 }
 

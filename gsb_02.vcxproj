@@ -19,26 +19,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ImguiPort.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="src\BlocksDataBase.cpp" />
+    <ClCompile Include="src\BlockStaticPart.cpp" />
     <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\ImguiPort.cpp" />
+    <ClCompile Include="src\Tesselator.cpp" />
+    <ClCompile Include="src\TesselatorSolidBlock.cpp" />
     <ClCompile Include="src\TextureAtlas.cpp" />
     <ClCompile Include="src\TexturedTriangleShader.cpp" />
     <ClCompile Include="src\tools\FpsCounter.cpp" />
     <ClCompile Include="src\Transformation.cpp" />
-    <ClCompile Include="TesselatorSolidBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ImguiPort.h" />
+    <ClInclude Include="src\BlocksDataBase.h" />
+    <ClInclude Include="src\BlockStaticPart.h" />
     <ClInclude Include="src\configure.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\ImguiPort.h" />
+    <ClInclude Include="src\Tesselator.h" />
+    <ClInclude Include="src\TesselatorSolidBlock.h" />
     <ClInclude Include="src\TextureAtlas.h" />
     <ClInclude Include="src\TexturedTriangleShader.h" />
     <ClInclude Include="src\tools\FpsCounter.h" />
     <ClInclude Include="src\Transformation.h" />
-    <ClInclude Include="TesselatorSolidBlock.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DAD5E604-35AB-4716-B43E-119A61C427FC}</ProjectGuid>

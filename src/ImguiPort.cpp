@@ -1,6 +1,6 @@
 #include "ImguiPort.h"
 
-#include "imgui/imgui.h"
+#include "../imgui/imgui.h"
 #include <Magnum/Context.h>
 #include <Magnum/Shader.h>
 #include <Magnum/Version.h>

@@ -13,7 +13,7 @@
 
 #include "TexturedTriangleShader.h"
 #include "configure.h"
-#include "../ImguiPort.h"
+#include "ImguiPort.h"
 #include "../imgui/imgui.h"
 #include "TextureAtlas.h"
 #include <Magnum/Magnum.h>

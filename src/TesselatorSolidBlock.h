@@ -3,25 +3,11 @@
 #define TesselatorSolidBlock_h__
 
 #include <Magnum/Math/Range.h>
-#include <Magnum/Magnum.h>
 #include <vector>
-#include <Magnum/Math/Vector3.h>
-#include <Magnum/Math/Vector2.h>
+#include "Tesselator.h"
 
 
-struct TesselatorVertex
-{
-  TesselatorVertex() = default;
-
-  TesselatorVertex(const Magnum::Vector3 &_vertex, const Magnum::Vector2 &_textcoord)
-    : vertex(_vertex), textcoord(_textcoord)
-  {}
-
-  Magnum::Vector3 vertex;
-  Magnum::Vector2 textcoord;
-};
-
-class TesselatorSolidBlock
+class TesselatorSolidBlock : public Tesselator
 {
 public:
   enum Side : int 
@@ -41,7 +27,7 @@ public:
   TesselatorSolidBlock();
   ~TesselatorSolidBlock();
 
-  void SetTexture(const Magnum::Range2D &range);
+  TesselatorSolidBlock &SetTexture(const Magnum::Range2D &range);
 
   void PushBack(std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, Side side = Side::ALL) const;
 

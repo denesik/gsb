@@ -53,6 +53,7 @@ static UnsignedInt gIndexSide[] =
 
 
 TesselatorSolidBlock::TesselatorSolidBlock()
+  : Tesselator(Tesselator::TesselatorType::SOLID_BLOCK)
 {
 }
 
@@ -61,9 +62,10 @@ TesselatorSolidBlock::~TesselatorSolidBlock()
 {
 }
 
-void TesselatorSolidBlock::SetTexture(const Magnum::Range2D &range)
+TesselatorSolidBlock &TesselatorSolidBlock::SetTexture(const Magnum::Range2D &range)
 {
   mTextureCoord = range;
+  return *this;
 }
 
 void TesselatorSolidBlock::PushBack(std::vector<TesselatorVertex> &vertex,
@@ -75,7 +77,10 @@ void TesselatorSolidBlock::PushBack(std::vector<TesselatorVertex> &vertex,
     {
       for (size_t j = 0; j < 4; ++j)
       {
-        vertex.emplace_back(gVertexData[i * 4 + j], gTextureSide[j]);
+        vertex.emplace_back(gVertexData[i * 4 + j], Vector2{
+          gTextureSide[j].x() *(mTextureCoord.right() - mTextureCoord.left()) + mTextureCoord.left(),
+          gTextureSide[j].y() * (mTextureCoord.top() - mTextureCoord.bottom()) + mTextureCoord.bottom()
+        });
       }
 
       for (size_t j = 0; j < 6; ++j)

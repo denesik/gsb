@@ -30,9 +30,6 @@
     <ClCompile Include="imgui\imgui_draw.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="ImguiPort.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="imgui\imgui_demo.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
@@ -42,7 +39,19 @@
     <ClCompile Include="src\Transformation.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="TesselatorSolidBlock.cpp">
+    <ClCompile Include="src\BlocksDataBase.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BlockStaticPart.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tesselator.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImguiPort.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TesselatorSolidBlock.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,17 +68,26 @@
     <ClInclude Include="src\tools\FpsCounter.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="ImguiPort.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="src\TextureAtlas.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\Transformation.h">
-      <Filter>Заголовочные файлы</Filter>
+    <ClInclude Include="src\ImguiPort.h">
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="TesselatorSolidBlock.h">
-      <Filter>Заголовочные файлы</Filter>
+    <ClInclude Include="src\TesselatorSolidBlock.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BlocksDataBase.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BlockStaticPart.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tesselator.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Transformation.h">
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
