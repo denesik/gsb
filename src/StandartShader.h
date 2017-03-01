@@ -9,24 +9,24 @@
 
 using namespace Magnum;
 
-class TexturedTriangleShader : public AbstractShaderProgram {
+class StandartShader : public AbstractShaderProgram {
 public:
 	typedef Attribute<0, Vector3> Position;
 	typedef Attribute<1, Vector2> TextureCoordinates;
 
-	explicit TexturedTriangleShader();
+	explicit StandartShader();
 
-	TexturedTriangleShader& setColor(const Color3& color) {
+	StandartShader& setColor(const Color3& color) {
 		setUniform(_colorUniform, color);
 		return *this;
 	}
 
-  TexturedTriangleShader& setProjection(const Matrix4& mat) {
+  StandartShader& setProjection(const Matrix4& mat) {
     setUniform(mUniformProjection, mat);
     return *this;
   }
 
-	TexturedTriangleShader& setTexture(Texture2D& texture) {
+	StandartShader& setTexture(Texture2D& texture) {
 		texture.bind(TextureLayer);
 		return *this;
 	}

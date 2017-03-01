@@ -5,6 +5,7 @@
 #include <Magnum/Math/Range.h>
 #include <vector>
 #include "Tesselator.h"
+#include "tools/CoordSystem.h"
 
 
 class TesselatorSolidBlock : public Tesselator
@@ -29,7 +30,7 @@ public:
 
   TesselatorSolidBlock &SetTexture(const Magnum::Range2D &range);
 
-  void PushBack(std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, Side side = Side::ALL) const;
+  void PushBack(std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const SBPos &pos, Side side = Side::ALL) const;
 
 private:
   Magnum::Range2D mTextureCoord;

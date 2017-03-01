@@ -26,10 +26,12 @@
     <ClCompile Include="src\BlockStaticPart.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\ImguiPort.cpp" />
+    <ClCompile Include="src\Sector.cpp" />
+    <ClCompile Include="src\SectorTesselator.cpp" />
     <ClCompile Include="src\Tesselator.cpp" />
     <ClCompile Include="src\TesselatorSolidBlock.cpp" />
     <ClCompile Include="src\TextureAtlas.cpp" />
-    <ClCompile Include="src\TexturedTriangleShader.cpp" />
+    <ClCompile Include="src\StandartShader.cpp" />
     <ClCompile Include="src\tools\FpsCounter.cpp" />
     <ClCompile Include="src\Transformation.cpp" />
   </ItemGroup>
@@ -39,10 +41,13 @@
     <ClInclude Include="src\configure.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\ImguiPort.h" />
+    <ClInclude Include="src\Sector.h" />
+    <ClInclude Include="src\SectorTesselator.h" />
     <ClInclude Include="src\Tesselator.h" />
     <ClInclude Include="src\TesselatorSolidBlock.h" />
     <ClInclude Include="src\TextureAtlas.h" />
-    <ClInclude Include="src\TexturedTriangleShader.h" />
+    <ClInclude Include="src\StandartShader.h" />
+    <ClInclude Include="src\tools\CoordSystem.h" />
     <ClInclude Include="src\tools\FpsCounter.h" />
     <ClInclude Include="src\Transformation.h" />
   </ItemGroup>

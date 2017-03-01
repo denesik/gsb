@@ -18,14 +18,14 @@ enum VertexPos
 
 static const Vector3 gVertexCube[] = 
 {
-  { 0.0f, 0.0f, 0.0f },// FRONT LB
-  { 1.0f, 0.0f, 0.0f },// FRONT RB
-  { 1.0f, 1.0f, 0.0f },// FRONT RT
-  { 0.0f, 1.0f, 0.0f },// FRONT LT
-  { 0.0f, 0.0f, -1.0f },// BACK LB
-  { 1.0f, 0.0f, -1.0f },// BACK RB
-  { 1.0f, 1.0f, -1.0f },// BACK RT
-  { 0.0f, 1.0f, -1.0f },// BACK LT
+  { 1.0f, 0.0f, 0.0f },// FRONT LB
+  { 0.0f, 0.0f, 0.0f },// FRONT RB
+  { 0.0f, 1.0f, 0.0f },// FRONT RT
+  { 1.0f, 1.0f, 0.0f },// FRONT LT
+  { 1.0f, 0.0f, 1.0f },// BACK LB
+  { 0.0f, 0.0f, 1.0f },// BACK RB
+  { 0.0f, 1.0f, 1.0f },// BACK RT
+  { 1.0f, 1.0f, 1.0f },// BACK LT
 };
 
 static const Vector3 gVertexData[] =
@@ -69,15 +69,17 @@ TesselatorSolidBlock &TesselatorSolidBlock::SetTexture(const Magnum::Range2D &ra
 }
 
 void TesselatorSolidBlock::PushBack(std::vector<TesselatorVertex> &vertex,
-  std::vector<UnsignedInt> &index, UnsignedInt &last_index, Side side) const
+  std::vector<UnsignedInt> &index, UnsignedInt &last_index, const SBPos &pos, Side side) const
 {
-  for (int i = Side::NONE; i < Side::ALL; ++i)
+  Vector3 bpos{ pos };
+
+  for (int i = 0; i < 6; ++i)
   {
     if (side & (1 << i))
     {
       for (size_t j = 0; j < 4; ++j)
       {
-        vertex.emplace_back(gVertexData[i * 4 + j], Vector2{
+        vertex.emplace_back(gVertexData[i * 4 + j] + bpos, Vector2{
           gTextureSide[j].x() *(mTextureCoord.right() - mTextureCoord.left()) + mTextureCoord.left(),
           gTextureSide[j].y() * (mTextureCoord.top() - mTextureCoord.bottom()) + mTextureCoord.bottom()
         });

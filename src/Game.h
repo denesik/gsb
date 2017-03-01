@@ -11,7 +11,7 @@
 #include <Magnum/Trade/AbstractImporter.h>
 #include <Magnum/Trade/ImageData.h>
 
-#include "TexturedTriangleShader.h"
+#include "StandartShader.h"
 #include "configure.h"
 #include "ImguiPort.h"
 #include "../imgui/imgui.h"
@@ -61,7 +61,7 @@ private:
   Buffer mVertexBuffer;
   Buffer mIndexBuffer;
   Mesh mMesh;
-  TexturedTriangleShader mShader;
+  StandartShader mShader;
 
   Matrix4 mProjection;
   Matrix4 mModel;

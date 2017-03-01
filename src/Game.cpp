@@ -9,6 +9,7 @@
 #include <Magnum/Math/Matrix4.h>
 #include "TesselatorSolidBlock.h"
 #include "BlocksDataBase.h"
+#include "Sector.h"
 
 
 Game::Game(const Arguments & arguments)
@@ -22,15 +23,20 @@ Game::Game(const Arguments & arguments)
   UnsignedInt index = 0;
   BlocksDataBase blocksDataBase(atlas);
 
-  static_cast<const TesselatorSolidBlock *>(blocksDataBase.GetBlockStaticPart(2)->GetTesselator().get())->PushBack(vertex_data, index_data, index);
+//  static_cast<const TesselatorSolidBlock *>(blocksDataBase.GetBlockStaticPart(2)->GetTesselator().get())->PushBack(vertex_data, index_data, index);
 
-  mVertexBuffer.setData(vertex_data, BufferUsage::StaticDraw);
-  mIndexBuffer.setData(index_data, BufferUsage::StaticDraw);
+  Sector sector(blocksDataBase);
+  sector.RunTesselator();
+
+//   mVertexBuffer.setData(vertex_data, BufferUsage::StaticDraw);
+//   mIndexBuffer.setData(index_data, BufferUsage::StaticDraw);
+  mVertexBuffer.setData(sector.mSectorTesselator.vertex_data, BufferUsage::StaticDraw);
+  mIndexBuffer.setData(sector.mSectorTesselator.index_data, BufferUsage::StaticDraw);
 
   mMesh.setPrimitive(MeshPrimitive::Triangles);
-  mMesh.addVertexBuffer(mVertexBuffer, 0, TexturedTriangleShader::Position{}, TexturedTriangleShader::TextureCoordinates{});
+  mMesh.addVertexBuffer(mVertexBuffer, 0, StandartShader::Position{}, StandartShader::TextureCoordinates{});
   mMesh.setIndexBuffer(mIndexBuffer, 0, Mesh::IndexType::UnsignedInt);
-  mMesh.setCount(mIndexBuffer.size());
+  mMesh.setCount(sector.mSectorTesselator.index_data.size());
 
   mTimeline.start();
 }

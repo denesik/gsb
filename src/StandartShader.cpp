@@ -1,4 +1,4 @@
-#include "TexturedTriangleShader.h"
+#include "StandartShader.h"
 
 #include <Corrade/Utility/Resource.h>
 #include <Magnum/Context.h>
@@ -6,7 +6,7 @@
 #include <Magnum/Version.h>
 
 
-TexturedTriangleShader::TexturedTriangleShader() 
+StandartShader::StandartShader() 
 {
     MAGNUM_ASSERT_VERSION_SUPPORTED(Version::GL330);
 
