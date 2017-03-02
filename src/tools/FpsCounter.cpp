@@ -40,14 +40,24 @@ void FpsCounter::Update()
   {
     timer = 0;
     max = 0;
-    min = 1000;
+    min = 10000;
+    mean = 0;
     for (const auto &time : fpsStack)
     {
       if (time > max) max = time;
       if (time < min) min = time;
       mean += time;
     }
-    mean /= static_cast<double>(fpsStack.size());
+    if (!fpsStack.empty())
+      mean /= static_cast<double>(fpsStack.size());
+
+    count_long_frame = 0;
+    for (const auto &time : fpsStack)
+    {
+      if (time > (mean + max) / 2.0) ++count_long_frame;
+    }
+    if (!fpsStack.empty())
+      percent_long_frame = static_cast<size_t>((static_cast<double>(count_long_frame) * 100.0) / static_cast<double>(fpsStack.size()));
   }
 }
 
@@ -69,4 +79,24 @@ size_t FpsCounter::GetMinFrameTime()
 size_t FpsCounter::GetMeanFrameTime()
 {
   return static_cast<size_t>(mean * 1000);
+}
+
+size_t FpsCounter::GetMaxFps()
+{
+  return static_cast<size_t>(1.0 / min);
+}
+
+size_t FpsCounter::GetMinFps()
+{
+  return static_cast<size_t>(1.0 / max);
+}
+
+size_t FpsCounter::GetMeanFps()
+{
+  return static_cast<size_t>(1.0 / mean);
+}
+
+size_t FpsCounter::GetPercentLongFrame()
+{
+  return percent_long_frame;
 }

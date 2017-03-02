@@ -10,6 +10,24 @@
 
 class FpsCounter
 {
+public:
+  FpsCounter(void);
+  ~FpsCounter(void);
+
+  void Update();
+
+  size_t GetCount();
+
+  size_t GetMaxFrameTime();
+  size_t GetMinFrameTime();
+  size_t GetMeanFrameTime();
+
+  size_t GetMaxFps();
+  size_t GetMinFps();
+  size_t GetMeanFps();
+
+  size_t GetPercentLongFrame();
+
 private:
   std::list<double> fpsStack;
   std::chrono::high_resolution_clock::time_point currentTime;
@@ -23,17 +41,8 @@ private:
 
   double timer = 0;
 
-public:
-  FpsCounter(void);
-  ~FpsCounter(void);
-
-  void Update();
-
-  size_t GetCount();
-
-  size_t GetMaxFrameTime();
-  size_t GetMinFrameTime();
-  size_t GetMeanFrameTime();
+  size_t count_long_frame = 0;
+  size_t percent_long_frame = 0;
 
 };
 

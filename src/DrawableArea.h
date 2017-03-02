@@ -31,6 +31,8 @@ private:
   std::vector<std::tuple<SPos, SPos, std::weak_ptr<Sector>>> mSectors;
   Timer mTimer;
 
+  std::vector<int> mTest;
+
 private:
   void UpdateRadius(unsigned int radius);
   void UpdatePos(const SPos &pos);

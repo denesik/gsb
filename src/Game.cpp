@@ -60,8 +60,8 @@ void Game::drawEvent()
       ImGui::ColorEdit3("clear color", (float*)&clear_color);
       if (ImGui::Button("Test Window")) show_test_window ^= 1;
       if (ImGui::Button("Another Window")) show_another_window ^= 1;
-      ImGui::Text("fps: %i; max: %i; min: %i; mean: %i", 
-        mFpsCounter.GetCount(), mFpsCounter.GetMaxFrameTime(), mFpsCounter.GetMinFrameTime(), mFpsCounter.GetMeanFrameTime());
+      ImGui::Text("fps: %i; max: %i; min: %i; long frame: %i%%", 
+        mFpsCounter.GetCount(), mFpsCounter.GetMaxFps(), mFpsCounter.GetMinFps(), mFpsCounter.GetPercentLongFrame());
       ImGui::Text("Sector tesselation time: %.4f", sectorGeneratingTime);
     }
 

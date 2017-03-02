@@ -9,6 +9,8 @@ DrawableArea::DrawableArea(World *world, const SPos &pos, unsigned int radius)
 {
   UpdateRadius(radius);
   UpdatePos(mPos);
+
+  mTest.resize(mSectors.size());
 }
 
 
@@ -27,17 +29,20 @@ void DrawableArea::SetPos(const SPos &pos)
 
 void DrawableArea::Draw(Magnum::AbstractShaderProgram& shader)
 {
-//   bool load = false;
-//   if (mTimer.Elapsed() > 1.0 / 60.0)
-//   {
-//     mTimer.Start();
-//     load = true;
-//   }
+  // Обновляем список видимых секторов N раз в сек.
+
+  const double N = 10.0;
+  bool loading = false;
+  if (mTimer.Elapsed() > 1.0 / N)
+  {
+    mTimer.Start();
+    loading = true;
+  }
 
   for (auto &site : mSectors)
   {
     auto sector = std::get<2>(site).lock();
-    if (!sector)
+    if (loading && !sector)
     {
       std::get<2>(site) = mWorld->GetSector(std::get<1>(site));
       sector = std::get<2>(site).lock();
