@@ -20,7 +20,8 @@ Game::Game(const Arguments & arguments)
 
   mBlocksDataBase = std::make_unique<BlocksDataBase>(atlas);
   mWorld = std::make_unique<World>(*mBlocksDataBase);
-  mDrawableArea = std::make_unique<DrawableArea>(mWorld.get(), SPos{});
+  mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{});
+  mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 10);
 
   mTimeline.start();
 
@@ -35,17 +36,19 @@ void Game::drawEvent()
 
   mTimeline.nextFrame();
   Renderer::enable(Renderer::Feature::DepthTest);
-  //Renderer::enable(Renderer::Feature::FaceCulling);
+  Renderer::enable(Renderer::Feature::FaceCulling);
 
-  mProjection = Matrix4::perspectiveProjection(60.0_degf, Vector2{ defaultFramebuffer.viewport().size() }.aspectRatio(), 0.01f, 100.0f);
+  mProjection = Matrix4::perspectiveProjection(60.0_degf, Vector2{ defaultFramebuffer.viewport().size() }.aspectRatio(), 0.01f, 1000.0f);
 
 	defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
 
   mShader.setColor({ 1.0f, 0.7f, 0.7f })
     .setTexture(atlas.Texture())
-    .setProjection(mProjection * mView.inverted() * mModel);
+    //.setProjection(mProjection * mView.inverted() * mModel)
+    ;
 
-  mDrawableArea->Draw(mShader);
+  mDrawableArea->Draw(mProjection * mView.inverted(), mShader);
+  mWorld->GetUpdatableSectors().Update();
 
   //if (false)
   {
@@ -54,15 +57,16 @@ void Game::drawEvent()
     // 1. Show a simple window
     // Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets appears in a window automatically called "Debug"
     {
-      static float f = 0.0f;
-      ImGui::Text("Hello, world!");
-      ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
       ImGui::ColorEdit3("clear color", (float*)&clear_color);
       if (ImGui::Button("Test Window")) show_test_window ^= 1;
       if (ImGui::Button("Another Window")) show_another_window ^= 1;
       ImGui::Text("fps: %i; max: %i; min: %i; long frame: %i%%", 
         mFpsCounter.GetCount(), mFpsCounter.GetMaxFps(), mFpsCounter.GetMinFps(), mFpsCounter.GetPercentLongFrame());
-      ImGui::Text("Sector tesselation time: %.4f", sectorGeneratingTime);
+      static int drawable_area_size = 5;
+      int das = drawable_area_size;
+      ImGui::SliderInt("Drawable area size", &drawable_area_size, 0, 10);
+      if (das != drawable_area_size)
+        mDrawableArea->SetRadius(drawable_area_size);
     }
 
     // 2. Show another simple window, this time using an explicit Begin/End pair

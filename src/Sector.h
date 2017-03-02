@@ -18,19 +18,21 @@ class World;
 class Sector
 {
 public:
-  Sector(World *morld);
+  Sector(World *morld, const SPos &pos);
   ~Sector();
 
   bool NeedCompile() const;
 
   void RunCompiler();
 
-  void Draw(Magnum::AbstractShaderProgram& shader);
+  void Draw(const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader);
+
+  void Update();
 
 private:
   std::array<BlockId, SECTOR_CAPACITY> mStaticBlocks;
 
-  Magnum::Matrix4 mModel;
+  Magnum::Matrix4 mModelMatrix;
   Magnum::Buffer mVertexBuffer;
   Magnum::Buffer mIndexBuffer;
   Magnum::Mesh mMesh;

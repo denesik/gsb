@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <memory>
 #include "Sector.h"
+#include "UpdatableSectors.h"
 
 class World
 {
@@ -25,10 +26,13 @@ public:
 
   std::shared_ptr<Sector> GetSector(const SPos &pos);
 
+  UpdatableSectors &GetUpdatableSectors();
+
 private:
   std::unordered_map<SPos, std::shared_ptr<Sector>> mSectors;
-
   const BlocksDataBase &mBlocksDataBase;
+
+  UpdatableSectors mUpdatableSectors;
 };
 
 

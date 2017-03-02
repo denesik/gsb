@@ -36,6 +36,8 @@
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\tools\FpsCounter.cpp" />
     <ClCompile Include="src\Transformation.cpp" />
+    <ClCompile Include="src\UpdatableArea.cpp" />
+    <ClCompile Include="src\UpdatableSectors.cpp" />
     <ClCompile Include="src\World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +57,8 @@
     <ClInclude Include="src\tools\CoordSystem.h" />
     <ClInclude Include="src\tools\FpsCounter.h" />
     <ClInclude Include="src\Transformation.h" />
+    <ClInclude Include="src\UpdatableArea.h" />
+    <ClInclude Include="src\UpdatableSectors.h" />
     <ClInclude Include="src\World.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

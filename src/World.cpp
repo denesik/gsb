@@ -3,7 +3,7 @@
 
 
 World::World(const BlocksDataBase &blocksDataBase)
-  : mBlocksDataBase(blocksDataBase)
+  : mBlocksDataBase(blocksDataBase), mUpdatableSectors(*this)
 {
   LoadSector({});
 }
@@ -15,7 +15,7 @@ World::~World()
 
 void World::LoadSector(const SPos &pos)
 {
-  mSectors.insert({ pos , std::make_shared<Sector>(this) });
+  mSectors.insert({ pos , std::make_shared<Sector>(this, pos) });
 }
 
 void World::UnLoadSector(const SPos &pos)
@@ -36,4 +36,9 @@ std::shared_ptr<Sector> World::GetSector(const SPos &pos)
     return it->second;
   }
   return nullptr;
+}
+
+UpdatableSectors & World::GetUpdatableSectors()
+{
+  return mUpdatableSectors;
 }

@@ -4,10 +4,14 @@
 
 using namespace Magnum;
 
-Sector::Sector(World *world)
+Sector::Sector(World *world, const SPos &pos)
   : mWorld(world), mSectorTesselator(world->GetBlocksDataBase())
 {
-  mStaticBlocks.fill(0);
+  WPos wpos = cs::StoW(pos);
+  mModelMatrix = mModelMatrix * Math::Matrix4<Float>::translation(Vector3::xAxis(wpos.x()));
+  mModelMatrix = mModelMatrix * Math::Matrix4<Float>::translation(Vector3::yAxis(wpos.y()));
+  mModelMatrix = mModelMatrix * Math::Matrix4<Float>::translation(Vector3::zAxis(wpos.z()));
+  //mStaticBlocks.fill(0);
 
   // generate sector
   mStaticBlocks.fill(1);
@@ -39,7 +43,13 @@ void Sector::RunCompiler()
   mNeedCompile = false;
 }
 
-void Sector::Draw(Magnum::AbstractShaderProgram& shader)
+void Sector::Draw(const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader)
 {
+  static_cast<StandartShader &>(shader).setProjection(matrix * mModelMatrix);
   mMesh.draw(shader);
+}
+
+void Sector::Update()
+{
+
 }

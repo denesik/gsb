@@ -4,18 +4,22 @@
 
 
 
-DrawableArea::DrawableArea(World *world, const SPos &pos, unsigned int radius)
+DrawableArea::DrawableArea(World &world, const SPos &pos, unsigned int radius)
   : mWorld(world), mPos(pos)
 {
   UpdateRadius(radius);
   UpdatePos(mPos);
-
-  mTest.resize(mSectors.size());
 }
 
 
 DrawableArea::~DrawableArea()
 {
+}
+
+void DrawableArea::SetRadius(unsigned int radius)
+{
+  UpdateRadius(radius);
+  UpdatePos(mPos);
 }
 
 void DrawableArea::SetPos(const SPos &pos)
@@ -27,7 +31,7 @@ void DrawableArea::SetPos(const SPos &pos)
   }
 }
 
-void DrawableArea::Draw(Magnum::AbstractShaderProgram& shader)
+void DrawableArea::Draw(const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader)
 {
   // Обновляем список видимых секторов N раз в сек.
 
@@ -44,7 +48,7 @@ void DrawableArea::Draw(Magnum::AbstractShaderProgram& shader)
     auto sector = std::get<2>(site).lock();
     if (loading && !sector)
     {
-      std::get<2>(site) = mWorld->GetSector(std::get<1>(site));
+      std::get<2>(site) = mWorld.GetSector(std::get<1>(site));
       sector = std::get<2>(site).lock();
     }
 
@@ -58,7 +62,7 @@ void DrawableArea::Draw(Magnum::AbstractShaderProgram& shader)
         sector->RunCompiler();
       }
 
-      sector->Draw(shader);
+      sector->Draw(matrix, shader);
     }
   }
 }
@@ -70,7 +74,6 @@ void DrawableArea::UpdateRadius(unsigned int radius)
   int begin = -static_cast<int>(radius);
   int end = static_cast<int>(radius);
   SPos pos(begin);
-  //pos.z = 0;
   for (pos.z() = begin; pos.z() <= end; ++pos.z())
     for (pos.y() = 0; pos.y() < SECTOR_COUNT_HEIGHT; ++pos.y())
       for (pos.x() = begin; pos.x() <= end; ++pos.x())

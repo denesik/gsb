@@ -8,6 +8,7 @@
 #include "Sector.h"
 #include <Magnum\AbstractShaderProgram.h>
 #include "Timer.h"
+#include <Magnum\Magnum.h>
 
 
 class World;
@@ -17,22 +18,24 @@ class World;
 class DrawableArea
 {
 public:
-  DrawableArea(World *world, const SPos &pos, unsigned int radius = 5);
+  DrawableArea(World &world, const SPos &pos, unsigned int radius = 5);
   ~DrawableArea();
+
+  void SetRadius(unsigned int radius);
 
   void SetPos(const SPos &pos);
 
-  void Draw(Magnum::AbstractShaderProgram& shader);
+  void Draw(const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader);
 
 private:
-  World *mWorld;
+  World &mWorld;
   SPos mPos;
-
+  
+  // 1 - ќтносительные координаты секторов вокруг центра. »змен€ютс€ при изменении радиуса.
+  // 2 - √лобальные координаты секторов в мире. »змен€ютс€ при изменении позиции.
+  // 3 - —ектора.
   std::vector<std::tuple<SPos, SPos, std::weak_ptr<Sector>>> mSectors;
   Timer mTimer;
-
-  std::vector<int> mTest;
-
 private:
   void UpdateRadius(unsigned int radius);
   void UpdatePos(const SPos &pos);

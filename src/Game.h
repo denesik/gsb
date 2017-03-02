@@ -25,6 +25,7 @@
 #include "Sector.h"
 #include "World.h"
 #include "tools/FpsCounter.h"
+#include "UpdatableArea.h"
 
 using namespace Magnum;
 
@@ -79,6 +80,7 @@ private:
   std::unique_ptr<DrawableArea> mDrawableArea;
   std::unique_ptr<BlocksDataBase> mBlocksDataBase;
   std::unique_ptr<World> mWorld;
+  std::unique_ptr<UpdatableArea> mUpdatableArea;
 
   FpsCounter mFpsCounter;
 };
