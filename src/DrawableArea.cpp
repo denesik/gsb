@@ -7,7 +7,7 @@
 DrawableArea::DrawableArea(World *world, const SPos &pos, unsigned int radius)
   : mWorld(world), mPos(pos)
 {
-  UpdateRadius(10);
+  UpdateRadius(radius);
   UpdatePos(mPos);
 }
 

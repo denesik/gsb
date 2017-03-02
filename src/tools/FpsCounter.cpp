@@ -9,7 +9,7 @@
 
 FpsCounter::FpsCounter(void)
 {
-  //currentTime = glfwGetTime();
+  currentTime = std::chrono::high_resolution_clock::now();
   lastTime = currentTime;
   fpsTime = 0;
 }
@@ -21,8 +21,8 @@ FpsCounter::~FpsCounter(void)
 
 void FpsCounter::Update()
 {
-  //currentTime = glfwGetTime();
-  double frameTime = currentTime - lastTime;
+  currentTime = std::chrono::high_resolution_clock::now();
+  auto frameTime = std::chrono::duration<double, std::milli>(currentTime - lastTime).count() / 1000.0;
 
   fpsTime += frameTime;
   fpsStack.push_back(frameTime);

@@ -5,14 +5,15 @@
 #ifndef FPSCounter_h__
 #define FPSCounter_h__
 
+#include <chrono>
 #include <list>
 
 class FpsCounter
 {
 private:
   std::list<double> fpsStack;
-  double currentTime;
-  double lastTime;
+  std::chrono::high_resolution_clock::time_point currentTime;
+  std::chrono::high_resolution_clock::time_point lastTime;
 
   double fpsTime;
 

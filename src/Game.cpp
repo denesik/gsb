@@ -26,10 +26,13 @@ Game::Game(const Arguments & arguments)
 
   mView = mView * Math::Matrix4<Float>::rotationY(Rad(-90));
   mView = mView * Math::Matrix4<Float>::translation(Vector3::yAxis(40));
+
 }
 
 void Game::drawEvent()
 {
+  mFpsCounter.Update();
+
   mTimeline.nextFrame();
   Renderer::enable(Renderer::Feature::DepthTest);
   //Renderer::enable(Renderer::Feature::FaceCulling);
@@ -57,7 +60,8 @@ void Game::drawEvent()
       ImGui::ColorEdit3("clear color", (float*)&clear_color);
       if (ImGui::Button("Test Window")) show_test_window ^= 1;
       if (ImGui::Button("Another Window")) show_another_window ^= 1;
-      ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+      ImGui::Text("fps: %i; max: %i; min: %i; mean: %i", 
+        mFpsCounter.GetCount(), mFpsCounter.GetMaxFrameTime(), mFpsCounter.GetMinFrameTime(), mFpsCounter.GetMeanFrameTime());
       ImGui::Text("Sector tesselation time: %.4f", sectorGeneratingTime);
     }
 
