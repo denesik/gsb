@@ -35,8 +35,8 @@ SectorCompiler::SectorCompiler(const BlocksDataBase &dataBase)
 
 SectorCompiler::~SectorCompiler()
 {
-  mCv.notify_one();
   mClose = true;
+  mCv.notify_one();
   mThread.join();
 }
 
@@ -50,8 +50,8 @@ void SectorCompiler::SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data)
 
 void SectorCompiler::Run()
 {
-  mCv.notify_one();
   mRunned = true;
+  mCv.notify_one();
 }
 
 bool SectorCompiler::IsDone() const
