@@ -9,6 +9,10 @@
 #include "Tesselator.h"
 #include <Magnum/Magnum.h>
 #include "BlocksDataBase.h"
+#include <thread>
+#include <atomic>
+#include <condition_variable>
+#include <mutex>  
 
 class SectorCompiler
 {
@@ -22,20 +26,28 @@ public:
 
   bool IsDone() const;
 
+  const std::vector<TesselatorVertex> &GetVertexData() const;
+  const std::vector<Magnum::UnsignedInt> &GetIndexData() const;
+
 private:
   std::array<BlockId, TESSELATOR_CAPACITY> mBlocks;
   std::array<IndexType, SECTOR_CAPACITY> mIndex;
 
-public:
-  std::vector<TesselatorVertex> vertex_data;
-  std::vector<Magnum::UnsignedInt> index_data;
-  Magnum::UnsignedInt index_offset;
+  std::vector<TesselatorVertex> mVertexData;
+  std::vector<Magnum::UnsignedInt> mIndexData;
+  Magnum::UnsignedInt mIndexOffset;
 
   const BlocksDataBase &mDataBase;
 
+  std::thread mThread;
+  std::atomic<bool> mRunned = false;
+  std::atomic<bool> mClose = false;
+  std::condition_variable mCv;
+  std::mutex mMutex;
 private:
   void ProcessSolidBlock(IndexType index, const STPos &pos);
 
+  void Process();
 };
 
 

@@ -9,6 +9,7 @@
 #include <Magnum\AbstractShaderProgram.h>
 #include "Timer.h"
 #include <Magnum\Magnum.h>
+#include "SectorCompiler.h"
 
 
 class World;
@@ -36,6 +37,8 @@ private:
   // 3 - Сектора.
   std::vector<std::tuple<SPos, SPos, std::weak_ptr<Sector>>> mSectors;
   Timer mTimer;
+
+  std::shared_ptr<SectorCompiler> mSectorCompiler;
 private:
   void UpdateRadius(unsigned int radius);
   void UpdatePos(const SPos &pos);

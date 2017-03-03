@@ -15,7 +15,7 @@ World::~World()
 
 void World::LoadSector(const SPos &pos)
 {
-  mSectors.insert({ pos , std::make_shared<Sector>(this, pos) });
+  mSectors.insert({ pos , std::make_shared<Sector>(*this, pos) });
 }
 
 void World::UnLoadSector(const SPos &pos)
@@ -42,3 +42,4 @@ UpdatableSectors & World::GetUpdatableSectors()
 {
   return mUpdatableSectors;
 }
+

@@ -5,8 +5,8 @@
 
 using namespace Magnum;
 
-Sector::Sector(World *world, const SPos &pos)
-  : mWorld(world), mSectorTesselator(world->GetBlocksDataBase())
+Sector::Sector(World &world, const SPos &pos)
+  : mWorld(world)
 {
   WPos wpos = cs::StoW(pos);
   mModelMatrix = mModelMatrix * Math::Matrix4<Float>::translation(Vector3::xAxis(wpos.x()));
@@ -19,6 +19,10 @@ Sector::Sector(World *world, const SPos &pos)
 
   // generate sector
   mStaticBlocks.fill(1);
+
+  mMesh.setPrimitive(MeshPrimitive::Triangles);
+  mMesh.addVertexBuffer(mVertexBuffer, 0, StandartShader::Position{}, StandartShader::TextureCoordinates{});
+  mMesh.setIndexBuffer(mIndexBuffer, 0, Mesh::IndexType::UnsignedInt);
 }
 
 
@@ -31,24 +35,36 @@ bool Sector::NeedCompile() const
   return mNeedCompile;
 }
 
-void Sector::RunCompiler()
+bool Sector::Compiling() const
 {
-  mSectorTesselator.SetMiddle(mStaticBlocks);
-  mSectorTesselator.Run();
+  return mSectorCompiler != nullptr;
+}
 
-  mVertexBuffer.setData(mSectorTesselator.vertex_data, BufferUsage::StaticDraw);
-  mIndexBuffer.setData(mSectorTesselator.index_data, BufferUsage::StaticDraw);
+void Sector::RunCompiler(std::shared_ptr<SectorCompiler> sectorCompiler)
+{
+  if (mSectorCompiler)
+  {
+    return;
+  }
 
-  mMesh.setPrimitive(MeshPrimitive::Triangles);
-  mMesh.addVertexBuffer(mVertexBuffer, 0, StandartShader::Position{}, StandartShader::TextureCoordinates{});
-  mMesh.setIndexBuffer(mIndexBuffer, 0, Mesh::IndexType::UnsignedInt);
-  mMesh.setCount(mSectorTesselator.index_data.size());
-
+  mSectorCompiler = sectorCompiler;
   mNeedCompile = false;
+
+  mSectorCompiler->SetMiddle(mStaticBlocks);
+  mSectorCompiler->Run();
 }
 
 void Sector::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader)
 {
+  if (mSectorCompiler && mSectorCompiler->IsDone())
+  {
+    mVertexBuffer.setData(mSectorCompiler->GetVertexData(), BufferUsage::StaticDraw);
+    mIndexBuffer.setData(mSectorCompiler->GetIndexData(), BufferUsage::StaticDraw);
+    mMesh.setCount(mSectorCompiler->GetIndexData().size());
+
+    mSectorCompiler.reset();
+  }
+
   if (Math::Geometry::Intersection::boxFrustum(mAabb, frustum)) 
   {
     static_cast<StandartShader &>(shader).setProjection(matrix * mModelMatrix);

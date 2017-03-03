@@ -14,18 +14,21 @@
 #include <Magnum/AbstractShaderProgram.h>
 #include <Magnum/Math/Frustum.h>
 #include <Magnum/Math/Range.h>
+#include <memory>
 
 class World;
 
 class Sector
 {
 public:
-  Sector(World *morld, const SPos &pos);
+  Sector(World &morld, const SPos &pos);
   ~Sector();
 
   bool NeedCompile() const;
 
-  void RunCompiler();
+  bool Compiling() const;
+
+  void RunCompiler(std::shared_ptr<SectorCompiler> sectorCompiler);
 
   void Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader);
 
@@ -40,10 +43,10 @@ private:
   Magnum::Buffer mIndexBuffer;
   Magnum::Mesh mMesh;
 
-public:
-  SectorCompiler mSectorTesselator;
+  std::shared_ptr<SectorCompiler> mSectorCompiler;
 
-  World *mWorld;
+public:
+  World &mWorld;
 
   bool mNeedCompile = true;
 };

@@ -128,11 +128,14 @@
     <ClInclude Include="src\Timer.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
+    <ClInclude Include="src\SectorCompiler.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
     <ClInclude Include="src\UpdatableArea.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\UpdatableSectors.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

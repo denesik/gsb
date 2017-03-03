@@ -48,6 +48,7 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\ImguiPort.h" />
     <ClInclude Include="src\Sector.h" />
+    <ClInclude Include="src\SectorCompiler.h" />
     <ClInclude Include="src\SectorTesselator.h" />
     <ClInclude Include="src\Tesselator.h" />
     <ClInclude Include="src\TesselatorSolidBlock.h" />

@@ -7,8 +7,8 @@
 SectorCompiler::SectorCompiler(const BlocksDataBase &dataBase)
   : mDataBase(dataBase)
 {
-  vertex_data.reserve(40000);
-  index_data.reserve(50000);
+  mVertexData.reserve(40000);
+  mIndexData.reserve(50000);
   IndexType i = 0;
   for (SBPosType z = 1; z < TESSELATOR_SIZE - 1; ++z)
     for (SBPosType y = 1; y < TESSELATOR_SIZE - 1; ++y)
@@ -17,10 +17,27 @@ SectorCompiler::SectorCompiler(const BlocksDataBase &dataBase)
         mIndex[i++] = cs::STtoTI({ x, y, z });
       }
   mBlocks.fill(0);
+
+  mThread = std::thread([this]()
+  {
+    while (!mClose)
+    {
+      std::unique_lock<std::mutex> lock(mMutex);
+      if (mRunned)
+      {
+        Process();
+        mRunned = false;
+      }
+      mCv.wait(lock);
+    }
+  });
 }
 
 SectorCompiler::~SectorCompiler()
 {
+  mCv.notify_one();
+  mClose = true;
+  mThread.join();
 }
 
 void SectorCompiler::SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data)
@@ -33,30 +50,23 @@ void SectorCompiler::SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data)
 
 void SectorCompiler::Run()
 {
-  vertex_data.clear();
-  index_data.clear();
-  index_offset = 0;
-
-  for (SBPosType z = 1; z < TESSELATOR_SIZE - 1; ++z)
-    for (SBPosType y = 1; y < TESSELATOR_SIZE - 1; ++y)
-      for (SBPosType x = 1; x < TESSELATOR_SIZE - 1; ++x)
-      {
-        STPos pos{ x, y, z };
-        auto index = cs::STtoTI(pos);
-        const auto &block = mDataBase.GetBlockStaticPart(mBlocks[index]);
-        if (block && block->GetTesselator())
-        {
-          if (block->GetTesselator()->Type() == Tesselator::TesselatorType::SOLID_BLOCK)
-          {
-            ProcessSolidBlock(index, pos);
-          }
-        }
-      }
+  mCv.notify_one();
+  mRunned = true;
 }
 
 bool SectorCompiler::IsDone() const
 {
-  return true;
+  return mRunned == false;
+}
+
+const std::vector<TesselatorVertex> & SectorCompiler::GetVertexData() const
+{
+  return mVertexData;
+}
+
+const std::vector<Magnum::UnsignedInt> & SectorCompiler::GetIndexData() const
+{
+  return mIndexData;
 }
 
 void SectorCompiler::ProcessSolidBlock(IndexType index, const STPos &pos)
@@ -95,5 +105,28 @@ void SectorCompiler::ProcessSolidBlock(IndexType index, const STPos &pos)
   }
 
   const auto *tesselator = static_cast<const TesselatorSolidBlock *>(mDataBase.GetBlockStaticPart(mBlocks[index])->GetTesselator().get());
-  tesselator->PushBack(vertex_data, index_data, index_offset, pos, static_cast<TesselatorSolidBlock::Side>(side));
+  tesselator->PushBack(mVertexData, mIndexData, mIndexOffset, pos, static_cast<TesselatorSolidBlock::Side>(side));
+}
+
+void SectorCompiler::Process()
+{
+  mVertexData.clear();
+  mIndexData.clear();
+  mIndexOffset = 0;
+
+  for (SBPosType z = 1; z < TESSELATOR_SIZE - 1; ++z)
+    for (SBPosType y = 1; y < TESSELATOR_SIZE - 1; ++y)
+      for (SBPosType x = 1; x < TESSELATOR_SIZE - 1; ++x)
+      {
+        STPos pos{ x, y, z };
+        auto index = cs::STtoTI(pos);
+        const auto &block = mDataBase.GetBlockStaticPart(mBlocks[index]);
+        if (block && block->GetTesselator())
+        {
+          if (block->GetTesselator()->Type() == Tesselator::TesselatorType::SOLID_BLOCK)
+          {
+            ProcessSolidBlock(index, pos);
+          }
+        }
+      }
 }

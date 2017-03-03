@@ -9,6 +9,7 @@ using namespace Magnum;
 DrawableArea::DrawableArea(World &world, const SPos &pos, unsigned int radius)
   : mWorld(world), mPos(pos)
 {
+  mSectorCompiler = std::make_shared<SectorCompiler>(world.GetBlocksDataBase());
   UpdateRadius(radius);
   UpdatePos(mPos);
 }
@@ -61,9 +62,9 @@ void DrawableArea::Draw(const Magnum::Matrix4 &matrix, Magnum::AbstractShaderPro
       // Сектор существует.
       // Перестраиваем геометрию если нужно.
       // Рисуем.
-      if (sector->NeedCompile())
+      if (sector->NeedCompile() && !sector->Compiling())
       {
-        sector->RunCompiler();
+        sector->RunCompiler(mSectorCompiler);
       }
 
       sector->Draw(frustum, matrix, shader);
