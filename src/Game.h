@@ -72,6 +72,8 @@ private:
   Matrix4 mProjection;
   Matrix4 mModel;
   Matrix4 mView;
+  Vector3 mCameraVelocity;
+  Vector3 mCameraAngle;
 
   Timeline mTimeline;
 

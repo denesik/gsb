@@ -21,12 +21,12 @@ Game::Game(const Arguments & arguments)
   mBlocksDataBase = std::make_unique<BlocksDataBase>(atlas);
   mWorld = std::make_unique<World>(*mBlocksDataBase);
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{});
-  mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 10);
+  mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 1);
 
   mTimeline.start();
 
-  mView = mView * Math::Matrix4<Float>::rotationY(Rad(-90));
-  mView = mView * Math::Matrix4<Float>::translation(Vector3::yAxis(40));
+  //mView = mView * Math::Matrix4<Float>::rotationY(Rad(-90));
+  //mView = mView * Math::Matrix4<Float>::translation(Vector3::yAxis(40));
 
 }
 
@@ -42,10 +42,21 @@ void Game::drawEvent()
 
 	defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
 
+  if (!mCameraVelocity.isZero()) {
+    Matrix4 transform = mView;
+    transform.translation() += transform.rotation()*mCameraVelocity*0.3f;
+    mView = transform;
+  }
+
+  if (!mCameraAngle.isZero())
+  {
+    mView = Matrix4::lookAt(mView.translation(),
+      mView.translation() - mView.rotationScaling()*(Vector3{ -mCameraAngle.x()*0.03f, mCameraAngle.y()*0.03f, 1.0f }),
+      Vector3::yAxis());
+  }
+
   mShader.setColor({ 1.0f, 0.7f, 0.7f })
-    .setTexture(atlas.Texture())
-    //.setProjection(mProjection * mView.inverted() * mModel)
-    ;
+    .setTexture(atlas.Texture());
 
   mDrawableArea->Draw(mProjection * mView.inverted(), mShader);
   mWorld->GetUpdatableSectors().Update();
@@ -105,28 +116,28 @@ void Game::keyPressEvent(KeyEvent& event)
   float val = 15.0f * mTimeline.previousFrameDuration();
 
   if (event.key() == KeyEvent::Key::A)
-    mView = mView * Math::Matrix4<Float>::translation(Vector3::xAxis(-val));
+    mCameraVelocity.x() = -1.0f;
 
   if (event.key() == KeyEvent::Key::D)
-    mView = mView * Math::Matrix4<Float>::translation(Vector3::xAxis(val));
+    mCameraVelocity.x() = 1.0f;
 
   if (event.key() == KeyEvent::Key::W)
-    mView = mView * Math::Matrix4<Float>::translation(Vector3::zAxis(-val));
+    mCameraVelocity.z() = -1.0f;
 
   if (event.key() == KeyEvent::Key::S)
-    mView = mView * Math::Matrix4<Float>::translation(Vector3::zAxis(val));
+    mCameraVelocity.z() = 1.0f;
 
   if (event.key() == KeyEvent::Key::Left)
-    mView = mView * Math::Matrix4<Float>::rotationY(Rad(val));
+    mCameraAngle.x() = -1.0f;
 
   if (event.key() == KeyEvent::Key::Right)
-    mView = mView * Math::Matrix4<Float>::rotationY(Rad(-val));
+    mCameraAngle.x() = 1.0f;
 
   if (event.key() == KeyEvent::Key::Up)
-    mView = mView * Math::Matrix4<Float>::rotationX(Rad(val));
+    mCameraAngle.y() = -1.0f;
 
   if (event.key() == KeyEvent::Key::Down)
-    mView = mView * Math::Matrix4<Float>::rotationX(Rad(-val));
+    mCameraAngle.y() = 1.0f;
 
   event.setAccepted();
 }
@@ -134,6 +145,30 @@ void Game::keyPressEvent(KeyEvent& event)
 void Game::keyReleaseEvent(KeyEvent& event)
 {
   mImguiPort.keyReleaseEvent(event);
+
+  if (event.key() == KeyEvent::Key::A)
+    mCameraVelocity.x() = 0.0f;
+
+  if (event.key() == KeyEvent::Key::D)
+    mCameraVelocity.x() = 0.0f;
+
+  if (event.key() == KeyEvent::Key::W)
+    mCameraVelocity.z() = 0.0f;
+
+  if (event.key() == KeyEvent::Key::S)
+    mCameraVelocity.z() = 0.0f;
+
+  if (event.key() == KeyEvent::Key::Left)
+    mCameraAngle.x() = 0.0f;
+
+  if (event.key() == KeyEvent::Key::Right)
+    mCameraAngle.x() = 0.0f;
+
+  if (event.key() == KeyEvent::Key::Up)
+    mCameraAngle.y() = 0.0f;
+
+  if (event.key() == KeyEvent::Key::Down)
+    mCameraAngle.y() = 0.0f;
 
   event.setAccepted();
 }
