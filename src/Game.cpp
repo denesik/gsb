@@ -20,7 +20,7 @@ Game::Game(const Arguments & arguments)
   mBlocksDataBase = std::make_unique<BlocksDataBase>(atlas);
   mWorld = std::make_unique<World>(*mBlocksDataBase);
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{});
-  mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 10);
+  mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 5);
 
   mTimeline.start();
 
@@ -72,11 +72,18 @@ void Game::drawEvent()
       if (ImGui::Button("Another Window")) show_another_window ^= 1;
       ImGui::Text("fps: %i; max: %i; min: %i; long frame: %i%%", 
         mFpsCounter.GetCount(), mFpsCounter.GetMaxFps(), mFpsCounter.GetMinFps(), mFpsCounter.GetPercentLongFrame());
+      
       static int drawable_area_size = 5;
       int das = drawable_area_size;
       ImGui::SliderInt("Drawable area size", &drawable_area_size, 0, 10);
       if (das != drawable_area_size)
         mDrawableArea->SetRadius(drawable_area_size);
+
+      static int updatable_area_size = 5;
+      int uas = updatable_area_size;
+      ImGui::SliderInt("Updatable area size", &updatable_area_size, 0, 10);
+      if (uas != updatable_area_size)
+        mUpdatableArea->SetRadius(updatable_area_size);
     }
 
     // 2. Show another simple window, this time using an explicit Begin/End pair

@@ -51,22 +51,22 @@ void Sector::RunCompiler(std::shared_ptr<SectorCompiler> sectorCompiler)
   mNeedCompile = false;
 
   mSectorCompiler->SetMiddle(mStaticBlocks);
-  if (auto sector = mWorld.GetSector(cs::Left(mPos)))
+  if (auto sector = mWorld.GetSector(cs::Left(mPos)).lock())
     mSectorCompiler->SetSide(sector->mStaticBlocks, SideFlags::LEFT);
 
-  if (auto sector = mWorld.GetSector(cs::Front(mPos)))
+  if (auto sector = mWorld.GetSector(cs::Front(mPos)).lock())
     mSectorCompiler->SetSide(sector->mStaticBlocks, SideFlags::FRONT);
 
-  if (auto sector = mWorld.GetSector(cs::Top(mPos)))
+  if (auto sector = mWorld.GetSector(cs::Top(mPos)).lock())
     mSectorCompiler->SetSide(sector->mStaticBlocks, SideFlags::TOP);
 
-  if (auto sector = mWorld.GetSector(cs::Right(mPos)))
+  if (auto sector = mWorld.GetSector(cs::Right(mPos)).lock())
     mSectorCompiler->SetSide(sector->mStaticBlocks, SideFlags::RIGHT);
 
-  if (auto sector = mWorld.GetSector(cs::Back(mPos)))
+  if (auto sector = mWorld.GetSector(cs::Back(mPos)).lock())
     mSectorCompiler->SetSide(sector->mStaticBlocks, SideFlags::BACK);
 
-  if (auto sector = mWorld.GetSector(cs::Bottom(mPos)))
+  if (auto sector = mWorld.GetSector(cs::Bottom(mPos)).lock())
     mSectorCompiler->SetSide(sector->mStaticBlocks, SideFlags::BOTTOM);
   
   mSectorCompiler->Run();

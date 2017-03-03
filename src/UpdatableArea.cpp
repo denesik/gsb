@@ -44,6 +44,22 @@ void UpdatableArea::SetPos(const SPos &pos)
   }
 }
 
+void UpdatableArea::SetRadius(unsigned int radius)
+{
+  for (const auto &site : mPositions)
+  {
+    mUpdatable.Remove(std::get<1>(site));
+  }
+
+  UpdateRadius(radius);
+  UpdatePos(mPos);
+
+  for (const auto &site : mPositions)
+  {
+    mUpdatable.Add(std::get<1>(site));
+  }
+}
+
 void UpdatableArea::UpdateRadius(unsigned int radius)
 {
   mPositions.clear();

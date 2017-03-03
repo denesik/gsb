@@ -17,6 +17,8 @@ public:
 
   void SetPos(const SPos &pos);
 
+  void SetRadius(unsigned int radius);
+
 private:
   UpdatableSectors &mUpdatable;
   SPos mPos;

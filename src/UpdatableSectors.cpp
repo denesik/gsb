@@ -26,7 +26,7 @@ void UpdatableSectors::Add(const SPos &pos)
   }
   else
   {
-    mSectors.emplace_back(pos, 0, std::weak_ptr<Sector>{});
+    mSectors.emplace_back(pos, 1, std::weak_ptr<Sector>{});
   }
 }
 
@@ -45,8 +45,13 @@ void UpdatableSectors::Remove(const SPos &pos)
     {
       std::swap(*it, mSectors.back());
       mSectors.resize(mSectors.size() - 1);
+      mWorld.UnLoadSector(pos);
     }
   }
+//   else
+//   {
+//     mWorld.UnLoadSector(pos);
+//   }
 }
 
 void UpdatableSectors::Update()
