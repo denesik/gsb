@@ -62,9 +62,15 @@ TesselatorSolidBlock::~TesselatorSolidBlock()
 {
 }
 
-TesselatorSolidBlock &TesselatorSolidBlock::SetTexture(const Magnum::Range2D &range)
+TesselatorSolidBlock &TesselatorSolidBlock::SetTexture(const Magnum::Range2D &range, Side side)
 {
-  mTextureCoord = range;
+  for (int i = 0; i < 6; ++i)
+  {
+    if (side & (1 << i))
+    {
+      mTextureCoord[i] = range;
+    }
+  }
   return *this;
 }
 
@@ -80,8 +86,8 @@ void TesselatorSolidBlock::PushBack(std::vector<TesselatorVertex> &vertex,
       for (size_t j = 0; j < 4; ++j)
       {
         vertex.emplace_back(gVertexData[i * 4 + j] + bpos, Vector2{
-          gTextureSide[j].x() *(mTextureCoord.right() - mTextureCoord.left()) + mTextureCoord.left(),
-          gTextureSide[j].y() * (mTextureCoord.top() - mTextureCoord.bottom()) + mTextureCoord.bottom()
+          gTextureSide[j].x() * (mTextureCoord[i].right() - mTextureCoord[i].left()) + mTextureCoord[i].left(),
+          gTextureSide[j].y() * (mTextureCoord[i].top() - mTextureCoord[i].bottom()) + mTextureCoord[i].bottom()
         });
       }
 

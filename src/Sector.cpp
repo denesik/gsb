@@ -18,7 +18,7 @@ Sector::Sector(World &world, const SPos &pos)
   mAabb.max() = wpos + WPos(static_cast<WPosType>(SECTOR_SIZE));
 
   // generate sector
-  mStaticBlocks.fill(1);
+  mStaticBlocks.fill(2);
 
   mMesh.setPrimitive(MeshPrimitive::Triangles);
   mMesh.addVertexBuffer(mVertexBuffer, 0, StandartShader::Position{}, StandartShader::TextureCoordinates{});

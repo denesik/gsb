@@ -47,7 +47,7 @@ void TextureAtlas::LoadDirectory(const std::string &directory)
     }
   }
 
-  Vector2i atlas_size(512);
+  Vector2i atlas_size(1024);
   auto ranges = TextureTools::atlas(atlas_size, sizes);
 
   for (const auto &r : ranges)

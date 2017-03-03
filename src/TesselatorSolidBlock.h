@@ -28,12 +28,12 @@ public:
   TesselatorSolidBlock();
   ~TesselatorSolidBlock();
 
-  TesselatorSolidBlock &SetTexture(const Magnum::Range2D &range);
+  TesselatorSolidBlock &SetTexture(const Magnum::Range2D &range, Side side = Side::ALL);
 
   void PushBack(std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const SBPos &pos, Side side = Side::ALL) const;
 
 private:
-  Magnum::Range2D mTextureCoord;
+  Magnum::Range2D mTextureCoord[6];
 };
 
 
