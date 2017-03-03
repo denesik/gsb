@@ -22,6 +22,8 @@ public:
 
   void SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data);
 
+  void SetSide(const std::array<BlockId, SECTOR_CAPACITY> &data, SideFlags side);
+
   void Run();
 
   bool IsDone() const;
@@ -30,8 +32,10 @@ public:
   const std::vector<Magnum::UnsignedInt> &GetIndexData() const;
 
 private:
-  std::array<BlockId, TESSELATOR_CAPACITY> mBlocks;
-  std::array<IndexType, SECTOR_CAPACITY> mIndex;
+  std::array<BlockId, TESSELATOR_CAPACITY> mTesselators;
+  std::array<IndexType, SECTOR_CAPACITY> mIndexMiddle;
+  std::array<IndexType, SECTOR_SIZE * SECTOR_SIZE> mIndexBlocks[6];
+  std::array<IndexType, SECTOR_SIZE * SECTOR_SIZE> mIndexTess[6];
 
   std::vector<TesselatorVertex> mVertexData;
   std::vector<Magnum::UnsignedInt> mIndexData;
@@ -48,6 +52,8 @@ private:
   void ProcessSolidBlock(IndexType index, const STPos &pos);
 
   void Process();
+
+  void GenerateIndex();
 };
 
 

@@ -6,7 +6,7 @@
 using namespace Magnum;
 
 Sector::Sector(World &world, const SPos &pos)
-  : mWorld(world)
+  : mWorld(world), mPos(pos)
 {
   WPos wpos = cs::StoW(pos);
   mModelMatrix = mModelMatrix * Math::Matrix4<Float>::translation(Vector3::xAxis(wpos.x()));
@@ -51,6 +51,24 @@ void Sector::RunCompiler(std::shared_ptr<SectorCompiler> sectorCompiler)
   mNeedCompile = false;
 
   mSectorCompiler->SetMiddle(mStaticBlocks);
+  if (auto sector = mWorld.GetSector(cs::Left(mPos)))
+    mSectorCompiler->SetSide(sector->mStaticBlocks, SideFlags::LEFT);
+
+  if (auto sector = mWorld.GetSector(cs::Front(mPos)))
+    mSectorCompiler->SetSide(sector->mStaticBlocks, SideFlags::FRONT);
+
+  if (auto sector = mWorld.GetSector(cs::Top(mPos)))
+    mSectorCompiler->SetSide(sector->mStaticBlocks, SideFlags::TOP);
+
+  if (auto sector = mWorld.GetSector(cs::Right(mPos)))
+    mSectorCompiler->SetSide(sector->mStaticBlocks, SideFlags::RIGHT);
+
+  if (auto sector = mWorld.GetSector(cs::Back(mPos)))
+    mSectorCompiler->SetSide(sector->mStaticBlocks, SideFlags::BACK);
+
+  if (auto sector = mWorld.GetSector(cs::Bottom(mPos)))
+    mSectorCompiler->SetSide(sector->mStaticBlocks, SideFlags::BOTTOM);
+  
   mSectorCompiler->Run();
 }
 

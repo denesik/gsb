@@ -21,6 +21,31 @@ enum
   SECTOR_COUNT_HEIGHT = 8,
 };
 
+enum SideFlags : int
+{
+  NONE = 0,
+
+  FRONT = 1 << 0,
+  RIGHT = 1 << 1,
+  BACK = 1 << 2,
+  LEFT = 1 << 3,
+  TOP = 1 << 4,
+  BOTTOM = 1 << 5,
+
+  ALL = 0x3F,
+};
+
+inline int SideFlagIndex(SideFlags side)
+{
+  for (int i = 0; i < 6; ++i)
+  {
+    if (side & (1 << i))
+      return i;
+  }
+
+  return 0;
+}
+
 typedef Magnum::Vector3   WPos;     // Мировые координаты.
 typedef Magnum::Vector3i  SPos;     // Координаты сектора.
 typedef Magnum::Vector3i  WBPos;    // Координаты блока в мире.

@@ -36,6 +36,7 @@ public:
 
 private:
   std::array<BlockId, SECTOR_CAPACITY> mStaticBlocks;
+  const SPos mPos;
 
   Magnum::Range3D mAabb;
   Magnum::Matrix4 mModelMatrix;

@@ -79,10 +79,10 @@ private:
 
   float sectorGeneratingTime = 0;
 
-  std::unique_ptr<DrawableArea> mDrawableArea;
   std::unique_ptr<BlocksDataBase> mBlocksDataBase;
   std::unique_ptr<World> mWorld;
   std::unique_ptr<UpdatableArea> mUpdatableArea;
+  std::unique_ptr<DrawableArea> mDrawableArea; // Должна уничтожиться раньше чем мир и бд.
 
   FpsCounter mFpsCounter;
 };

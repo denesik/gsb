@@ -64,7 +64,8 @@ void DrawableArea::Draw(const Magnum::Matrix4 &matrix, Magnum::AbstractShaderPro
       // Рисуем.
       if (sector->NeedCompile() && !sector->Compiling())
       {
-        sector->RunCompiler(mSectorCompiler);
+        if (mSectorCompiler.use_count() == 1)
+          sector->RunCompiler(mSectorCompiler);
       }
 
       sector->Draw(frustum, matrix, shader);

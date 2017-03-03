@@ -62,7 +62,7 @@ TesselatorSolidBlock::~TesselatorSolidBlock()
 {
 }
 
-TesselatorSolidBlock &TesselatorSolidBlock::SetTexture(const Magnum::Range2D &range, Side side)
+TesselatorSolidBlock &TesselatorSolidBlock::SetTexture(const Magnum::Range2D &range, SideFlags side)
 {
   for (int i = 0; i < 6; ++i)
   {
@@ -75,7 +75,7 @@ TesselatorSolidBlock &TesselatorSolidBlock::SetTexture(const Magnum::Range2D &ra
 }
 
 void TesselatorSolidBlock::PushBack(std::vector<TesselatorVertex> &vertex,
-  std::vector<UnsignedInt> &index, UnsignedInt &last_index, const SBPos &pos, Side side) const
+  std::vector<UnsignedInt> &index, UnsignedInt &last_index, const SBPos &pos, SideFlags side) const
 {
   Vector3 bpos{ pos };
 
