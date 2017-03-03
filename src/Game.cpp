@@ -12,7 +12,6 @@
 #include "Sector.h"
 #include "World.h"
 
-
 Game::Game(const Arguments & arguments)
 	: Platform::Application{ arguments, Configuration{}.setTitle("Magnum Textured Triangle Example").setWindowFlags(Configuration::WindowFlag::Resizable) }
 {
@@ -21,7 +20,7 @@ Game::Game(const Arguments & arguments)
   mBlocksDataBase = std::make_unique<BlocksDataBase>(atlas);
   mWorld = std::make_unique<World>(*mBlocksDataBase);
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{});
-  mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 1);
+  mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 10);
 
   mTimeline.start();
 

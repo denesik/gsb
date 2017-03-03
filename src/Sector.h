@@ -12,6 +12,8 @@
 #include "SectorCompiler.h"
 #include "tools\CoordSystem.h"
 #include <Magnum/AbstractShaderProgram.h>
+#include <Magnum/Math/Frustum.h>
+#include <Magnum/Math/Range.h>
 
 class World;
 
@@ -25,13 +27,14 @@ public:
 
   void RunCompiler();
 
-  void Draw(const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader);
+  void Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader);
 
   void Update();
 
 private:
   std::array<BlockId, SECTOR_CAPACITY> mStaticBlocks;
 
+  Magnum::Range3D mAabb;
   Magnum::Matrix4 mModelMatrix;
   Magnum::Buffer mVertexBuffer;
   Magnum::Buffer mIndexBuffer;

@@ -2,7 +2,9 @@
 #include "World.h"
 #include "tools\CoordSystem.h"
 
+#include <Magnum/Math/Frustum.h>
 
+using namespace Magnum;
 
 DrawableArea::DrawableArea(World &world, const SPos &pos, unsigned int radius)
   : mWorld(world), mPos(pos)
@@ -43,6 +45,8 @@ void DrawableArea::Draw(const Magnum::Matrix4 &matrix, Magnum::AbstractShaderPro
     loading = true;
   }
 
+  const Math::Frustum<Float> frustum = Math::Frustum<Float>::fromMatrix(matrix);
+
   for (auto &site : mSectors)
   {
     auto sector = std::get<2>(site).lock();
@@ -62,7 +66,7 @@ void DrawableArea::Draw(const Magnum::Matrix4 &matrix, Magnum::AbstractShaderPro
         sector->RunCompiler();
       }
 
-      sector->Draw(matrix, shader);
+      sector->Draw(frustum, matrix, shader);
     }
   }
 }

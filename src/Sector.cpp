@@ -1,6 +1,7 @@
 #include "Sector.h"
 #include "World.h"
 #include "StandartShader.h"
+#include <Magnum/Math/Geometry/Intersection.h>
 
 using namespace Magnum;
 
@@ -12,6 +13,9 @@ Sector::Sector(World *world, const SPos &pos)
   mModelMatrix = mModelMatrix * Math::Matrix4<Float>::translation(Vector3::yAxis(wpos.y()));
   mModelMatrix = mModelMatrix * Math::Matrix4<Float>::translation(Vector3::zAxis(wpos.z()));
   //mStaticBlocks.fill(0);
+
+  mAabb.min() = wpos;
+  mAabb.max() = wpos + WPos(static_cast<WPosType>(SECTOR_SIZE));
 
   // generate sector
   mStaticBlocks.fill(1);
@@ -43,10 +47,13 @@ void Sector::RunCompiler()
   mNeedCompile = false;
 }
 
-void Sector::Draw(const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader)
+void Sector::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader)
 {
-  static_cast<StandartShader &>(shader).setProjection(matrix * mModelMatrix);
-  mMesh.draw(shader);
+  if (Math::Geometry::Intersection::boxFrustum(mAabb, frustum)) 
+  {
+    static_cast<StandartShader &>(shader).setProjection(matrix * mModelMatrix);
+    mMesh.draw(shader);
+  }
 }
 
 void Sector::Update()
