@@ -17,7 +17,8 @@ public:
 
   TesselatorSolidBlock &SetTexture(const Magnum::Range2D &range, SideFlags side = SideFlags::ALL);
 
-  void PushBack(std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const SBPos &pos, SideFlags side = SideFlags::ALL) const;
+  void PushBack(std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side = SideFlags::ALL) const;
+
 
   void JsonLoad(const rapidjson::Value& val, const TextureAtlas& atlas) override;
 

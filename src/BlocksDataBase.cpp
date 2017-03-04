@@ -1,5 +1,6 @@
 #include "BlocksDataBase.h"
 #include "TesselatorSolidBlock.h"
+#include "TesselatorMicroBlock.h"
 
 using namespace Magnum;
 
@@ -28,6 +29,19 @@ BlocksDataBase::BlocksDataBase(const TextureAtlas &atlas)
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/test_top.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::TOP);
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/test_bottom.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::BOTTOM);
     mBlocks[2]->SetTesselator(std::move(tesselator));
+  }
+
+  {
+    mBlocks.emplace_back();
+    mBlocks[3] = std::make_unique<BlockStaticPart>();
+    auto tesselator = std::make_unique<TesselatorMicroBlock>();
+    tesselator->SetTexture(mAtlas.GetTextureCoord("data/test_front.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::FRONT);
+    tesselator->SetTexture(mAtlas.GetTextureCoord("data/test_right.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::RIGHT);
+    tesselator->SetTexture(mAtlas.GetTextureCoord("data/test_back.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::BACK);
+    tesselator->SetTexture(mAtlas.GetTextureCoord("data/test_left.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::LEFT);
+    tesselator->SetTexture(mAtlas.GetTextureCoord("data/test_top.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::TOP);
+    tesselator->SetTexture(mAtlas.GetTextureCoord("data/test_bottom.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::BOTTOM);
+    mBlocks[3]->SetTesselator(std::move(tesselator));
   }
 }
 

@@ -9,6 +9,7 @@ Sector::Sector(World &world, const SPos &pos)
 {
   // generate sector
   mStaticBlocks.fill(2);
+  mStaticBlocks[cs::SBtoBI({0, 31, 0})] = 3;
 }
 
 

@@ -48,8 +48,8 @@ void Game::drawEvent()
 
 	defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
 
-  mCamera.Move(mCameraVelocity * 0.03f);
-  mCamera.Rotate(mCameraAngle * 0.03f);
+  mCamera.Move(mCameraVelocity * 0.003f);
+  mCamera.Rotate(mCameraAngle * 0.003f);
 
   mShader.setColor({ 1.0f, 0.7f, 0.7f })
     .setTexture(atlas.Texture());

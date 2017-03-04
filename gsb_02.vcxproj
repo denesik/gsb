@@ -54,7 +54,6 @@
     <ClInclude Include="src\BlockStaticPart.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\configure.h" />
-    <ClInclude Include="src\CubeMeshData.h" />
     <ClInclude Include="src\DrawableArea.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\IMapGenerator.h" />

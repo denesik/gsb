@@ -51,6 +51,8 @@ private:
 private:
   void ProcessSolidBlock(IndexType index, const STPos &pos);
 
+  void ProcessMicroBlock(IndexType index, const STPos &pos);
+
   void Process();
 
   void GenerateIndex();
