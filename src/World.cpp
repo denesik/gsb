@@ -2,8 +2,8 @@
 #include "MapGenerator.h"
 
 
-World::World(const BlocksDataBase &blocksDataBase, std::unique_ptr<IMapGenerator> gen)
-  : mBlocksDataBase(blocksDataBase), mUpdatableSectors(*this), mGenerator(std::move(gen))
+World::World(const BlocksDataBase &blocksDataBase, std::unique_ptr<IMapLoader> loader)
+  : mBlocksDataBase(blocksDataBase), mUpdatableSectors(*this), mLoader(std::move(loader))
 {
   LoadSector({});
 }
@@ -15,9 +15,11 @@ World::~World()
 
 void World::LoadSector(const SPos &pos)
 {
-  auto t = std::make_shared<Sector>(*this, pos);
-  t->ApplyGenerator(*mGenerator);
-  mSectors.insert({ pos , t });
+  auto res = mLoader->GetSector(pos);
+  if(!res.expired())
+  {
+    mSectors.emplace(std::make_pair(pos, res.lock()));
+  }
 }
 
 void World::UnLoadSector(const SPos &pos)

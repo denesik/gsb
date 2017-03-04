@@ -8,11 +8,12 @@
 #include "Sector.h"
 #include "UpdatableSectors.h"
 #include "IMapGenerator.h"
+#include "IMapLoader.h"
 
 class World
 {
 public:
-  World(const BlocksDataBase &blocksDataBase, std::unique_ptr<IMapGenerator> gen);
+  World(const BlocksDataBase &blocksDataBase, std::unique_ptr<IMapLoader> loader);
   ~World();
 
   /// «агрузить сектор в указанной позиции.
@@ -33,7 +34,7 @@ private:
   const BlocksDataBase &mBlocksDataBase;
 
   UpdatableSectors mUpdatableSectors;
-  std::unique_ptr<IMapGenerator> mGenerator;
+  std::unique_ptr<IMapLoader> mLoader;
 };
 
 

@@ -13,6 +13,8 @@
 #include "World.h"
 #include "JsonDataBase.h"
 #include "MapGenerator.h"
+#include "IMapGenerator.h"
+#include "MapLoader.h"
 
 Game::Game(const Arguments & arguments)
 	: Platform::Application{ arguments, Configuration{}.setTitle("Magnum Textured Triangle Example").setWindowFlags(Configuration::WindowFlag::Resizable) }
@@ -22,12 +24,13 @@ Game::Game(const Arguments & arguments)
   mBlocksDataBase = std::make_unique<BlocksDataBase>(atlas);
   mBlocksDataBase->ApplyLoader(std::make_unique<JsonDataBase>("data/json"));
 
-  PrimitivaMountains* a = new PrimitivaMountains(*mBlocksDataBase, 1.f);
-  mWorld = std::make_unique<World>(*mBlocksDataBase, std::unique_ptr<IMapGenerator>(a));
+  mWorld = std::make_unique<World>(*mBlocksDataBase, std::make_unique<MapLoader>(*mWorld, std::make_unique<PrimitivaMountains>(*mBlocksDataBase, 1.f)));
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{});
   mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 0);
 
   mTimeline.start();
+
+  setSwapInterval(0);
 
   //mView = mView * Math::Matrix4<Float>::rotationY(Rad(-90));
   //mView = mView * Math::Matrix4<Float>::translation(Vector3::yAxis(40));

@@ -1,7 +1,7 @@
 #pragma once
 #include "IMapGenerator.h"
 
-class PrimitivaMountains : IMapGenerator
+class PrimitivaMountains : public IMapGenerator
 {
 public:
   PrimitivaMountains(const BlocksDataBase &db, float power);

@@ -27,10 +27,12 @@
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\DrawableArea.cpp" />
     <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\IMapLoader.cpp" />
     <ClCompile Include="src\ImguiPort.cpp" />
     <ClCompile Include="src\JsonDataBase.cpp" />
     <ClCompile Include="src\Log.cpp" />
     <ClCompile Include="src\MapGenerator.cpp" />
+    <ClCompile Include="src\MapLoader.cpp" />
     <ClCompile Include="src\PerlinNoise.cpp" />
     <ClCompile Include="src\Sector.cpp" />
     <ClCompile Include="src\SectorCompiler.cpp" />
@@ -54,10 +56,12 @@
     <ClInclude Include="src\DrawableArea.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\IMapGenerator.h" />
+    <ClInclude Include="src\IMapLoader.h" />
     <ClInclude Include="src\ImguiPort.h" />
     <ClInclude Include="src\JsonDataBase.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\MapGenerator.h" />
+    <ClInclude Include="src\MapLoader.h" />
     <ClInclude Include="src\PerlinNoise.h" />
     <ClInclude Include="src\Sector.h" />
     <ClInclude Include="src\SectorCompiler.h" />
