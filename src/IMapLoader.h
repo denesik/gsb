@@ -3,10 +3,16 @@
 #include <memory>
 
 class Sector;
+class World;
 
 class IMapLoader
 {
 public:
-  virtual ~IMapLoader() = default;
-  virtual std::weak_ptr<Sector> GetSector(SPos pos) = 0;
+  IMapLoader();
+  virtual ~IMapLoader();
+  virtual std::shared_ptr<Sector> GetSector(SPos pos);
+  void SetWorld(World *world);
+
+protected:
+  World *mWorld;
 };

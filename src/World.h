@@ -13,7 +13,7 @@
 class World
 {
 public:
-  World(const BlocksDataBase &blocksDataBase, std::unique_ptr<IMapLoader> loader);
+  World(const BlocksDataBase &blocksDataBase);
   ~World();
 
   /// «агрузить сектор в указанной позиции.
@@ -29,6 +29,9 @@ public:
   std::weak_ptr<Sector> GetSector(const SPos &pos);
 
   UpdatableSectors &GetUpdatableSectors();
+
+  void SetLoader(std::unique_ptr<IMapLoader> loader);
+
 private:
   std::unordered_map<SPos, std::shared_ptr<Sector>> mSectors;
   const BlocksDataBase &mBlocksDataBase;
