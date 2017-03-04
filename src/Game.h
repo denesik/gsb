@@ -65,20 +65,11 @@ private:
 
   TextureAtlas atlas;
 
-  Buffer mVertexBuffer;
-  Buffer mIndexBuffer;
-  Mesh mMesh;
   StandartShader mShader;
 
-  Matrix4 mProjection;
-  Matrix4 mModel;
-  Matrix4 mView;
   Vector3 mCameraVelocity;
   Vector3 mCameraAngle;
 
-  Timeline mTimeline;
-
-  float sectorGeneratingTime = 0;
 
   std::unique_ptr<BlocksDataBase> mBlocksDataBase;
   std::unique_ptr<World> mWorld;

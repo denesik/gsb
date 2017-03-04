@@ -37,7 +37,7 @@ void DrawableArea::SetPos(const SPos &pos)
   }
 }
 
-void DrawableArea::Draw(const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader)
+void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
 {
   // Обновляем список видимых секторов N раз в сек.
 
@@ -49,7 +49,7 @@ void DrawableArea::Draw(const Magnum::Matrix4 &matrix, Magnum::AbstractShaderPro
     loading = true;
   }
 
-  const Math::Frustum<Float> frustum = Math::Frustum<Float>::fromMatrix(matrix);
+  const auto &frustum = camera.Frustum(); 
 
   for (auto &site : mSectors)
   {
@@ -91,7 +91,7 @@ void DrawableArea::Draw(const Magnum::Matrix4 &matrix, Magnum::AbstractShaderPro
         }
       }
 
-      if (sector_render_data) sector_render_data->Draw(frustum, matrix, shader);
+      if (sector_render_data) sector_render_data->Draw(frustum, camera.Project() * camera.View(), shader);
     }
     else if (sector_render_data)
     {

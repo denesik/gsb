@@ -16,6 +16,7 @@
 #include <Magnum/Buffer.h>
 #include <Magnum/Math/Range.h>
 #include <Magnum/Math/Matrix4.h>
+#include "Camera.h"
 
 class World;
 
@@ -46,7 +47,7 @@ public:
 
   void SetPos(const SPos &pos);
 
-  void Draw(const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader);
+  void Draw(Camera &camera, Magnum::AbstractShaderProgram& shader);
 
 private:
   World &mWorld;

@@ -32,13 +32,10 @@ Game::Game(const Arguments & arguments)
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{});
   mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 1);
 
-  mTimeline.start();
-
   setSwapInterval(0);
 
-  //mView = mView * Math::Matrix4<Float>::rotationY(Rad(-90));
-  //mView = mView * Math::Matrix4<Float>::translation(Vector3::yAxis(40));
 
+  mCamera.SetResolution(defaultFramebuffer.viewport().size());
   mCamera.Move({0, 40, 0});
 }
 
@@ -46,26 +43,10 @@ void Game::drawEvent()
 {
   mFpsCounter.Update();
 
-  mTimeline.nextFrame();
   Renderer::enable(Renderer::Feature::DepthTest);
   Renderer::enable(Renderer::Feature::FaceCulling);
 
-  mProjection = Matrix4::perspectiveProjection(60.0_degf, Vector2{ defaultFramebuffer.viewport().size() }.aspectRatio(), 0.01f, 1000.0f);
-
 	defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
-
-  if (!mCameraVelocity.isZero()) {
-    Matrix4 transform = mView;
-    transform.translation() += transform.rotation()*mCameraVelocity*0.3f;
-    mView = transform;
-  }
-
-  if (!mCameraAngle.isZero())
-  {
-    mView = Matrix4::lookAt(mView.translation(),
-      mView.translation() - mView.rotationScaling()*(Vector3{ -mCameraAngle.x()*0.03f, mCameraAngle.y()*0.03f, 1.0f }),
-      Vector3::yAxis());
-  }
 
   mCamera.Move(mCameraVelocity * 0.03f);
   mCamera.Rotate(mCameraAngle * 0.03f);
@@ -73,8 +54,7 @@ void Game::drawEvent()
   mShader.setColor({ 1.0f, 0.7f, 0.7f })
     .setTexture(atlas.Texture());
 
-  //mDrawableArea->Draw(mProjection * mView.inverted(), mShader);
-  mDrawableArea->Draw(mProjection * mCamera.View().inverted(), mShader);
+  mDrawableArea->Draw(mCamera, mShader);
   mWorld->GetUpdatableSectors().Update();
 
   //if (false)
@@ -130,13 +110,12 @@ void Game::drawEvent()
 void Game::viewportEvent(const Vector2i& size)
 {
   defaultFramebuffer.setViewport({ {}, size });
+  mCamera.SetResolution(size);
 }
 
 void Game::keyPressEvent(KeyEvent& event)
 {
   mImguiPort.keyPressEvent(event);
-
-  float val = 15.0f * mTimeline.previousFrameDuration();
 
   if (event.key() == KeyEvent::Key::A)
     mCameraVelocity.x() = -1.0f;

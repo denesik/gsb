@@ -176,13 +176,13 @@
     <ClInclude Include="src\IMapGenerator.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\Camera.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="src\MapLoader.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\IMapLoader.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>
