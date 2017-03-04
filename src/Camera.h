@@ -16,10 +16,9 @@ public:
   ~Camera();
 
   void SetResolution(const Magnum::Vector2i &size);
-
   void Rotate(const Magnum::Vector3 &dir);
-
   void Move(const Magnum::Vector3 &dist);
+  void LookAt(const Magnum::Vector3 &target);
 
   Magnum::Vector3 Unproject(Magnum::Vector2 pixel, float depth);
   Magnum::Vector3 Ray(Magnum::Vector2 pixel);

@@ -3,6 +3,7 @@
 // ==                  See license.txt for more information                  ==
 // ============================================================================
 #include "FpsCounter.h"
+#include <chrono>
 
 //#include <GLFW/glfw3.h>
 
@@ -61,42 +62,52 @@ void FpsCounter::Update()
   }
 }
 
-size_t FpsCounter::GetCount()
+size_t FpsCounter::GetCount() const
 {
   return fpsStack.size();
 }
 
-size_t FpsCounter::GetMaxFrameTime()
+size_t FpsCounter::GetMaxFrameTime() const
 {
   return static_cast<size_t>(max * 1000);
 }
 
-size_t FpsCounter::GetMinFrameTime()
+size_t FpsCounter::GetMinFrameTime() const
 {
   return static_cast<size_t>(min * 1000);
 }
 
-size_t FpsCounter::GetMeanFrameTime()
+size_t FpsCounter::GetMeanFrameTime() const
 {
   return static_cast<size_t>(mean * 1000);
 }
 
-size_t FpsCounter::GetMaxFps()
+size_t FpsCounter::GetMaxFps() const
 {
   return static_cast<size_t>(1.0 / min);
 }
 
-size_t FpsCounter::GetMinFps()
+size_t FpsCounter::GetMinFps() const
 {
   return static_cast<size_t>(1.0 / max);
 }
 
-size_t FpsCounter::GetMeanFps()
+size_t FpsCounter::GetMeanFps() const
 {
   return static_cast<size_t>(1.0 / mean);
 }
 
-size_t FpsCounter::GetPercentLongFrame()
+size_t FpsCounter::GetPercentLongFrame() const
 {
   return percent_long_frame;
+}
+
+std::chrono::high_resolution_clock::duration FpsCounter::LastDuration() const
+{
+  return currentTime - lastTime;
+}
+
+float FpsCounter::LastDelta() const
+{
+  return std::chrono::duration_cast<std::chrono::seconds>(LastDuration()).count();
 }
