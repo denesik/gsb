@@ -41,6 +41,9 @@ public:
 
   void ApplyGenerator(IMapGenerator &generator);
 
+  BlockId GetBlockId(SBPos pos) const;
+  void SetBlockId(SBPos pos, BlockId id);
+
 private:
   std::array<BlockId, SECTOR_CAPACITY> mStaticBlocks;
   const SPos mPos;

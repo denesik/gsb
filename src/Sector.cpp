@@ -113,3 +113,14 @@ void Sector::ApplyGenerator(IMapGenerator &generator)
 
   generator.Generate(*this, mStaticBlocks);
 }
+
+BlockId Sector::GetBlockId(SBPos pos) const
+{
+  return mStaticBlocks[cs::SBtoBI(pos)];
+}
+
+void Sector::SetBlockId(SBPos pos, BlockId id)
+{
+  mStaticBlocks[cs::SBtoBI(pos)] = id;
+  mNeedCompile = true;
+}

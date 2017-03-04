@@ -15,9 +15,10 @@
 #include "MapGenerator.h"
 #include "IMapGenerator.h"
 #include "MapLoader.h"
+#include "tools/Brezenham3D.h"
 
 Game::Game(const Arguments & arguments)
-	: Platform::Application{ arguments, Configuration{}.setTitle("Magnum Textured Triangle Example").setWindowFlags(Configuration::WindowFlag::Resizable) }
+  : Platform::Application{ arguments, Configuration{}.setTitle("Magnum Textured Triangle Example").setWindowFlags(Configuration::WindowFlag::Resizable) }
 {
   atlas.LoadDirectory("data");
 
@@ -39,7 +40,27 @@ Game::Game(const Arguments & arguments)
   //mView = mView * Math::Matrix4<Float>::rotationY(Rad(-90));
   //mView = mView * Math::Matrix4<Float>::translation(Vector3::yAxis(40));
 
-  mCamera.Move({0, 40, 0});
+  mCamera.Move({ 0, 40, 0 });
+
+  //{
+  //  Camera cam;
+  //  auto t = cam.Unproject({400, 300});
+  //  assert(t == Vector3(0, 0, 0));
+  //}
+
+  //{
+  //  Camera cam;
+  //  cam.Move({ 1,2,3 });
+  //  auto t = cam.Unproject({ 400, 300 });
+  //  assert(t == Vector3(0, 0, 0));
+  //}
+
+  //{
+  //  Camera cam;
+  //  cam.Rotate({static_cast<float>(Deg(90)),0.f,0.f});
+  //  auto t = cam.Unproject({ 400, 300 });
+  //  assert(t == Vector3(1, 0, 0));
+  //}
 }
 
 void Game::drawEvent()
@@ -50,9 +71,7 @@ void Game::drawEvent()
   Renderer::enable(Renderer::Feature::DepthTest);
   Renderer::enable(Renderer::Feature::FaceCulling);
 
-  mProjection = Matrix4::perspectiveProjection(60.0_degf, Vector2{ defaultFramebuffer.viewport().size() }.aspectRatio(), 0.01f, 1000.0f);
-
-	defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
+  defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
 
   if (!mCameraVelocity.isZero()) {
     Matrix4 transform = mView;
@@ -69,13 +88,37 @@ void Game::drawEvent()
 
   mCamera.Move(mCameraVelocity * 0.03f);
   mCamera.Rotate(mCameraAngle * 0.03f);
+  auto ray = mCamera.Ray({ ImGui::GetMousePos().x, ImGui::GetMousePos().y });
+  auto picked = Brezenham::PickFirst(mCamera.Position(), ray, 100, [&](Magnum::Vector3i pos)
+  {
+    return mWorld->GetBlockId(pos) != 0;
+  }, &debugLines);
+
+  debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 0,1,0 }, { 1,1,1 });
+  debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 1,0,0 }, { 1,1,1 });
+  debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 0,0,1 }, { 1,1,1 });
+
+  debugLines.addLine(std::get<0>(picked) + Vector3i{ 0,1,0 }, std::get<0>(picked) + Vector3i{ 1,1,1 }, { 1,1,1 });
+  debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,0,0 }, std::get<0>(picked) + Vector3i{ 1,1,1 }, { 1,1,1 });
+  debugLines.addLine(std::get<0>(picked) + Vector3i{ 0,0,1 }, std::get<0>(picked) + Vector3i{ 1,1,1 }, { 1,1,1 });
+
+  debugLines.addLine(mCamera.Position(), mCamera.Position() + ray * 1, { 1,1,1 });
+
+  if (ImGui::IsMouseDown(0))
+    mWorld->SetBlockId(std::get<0>(picked), 0);
+
+  /*if (rand() % 10 == 0)
+  for(int i = 0; i < 100; i++) mWorld->SetBlockId({ rand() % 100 ,rand() % 100 ,rand() % 100 }, 0);*/
 
   mShader.setColor({ 1.0f, 0.7f, 0.7f })
     .setTexture(atlas.Texture());
 
   //mDrawableArea->Draw(mProjection * mView.inverted(), mShader);
-  mDrawableArea->Draw(mProjection * mCamera.View().inverted(), mShader);
+  mDrawableArea->Draw(mCamera.Projection() * mCamera.View().inverted(), mShader);
   mWorld->GetUpdatableSectors().Update();
+
+  debugLines.draw(mCamera.Projection() * mCamera.View().inverted());
+  debugLines.reset();
 
   //if (false)
   {
@@ -87,9 +130,9 @@ void Game::drawEvent()
       ImGui::ColorEdit3("clear color", (float*)&clear_color);
       if (ImGui::Button("Test Window")) show_test_window ^= 1;
       if (ImGui::Button("Another Window")) show_another_window ^= 1;
-      ImGui::Text("fps: %i; max: %i; min: %i; long frame: %i%%", 
+      ImGui::Text("fps: %i; max: %i; min: %i; long frame: %i%%",
         mFpsCounter.GetCount(), mFpsCounter.GetMaxFps(), mFpsCounter.GetMinFps(), mFpsCounter.GetPercentLongFrame());
-      
+
       static int drawable_area_size = 5;
       int das = drawable_area_size;
       ImGui::SliderInt("Drawable area size", &drawable_area_size, 0, 10);
@@ -122,7 +165,7 @@ void Game::drawEvent()
     mImguiPort.Draw();
   }
 
-	swapBuffers();
+  swapBuffers();
 
   redraw();
 }

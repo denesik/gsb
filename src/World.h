@@ -26,7 +26,9 @@ public:
 
   const BlocksDataBase &GetBlocksDataBase() const;
 
-  std::weak_ptr<Sector> GetSector(const SPos &pos);
+  std::weak_ptr<Sector> GetSector(const SPos &pos) const;
+  BlockId GetBlockId(const WBPos &pos) const;
+  void SetBlockId(const WBPos &pos, BlockId id);
 
   UpdatableSectors &GetUpdatableSectors();
 

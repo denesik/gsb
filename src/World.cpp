@@ -33,7 +33,7 @@ const BlocksDataBase & World::GetBlocksDataBase() const
   return mBlocksDataBase;
 }
 
-std::weak_ptr<Sector> World::GetSector(const SPos &pos)
+std::weak_ptr<Sector> World::GetSector(const SPos &pos) const
 {
   auto it = mSectors.find(pos);
   if (it != mSectors.end())
@@ -41,6 +41,30 @@ std::weak_ptr<Sector> World::GetSector(const SPos &pos)
     return {it->second};
   }
   return {};
+}
+
+BlockId World::GetBlockId(const WBPos& pos) const
+{
+  auto spos = cs::WBtoS(pos);
+  auto sector = GetSector(spos);
+  if(!sector.expired())
+  {
+    auto shared = sector.lock();
+    return shared->GetBlockId(cs::WBtoSB(pos));
+  }
+
+  return{};
+}
+
+void World::SetBlockId(const WBPos& pos, BlockId id)
+{
+  auto spos = cs::WBtoS(pos);
+  auto sector = GetSector(spos);
+  if (!sector.expired())
+  {
+    auto shared = sector.lock();
+    return shared->SetBlockId(cs::WBtoSB(pos), id);
+  }
 }
 
 UpdatableSectors & World::GetUpdatableSectors()

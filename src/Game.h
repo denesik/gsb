@@ -27,6 +27,7 @@
 #include "tools/FpsCounter.h"
 #include "UpdatableArea.h"
 #include "Camera.h"
+#include "tools/DebugLines.h"
 
 using namespace Magnum;
 
@@ -70,7 +71,6 @@ private:
   Mesh mMesh;
   StandartShader mShader;
 
-  Matrix4 mProjection;
   Matrix4 mModel;
   Matrix4 mView;
   Vector3 mCameraVelocity;
@@ -86,6 +86,7 @@ private:
   std::unique_ptr<DrawableArea> mDrawableArea; // Должна уничтожиться раньше чем мир и бд.
 
   FpsCounter mFpsCounter;
+  DebugLines debugLines;
 
   Camera mCamera;
 };

@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include <Magnum/Math/Packing.h>
+#include <Magnum/DefaultFramebuffer.h>
 
 using namespace Magnum;
 
@@ -12,7 +13,7 @@ Camera::Camera()
     Vector3(0.0f, 1.0f, 0.0f)  // up
   );
   mQuat = Quaternion::fromMatrix(mat.rotation());
-
+  mProjection = Matrix4::perspectiveProjection(mFov, Vector2{ defaultFramebuffer.viewport().size() }.aspectRatio(), 0.01f, 1000.0f);
 }
 
 
@@ -30,14 +31,28 @@ void Camera::Move(const Magnum::Vector3 &dist)
   mPos += mQuat.transformVector(dist);
 }
 
-Magnum::Vector3 Camera::Unproject(Magnum::Vector2i pixel)
+Magnum::Vector3 Camera::Unproject(Magnum::Vector2 pixel, float depth)
 {
-  float mx = static_cast<float>((pixel.x() - mResolution.x() * 0.5) * (1.0 / mResolution.x()) * mFov.x() * 0.5);
-  float my = static_cast<float>((pixel.y() - mResolution.y() * 0.5) * (1.0 / mResolution.x()) * mFov.x() * 0.5);
-  Magnum::Vector3 dx = mRight * mx;
-  Magnum::Vector3 dy = mUp * my;
+  auto Inverse = (Projection() * View()).inverted();
+  auto viewport = defaultFramebuffer.viewport();
+  pixel.y() = -pixel.y() + viewport.size().y();
 
-   return (mForward + (dx + dy) * 2.0f).normalized();
+  auto tmp = Vector4(pixel.x(), pixel.y(), depth, 1.f);
+  tmp.x() = (tmp.x() - viewport.min().x()) / viewport.max().x();
+  tmp.y() = (tmp.y() - viewport.min().y()) / viewport.max().y();
+  tmp = tmp * 2.f - Vector4{1.f};
+
+  auto obj = Inverse * tmp;
+  obj /= obj.w();
+
+  return obj.xyz();
+}
+
+Magnum::Vector3 Camera::Ray(Magnum::Vector2 pixel)
+{
+  auto near = Unproject(pixel, 0.1f);
+  auto far = Unproject(pixel, 1.f);
+  return far - near;
 }
 
 Magnum::Matrix4 Camera::View()
@@ -59,9 +74,21 @@ Magnum::Matrix4 Camera::View()
 
   mQuat = yaw* mQuat *pitch;
   mQuat = mQuat.normalized();
+  auto matrix = Matrix4::from(mQuat.toMatrix(), mPos);
 
-  mForward = mQuat.transformVector({});
-  mRight = Math::cross(mForward, mUp);
+  mForward = -matrix.backward();
+  mRight = matrix.right();
+  mUp = matrix.up();
 
-  return Matrix4::from(mQuat.toMatrix(), mPos);
+  return matrix;
+}
+
+Magnum::Matrix4 Camera::Projection() const
+{
+  return mProjection;
+}
+
+Magnum::Vector3 Camera::Position() const
+{
+  return mPos;
 }

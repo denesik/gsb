@@ -18,7 +18,7 @@
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [
-        "stone.tga","stone.tga","stone.tga","stone.tga","stone.tga","stone.tga"
+        "data/test_white.tga","data/test_white.tga","data/test_white.tga","data/test_white.tga","data/test_white.tga","data/test_white.tga"
       ]
     }
   }

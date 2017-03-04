@@ -42,6 +42,8 @@
     <ClCompile Include="src\TextureAtlas.cpp" />
     <ClCompile Include="src\StandartShader.cpp" />
     <ClCompile Include="src\Timer.cpp" />
+    <ClCompile Include="src\tools\Brezenham3D.cpp" />
+    <ClCompile Include="src\tools\DebugLines.cpp" />
     <ClCompile Include="src\tools\FpsCounter.cpp" />
     <ClCompile Include="src\Transformation.cpp" />
     <ClCompile Include="src\UpdatableArea.cpp" />
@@ -71,7 +73,9 @@
     <ClInclude Include="src\TextureAtlas.h" />
     <ClInclude Include="src\StandartShader.h" />
     <ClInclude Include="src\Timer.h" />
+    <ClInclude Include="src\tools\Brezenham3D.h" />
     <ClInclude Include="src\tools\CoordSystem.h" />
+    <ClInclude Include="src\tools\DebugLines.h" />
     <ClInclude Include="src\tools\FpsCounter.h" />
     <ClInclude Include="src\Transformation.h" />
     <ClInclude Include="src\UpdatableArea.h" />

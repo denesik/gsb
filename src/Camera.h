@@ -17,21 +17,25 @@ public:
   void Rotate(const Magnum::Vector3 &dir);
 
   void Move(const Magnum::Vector3 &dist);
-  Magnum::Vector3 Unproject(Magnum::Vector2i pixel);
+  Magnum::Vector3 Unproject(Magnum::Vector2 pixel, float depth);
+  Magnum::Vector3 Ray(Magnum::Vector2 pixel);
 
   Magnum::Matrix4 View();
+  Magnum::Matrix4 Projection() const;
+  Magnum::Vector3 Position() const;
 
-private:
+public:
   Magnum::Quaternion mQuat;
   Magnum::Vector3 mPos;
   Magnum::Vector3 mDir;
 
-  Magnum::Vector3 mUp = {0,1,0};
   Magnum::Vector3 mRight;
   Magnum::Vector3 mForward;
+  Magnum::Vector3 mUp;
 
-  Magnum::Vector2 mResolution;
-  Magnum::Vector2 mFov;
+  Magnum::Rad mFov = Magnum::Deg(60);
+
+  Magnum::Matrix4 mProjection;
 };
 
 

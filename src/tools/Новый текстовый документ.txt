@@ -1,0 +1,9 @@
+#pragma once
+#include <Magnum/SceneGraph/AbstractFeature.h>
+
+inline std::tuple<Magnum::Vector3i, Magnum::Vector3> PickFirst(
+  const Magnum::Vector3 &origin,
+  const Magnum::Vector3 &direction,
+  float radius,
+  std::function<bool(const Magnum::Vector3i &)> collider
+);
