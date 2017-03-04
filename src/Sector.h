@@ -25,15 +25,11 @@ public:
   Sector(World &morld, const SPos &pos);
   ~Sector();
 
-  void CreateRenderData();
-
   bool NeedCompile() const;
 
-  bool Compiling() const;
+  void NeedCompile(bool value);
 
-  void RunCompiler(std::shared_ptr<SectorCompiler> sectorCompiler);
-
-  void Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader);
+  void SetCompilerData(SectorCompiler &sectorCompiler);
 
   void Update();
 
@@ -45,21 +41,6 @@ private:
   std::array<BlockId, SECTOR_CAPACITY> mStaticBlocks;
   const SPos mPos;
 
-  struct RenderData
-  {
-    Magnum::Buffer vertex_buffer;
-    Magnum::Buffer index_buffer;
-    Magnum::Mesh mesh;
-  };
-
-  std::unique_ptr<RenderData> mRenderData;
-
-  Magnum::Range3D mAabb;
-  Magnum::Matrix4 mModelMatrix;
-
-  std::shared_ptr<SectorCompiler> mSectorCompiler;
-
-public:
   World &mWorld;
 
   bool mNeedCompile = true;
