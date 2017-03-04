@@ -4,12 +4,12 @@
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [
-        "test_top.tga",
-        "test_top.tga",
-        "test_top.tga",
-        "test_top.tga",
-        "test_top.tga",
-        "test_top.tga"
+        "data/stone.tga",
+        "data/stone.tga",
+        "data/stone.tga",
+        "data/stone.tga",
+        "data/stone.tga",
+        "data/stone.tga"
       ]
     }
   },
@@ -18,7 +18,7 @@
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [
-        "test_left.tga","test_left.tga","test_left.tga","test_left.tga","test_left.tga","test_left.tga"
+        "stone.tga","stone.tga","stone.tga","stone.tga","stone.tga","stone.tga"
       ]
     }
   }
