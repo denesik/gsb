@@ -157,15 +157,15 @@ void Game::keyPressEvent(KeyEvent& event)
   mImguiPort.keyPressEvent(event);
 
   if (event.key() == KeyEvent::Key::A)
-    mCameraVelocity.x() = -1.0f;
+    mCameraVelocity.x() = -10.0f;
   if (event.key() == KeyEvent::Key::D)
-    mCameraVelocity.x() = 1.0f;
+    mCameraVelocity.x() = 10.0f;
 
   if (event.key() == KeyEvent::Key::W)
-    mCameraVelocity.z() = -1.0f;
+    mCameraVelocity.z() = -10.0f;
 
   if (event.key() == KeyEvent::Key::S)
-    mCameraVelocity.z() = 1.0f;
+    mCameraVelocity.z() = 10.0f;
 
   event.setAccepted();
 }

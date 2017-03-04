@@ -68,8 +68,7 @@ SPos Sector::GetPos() const
 
 void Sector::ApplyGenerator(IMapGenerator &generator)
 {
-
-  generator.Generate(*this, mStaticBlocks);
+  generator.Generate(*this);
 }
 
 BlockId Sector::GetBlockId(SBPos pos) const
@@ -81,4 +80,14 @@ void Sector::SetBlockId(SBPos pos, BlockId id)
 {
   mStaticBlocks[cs::SBtoBI(pos)] = id;
   mNeedCompile = true;
+}
+
+void Sector::SetBlockDynamic(SBPos pos, std::unique_ptr<BlockDinamicPart> dyn)
+{
+  mDinamicBlocks[cs::SBtoBI(pos)] = std::move(dyn);
+}
+
+BlockDinamicPart& Sector::GetBlockDynamic(SBPos pos)
+{
+  return *mDinamicBlocks[cs::SBtoBI(pos)];
 }

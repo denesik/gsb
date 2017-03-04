@@ -1,12 +1,13 @@
 #include "MapGenerator.h"
 #include "PerlinNoise.h"
 #include "Sector.h"
+#include "TesselatorMicroBlock.h"
 
 PrimitivaMountains::PrimitivaMountains(const BlocksDataBase &db, float power) : IMapGenerator(db), mPower(power)
 {
 }
 
-#define GEN_OCT 2
+#define GEN_OCT 5
 float flatness(float tx, float ty)
 {
   return (PerlinNoise2D(tx, ty, 2, 2, GEN_OCT) + 1) / 2.f;
@@ -37,11 +38,11 @@ bool is_cluster(float tx, float ty, float tz, float type, float prob)
 }
 bool solid(float tx, float ty, float tz)
 {
-  return dens(tx, ty, tz) > 0.1;
+  return dens(tx, ty, tz + 16) > 0.1;
 }
 #undef GEN_OCT
 
-void PrimitivaMountains::Generate(Sector &sector, std::array<BlockId, SECTOR_CAPACITY> &blocks)
+void PrimitivaMountains::Generate(Sector &sector)
 {
   auto sw = cs::StoW(sector.GetPos());
   for (int k = 0; k < SECTOR_SIZE; ++k)
@@ -52,10 +53,31 @@ void PrimitivaMountains::Generate(Sector &sector, std::array<BlockId, SECTOR_CAP
       {
         if (solid(sw.x() + i, sw.y() + j, sw.z() + k))
         {
-          blocks[cs::SBtoBI({ i,j,k })] = 3;
+          if (!solid(sw.x() + i, sw.y() + j + 1, sw.z() + k))
+          {
+            sector.SetBlockId({ i,j,k }, 3);
+
+            auto dyn = std::make_unique<BlockDinamicPart>();
+            dyn->mTesselatorData = std::make_unique<TesselatorData>();
+            auto &data = TesselatorMicroBlock::ToMicroblockData(*dyn->mTesselatorData);
+
+            for (int k1 = 0; k1 < MICROBLOCK_SIZE; ++k1)
+            {
+              for (int j1 = 0; j1 < MICROBLOCK_SIZE; ++j1)
+              {
+                for (int i1 = 0; i1 < MICROBLOCK_SIZE; ++i1)
+                {
+                  data[TesselatorMicroBlock::ToIndex({ i1, j1, k1 })] = solid(sw.x() + i + i1 / float(MICROBLOCK_SIZE), sw.y() + j + j1 / float(MICROBLOCK_SIZE), sw.z() + k + k1 / float(MICROBLOCK_SIZE));
+                }
+              }
+            }
+            sector.SetBlockDynamic({ i,j,k }, std::move(dyn));
+          }
+          else
+            sector.SetBlockId({ i,j,k }, 2);
         }
         else
-          blocks[cs::SBtoBI({ i,j,k })] = 0;
+          sector.SetBlockId({ i,j,k }, 0);
       }
     }
   }
