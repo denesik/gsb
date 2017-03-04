@@ -28,6 +28,7 @@ public:
   enum class TesselatorType
   {
     SOLID_BLOCK,
+    MICRO_BLOCK,
   };
 
   Tesselator(TesselatorType type);

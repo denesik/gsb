@@ -38,6 +38,7 @@
     <ClCompile Include="src\SectorCompiler.cpp" />
     <ClCompile Include="src\TemplateFactory.h" />
     <ClCompile Include="src\Tesselator.cpp" />
+    <ClCompile Include="src\TesselatorMicroBlock.cpp" />
     <ClCompile Include="src\TesselatorSolidBlock.cpp" />
     <ClCompile Include="src\TextureAtlas.cpp" />
     <ClCompile Include="src\StandartShader.cpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="src\BlockStaticPart.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\configure.h" />
+    <ClInclude Include="src\CubeMeshData.h" />
     <ClInclude Include="src\DrawableArea.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\IMapGenerator.h" />
@@ -67,6 +69,7 @@
     <ClInclude Include="src\SectorCompiler.h" />
     <ClInclude Include="src\Serialize.h" />
     <ClInclude Include="src\Tesselator.h" />
+    <ClInclude Include="src\TesselatorMicroBlock.h" />
     <ClInclude Include="src\TesselatorSolidBlock.h" />
     <ClInclude Include="src\TextureAtlas.h" />
     <ClInclude Include="src\StandartShader.h" />

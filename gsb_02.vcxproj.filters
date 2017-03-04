@@ -99,6 +99,9 @@
     <ClCompile Include="src\IMapLoader.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="src\TesselatorMicroBlock.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -183,6 +186,12 @@
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\Camera.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CubeMeshData.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TesselatorMicroBlock.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>

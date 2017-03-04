@@ -6,6 +6,7 @@
 #include <vector>
 #include "Tesselator.h"
 #include "tools/CoordSystem.h"
+#include <array>
 
 
 class TesselatorSolidBlock : public Tesselator
@@ -19,8 +20,12 @@ public:
   void PushBack(std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const SBPos &pos, SideFlags side = SideFlags::ALL) const;
 
   void JsonLoad(const rapidjson::Value& val, const TextureAtlas& atlas) override;
+
+  void SetScale(Magnum::Float scale);
+
 private:
   Magnum::Range2D mTextureCoord[6];
+  std::array<Magnum::Vector3, 24> mVertexData;
 };
 
 REGISTER_TESSELLATOR(TesselatorSolidBlock)
