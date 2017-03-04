@@ -25,6 +25,8 @@ public:
   Sector(World &morld, const SPos &pos);
   ~Sector();
 
+  void CreateRenderData();
+
   bool NeedCompile() const;
 
   bool Compiling() const;
@@ -43,11 +45,17 @@ private:
   std::array<BlockId, SECTOR_CAPACITY> mStaticBlocks;
   const SPos mPos;
 
+  struct RenderData
+  {
+    Magnum::Buffer vertex_buffer;
+    Magnum::Buffer index_buffer;
+    Magnum::Mesh mesh;
+  };
+
+  std::unique_ptr<RenderData> mRenderData;
+
   Magnum::Range3D mAabb;
   Magnum::Matrix4 mModelMatrix;
-  Magnum::Buffer mVertexBuffer;
-  Magnum::Buffer mIndexBuffer;
-  Magnum::Mesh mMesh;
 
   std::shared_ptr<SectorCompiler> mSectorCompiler;
 

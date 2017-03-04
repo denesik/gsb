@@ -16,8 +16,9 @@ World::~World()
 void World::LoadSector(const SPos &pos)
 {
   auto res = mLoader->GetSector(pos);
-  if(!res.expired())
+  if(!res.expired() && res.lock())
   {
+    res.lock()->CreateRenderData();
     mSectors.emplace(std::make_pair(pos, res.lock()));
   }
 }

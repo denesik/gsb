@@ -20,15 +20,19 @@ Sector::Sector(World &world, const SPos &pos)
 
   // generate sector
   mStaticBlocks.fill(2);
-
-  mMesh.setPrimitive(MeshPrimitive::Triangles);
-  mMesh.addVertexBuffer(mVertexBuffer, 0, StandartShader::Position{}, StandartShader::TextureCoordinates{});
-  mMesh.setIndexBuffer(mIndexBuffer, 0, Mesh::IndexType::UnsignedInt);
 }
 
 
 Sector::~Sector()
 {
+}
+
+void Sector::CreateRenderData()
+{
+  mRenderData = std::make_unique<RenderData>();
+  mRenderData->mesh.setPrimitive(MeshPrimitive::Triangles);
+  mRenderData->mesh.addVertexBuffer(mRenderData->vertex_buffer, 0, StandartShader::Position{}, StandartShader::TextureCoordinates{});
+  mRenderData->mesh.setIndexBuffer(mRenderData->index_buffer, 0, Mesh::IndexType::UnsignedInt);
 }
 
 bool Sector::NeedCompile() const
@@ -75,11 +79,14 @@ void Sector::RunCompiler(std::shared_ptr<SectorCompiler> sectorCompiler)
 
 void Sector::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader)
 {
+  if (!mRenderData)
+    return;
+
   if (mSectorCompiler && mSectorCompiler->IsDone())
   {
-    mVertexBuffer.setData(mSectorCompiler->GetVertexData(), BufferUsage::StaticDraw);
-    mIndexBuffer.setData(mSectorCompiler->GetIndexData(), BufferUsage::StaticDraw);
-    mMesh.setCount(mSectorCompiler->GetIndexData().size());
+    mRenderData->vertex_buffer.setData(mSectorCompiler->GetVertexData(), BufferUsage::StaticDraw);
+    mRenderData->index_buffer.setData(mSectorCompiler->GetIndexData(), BufferUsage::StaticDraw);
+    mRenderData->mesh.setCount(mSectorCompiler->GetIndexData().size());
 
     mSectorCompiler.reset();
   }
@@ -87,7 +94,7 @@ void Sector::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix,
   if (Math::Geometry::Intersection::boxFrustum(mAabb, frustum)) 
   {
     static_cast<StandartShader &>(shader).setProjection(matrix * mModelMatrix);
-    mMesh.draw(shader);
+    mRenderData->mesh.draw(shader);
   }
 }
 
