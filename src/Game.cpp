@@ -211,8 +211,8 @@ void Game::mouseMoveEvent(MouseMoveEvent& event)
 {
   if (centering)
   {
-    mCamera.Rotate(Vector3(0.0f, event.relativePosition().y() / 800.f, 0.0f));
-    mCamera.Rotate(Vector3(event.relativePosition().x() / 800.f, 0.0f, 0.0f));
+    mCamera.Rotate(Vector3(0.0f, -event.relativePosition().y() / 800.f, 0.0f));
+    mCamera.Rotate(Vector3(-event.relativePosition().x() / 800.f, 0.0f, 0.0f));
   }
   mImguiPort.mouseMoveEvent(event);
 }
