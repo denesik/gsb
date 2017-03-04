@@ -20,13 +20,14 @@ Game::Game(const Arguments & arguments)
   mBlocksDataBase = std::make_unique<BlocksDataBase>(atlas);
   mWorld = std::make_unique<World>(*mBlocksDataBase);
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{});
-  mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 5);
+  mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 0);
 
   mTimeline.start();
 
   //mView = mView * Math::Matrix4<Float>::rotationY(Rad(-90));
   //mView = mView * Math::Matrix4<Float>::translation(Vector3::yAxis(40));
 
+  mCamera.Move({0, 40, 0});
 }
 
 void Game::drawEvent()
@@ -54,10 +55,14 @@ void Game::drawEvent()
       Vector3::yAxis());
   }
 
+  mCamera.Move(mCameraVelocity * 0.03f);
+  mCamera.Rotate(mCameraAngle * 0.03f);
+
   mShader.setColor({ 1.0f, 0.7f, 0.7f })
     .setTexture(atlas.Texture());
 
-  mDrawableArea->Draw(mProjection * mView.inverted(), mShader);
+  //mDrawableArea->Draw(mProjection * mView.inverted(), mShader);
+  mDrawableArea->Draw(mProjection * mCamera.View().inverted(), mShader);
   mWorld->GetUpdatableSectors().Update();
 
   //if (false)
@@ -134,16 +139,16 @@ void Game::keyPressEvent(KeyEvent& event)
     mCameraVelocity.z() = 1.0f;
 
   if (event.key() == KeyEvent::Key::Left)
-    mCameraAngle.x() = -1.0f;
-
-  if (event.key() == KeyEvent::Key::Right)
     mCameraAngle.x() = 1.0f;
 
+  if (event.key() == KeyEvent::Key::Right)
+    mCameraAngle.x() = -1.0f;
+
   if (event.key() == KeyEvent::Key::Up)
-    mCameraAngle.y() = -1.0f;
+    mCameraAngle.y() = 1.0f;
 
   if (event.key() == KeyEvent::Key::Down)
-    mCameraAngle.y() = 1.0f;
+    mCameraAngle.y() = -1.0f;
 
   event.setAccepted();
 }
