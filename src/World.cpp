@@ -16,9 +16,10 @@ void World::LoadSector(const SPos &pos)
 {
   assert(mLoader != nullptr);
   auto res = mLoader->GetSector(pos);
-  if(!res)
+  if(res)
   {
     mSectors.emplace(std::make_pair(pos, res));
+    res->CreateRenderData();
   }
 }
 
