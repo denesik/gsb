@@ -21,12 +21,11 @@ public:
 
   void Move(const Magnum::Vector3 &dist);
 
-  Magnum::Vector3 Unproject(Magnum::Vector2i pixel);
+  Magnum::Vector3 Unproject(Magnum::Vector2 pixel, float depth);
+  Magnum::Vector3 Ray(Magnum::Vector2 pixel);
 
   Magnum::Matrix4 Project();
-
   Magnum::Matrix4 View();
-  Magnum::Matrix4 Projection() const;
   Magnum::Vector3 Position() const;
 
   Magnum::Frustum Frustum();
@@ -38,6 +37,7 @@ private:
 
   Magnum::Vector3 mRight;
   Magnum::Vector3 mForward;
+  Magnum::Vector3 mUp;
 
   Magnum::Vector2 mResolution;
   Magnum::Vector2 mFov;

@@ -79,7 +79,7 @@ void Game::drawEvent()
   mDrawableArea->Draw(mCamera, mShader);
   mWorld->GetUpdatableSectors().Update();
 
-  debugLines.draw(mCamera.Projection() * mCamera.View().inverted());
+  debugLines.draw(mCamera.Project() * mCamera.View().inverted());
   debugLines.reset();
 
   //if (false)
