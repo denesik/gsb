@@ -43,6 +43,19 @@ std::weak_ptr<Sector> World::GetSector(const SPos &pos) const
   return {};
 }
 
+std::vector<std::weak_ptr<Sector>> World::GetColumn(const CSPos& pos) const
+{
+  std::vector<std::weak_ptr<Sector>> column;
+  column.reserve(SECTOR_COUNT_HEIGHT);
+
+  for (Magnum::Int c = 0; c < SECTOR_COUNT_HEIGHT; ++c)
+  {
+    column.emplace_back(GetSector({ pos, c }));
+  }
+
+  return  column;
+}
+
 BlockId World::GetBlockId(const WBPos& pos) const
 {
   auto spos = cs::WBtoS(pos);

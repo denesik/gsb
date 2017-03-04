@@ -46,7 +46,7 @@ inline int SideFlagIndex(SideFlags side)
   return 0;
 }
 
-using TPos      = Magnum::Vector2i; /// Координаты башни
+using CSPos     = Magnum::Vector2i; /// Координаты столбца секторов
 using WPos      = Magnum::Vector3;  /// Мировые координаты.
 using SPos      = Magnum::Vector3i; /// Координаты сектора.
 using WBPos     = Magnum::Vector3i; /// Координаты блока в мире.
