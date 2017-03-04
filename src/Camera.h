@@ -17,6 +17,7 @@ public:
   void Rotate(const Magnum::Vector3 &dir);
 
   void Move(const Magnum::Vector3 &dist);
+  Magnum::Vector3 Unproject(Magnum::Vector2i pixel);
 
   Magnum::Matrix4 View();
 
@@ -25,6 +26,12 @@ private:
   Magnum::Vector3 mPos;
   Magnum::Vector3 mDir;
 
+  Magnum::Vector3 mUp = {0,1,0};
+  Magnum::Vector3 mRight;
+  Magnum::Vector3 mForward;
+
+  Magnum::Vector2 mResolution;
+  Magnum::Vector2 mFov;
 };
 
 

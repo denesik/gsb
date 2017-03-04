@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include <Magnum/Math/Packing.h>
 
 using namespace Magnum;
 
@@ -29,6 +30,16 @@ void Camera::Move(const Magnum::Vector3 &dist)
   mPos += mQuat.transformVector(dist);
 }
 
+Magnum::Vector3 Camera::Unproject(Magnum::Vector2i pixel)
+{
+  float mx = static_cast<float>((pixel.x() - mResolution.x() * 0.5) * (1.0 / mResolution.x()) * mFov.x() * 0.5);
+  float my = static_cast<float>((pixel.y() - mResolution.y() * 0.5) * (1.0 / mResolution.x()) * mFov.x() * 0.5);
+  Magnum::Vector3 dx = mRight * mx;
+  Magnum::Vector3 dy = mUp * my;
+
+   return (mForward + (dx + dy) * 2.0f).normalized();
+}
+
 Magnum::Matrix4 Camera::View()
 {
 //   const auto &pitch = glm::angleAxis(mDir.x, glm::vec3(1, 0, 0));
@@ -48,6 +59,9 @@ Magnum::Matrix4 Camera::View()
 
   mQuat = yaw* mQuat *pitch;
   mQuat = mQuat.normalized();
+
+  mForward = mQuat.transformVector({});
+  mRight = Math::cross(mForward, mUp);
 
   return Matrix4::from(mQuat.toMatrix(), mPos);
 }
