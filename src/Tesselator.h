@@ -9,6 +9,9 @@
 #include "TemplateFactory.h"
 #include <rapidjson/document.h>
 #include "TextureAtlas.h"
+#include <array>
+
+typedef std::array<Magnum::Byte, 8> TesselatorData;
 
 struct TesselatorVertex
 {

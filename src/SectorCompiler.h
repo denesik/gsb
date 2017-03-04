@@ -13,6 +13,8 @@
 #include <atomic>
 #include <condition_variable>
 #include <mutex>  
+#include "BlockDinamicPart.h"
+#include <memory>
 
 class SectorCompiler
 {
@@ -20,9 +22,9 @@ public:
   SectorCompiler(const BlocksDataBase &dataBase);
   ~SectorCompiler();
 
-  void SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data);
+  void SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<BlockDinamicPart>, SECTOR_CAPACITY> &tess_data);
 
-  void SetSide(const std::array<BlockId, SECTOR_CAPACITY> &data, SideFlags side);
+  void SetSide(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<BlockDinamicPart>, SECTOR_CAPACITY> &tess_data, SideFlags side);
 
   void Run();
 
@@ -33,6 +35,7 @@ public:
 
 private:
   std::array<BlockId, TESSELATOR_CAPACITY> mTesselators;
+  std::array<TesselatorData, TESSELATOR_CAPACITY> mTesselatorsData;
   std::array<IndexType, SECTOR_CAPACITY> mIndexMiddle;
   std::array<IndexType, SECTOR_SIZE * SECTOR_SIZE> mIndexBlocks[6];
   std::array<IndexType, SECTOR_SIZE * SECTOR_SIZE> mIndexTess[6];

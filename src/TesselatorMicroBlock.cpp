@@ -2,25 +2,6 @@
 
 using namespace Magnum;
 
-typedef Magnum::Vector3i MBPos;
-typedef Magnum::Int MBPosType;
-
-static inline IndexType ToIndex(const MBPos &pos)
-{
-  const IndexType size = static_cast<IndexType>(MICROBLOCK_SIZE);
-  return static_cast<IndexType>(pos.z()) * size * size +
-    static_cast<IndexType>(pos.y()) * size +
-    static_cast<IndexType>(pos.x());
-}
-
-static inline MBPos FromIndex(IndexType i)
-{
-  const IndexType size = static_cast<IndexType>(MICROBLOCK_SIZE);
-  return STPos{
-    static_cast<STPosType>(i % size),
-    static_cast<STPosType>((i / size) % size),
-    static_cast<STPosType>(i / (size * size)) };
-}
 
 static inline Range2D TextureCoord(const Vector2i &pos)
 {
@@ -41,6 +22,16 @@ static inline Range2D TextureCoordTo(const Range2D &a, const Range2D &b)
       a.top() * (b.top() - b.bottom()) + b.bottom()
     }
   };
+}
+
+TessMicroBlockData & TesselatorMicroBlock::ToMicroblockData(TesselatorData &data)
+{
+  return reinterpret_cast<TessMicroBlockData &>(data);
+}
+
+const TessMicroBlockData & TesselatorMicroBlock::ToMicroblockData(const TesselatorData &data)
+{
+  return reinterpret_cast<const TessMicroBlockData &>(data);
 }
 
 TesselatorMicroBlock::TesselatorMicroBlock()
@@ -80,21 +71,19 @@ TesselatorMicroBlock & TesselatorMicroBlock::SetTexture(const Magnum::Range2D &r
   return *this;
 }
 
-void TesselatorMicroBlock::PushBack(std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side /*= SideFlags::ALL*/) const
+void TesselatorMicroBlock::PushBack(const TesselatorData &microblock_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side /*= SideFlags::ALL*/) const
 {
   const auto scale = 1.0f / Float(MICROBLOCK_SIZE);
 
-  for (MBPosType z = 0; z < MICROBLOCK_SIZE; z++)
-    for (MBPosType y = 0; y < MICROBLOCK_SIZE; y++)
-      for (MBPosType x = 0; x < MICROBLOCK_SIZE; x++)
-      {
-        mData[ToIndex(MBPos{ x, y, z })].PushBack(vertex, index, last_index,
-          pos + WPos(static_cast<WPosType>(x), static_cast<WPosType>(y), static_cast<WPosType>(z)) *scale);
-      }
-// 
-//   MBPosType x = 0;
-//   MBPosType y = 0;
-//   MBPosType z = 0;
-//   mData[ToIndex(MBPos{ x, y, z })].PushBack(vertex, index, last_index, 
-//     pos + WPos(static_cast<WPosType>(x), static_cast<WPosType>(y), static_cast<WPosType>(z)) *scale);
+  const TessMicroBlockData &data = ToMicroblockData(microblock_data);
+
+  for (IndexType i = 0; i < data.size(); ++i)
+  {
+    if (data[i])
+    {
+      mData[i].PushBack(vertex, index, last_index,
+        pos + WPos(FromIndex(i)) *scale);
+    }
+  }
 }
+

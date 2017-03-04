@@ -36,20 +36,24 @@ SectorCompiler::~SectorCompiler()
   mThread.join();
 }
 
-void SectorCompiler::SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data)
+void SectorCompiler::SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<BlockDinamicPart>, SECTOR_CAPACITY> &tess_data)
 {
   for (size_t i = 0; i < SECTOR_CAPACITY; ++i)
   {
     mTesselators[mIndexMiddle[i]] = data[i];
+    if (tess_data[i] && tess_data[i]->mTesselatorData)
+      mTesselatorsData[mIndexMiddle[i]] = *tess_data[i]->mTesselatorData;
   }
 }
 
-void SectorCompiler::SetSide(const std::array<BlockId, SECTOR_CAPACITY> &data, SideFlags side)
+void SectorCompiler::SetSide(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<BlockDinamicPart>, SECTOR_CAPACITY> &tess_data, SideFlags side)
 {
   auto index = SideFlagIndex(side);
   for (size_t i = 0; i < SECTOR_SIZE * SECTOR_SIZE; ++i)
   {
     mTesselators[mIndexTess[index][i]] = data[mIndexBlocks[index][i]];
+    if (tess_data[mIndexBlocks[index][i]] && tess_data[mIndexBlocks[index][i]]->mTesselatorData)
+      mTesselatorsData[mIndexTess[index][i]] = *tess_data[mIndexBlocks[index][i]]->mTesselatorData;
   }
 }
 
@@ -116,7 +120,7 @@ void SectorCompiler::ProcessSolidBlock(IndexType index, const STPos &pos)
 void SectorCompiler::ProcessMicroBlock(IndexType index, const STPos &pos)
 {
   const auto *tesselator = static_cast<const TesselatorMicroBlock *>(mDataBase.GetBlockStaticPart(mTesselators[index])->GetTesselator().get());
-  tesselator->PushBack(mVertexData, mIndexData, mIndexOffset, WPos(pos));
+  tesselator->PushBack(mTesselatorsData[index], mVertexData, mIndexData, mIndexOffset, WPos(pos));
 }
 
 void SectorCompiler::Process()

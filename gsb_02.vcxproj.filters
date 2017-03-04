@@ -102,6 +102,9 @@
     <ClCompile Include="src\TesselatorMicroBlock.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="src\BlockDinamicPart.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -190,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="src\TesselatorMicroBlock.h">
       <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BlockDinamicPart.h">
+      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

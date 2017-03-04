@@ -22,6 +22,7 @@
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="src\BlockDinamicPart.cpp" />
     <ClCompile Include="src\BlocksDataBase.cpp" />
     <ClCompile Include="src\BlockStaticPart.cpp" />
     <ClCompile Include="src\Camera.cpp" />
@@ -50,6 +51,7 @@
     <ClCompile Include="src\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BlockDinamicPart.h" />
     <ClInclude Include="src\BlocksDataBase.h" />
     <ClInclude Include="src\BlockStaticPart.h" />
     <ClInclude Include="src\Camera.h" />
