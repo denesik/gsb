@@ -39,7 +39,7 @@ void Camera::Move(const Magnum::Vector3 &dist)
 
 Magnum::Vector3 Camera::Unproject(Magnum::Vector2 pixel, float depth)
 {
-  auto Inverse = Project() * View();
+  auto Inverse = (Project() * View()).inverted();
   auto viewport = defaultFramebuffer.viewport();
   pixel.y() = -pixel.y() + viewport.size().y();
 
@@ -75,13 +75,13 @@ Magnum::Matrix4 Camera::View()
 
   mQuat = yaw* mQuat *pitch;
   mQuat = mQuat.normalized();
-  auto matrix = Matrix4::from(mQuat.toMatrix(), mPos).inverted();
+  auto matrix = Matrix4::from(mQuat.toMatrix(), mPos);
 
   mForward = -matrix.backward();
   mRight = matrix.right();
   mUp = matrix.up();
 
-  return matrix;
+  return matrix.inverted();
 }
 
 Magnum::Frustum Camera::Frustum()
