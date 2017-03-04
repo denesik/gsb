@@ -79,6 +79,7 @@ private:
 
   FpsCounter mFpsCounter;
   DebugLines debugLines;
+  bool centering = true;
 
   Camera mCamera;
 };

@@ -34,7 +34,7 @@ Game::Game(const Arguments & arguments)
   mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 1);
 
   setSwapInterval(0);
-
+  setMouseLocked(true);
 
   mCamera.SetResolution(defaultFramebuffer.viewport().size());
   mCamera.Move({0, 40, 0});
@@ -51,6 +51,20 @@ void Game::drawEvent()
 
   mCamera.Move(mCameraVelocity * 0.003f);
   mCamera.Rotate(mCameraAngle * 0.003f);
+
+  /*
+  float val = mMouse.DeltaX();
+  if (mMouse.GetCentring())
+  {
+    mCallback(std::make_unique<GameEventRotate>(glm::vec3(0.0f, 0.0f, val / 200.f)));
+  }
+
+  val = mMouse.DeltaY();
+  if (mMouse.GetCentring())
+  {
+    mCallback(std::make_unique<GameEventRotate>(glm::vec3(val / 200.f, 0.0f, 0.0f)));
+  }*/
+
   auto ray = mCamera.Ray({ ImGui::GetMousePos().x, ImGui::GetMousePos().y });
   auto picked = Brezenham::PickFirst(mCamera.Position(), ray, 100, [&](Magnum::Vector3i pos)
   {
@@ -144,7 +158,6 @@ void Game::keyPressEvent(KeyEvent& event)
 
   if (event.key() == KeyEvent::Key::A)
     mCameraVelocity.x() = -1.0f;
-
   if (event.key() == KeyEvent::Key::D)
     mCameraVelocity.x() = 1.0f;
 
@@ -153,18 +166,6 @@ void Game::keyPressEvent(KeyEvent& event)
 
   if (event.key() == KeyEvent::Key::S)
     mCameraVelocity.z() = 1.0f;
-
-  if (event.key() == KeyEvent::Key::Left)
-    mCameraAngle.x() = 1.0f;
-
-  if (event.key() == KeyEvent::Key::Right)
-    mCameraAngle.x() = -1.0f;
-
-  if (event.key() == KeyEvent::Key::Up)
-    mCameraAngle.y() = 1.0f;
-
-  if (event.key() == KeyEvent::Key::Down)
-    mCameraAngle.y() = -1.0f;
 
   event.setAccepted();
 }
@@ -185,17 +186,8 @@ void Game::keyReleaseEvent(KeyEvent& event)
   if (event.key() == KeyEvent::Key::S)
     mCameraVelocity.z() = 0.0f;
 
-  if (event.key() == KeyEvent::Key::Left)
-    mCameraAngle.x() = 0.0f;
-
-  if (event.key() == KeyEvent::Key::Right)
-    mCameraAngle.x() = 0.0f;
-
-  if (event.key() == KeyEvent::Key::Up)
-    mCameraAngle.y() = 0.0f;
-
-  if (event.key() == KeyEvent::Key::Down)
-    mCameraAngle.y() = 0.0f;
+  if (event.key() == KeyEvent::Key::Tab)
+    centering = centering ? (setMouseLocked(false), false) : (setMouseLocked(true), true);
 
   event.setAccepted();
 }
@@ -217,6 +209,11 @@ void Game::mouseReleaseEvent(MouseEvent& event)
 
 void Game::mouseMoveEvent(MouseMoveEvent& event)
 {
+  if (centering)
+  {
+    mCamera.Rotate(Vector3(0.0f, event.relativePosition().y() / 800.f, 0.0f));
+    mCamera.Rotate(Vector3(event.relativePosition().x() / 800.f, 0.0f, 0.0f));
+  }
   mImguiPort.mouseMoveEvent(event);
 }
 

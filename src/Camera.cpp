@@ -37,6 +37,11 @@ void Camera::Move(const Magnum::Vector3 &dist)
   mPos += mQuat.transformVector(dist);
 }
 
+void Camera::LookAt(const Magnum::Vector3& target)
+{
+  mQuat = Quaternion::fromMatrix(Matrix4::lookAt(mPos, target, mUp).rotation());
+}
+
 Magnum::Vector3 Camera::Unproject(Magnum::Vector2 pixel, float depth)
 {
   auto Inverse = (Project() * View()).inverted();

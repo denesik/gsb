@@ -16,17 +16,20 @@ public:
 
   void Update();
 
-  size_t GetCount();
+  size_t GetCount() const;
 
-  size_t GetMaxFrameTime();
-  size_t GetMinFrameTime();
-  size_t GetMeanFrameTime();
+  size_t GetMaxFrameTime() const;
+  size_t GetMinFrameTime() const;
+  size_t GetMeanFrameTime() const;
 
-  size_t GetMaxFps();
-  size_t GetMinFps();
-  size_t GetMeanFps();
+  size_t GetMaxFps() const;
+  size_t GetMinFps() const;
+  size_t GetMeanFps() const;
 
-  size_t GetPercentLongFrame();
+  size_t GetPercentLongFrame() const;
+
+  std::chrono::high_resolution_clock::duration LastDuration() const;
+  float LastDelta() const;
 
 private:
   std::list<double> fpsStack;
