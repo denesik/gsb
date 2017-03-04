@@ -25,13 +25,14 @@ Game::Game(const Arguments & arguments)
   PrimitivaMountains* a = new PrimitivaMountains(*mBlocksDataBase, 1.f);
   mWorld = std::make_unique<World>(*mBlocksDataBase, std::unique_ptr<IMapGenerator>(a));
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{});
-  mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 10);
+  mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 0);
 
   mTimeline.start();
 
   //mView = mView * Math::Matrix4<Float>::rotationY(Rad(-90));
   //mView = mView * Math::Matrix4<Float>::translation(Vector3::yAxis(40));
 
+  mCamera.Move({0, 40, 0});
 }
 
 void Game::drawEvent()
@@ -59,10 +60,14 @@ void Game::drawEvent()
       Vector3::yAxis());
   }
 
+  mCamera.Move(mCameraVelocity * 0.03f);
+  mCamera.Rotate(mCameraAngle * 0.03f);
+
   mShader.setColor({ 1.0f, 0.7f, 0.7f })
     .setTexture(atlas.Texture());
 
-  mDrawableArea->Draw(mProjection * mView.inverted(), mShader);
+  //mDrawableArea->Draw(mProjection * mView.inverted(), mShader);
+  mDrawableArea->Draw(mProjection * mCamera.View().inverted(), mShader);
   mWorld->GetUpdatableSectors().Update();
 
   //if (false)
@@ -77,11 +82,18 @@ void Game::drawEvent()
       if (ImGui::Button("Another Window")) show_another_window ^= 1;
       ImGui::Text("fps: %i; max: %i; min: %i; long frame: %i%%", 
         mFpsCounter.GetCount(), mFpsCounter.GetMaxFps(), mFpsCounter.GetMinFps(), mFpsCounter.GetPercentLongFrame());
+      
       static int drawable_area_size = 5;
       int das = drawable_area_size;
       ImGui::SliderInt("Drawable area size", &drawable_area_size, 0, 10);
       if (das != drawable_area_size)
         mDrawableArea->SetRadius(drawable_area_size);
+
+      static int updatable_area_size = 5;
+      int uas = updatable_area_size;
+      ImGui::SliderInt("Updatable area size", &updatable_area_size, 0, 10);
+      if (uas != updatable_area_size)
+        mUpdatableArea->SetRadius(updatable_area_size);
     }
 
     // 2. Show another simple window, this time using an explicit Begin/End pair
@@ -132,16 +144,16 @@ void Game::keyPressEvent(KeyEvent& event)
     mCameraVelocity.z() = 1.0f;
 
   if (event.key() == KeyEvent::Key::Left)
-    mCameraAngle.x() = -1.0f;
-
-  if (event.key() == KeyEvent::Key::Right)
     mCameraAngle.x() = 1.0f;
 
+  if (event.key() == KeyEvent::Key::Right)
+    mCameraAngle.x() = -1.0f;
+
   if (event.key() == KeyEvent::Key::Up)
-    mCameraAngle.y() = -1.0f;
+    mCameraAngle.y() = 1.0f;
 
   if (event.key() == KeyEvent::Key::Down)
-    mCameraAngle.y() = 1.0f;
+    mCameraAngle.y() = -1.0f;
 
   event.setAccepted();
 }

@@ -25,7 +25,7 @@ public:
 
   const BlocksDataBase &GetBlocksDataBase() const;
 
-  std::shared_ptr<Sector> GetSector(const SPos &pos);
+  std::weak_ptr<Sector> GetSector(const SPos &pos);
 
   UpdatableSectors &GetUpdatableSectors();
 private:

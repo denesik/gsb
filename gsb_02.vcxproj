@@ -24,6 +24,7 @@
     <ClCompile Include="imgui\imgui_draw.cpp" />
     <ClCompile Include="src\BlocksDataBase.cpp" />
     <ClCompile Include="src\BlockStaticPart.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\DrawableArea.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\ImguiPort.cpp" />
@@ -48,6 +49,7 @@
   <ItemGroup>
     <ClInclude Include="src\BlocksDataBase.h" />
     <ClInclude Include="src\BlockStaticPart.h" />
+    <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\configure.h" />
     <ClInclude Include="src\DrawableArea.h" />
     <ClInclude Include="src\Game.h" />

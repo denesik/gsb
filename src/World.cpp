@@ -22,7 +22,7 @@ void World::LoadSector(const SPos &pos)
 
 void World::UnLoadSector(const SPos &pos)
 {
-  mSectors[pos] = nullptr;
+  mSectors.erase(pos);
 }
 
 const BlocksDataBase & World::GetBlocksDataBase() const
@@ -30,14 +30,14 @@ const BlocksDataBase & World::GetBlocksDataBase() const
   return mBlocksDataBase;
 }
 
-std::shared_ptr<Sector> World::GetSector(const SPos &pos)
+std::weak_ptr<Sector> World::GetSector(const SPos &pos)
 {
   auto it = mSectors.find(pos);
   if (it != mSectors.end())
   {
-    return it->second;
+    return {it->second};
   }
-  return nullptr;
+  return {};
 }
 
 UpdatableSectors & World::GetUpdatableSectors()

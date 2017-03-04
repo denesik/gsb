@@ -26,6 +26,7 @@
 #include "World.h"
 #include "tools/FpsCounter.h"
 #include "UpdatableArea.h"
+#include "Camera.h"
 
 using namespace Magnum;
 
@@ -85,5 +86,7 @@ private:
   std::unique_ptr<DrawableArea> mDrawableArea; // Должна уничтожиться раньше чем мир и бд.
 
   FpsCounter mFpsCounter;
+
+  Camera mCamera;
 };
 
