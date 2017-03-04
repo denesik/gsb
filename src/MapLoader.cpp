@@ -1,7 +1,7 @@
 #include "MapLoader.h"
 #include "Sector.h"
 
-MapLoader::MapLoader(World &world, std::unique_ptr<IMapGenerator> generator) : mGenerator(std::move(generator)), mWorld(world)
+MapLoader::MapLoader(std::unique_ptr<IMapGenerator> generator) : mGenerator(std::move(generator))
 {
   mUpdate = std::thread([this]()
   {
@@ -19,7 +19,7 @@ MapLoader::~MapLoader()
   mUpdate.join();
 }
 
-std::weak_ptr<Sector> MapLoader::GetSector(SPos pos)
+std::shared_ptr<Sector> MapLoader::GetSector(SPos pos)
 {
   {
     mSectorLock.lock();
@@ -56,7 +56,7 @@ void MapLoader::Update()
   mQueue.erase(mQueue.begin());
   mQueueLock.unlock();
 
-  auto sector = std::make_shared<Sector>(mWorld, pos);
+  auto sector = std::make_shared<Sector>(*mWorld, pos);
   sector->ApplyGenerator(*mGenerator);
 
   mSectorLock.lock();

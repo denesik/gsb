@@ -24,7 +24,11 @@ Game::Game(const Arguments & arguments)
   mBlocksDataBase = std::make_unique<BlocksDataBase>(atlas);
   mBlocksDataBase->ApplyLoader(std::make_unique<JsonDataBase>("data/json"));
 
-  mWorld = std::make_unique<World>(*mBlocksDataBase, std::make_unique<MapLoader>(*mWorld, std::make_unique<PrimitivaMountains>(*mBlocksDataBase, 1.f)));
+  mWorld = std::make_unique<World>(*mBlocksDataBase);
+  auto mapgen = std::make_unique<MapLoader>(std::make_unique<PrimitivaMountains>(*mBlocksDataBase, 1.f));
+  mapgen->SetWorld(mWorld.get());
+  mWorld->SetLoader(std::move(mapgen));
+
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{});
   mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 0);
 

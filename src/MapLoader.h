@@ -12,16 +12,15 @@ class World;
 class MapLoader : public IMapLoader
 {
 public:
-  MapLoader(World &world, std::unique_ptr<IMapGenerator> generator);
+  MapLoader(std::unique_ptr<IMapGenerator> generator);
   ~MapLoader();
 
-  std::weak_ptr<Sector> GetSector(SPos pos) override;
+  std::shared_ptr<Sector> GetSector(SPos pos) override;
 
 private:
   void Update();
 
   std::unique_ptr<IMapGenerator> mGenerator;
-  World &mWorld;
 
   std::unordered_map<SPos, std::shared_ptr<Sector>> mSectors;
   std::mutex mSectorLock;
