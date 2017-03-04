@@ -9,6 +9,9 @@
 #include "TemplateFactory.h"
 #include <rapidjson/document.h>
 #include "TextureAtlas.h"
+#include <array>
+
+typedef std::array<Magnum::Byte, 8> TesselatorData;
 
 struct TesselatorVertex
 {
@@ -28,6 +31,7 @@ public:
   enum class TesselatorType
   {
     SOLID_BLOCK,
+    MICRO_BLOCK,
   };
 
   Tesselator(TesselatorType type);

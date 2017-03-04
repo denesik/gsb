@@ -49,8 +49,8 @@ void Game::drawEvent()
 
 	defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
 
-  mCamera.Move(mCameraVelocity * 0.03f);
-  mCamera.Rotate(mCameraAngle * 0.03f);
+  mCamera.Move(mCameraVelocity * 0.003f);
+  mCamera.Rotate(mCameraAngle * 0.003f);
   auto ray = mCamera.Ray({ ImGui::GetMousePos().x, ImGui::GetMousePos().y });
   auto picked = Brezenham::PickFirst(mCamera.Position(), ray, 100, [&](Magnum::Vector3i pos)
   {
