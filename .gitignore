@@ -33,3 +33,4 @@ World.VC.opendb
 *.vsp
 *.db
 *.opendb
+/.vs/config/applicationhost.config

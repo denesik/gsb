@@ -18,10 +18,12 @@ public:
 
   void PushBack(std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const SBPos &pos, SideFlags side = SideFlags::ALL) const;
 
+  void JsonLoad(const rapidjson::Value& val, const TextureAtlas& atlas) override;
 private:
   Magnum::Range2D mTextureCoord[6];
 };
 
+REGISTER_TESSELLATOR(TesselatorSolidBlock)
 
 
 #endif // TesselatorSolidBlock_h__

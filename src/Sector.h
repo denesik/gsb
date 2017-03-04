@@ -16,6 +16,7 @@
 #include <Magnum/Math/Range.h>
 #include <memory>
 
+class IMapGenerator;
 class World;
 
 class Sector
@@ -33,6 +34,10 @@ public:
   void Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader);
 
   void Update();
+
+  SPos GetPos() const;
+
+  void ApplyGenerator(IMapGenerator &generator);
 
 private:
   std::array<BlockId, SECTOR_CAPACITY> mStaticBlocks;

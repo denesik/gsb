@@ -1,0 +1,25 @@
+[
+  {
+    "id": "some",
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "test_top.tga",
+        "test_top.tga",
+        "test_top.tga",
+        "test_top.tga",
+        "test_top.tga",
+        "test_top.tga"
+      ]
+    }
+  },
+  {
+    "id": "some2",
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "test_left.tga","test_left.tga","test_left.tga","test_left.tga","test_left.tga","test_left.tga"
+      ]
+    }
+  }
+]

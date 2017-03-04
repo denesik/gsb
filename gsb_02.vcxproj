@@ -27,8 +27,13 @@
     <ClCompile Include="src\DrawableArea.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\ImguiPort.cpp" />
+    <ClCompile Include="src\JsonDataBase.cpp" />
+    <ClCompile Include="src\Log.cpp" />
+    <ClCompile Include="src\MapGenerator.cpp" />
+    <ClCompile Include="src\PerlinNoise.cpp" />
     <ClCompile Include="src\Sector.cpp" />
     <ClCompile Include="src\SectorCompiler.cpp" />
+    <ClCompile Include="src\TemplateFactory.h" />
     <ClCompile Include="src\Tesselator.cpp" />
     <ClCompile Include="src\TesselatorSolidBlock.cpp" />
     <ClCompile Include="src\TextureAtlas.cpp" />
@@ -46,9 +51,15 @@
     <ClInclude Include="src\configure.h" />
     <ClInclude Include="src\DrawableArea.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\IMapGenerator.h" />
     <ClInclude Include="src\ImguiPort.h" />
+    <ClInclude Include="src\JsonDataBase.h" />
+    <ClInclude Include="src\Log.h" />
+    <ClInclude Include="src\MapGenerator.h" />
+    <ClInclude Include="src\PerlinNoise.h" />
     <ClInclude Include="src\Sector.h" />
     <ClInclude Include="src\SectorCompiler.h" />
+    <ClInclude Include="src\Serialize.h" />
     <ClInclude Include="src\Tesselator.h" />
     <ClInclude Include="src\TesselatorSolidBlock.h" />
     <ClInclude Include="src\TextureAtlas.h" />
@@ -112,13 +123,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)..\3rdparty\msvc14_x86\include;$(ProjectDir)..\3rdparty\msvc14_x86\include\MagnumExternal\OpenGL;$(ProjectDir)..\3rdparty\msvc14_x86\include\SDL2;$(ProjectDir)..\3rdparty\msvc14_x86\include\GLFW;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)..\3rdparty\msvc14_x86\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)..\3rdparty\msvc14_x86\include;$(ProjectDir)..\3rdparty\msvc14_x86\include\MagnumExternal\OpenGL;$(ProjectDir)..\3rdparty\msvc14_x86\include\SDL2;$(ProjectDir)..\3rdparty\msvc14_x86\include\GLFW;$(ProjectDir)rapidjson\include;$(ProjectDir)..\3rdparty\msvc14_x86\boost;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\3rdparty\msvc14_x86\lib;$(ProjectDir)..\3rdparty\msvc14_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
     <SourcePath>src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)..\3rdparty\msvc14_x86\include;$(ProjectDir)..\3rdparty\msvc14_x86\include\MagnumExternal\OpenGL;$(ProjectDir)..\3rdparty\msvc14_x86\include\SDL2;$(ProjectDir)..\3rdparty\msvc14_x86\include\GLFW;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)..\3rdparty\msvc14_x86\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)..\3rdparty\msvc14_x86\include;$(ProjectDir)..\3rdparty\msvc14_x86\include\MagnumExternal\OpenGL;$(ProjectDir)..\3rdparty\msvc14_x86\include\SDL2;$(ProjectDir)..\3rdparty\msvc14_x86\include\GLFW;$(ProjectDir)rapidjson\include;$(ProjectDir)..\3rdparty\msvc14_x86\boost;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\3rdparty\msvc14_x86\lib;$(ProjectDir)..\3rdparty\msvc14_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

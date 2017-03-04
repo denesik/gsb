@@ -6,9 +6,11 @@ using namespace Magnum;
 BlocksDataBase::BlocksDataBase(const TextureAtlas &atlas)
   : mAtlas(atlas)
 {
-  mBlocks.resize(0xFFFF);
+  mBlocks.reserve(0xFFFF);
+  mBlocks.emplace_back();
 
   {
+    mBlocks.emplace_back();
     mBlocks[1] = std::make_unique<BlockStaticPart>();
     auto tesselator = std::make_unique<TesselatorSolidBlock>();
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/test_texture.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }));
@@ -16,6 +18,7 @@ BlocksDataBase::BlocksDataBase(const TextureAtlas &atlas)
   }
 
   {
+    mBlocks.emplace_back();
     mBlocks[2] = std::make_unique<BlockStaticPart>();
     auto tesselator = std::make_unique<TesselatorSolidBlock>();
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/test_front.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::FRONT);
@@ -36,4 +39,9 @@ BlocksDataBase::~BlocksDataBase()
 const std::unique_ptr<BlockStaticPart> & BlocksDataBase::GetBlockStaticPart(BlockId id) const
 {
   return mBlocks[id];
+}
+
+void BlocksDataBase::ApplyLoader(std::unique_ptr<IDataBaseLoader> loader)
+{
+  loader->Load(mAtlas, mBlocks);
 }

@@ -2,6 +2,7 @@
 #include "World.h"
 #include "StandartShader.h"
 #include <Magnum/Math/Geometry/Intersection.h>
+#include "MapGenerator.h"
 
 using namespace Magnum;
 
@@ -93,4 +94,15 @@ void Sector::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix,
 void Sector::Update()
 {
 
+}
+
+SPos Sector::GetPos() const
+{
+  return mPos;
+}
+
+void Sector::ApplyGenerator(IMapGenerator &generator)
+{
+
+  generator.Generate(*this, mStaticBlocks);
 }

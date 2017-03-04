@@ -6,7 +6,7 @@
 #include <memory>
 #include "BlockStaticPart.h"
 #include "TextureAtlas.h"
-
+#include "JsonDataBase.h"
 
 class BlocksDataBase
 {
@@ -15,6 +15,8 @@ public:
   ~BlocksDataBase();
 
   const std::unique_ptr<BlockStaticPart> &GetBlockStaticPart(BlockId id) const;
+
+  void ApplyLoader(std::unique_ptr<IDataBaseLoader> loader);
 
 private:
   std::vector<std::unique_ptr<BlockStaticPart>> mBlocks;

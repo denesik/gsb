@@ -5,6 +5,10 @@
 #include <Magnum/Magnum.h>
 #include <Magnum/Math/Vector3.h>
 #include <Magnum/Math/Vector2.h>
+#include <boost/noncopyable.hpp>
+#include "TemplateFactory.h"
+#include <rapidjson/document.h>
+#include "TextureAtlas.h"
 
 struct TesselatorVertex
 {
@@ -31,10 +35,17 @@ public:
 
   TesselatorType Type() const;
 
+  virtual void JsonLoad(const rapidjson::Value & val, const TextureAtlas &atlas) = 0;
+
 private:
   const TesselatorType mType;
 };
 
-
+#define REGISTER_TESSELLATOR(type) REGISTER_ELEMENT(type, TessellatorFactory::Get(), #type)
+struct TessellatorFactory : boost::noncopyable
+{
+  using FactoryType = TemplateFactory<std::string, Tesselator>;
+  static FactoryType &Get();
+};
 
 #endif // Tesselator_h__
