@@ -26,8 +26,10 @@ std::shared_ptr<Sector> MapLoader::GetSector(SPos pos)
     auto find = mSectors.find(pos);
     if (find != mSectors.end())
     {
+      auto sector = find->second;
+      mSectors.erase(find);
       mSectorLock.unlock();
-      return find->second;
+      return sector;
     }
 
     mSectorLock.unlock();

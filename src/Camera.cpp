@@ -13,12 +13,18 @@ Camera::Camera()
     Vector3(0.0f, 1.0f, 0.0f)  // up
   );
   mQuat = Quaternion::fromMatrix(mat.rotation());
-  mProjection = Matrix4::perspectiveProjection(mFov, Vector2{ defaultFramebuffer.viewport().size() }.aspectRatio(), 0.01f, 1000.0f);
+
+  mFov.x() = 60.0;
 }
 
 
 Camera::~Camera()
 {
+}
+
+void Camera::SetResolution(const Magnum::Vector2i &size)
+{
+  mResolution = Vector2(size);
 }
 
 void Camera::Rotate(const Magnum::Vector3 &dir)
@@ -55,18 +61,13 @@ Magnum::Vector3 Camera::Ray(Magnum::Vector2 pixel)
   return far - near;
 }
 
+Magnum::Matrix4 Camera::Project()
+{
+  return Matrix4::perspectiveProjection(Deg(mFov.x()), mResolution.aspectRatio(), 0.01f, 1000.0f);
+}
+
 Magnum::Matrix4 Camera::View()
 {
-//   const auto &pitch = glm::angleAxis(mDir.x, glm::vec3(1, 0, 0));
-//   const auto &yaw = glm::angleAxis(mDir.z, glm::vec3(0, 0, 1));
-//   const auto &roll = glm::angleAxis(mDir.y, glm::vec3(0, 1, 0));
-//   mDir = {};
-// 
-//   mQuat = pitch * mQuat * yaw;
-//   mQuat = glm::normalize(mQuat);
-// 
-//   mView = glm::translate(glm::mat4_cast(mQuat), -mPos);
-
   auto pitch = Quaternion::rotation(Rad(mDir.y()), Vector3::xAxis());
   auto yaw = Quaternion::rotation(Rad(mDir.x()), Vector3::yAxis());
   auto roll = Quaternion::rotation(Rad(mDir.z()), Vector3::zAxis());
@@ -88,6 +89,12 @@ Magnum::Matrix4 Camera::Projection() const
   return mProjection;
 }
 
+  return Matrix4::from(mQuat.toMatrix(), mPos).inverted();
+}
+
+Magnum::Frustum Camera::Frustum()
+{
+  return Math::Frustum<Float>::fromMatrix(Project() * View());
 Magnum::Vector3 Camera::Position() const
 {
   return mPos;

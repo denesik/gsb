@@ -31,60 +31,23 @@ Game::Game(const Arguments & arguments)
   mWorld->SetLoader(std::move(mapgen));
 
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{});
-  mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 0);
-
-  mTimeline.start();
+  mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 1);
 
   setSwapInterval(0);
 
-  //mView = mView * Math::Matrix4<Float>::rotationY(Rad(-90));
-  //mView = mView * Math::Matrix4<Float>::translation(Vector3::yAxis(40));
 
-  mCamera.Move({ 0, 40, 0 });
-
-  //{
-  //  Camera cam;
-  //  auto t = cam.Unproject({400, 300});
-  //  assert(t == Vector3(0, 0, 0));
-  //}
-
-  //{
-  //  Camera cam;
-  //  cam.Move({ 1,2,3 });
-  //  auto t = cam.Unproject({ 400, 300 });
-  //  assert(t == Vector3(0, 0, 0));
-  //}
-
-  //{
-  //  Camera cam;
-  //  cam.Rotate({static_cast<float>(Deg(90)),0.f,0.f});
-  //  auto t = cam.Unproject({ 400, 300 });
-  //  assert(t == Vector3(1, 0, 0));
-  //}
+  mCamera.SetResolution(defaultFramebuffer.viewport().size());
+  mCamera.Move({0, 40, 0});
 }
 
 void Game::drawEvent()
 {
   mFpsCounter.Update();
 
-  mTimeline.nextFrame();
   Renderer::enable(Renderer::Feature::DepthTest);
   Renderer::enable(Renderer::Feature::FaceCulling);
 
-  defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
-
-  if (!mCameraVelocity.isZero()) {
-    Matrix4 transform = mView;
-    transform.translation() += transform.rotation()*mCameraVelocity*0.3f;
-    mView = transform;
-  }
-
-  if (!mCameraAngle.isZero())
-  {
-    mView = Matrix4::lookAt(mView.translation(),
-      mView.translation() - mView.rotationScaling()*(Vector3{ -mCameraAngle.x()*0.03f, mCameraAngle.y()*0.03f, 1.0f }),
-      Vector3::yAxis());
-  }
+	defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
 
   mCamera.Move(mCameraVelocity * 0.03f);
   mCamera.Rotate(mCameraAngle * 0.03f);
@@ -113,8 +76,7 @@ void Game::drawEvent()
   mShader.setColor({ 1.0f, 0.7f, 0.7f })
     .setTexture(atlas.Texture());
 
-  //mDrawableArea->Draw(mProjection * mView.inverted(), mShader);
-  mDrawableArea->Draw(mCamera.Projection() * mCamera.View().inverted(), mShader);
+  mDrawableArea->Draw(mCamera, mShader);
   mWorld->GetUpdatableSectors().Update();
 
   debugLines.draw(mCamera.Projection() * mCamera.View().inverted());
@@ -173,13 +135,12 @@ void Game::drawEvent()
 void Game::viewportEvent(const Vector2i& size)
 {
   defaultFramebuffer.setViewport({ {}, size });
+  mCamera.SetResolution(size);
 }
 
 void Game::keyPressEvent(KeyEvent& event)
 {
   mImguiPort.keyPressEvent(event);
-
-  float val = 15.0f * mTimeline.previousFrameDuration();
 
   if (event.key() == KeyEvent::Key::A)
     mCameraVelocity.x() = -1.0f;
