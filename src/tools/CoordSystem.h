@@ -46,17 +46,18 @@ inline int SideFlagIndex(SideFlags side)
   return 0;
 }
 
-typedef Magnum::Vector3   WPos;     // Мировые координаты.
-typedef Magnum::Vector3i  SPos;     // Координаты сектора.
-typedef Magnum::Vector3i  WBPos;    // Координаты блока в мире.
-typedef Magnum::Vector3i  SBPos;    // Координаты блока в секторе.
-typedef Magnum::Vector3i  STPos;    // Координаты тесселятора в секторе.
-typedef Magnum::Float WPosType;
-typedef Magnum::Int SPosType;
-typedef Magnum::Int WBPosType;
-typedef Magnum::Int SBPosType;
-typedef Magnum::Int STPosType;
-typedef Magnum::UnsignedInt IndexType;
+using TPos      = Magnum::Vector2i; /// Координаты башни
+using WPos      = Magnum::Vector3;  /// Мировые координаты.
+using SPos      = Magnum::Vector3i; /// Координаты сектора.
+using WBPos     = Magnum::Vector3i; /// Координаты блока в мире.
+using SBPos     = Magnum::Vector3i; /// Координаты блока в секторе.
+using STPos     = Magnum::Vector3i; /// Координаты тесселятора в секторе.
+using WPosType  = Magnum::Float;
+using SPosType  = Magnum::Int;
+using WBPosType = Magnum::Int;
+using SBPosType = Magnum::Int;
+using STPosType = Magnum::Int;
+using IndexType = Magnum::UnsignedInt;
 
 /// Система координат.
 namespace cs

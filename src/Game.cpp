@@ -57,13 +57,13 @@ void Game::drawEvent()
     return mWorld->GetBlockId(pos) != 0;
   }, &debugLines);
 
-  debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 0,1,0 }, { 1,1,1 });
   debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 1,0,0 }, { 1,1,1 });
+  debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 0,1,0 }, { 1,1,1 });
   debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 0,0,1 }, { 1,1,1 });
 
-  debugLines.addLine(std::get<0>(picked) + Vector3i{ 0,1,0 }, std::get<0>(picked) + Vector3i{ 1,1,1 }, { 1,1,1 });
-  debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,0,0 }, std::get<0>(picked) + Vector3i{ 1,1,1 }, { 1,1,1 });
-  debugLines.addLine(std::get<0>(picked) + Vector3i{ 0,0,1 }, std::get<0>(picked) + Vector3i{ 1,1,1 }, { 1,1,1 });
+  debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 0,1,1 }, { 1,1,1 });
+  debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 1,0,1 }, { 1,1,1 });
+  debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 1,1,0 }, { 1,1,1 });
 
   debugLines.addLine(mCamera.Position(), mCamera.Position() + ray * 1, { 1,1,1 });
 

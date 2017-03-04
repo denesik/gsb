@@ -24,7 +24,7 @@ int signum(T x) {
 }
 
 
-std::tuple<Magnum::Vector3i, Magnum::Vector3> Brezenham::PickFirst(
+std::tuple<WBPos, Magnum::Vector3> Brezenham::PickFirst(
   const Magnum::Vector3 &origin, 
   const Magnum::Vector3 &direction, 
   float radius, 
@@ -36,9 +36,9 @@ std::tuple<Magnum::Vector3i, Magnum::Vector3> Brezenham::PickFirst(
   // by John Amanatides and Andrew Woo, 1987
   // <http://www.cse.yorku.ca/~amana/research/grid.pdf>
   // <http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.42.3443>
-  float x = origin[0];
-  float y = origin[1];
-  float z = origin[2];
+  int x = origin[0];
+  int y = origin[1];
+  int z = origin[2];
   float dx = direction[0];
   float dy = direction[1];
   float dz = direction[2];
@@ -60,7 +60,7 @@ std::tuple<Magnum::Vector3i, Magnum::Vector3> Brezenham::PickFirst(
 
   while (true) 
   {
-    if (collider(cs::WtoWB({ x, y, z })))
+    if (collider({ x, y, z }))
       break;
 
     if (tMaxX < tMaxY) 

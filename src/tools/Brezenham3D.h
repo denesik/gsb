@@ -9,7 +9,7 @@ namespace Magnum {
 class Brezenham
 {
 public:
-  static std::tuple<Magnum::Vector3i, Magnum::Vector3> PickFirst(
+  static std::tuple<WBPos, Magnum::Vector3> PickFirst(
     const Magnum::Vector3 &origin,
     const Magnum::Vector3 &direction,
     float radius,
