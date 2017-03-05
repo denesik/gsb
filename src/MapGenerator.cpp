@@ -68,7 +68,7 @@ void PrimitivaMountains::Generate(Sector &sector)
               {
                 for (int i1 = 0; i1 < tess.Size(); ++i1)
                 {
-                  data[tess.ToIndex({ i1, j1, k1 })] = solid(sw.x() + i + i1 / float(MICROBLOCK_SIZE), sw.y() + j + j1 / float(MICROBLOCK_SIZE), sw.z() + k + k1 / float(MICROBLOCK_SIZE));
+                  data[tess.ToIndex({ i1, j1, k1 })] = solid(sw.x() + i + i1 / float(tess.Size()), sw.y() + j + j1 / float(tess.Size()), sw.z() + k + k1 / float(tess.Size()));
                 }
               }
             }
