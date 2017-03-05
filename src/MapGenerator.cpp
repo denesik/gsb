@@ -14,13 +14,14 @@ float flatness(float tx, float ty)
 }
 float dens(float tx, float ty, float tz)
 {
-  float flat = 1 / 5.f;// flatness(tx / 1000.f, ty / 1000.f);
+  auto flat = 1.f / 5.f;// flatness(tx / 1000.f, ty / 1000.f);
   if (ty < -SECTOR_SIZE)
     return 1;
-  else if (ty < 0)
+
+  if (ty < 0)
     return PerlinNoise3D(tx / 100.f, ty / 100.f, tz / 100.f, 1 + 5 * flat, 2, GEN_OCT) + ((-ty*(SECTOR_SIZE / 1000.f)));
-  else
-    return PerlinNoise3D(tx / 100.f, ty / 100.f, tz / 100.f, 1 + 5 * flat, 2, GEN_OCT) / ((ty + float(SECTOR_SIZE)) / float(SECTOR_SIZE));
+
+  return PerlinNoise3D(tx / 100.f, ty / 100.f, tz / 100.f, 1 + 5 * flat, 2, GEN_OCT) / ((ty + float(SECTOR_SIZE)) / float(SECTOR_SIZE));
 }
 float cluster(float tx, float ty, float tz)
 {
@@ -45,11 +46,11 @@ bool solid(float tx, float ty, float tz)
 void PrimitivaMountains::Generate(Sector &sector)
 {
   auto sw = cs::StoW(sector.GetPos());
-  for (int k = 0; k < SECTOR_SIZE; ++k)
+  for (auto k = 0; k < SECTOR_SIZE; ++k)
   {
-    for (int j = 0; j < SECTOR_SIZE; ++j)
+    for (auto j = 0; j < SECTOR_SIZE; ++j)
     {
-      for (int i = 0; i < SECTOR_SIZE; ++i)
+      for (auto i = 0; i < SECTOR_SIZE; ++i)
       {
         if (solid(sw.x() + i, sw.y() + j, sw.z() + k))
         {
@@ -62,11 +63,11 @@ void PrimitivaMountains::Generate(Sector &sector)
             auto &data = TesselatorMicroBlock::ToMicroblockData(*dyn->mTesselatorData);
             const auto &tess = static_cast<const TesselatorMicroBlock &>(*db.GetBlockStaticPart(3)->GetTesselator());
 
-            for (int k1 = 0; k1 < tess.Size(); ++k1)
+            for (auto k1 = 0; k1 < tess.Size(); ++k1)
             {
-              for (int j1 = 0; j1 < tess.Size(); ++j1)
+              for (auto j1 = 0; j1 < tess.Size(); ++j1)
               {
-                for (int i1 = 0; i1 < tess.Size(); ++i1)
+                for (auto i1 = 0; i1 < tess.Size(); ++i1)
                 {
                   data[tess.ToIndex({ i1, j1, k1 })] = solid(sw.x() + i + i1 / float(tess.Size()), sw.y() + j + j1 / float(tess.Size()), sw.z() + k + k1 / float(tess.Size()));
                 }
