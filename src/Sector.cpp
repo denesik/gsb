@@ -10,12 +10,12 @@ Sector::Sector(World &world, const SPos &pos)
 {
   // generate sector
   mStaticBlocks.fill(2);
-  mStaticBlocks[cs::SBtoBI({0, 31, 0})] = 3;
-  mDinamicBlocks[cs::SBtoBI({ 0, 31, 0 })] = std::make_unique<BlockDinamicPart>();
-  mDinamicBlocks[cs::SBtoBI({ 0, 31, 0 })]->mTesselatorData = std::make_unique<TesselatorData>();
-  auto &data = TesselatorMicroBlock::ToMicroblockData(*(mDinamicBlocks[cs::SBtoBI({ 0, 31, 0 })]->mTesselatorData));
-
-  data[TesselatorMicroBlock::ToIndex({0, 2, 0})] = 1;
+//   mStaticBlocks[cs::SBtoBI({0, 31, 0})] = 3;
+//   mDinamicBlocks[cs::SBtoBI({ 0, 31, 0 })] = std::make_unique<BlockDinamicPart>();
+//   mDinamicBlocks[cs::SBtoBI({ 0, 31, 0 })]->mTesselatorData = std::make_unique<TesselatorData>();
+//   auto &data = TesselatorMicroBlock::ToMicroblockData(*(mDinamicBlocks[cs::SBtoBI({ 0, 31, 0 })]->mTesselatorData));
+// 
+//   data[TesselatorMicroBlock::ToIndex({0, 2, 0})] = 1;
 }
 
 

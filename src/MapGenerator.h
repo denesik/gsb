@@ -9,4 +9,5 @@ public:
 
 private:
   float mPower;
+  const BlocksDataBase &db;
 };

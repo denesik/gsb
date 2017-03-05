@@ -3,7 +3,7 @@
 #include "Sector.h"
 #include "TesselatorMicroBlock.h"
 
-PrimitivaMountains::PrimitivaMountains(const BlocksDataBase &db, float power) : IMapGenerator(db), mPower(power)
+PrimitivaMountains::PrimitivaMountains(const BlocksDataBase &db, float power) : db(db), IMapGenerator(db), mPower(power)
 {
 }
 
@@ -60,14 +60,15 @@ void PrimitivaMountains::Generate(Sector &sector)
             auto dyn = std::make_unique<BlockDinamicPart>();
             dyn->mTesselatorData = std::make_unique<TesselatorData>();
             auto &data = TesselatorMicroBlock::ToMicroblockData(*dyn->mTesselatorData);
+            const auto &tess = static_cast<const TesselatorMicroBlock &>(*db.GetBlockStaticPart(3)->GetTesselator());
 
-            for (int k1 = 0; k1 < MICROBLOCK_SIZE; ++k1)
+            for (int k1 = 0; k1 < tess.Size(); ++k1)
             {
-              for (int j1 = 0; j1 < MICROBLOCK_SIZE; ++j1)
+              for (int j1 = 0; j1 < tess.Size(); ++j1)
               {
-                for (int i1 = 0; i1 < MICROBLOCK_SIZE; ++i1)
+                for (int i1 = 0; i1 < tess.Size(); ++i1)
                 {
-                  data[TesselatorMicroBlock::ToIndex({ i1, j1, k1 })] = solid(sw.x() + i + i1 / float(MICROBLOCK_SIZE), sw.y() + j + j1 / float(MICROBLOCK_SIZE), sw.z() + k + k1 / float(MICROBLOCK_SIZE));
+                  data[tess.ToIndex({ i1, j1, k1 })] = solid(sw.x() + i + i1 / float(MICROBLOCK_SIZE), sw.y() + j + j1 / float(MICROBLOCK_SIZE), sw.z() + k + k1 / float(MICROBLOCK_SIZE));
                 }
               }
             }
