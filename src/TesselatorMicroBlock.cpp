@@ -71,7 +71,7 @@ void TesselatorMicroBlock::PushBack(const TesselatorData &microblock_data, std::
 
   const TessMicroBlockData &data = ToMicroblockData(microblock_data);
 
-  for (IndexType i = 0; i < mSize; ++i)
+  for (auto i = 0; i < mSize * mSize * mSize; ++i)
   {
     if (data[i])
     {
