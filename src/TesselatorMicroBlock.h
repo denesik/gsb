@@ -11,7 +11,7 @@
 #include <Magnum/Magnum.h>
 #include <Magnum/Math/Range.h>
 
-typedef std::bitset<MICROBLOCK_CAPACITY> TessMicroBlockData;
+typedef std::bitset<8 * 8 * 8> TessMicroBlockData;
 
 
 class TesselatorMicroBlock : public Tesselator

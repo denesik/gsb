@@ -34,7 +34,7 @@ BlocksDataBase::BlocksDataBase(const TextureAtlas &atlas)
   {
     mBlocks.emplace_back();
     mBlocks[3] = std::make_unique<BlockStaticPart>();
-    auto tesselator = std::make_unique<TesselatorMicroBlock>(2);
+    auto tesselator = std::make_unique<TesselatorMicroBlock>();
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/grass_side.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::FRONT);
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/grass_side.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::RIGHT);
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/grass_side.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::BACK);
