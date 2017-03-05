@@ -5,10 +5,11 @@
 
 #include "Tesselator.h"
 #include "tools/CoordSystem.h"
-#include <array>
+#include <vector>
 #include "TesselatorSolidBlock.h"
 #include <bitset>
 #include <Magnum/Magnum.h>
+#include <Magnum/Math/Range.h>
 
 typedef std::bitset<MICROBLOCK_CAPACITY> TessMicroBlockData;
 
@@ -19,7 +20,7 @@ public:
   typedef Magnum::Vector3i MBPos;
   typedef Magnum::Int MBPosType;
 
-  TesselatorMicroBlock();
+  TesselatorMicroBlock(size_t size = 4);
   ~TesselatorMicroBlock();
 
   TesselatorMicroBlock &SetTexture(const Magnum::Range2D &range, SideFlags side = SideFlags::ALL);
@@ -28,21 +29,26 @@ public:
 
   void JsonLoad(const rapidjson::Value & val, const TextureAtlas &atlas) override {};
 
-  static inline IndexType ToIndex(const MBPos &pos)
+  inline IndexType ToIndex(const MBPos &pos) const
   {
-    const IndexType size = static_cast<IndexType>(MICROBLOCK_SIZE);
+    const IndexType size = static_cast<IndexType>(mSize);
     return static_cast<IndexType>(pos.z()) * size * size +
       static_cast<IndexType>(pos.y()) * size +
       static_cast<IndexType>(pos.x());
   }
 
-  static inline MBPos FromIndex(IndexType i)
+  inline MBPos FromIndex(IndexType i) const
   {
-    const IndexType size = static_cast<IndexType>(MICROBLOCK_SIZE);
+    const IndexType size = static_cast<IndexType>(mSize);
     return STPos{
       static_cast<STPosType>(i % size),
       static_cast<STPosType>((i / size) % size),
       static_cast<STPosType>(i / (size * size)) };
+  }
+
+  inline MBPosType Size() const
+  {
+    return mSize;
   }
 
   static TessMicroBlockData &ToMicroblockData(TesselatorData &data);
@@ -50,8 +56,17 @@ public:
   static const TessMicroBlockData &ToMicroblockData(const TesselatorData &data);
 
 private:
-  std::array<TesselatorSolidBlock, MICROBLOCK_CAPACITY> mData;
+  std::vector<TesselatorSolidBlock> mData;
   Magnum::Range2D mTextureCoord[6];
+  const MBPosType mSize;
+
+private:
+  inline Magnum::Range2D TextureCoord(const Magnum::Vector2i &pos)
+  {
+    const auto len = 1.0f / Magnum::Float(mSize);
+    return Magnum::Range2D({ Magnum::Float(pos.x()) * len, Magnum::Float(pos.y()) * len }, 
+    { Magnum::Float(pos.x() + 1) * len, Magnum::Float(pos.y() + 1) * len });
+  }
 };
 
 

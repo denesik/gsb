@@ -11,7 +11,7 @@
 #include "TextureAtlas.h"
 #include <array>
 
-typedef std::array<Magnum::Byte, 8> TesselatorData;
+typedef std::array<Magnum::Byte, 64> TesselatorData;
 
 struct TesselatorVertex
 {

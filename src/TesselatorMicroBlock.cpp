@@ -3,12 +3,6 @@
 using namespace Magnum;
 
 
-static inline Range2D TextureCoord(const Vector2i &pos)
-{
-  const auto len = 1.0f / Float(MICROBLOCK_SIZE);
-  return Range2D( {Float(pos.x()) * len, Float(pos.y()) * len}, {Float(pos.x() + 1) * len, Float(pos.y() + 1) * len} );
-}
-
 static inline Range2D TextureCoordTo(const Range2D &a, const Range2D &b)
 {
   return Range2D
@@ -34,10 +28,10 @@ const TessMicroBlockData & TesselatorMicroBlock::ToMicroblockData(const Tesselat
   return reinterpret_cast<const TessMicroBlockData &>(data);
 }
 
-TesselatorMicroBlock::TesselatorMicroBlock()
-  : Tesselator(Tesselator::TesselatorType::MICRO_BLOCK)
+TesselatorMicroBlock::TesselatorMicroBlock(size_t size)
+  : Tesselator(Tesselator::TesselatorType::MICRO_BLOCK), mSize(size)
 {
-
+  mData.resize(mSize * mSize * mSize);
 }
 
 
@@ -55,17 +49,17 @@ TesselatorMicroBlock & TesselatorMicroBlock::SetTexture(const Magnum::Range2D &r
     }
   }
 
-  for (MBPosType z = 0; z < MICROBLOCK_SIZE; z++)
-    for (MBPosType y = 0; y < MICROBLOCK_SIZE; y++)
-      for (MBPosType x = 0; x < MICROBLOCK_SIZE; x++)
+  for (MBPosType z = 0; z < mSize; z++)
+    for (MBPosType y = 0; y < mSize; y++)
+      for (MBPosType x = 0; x < mSize; x++)
       {
-        mData[ToIndex(MBPos{ x, y, z })].SetScale(1.0f / Float(MICROBLOCK_SIZE));
-        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ MICROBLOCK_SIZE - x - 1, y }), mTextureCoord[SideFlagIndex(SideFlags::FRONT)]), SideFlags::FRONT);
+        mData[ToIndex(MBPos{ x, y, z })].SetScale(1.0f / Float(mSize));
+        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ mSize - x - 1, y }), mTextureCoord[SideFlagIndex(SideFlags::FRONT)]), SideFlags::FRONT);
         mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ x, y }), mTextureCoord[SideFlagIndex(SideFlags::BACK)]), SideFlags::BACK);
-        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ MICROBLOCK_SIZE - z - 1, y }), mTextureCoord[SideFlagIndex(SideFlags::LEFT)]), SideFlags::LEFT);
+        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ mSize - z - 1, y }), mTextureCoord[SideFlagIndex(SideFlags::LEFT)]), SideFlags::LEFT);
         mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ z, y }), mTextureCoord[SideFlagIndex(SideFlags::RIGHT)]), SideFlags::RIGHT);
-        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ MICROBLOCK_SIZE - x - 1, z }), mTextureCoord[SideFlagIndex(SideFlags::TOP)]), SideFlags::TOP);
-        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ MICROBLOCK_SIZE - x - 1, MICROBLOCK_SIZE - z - 1 }), mTextureCoord[SideFlagIndex(SideFlags::BOTTOM)]), SideFlags::BOTTOM);
+        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ mSize - x - 1, z }), mTextureCoord[SideFlagIndex(SideFlags::TOP)]), SideFlags::TOP);
+        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ mSize - x - 1, mSize - z - 1 }), mTextureCoord[SideFlagIndex(SideFlags::BOTTOM)]), SideFlags::BOTTOM);
       }
 
   return *this;
@@ -73,11 +67,11 @@ TesselatorMicroBlock & TesselatorMicroBlock::SetTexture(const Magnum::Range2D &r
 
 void TesselatorMicroBlock::PushBack(const TesselatorData &microblock_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side /*= SideFlags::ALL*/) const
 {
-  const auto scale = 1.0f / Float(MICROBLOCK_SIZE);
+  const auto scale = 1.0f / Float(mSize);
 
   const TessMicroBlockData &data = ToMicroblockData(microblock_data);
 
-  for (IndexType i = 0; i < data.size(); ++i)
+  for (IndexType i = 0; i < mSize; ++i)
   {
     if (data[i])
     {
