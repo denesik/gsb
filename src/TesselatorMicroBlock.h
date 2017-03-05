@@ -23,30 +23,30 @@ public:
   TesselatorMicroBlock(size_t size = 4);
   ~TesselatorMicroBlock();
 
-  TesselatorMicroBlock &SetTexture(const Magnum::Range2D &range, SideFlags side = SideFlags::ALL);
+  TesselatorMicroBlock &SetTexture(const Magnum::Range2D &range, SideFlags side = ALL);
 
-  void PushBack(const TesselatorData &microblock_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side = SideFlags::ALL) const;
+  void PushBack(const TesselatorData &microblock_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side = ALL) const;
 
   void JsonLoad(const rapidjson::Value & val, const TextureAtlas &atlas) override {};
 
-  inline IndexType ToIndex(const MBPos &pos) const
+  IndexType ToIndex(const MBPos &pos) const
   {
-    const IndexType size = static_cast<IndexType>(mSize);
+    const auto size = static_cast<IndexType>(mSize);
     return static_cast<IndexType>(pos.z()) * size * size +
       static_cast<IndexType>(pos.y()) * size +
       static_cast<IndexType>(pos.x());
   }
 
-  inline MBPos FromIndex(IndexType i) const
+  MBPos FromIndex(IndexType i) const
   {
-    const IndexType size = static_cast<IndexType>(mSize);
+    const auto size = static_cast<IndexType>(mSize);
     return STPos{
       static_cast<STPosType>(i % size),
       static_cast<STPosType>((i / size) % size),
       static_cast<STPosType>(i / (size * size)) };
   }
 
-  inline MBPosType Size() const
+  MBPosType Size() const
   {
     return mSize;
   }
@@ -61,7 +61,7 @@ private:
   const MBPosType mSize;
 
 private:
-  inline Magnum::Range2D TextureCoord(const Magnum::Vector2i &pos)
+  Magnum::Range2D TextureCoord(const Magnum::Vector2i &pos) const
   {
     const auto len = 1.0f / Magnum::Float(mSize);
     return Magnum::Range2D({ Magnum::Float(pos.x()) * len, Magnum::Float(pos.y()) * len }, 
