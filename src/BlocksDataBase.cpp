@@ -7,17 +7,16 @@ using namespace Magnum;
 BlocksDataBase::BlocksDataBase(const TextureAtlas &atlas)
   : mAtlas(atlas)
 {
-  mBlocks.resize(0xFFFF);
 
   {
-    mBlocks[1] = std::make_unique<BlockStaticPart>();
+    std::get<0>(mBlocks[1]) = std::make_unique<BlockStaticPart>();
     auto tesselator = std::make_unique<TesselatorSolidBlock>();
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/test_texture.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }));
-    mBlocks[1]->SetTesselator(std::move(tesselator));
+    std::get<0>(mBlocks[1])->SetTesselator(std::move(tesselator));
   }
 
   {
-    mBlocks[2] = std::make_unique<BlockStaticPart>();
+    std::get<0>(mBlocks[2]) = std::make_unique<BlockStaticPart>();
     auto tesselator = std::make_unique<TesselatorSolidBlock>();
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/grass_side.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::FRONT);
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/grass_side.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::RIGHT);
@@ -25,12 +24,11 @@ BlocksDataBase::BlocksDataBase(const TextureAtlas &atlas)
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/grass_side.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::LEFT);
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/grass_top.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::TOP);
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/dirt.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::BOTTOM);
-    mBlocks[2]->SetTesselator(std::move(tesselator));
+    std::get<0>(mBlocks[2])->SetTesselator(std::move(tesselator));
   }
 
   {
-    mBlocks.emplace_back();
-    mBlocks[3] = std::make_unique<BlockStaticPart>();
+    std::get<0>(mBlocks[3]) = std::make_unique<BlockStaticPart>();
     auto tesselator = std::make_unique<TesselatorMicroBlock>();
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/grass_side.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::FRONT);
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/grass_side.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::RIGHT);
@@ -38,7 +36,9 @@ BlocksDataBase::BlocksDataBase(const TextureAtlas &atlas)
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/grass_side.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::LEFT);
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/grass_top.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::TOP);
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/dirt.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::BOTTOM);
-    mBlocks[3]->SetTesselator(std::move(tesselator));
+    std::get<0>(mBlocks[3])->SetTesselator(std::move(tesselator));
+    std::get<1>(mBlocks[3]) = std::make_unique<BlockDynamicPart>();
+    std::get<1>(mBlocks[3])->mTesselatorData = std::make_unique<TesselatorData>();
   }
 }
 
@@ -49,7 +49,7 @@ BlocksDataBase::~BlocksDataBase()
 
 const std::unique_ptr<BlockStaticPart> & BlocksDataBase::GetBlockStaticPart(BlockId id) const
 {
-  return mBlocks[id];
+  return std::get<0>(mBlocks[id]);
 }
 
 void BlocksDataBase::ApplyLoader(std::unique_ptr<IDataBaseLoader> loader)
@@ -68,12 +68,19 @@ std::optional<BlockId> BlocksDataBase::BlockIdFromName(const std::string &name) 
   return{};
 }
 
-bool BlocksDataBase::AddBlock(const std::string &name, BlockId id, std::unique_ptr<BlockStaticPart> static_part)
+bool BlocksDataBase::AddBlock(const std::string &name, BlockId id, std::unique_ptr<BlockStaticPart> static_part, std::unique_ptr<BlockDynamicPart> dynamic_part)
 {
-  if (mBlocks[id] || BlockIdFromName(name))
+  if (std::get<0>(mBlocks[id]) || BlockIdFromName(name))
     return false;
-  
-  mBlocks[id] = std::move(static_part);
+
+  std::get<0>(mBlocks[id]) = std::move(static_part);
+  std::get<1>(mBlocks[id]) = std::move(dynamic_part);
   mBlockNames.emplace(name, id);
   return true;
+}
+
+std::tuple<BlockId, std::unique_ptr<BlockDynamicPart>> BlocksDataBase::CreateBlock(BlockId id) const
+{
+  const auto &dyn = std::get<1>(mBlocks[id]);
+  return{ id , dyn ? dyn->Clone() : nullptr };
 }

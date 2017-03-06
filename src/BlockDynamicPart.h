@@ -12,6 +12,8 @@ public:
   BlockDynamicPart();
   ~BlockDynamicPart();
 
+  std::unique_ptr<BlockDynamicPart> Clone();
+
   std::unique_ptr<TesselatorData> mTesselatorData;
 };
 

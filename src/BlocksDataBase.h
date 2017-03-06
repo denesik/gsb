@@ -10,6 +10,8 @@
 #include <unordered_map>
 #include <string>
 #include <MagnumExternal/Optional/optional.hpp>
+#include "BlockDynamicPart.h"
+#include <array>
 
 class BlocksDataBase
 {
@@ -25,10 +27,14 @@ public:
 
   /// Добавить блок в БД.
   /// Если блок с указанным ид существует, он не добавляется и возвращается false.
-  bool AddBlock(const std::string &name, BlockId id, std::unique_ptr<BlockStaticPart> static_part);
+  bool AddBlock(const std::string &name, BlockId id, std::unique_ptr<BlockStaticPart> static_part, std::unique_ptr<BlockDynamicPart> dynamic_part);
+
+  /// Создает блок.
+  /// Если невозможно создать блоксданным ид вернет блок воздуха.
+  std::tuple<BlockId, std::unique_ptr<BlockDynamicPart>> CreateBlock(BlockId id) const;
 
 private:
-  std::vector<std::unique_ptr<BlockStaticPart>> mBlocks;
+  std::array<std::tuple<std::unique_ptr<BlockStaticPart>, std::unique_ptr<BlockDynamicPart>>, 0xFFFF> mBlocks;
   std::unordered_map<std::string, BlockId> mBlockNames;
 
   const TextureAtlas &mAtlas;

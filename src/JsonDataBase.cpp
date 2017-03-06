@@ -127,7 +127,7 @@ void JsonDataBase::Load(const TextureAtlas &atlas, BlocksDataBase &db) const
             }
           }*/
 
-          db.AddBlock(name, id, std::move(b));
+          db.AddBlock(name, id, std::move(b), nullptr);
         }
       }
     }
