@@ -6,11 +6,11 @@
 #include "Tesselator.h"
 
 
-class BlockDinamicPart
+class BlockDynamicPart
 {
 public:
-  BlockDinamicPart();
-  ~BlockDinamicPart();
+  BlockDynamicPart();
+  ~BlockDynamicPart();
 
   std::unique_ptr<TesselatorData> mTesselatorData;
 };

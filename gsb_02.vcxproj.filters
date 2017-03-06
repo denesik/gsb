@@ -105,10 +105,10 @@
     <ClCompile Include="src\tools\Brezenham3D.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="src\BlockDinamicPart.cpp">
+    <ClCompile Include="src\tools\DebugLines.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="src\tools\DebugLines.cpp">
+    <ClCompile Include="src\BlockDynamicPart.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
@@ -206,7 +206,7 @@
     <ClInclude Include="src\TesselatorMicroBlock.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\BlockDinamicPart.h">
+    <ClInclude Include="src\BlockDynamicPart.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>

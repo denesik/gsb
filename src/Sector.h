@@ -15,7 +15,7 @@
 #include <Magnum/Math/Frustum.h>
 #include <Magnum/Math/Range.h>
 #include <memory>
-#include "BlockDinamicPart.h"
+#include "BlockDynamicPart.h"
 
 class IMapGenerator;
 class World;
@@ -41,12 +41,12 @@ public:
   BlockId GetBlockId(SBPos pos) const;
   void SetBlockId(SBPos pos, BlockId id);
 
-  void SetBlockDynamic(SBPos pos, std::unique_ptr<BlockDinamicPart> dyn);
-  BlockDinamicPart & GetBlockDynamic(SBPos pos);
+  void SetBlockDynamic(SBPos pos, std::unique_ptr<BlockDynamicPart> dyn);
+  BlockDynamicPart & GetBlockDynamic(SBPos pos);
 
 private:
   std::array<BlockId, SECTOR_CAPACITY> mStaticBlocks;
-  std::array<std::unique_ptr<BlockDinamicPart>, SECTOR_CAPACITY> mDinamicBlocks;
+  std::array<std::unique_ptr<BlockDynamicPart>, SECTOR_CAPACITY> mDinamicBlocks;
   const SPos mPos;
 
   World &mWorld;

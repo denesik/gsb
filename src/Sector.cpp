@@ -82,12 +82,12 @@ void Sector::SetBlockId(SBPos pos, BlockId id)
   mNeedCompile = true;
 }
 
-void Sector::SetBlockDynamic(SBPos pos, std::unique_ptr<BlockDinamicPart> dyn)
+void Sector::SetBlockDynamic(SBPos pos, std::unique_ptr<BlockDynamicPart> dyn)
 {
   mDinamicBlocks[cs::SBtoBI(pos)] = std::move(dyn);
 }
 
-BlockDinamicPart& Sector::GetBlockDynamic(SBPos pos)
+BlockDynamicPart& Sector::GetBlockDynamic(SBPos pos)
 {
   return *mDinamicBlocks[cs::SBtoBI(pos)];
 }

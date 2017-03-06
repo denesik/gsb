@@ -58,7 +58,7 @@ void PrimitivaMountains::Generate(Sector &sector)
           {
             sector.SetBlockId({ i,j,k }, 3);
 
-            auto dyn = std::make_unique<BlockDinamicPart>();
+            auto dyn = std::make_unique<BlockDynamicPart>();
             dyn->mTesselatorData = std::make_unique<TesselatorData>();
             auto &data = TesselatorMicroBlock::ToMicroblockData(*dyn->mTesselatorData);
             const auto &tess = static_cast<const TesselatorMicroBlock &>(*db.GetBlockStaticPart(3)->GetTesselator());
