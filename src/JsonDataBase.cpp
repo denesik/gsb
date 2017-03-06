@@ -3,6 +3,7 @@
 #include "Log.h"
 #include <boost/filesystem.hpp>
 #include "Tesselator.h"
+#include "BlocksDataBase.h"
 
 JsonDataBase::JsonDataBase(const std::string path) : mPath(path)
 {
@@ -12,9 +13,8 @@ JsonDataBase::~JsonDataBase()
 {
 }
 
-void JsonDataBase::Load(const TextureAtlas &atlas, std::vector<std::unique_ptr<BlockStaticPart>>& storage) const
+void JsonDataBase::Load(const TextureAtlas &atlas, BlocksDataBase &db) const
 {
-  int storage_before = storage.size();
   int json_count = 0;
   {
     boost::filesystem::path targetDir(mPath);
@@ -57,15 +57,23 @@ void JsonDataBase::Load(const TextureAtlas &atlas, std::vector<std::unique_ptr<B
           rapidjson::Value &val = d[i];
 
           bool dyn = false;
-          std::string id;
+          std::string name;
+          BlockId id;
+          if (val.HasMember("name"))
+          {
+            name = val["name"].GetString();
+          }
+          else
+            LOG(error) << "record #" << i + 1 << " from " << file << " has no \"name\"";
+
           if (val.HasMember("id"))
           {
-            id = val["id"].GetString();
+            id = val["id"].GetUint();
           }
           else
             LOG(error) << "record #" << i + 1 << " from " << file << " has no \"id\"";
 
-          LOG(trace) << "\"" << id << "\" parsing";
+          LOG(trace) << "\"" << name << "\" parsing";
           auto b = std::make_unique<BlockStaticPart>();
 
           if(val.HasMember("tesselator"))
@@ -119,10 +127,10 @@ void JsonDataBase::Load(const TextureAtlas &atlas, std::vector<std::unique_ptr<B
             }
           }*/
 
-          storage.emplace_back(std::move(b));
+          db.AddBlock(name, id, std::move(b));
         }
       }
     }
   }
-  LOG(info) << storage.size() - storage_before << " loaded";
+  //LOG(info) << storage.size() - storage_before << " loaded";
 }

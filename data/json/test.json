@@ -1,6 +1,7 @@
 [
   {
-    "id": "some",
+	"name": "stone",
+    "id": 4,
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [
@@ -14,7 +15,8 @@
     }
   },
   {
-    "id": "some2",
+	"name": "test_white",
+    "id": 5,
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [

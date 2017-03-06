@@ -7,11 +7,9 @@ using namespace Magnum;
 BlocksDataBase::BlocksDataBase(const TextureAtlas &atlas)
   : mAtlas(atlas)
 {
-  mBlocks.reserve(0xFFFF);
-  mBlocks.emplace_back();
+  mBlocks.resize(0xFFFF);
 
   {
-    mBlocks.emplace_back();
     mBlocks[1] = std::make_unique<BlockStaticPart>();
     auto tesselator = std::make_unique<TesselatorSolidBlock>();
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/test_texture.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }));
@@ -19,7 +17,6 @@ BlocksDataBase::BlocksDataBase(const TextureAtlas &atlas)
   }
 
   {
-    mBlocks.emplace_back();
     mBlocks[2] = std::make_unique<BlockStaticPart>();
     auto tesselator = std::make_unique<TesselatorSolidBlock>();
     tesselator->SetTexture(mAtlas.GetTextureCoord("data/grass_side.tga").value_or(Range2D{ Vector2{ 0.0f },Vector2{ 1.0f } }), SideFlags::FRONT);
@@ -57,5 +54,26 @@ const std::unique_ptr<BlockStaticPart> & BlocksDataBase::GetBlockStaticPart(Bloc
 
 void BlocksDataBase::ApplyLoader(std::unique_ptr<IDataBaseLoader> loader)
 {
-  loader->Load(mAtlas, mBlocks);
+  loader->Load(mAtlas, *this);
+}
+
+std::optional<BlockId> BlocksDataBase::BlockIdFromName(const std::string &name) const
+{
+  auto it = mBlockNames.find(name);
+  if (it != mBlockNames.end())
+  {
+    return{ it->second };
+  }
+
+  return{};
+}
+
+bool BlocksDataBase::AddBlock(const std::string &name, BlockId id, std::unique_ptr<BlockStaticPart> static_part)
+{
+  if (mBlocks[id] || BlockIdFromName(name))
+    return false;
+  
+  mBlocks[id] = std::move(static_part);
+  mBlockNames.emplace(name, id);
+  return true;
 }
