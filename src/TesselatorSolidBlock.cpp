@@ -121,3 +121,8 @@ void TesselatorSolidBlock::SetScale(Float scale)
     mVertexData[i] = gVertexData[i] * scale;
   }
 }
+
+bool TesselatorSolidBlock::UseTesselatorData() const
+{
+  return false;
+}

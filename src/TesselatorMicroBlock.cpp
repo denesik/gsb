@@ -28,27 +28,9 @@ const TessMicroBlockData & TesselatorMicroBlock::ToMicroblockData(const Tesselat
   return reinterpret_cast<const TessMicroBlockData &>(data);
 }
 
-TesselatorMicroBlock::TesselatorMicroBlock(size_t size)
-  : Tesselator(Tesselator::TesselatorType::MICRO_BLOCK), mSize(size)
+
+TesselatorMicroBlock &TesselatorMicroBlock::Build()
 {
-  mData.resize(mSize * mSize * mSize);
-}
-
-
-TesselatorMicroBlock::~TesselatorMicroBlock()
-{
-}
-
-TesselatorMicroBlock & TesselatorMicroBlock::SetTexture(const Magnum::Range2D &range, SideFlags side /*= SideFlags::ALL*/)
-{
-  for (int i = 0; i < 6; ++i)
-  {
-    if (side & (1 << i))
-    {
-      mTextureCoord[i] = range;
-    }
-  }
-
   for (MBPosType z = 0; z < mSize; z++)
     for (MBPosType y = 0; y < mSize; y++)
       for (MBPosType x = 0; x < mSize; x++)
@@ -61,6 +43,36 @@ TesselatorMicroBlock & TesselatorMicroBlock::SetTexture(const Magnum::Range2D &r
         mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ mSize - x - 1, z }), mTextureCoord[SideFlagIndex(SideFlags::TOP)]), SideFlags::TOP);
         mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ mSize - x - 1, mSize - z - 1 }), mTextureCoord[SideFlagIndex(SideFlags::BOTTOM)]), SideFlags::BOTTOM);
       }
+  return *this;
+}
+
+TesselatorMicroBlock::TesselatorMicroBlock(size_t size)
+  : Tesselator(Tesselator::TesselatorType::MICRO_BLOCK)
+{
+  SetSize(size);
+}
+
+
+TesselatorMicroBlock::~TesselatorMicroBlock()
+{
+}
+
+TesselatorMicroBlock & TesselatorMicroBlock::SetSize(size_t size)
+{
+  mSize = size;
+  mData.resize(mSize * mSize * mSize);
+  return *this;
+}
+
+TesselatorMicroBlock & TesselatorMicroBlock::SetTexture(const Magnum::Range2D &range, SideFlags side /*= SideFlags::ALL*/)
+{
+  for (int i = 0; i < 6; ++i)
+  {
+    if (side & (1 << i))
+    {
+      mTextureCoord[i] = range;
+    }
+  }
 
   return *this;
 }
@@ -79,5 +91,29 @@ void TesselatorMicroBlock::PushBack(const TesselatorData &microblock_data, std::
         pos + WPos(FromIndex(i)) *scale);
     }
   }
+}
+
+void TesselatorMicroBlock::JsonLoad(const rapidjson::Value & val, const TextureAtlas &atlas)
+{
+  if (val.HasMember("tex") && val["tex"].IsArray() && val["tex"].Size() == 6)
+  {
+    const rapidjson::Value &arr = val["tex"];
+    SetTexture(atlas.GetTextureCoord(arr[0].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), BACK);
+    SetTexture(atlas.GetTextureCoord(arr[1].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), FRONT);
+    SetTexture(atlas.GetTextureCoord(arr[2].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), RIGHT);
+    SetTexture(atlas.GetTextureCoord(arr[3].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), LEFT);
+    SetTexture(atlas.GetTextureCoord(arr[4].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), TOP);
+    SetTexture(atlas.GetTextureCoord(arr[5].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), BOTTOM);
+  }
+  if (val.HasMember("size") && val["size"].IsUint())
+  {
+    SetSize(val["size"].GetInt());
+  }
+  Build();
+}
+
+bool TesselatorMicroBlock::UseTesselatorData() const
+{
+  return true;
 }
 

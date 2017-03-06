@@ -74,7 +74,8 @@ void JsonDataBase::Load(const TextureAtlas &atlas, BlocksDataBase &db) const
             LOG(error) << "record #" << i + 1 << " from " << file << " has no \"id\"";
 
           LOG(trace) << "\"" << name << "\" parsing";
-          auto b = std::make_unique<BlockStaticPart>();
+          auto static_part = std::make_unique<BlockStaticPart>();
+          std::unique_ptr<BlockDynamicPart> dynamic_part = nullptr;
 
           if(val.HasMember("tesselator"))
           {
@@ -85,7 +86,13 @@ void JsonDataBase::Load(const TextureAtlas &atlas, BlocksDataBase &db) const
               std::unique_ptr<Tesselator> tess = TessellatorFactory::Get().Create(tess_type);
               tess->JsonLoad(tess_json, atlas);
 
-              b->SetTesselator(std::move(tess));
+              static_part->SetTesselator(std::move(tess));
+
+              if (static_part->GetTesselator()->UseTesselatorData())
+              {
+                dynamic_part = std::make_unique<BlockDynamicPart>();
+                dynamic_part->mTesselatorData = std::make_unique<TesselatorData>();
+              }
             } 
           }
 
@@ -127,7 +134,7 @@ void JsonDataBase::Load(const TextureAtlas &atlas, BlocksDataBase &db) const
             }
           }*/
 
-          db.AddBlock(name, id, std::move(b), nullptr);
+          db.AddBlock(name, id, std::move(static_part), std::move(dynamic_part));
         }
       }
     }

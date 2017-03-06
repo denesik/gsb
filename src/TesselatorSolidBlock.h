@@ -24,6 +24,8 @@ public:
 
   void SetScale(Magnum::Float scale);
 
+  bool UseTesselatorData() const override;
+
 private:
   Magnum::Range2D mTextureCoord[6];
   std::array<Magnum::Vector3, 24> mVertexData;

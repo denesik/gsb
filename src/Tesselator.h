@@ -40,6 +40,7 @@ public:
   TesselatorType Type() const;
 
   virtual void JsonLoad(const rapidjson::Value & val, const TextureAtlas &atlas) = 0;
+  virtual bool UseTesselatorData() const = 0;
 
 private:
   const TesselatorType mType;

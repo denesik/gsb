@@ -23,11 +23,15 @@ public:
   TesselatorMicroBlock(size_t size = 4);
   ~TesselatorMicroBlock();
 
+  TesselatorMicroBlock &SetSize(size_t size);
   TesselatorMicroBlock &SetTexture(const Magnum::Range2D &range, SideFlags side = ALL);
+  TesselatorMicroBlock &Build();
 
   void PushBack(const TesselatorData &microblock_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side = ALL) const;
 
-  void JsonLoad(const rapidjson::Value & val, const TextureAtlas &atlas) override {};
+  void JsonLoad(const rapidjson::Value & val, const TextureAtlas &atlas) override;
+
+  bool UseTesselatorData() const override;
 
   IndexType ToIndex(const MBPos &pos) const
   {
@@ -58,7 +62,7 @@ public:
 private:
   std::vector<TesselatorSolidBlock> mData;
   Magnum::Range2D mTextureCoord[6];
-  const MBPosType mSize;
+  MBPosType mSize;
 
 private:
   Magnum::Range2D TextureCoord(const Magnum::Vector2i &pos) const
@@ -69,5 +73,6 @@ private:
   }
 };
 
+REGISTER_TESSELLATOR(TesselatorMicroBlock)
 
 #endif // TesselatorMicroBlock_h__

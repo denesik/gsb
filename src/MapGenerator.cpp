@@ -46,8 +46,8 @@ bool solid(float tx, float ty, float tz)
 void PrimitivaMountains::Generate(Sector &sector)
 {
   BlockId air = 0;
-  BlockId grass = 2;//db.BlockIdFromName("grass");
-  BlockId grass_micro = 3;
+  BlockId grass = db.BlockIdFromName("grass").value_or(0);
+  BlockId grass_micro = db.BlockIdFromName("grass_micro").value_or(0);
 
 
   auto sw = cs::StoW(sector.GetPos());

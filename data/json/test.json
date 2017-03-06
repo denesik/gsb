@@ -1,5 +1,36 @@
 [
   {
+	"name": "grass",
+    "id": 2,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/grass_side.tga",
+        "data/grass_side.tga",
+        "data/grass_side.tga",
+        "data/grass_side.tga",
+        "data/grass_top.tga",
+        "data/dirt.tga"
+      ]
+    }
+  },
+    {
+	"name": "grass_micro",
+    "id": 3,
+    "tesselator": {
+      "type": "TesselatorMicroBlock",
+	  "size": 2,
+      "tex": [
+        "data/grass_side.tga",
+        "data/grass_side.tga",
+        "data/grass_side.tga",
+        "data/grass_side.tga",
+        "data/grass_top.tga",
+        "data/dirt.tga"
+      ]
+    }
+  },
+  {
 	"name": "stone",
     "id": 4,
     "tesselator": {
