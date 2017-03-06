@@ -2,8 +2,9 @@
 #include "PerlinNoise.h"
 #include "Sector.h"
 #include "TesselatorMicroBlock.h"
+#include "IMapGenerator.h"
 
-PrimitivaMountains::PrimitivaMountains(const BlocksDataBase &db, float power) : db(db), IMapGenerator(db), mPower(power)
+PrimitivaMountains::PrimitivaMountains(const BlocksDataBase &db, float power) : IMapGenerator(db), mPower(power)
 {
 }
 
@@ -46,8 +47,8 @@ bool solid(float tx, float ty, float tz)
 void PrimitivaMountains::Generate(Sector &sector)
 {
   BlockId air = 0;
-  BlockId grass = db.BlockIdFromName("grass").value_or(0);
-  BlockId grass_micro = db.BlockIdFromName("grass_micro").value_or(0);
+  BlockId grass = m_Db.BlockIdFromName("grass").value_or(0);
+  BlockId grass_micro = m_Db.BlockIdFromName("grass_micro").value_or(0);
 
 
   auto sw = cs::StoW(sector.GetPos());
@@ -64,7 +65,7 @@ void PrimitivaMountains::Generate(Sector &sector)
             sector.CreateBlock({ i,j,k }, grass_micro);
 
             auto &data = TesselatorMicroBlock::ToMicroblockData(*sector.GetTesselatorData({ i,j,k }));
-            const auto &tess = static_cast<const TesselatorMicroBlock &>(*db.GetBlockStaticPart(grass_micro)->GetTesselator());
+            const auto &tess = static_cast<const TesselatorMicroBlock &>(*m_Db.GetBlockStaticPart(grass_micro)->GetTesselator());
 
             for (auto k1 = 0; k1 < tess.Size(); ++k1)
             {

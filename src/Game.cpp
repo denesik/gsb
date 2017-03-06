@@ -16,6 +16,7 @@
 #include "IMapGenerator.h"
 #include "MapLoader.h"
 #include "tools/Brezenham3D.h"
+#include "WorldGeneratorFlat.h"
 
 Game::Game(const Arguments & arguments)
   : Platform::Application{ arguments, Configuration{}.setTitle("Magnum Textured Triangle Example").setWindowFlags(Configuration::WindowFlag::Resizable) }
@@ -26,8 +27,9 @@ Game::Game(const Arguments & arguments)
   mBlocksDataBase->ApplyLoader(std::make_unique<JsonDataBase>("data/json"));
 
   mWorld = std::make_unique<World>(*mBlocksDataBase);
-
-  auto mapgen = std::make_unique<MapLoader>(std::make_unique<PrimitivaMountains>(*mBlocksDataBase, 1.f));
+  
+  //auto mapgen = std::make_unique<MapLoader>(std::make_unique<PrimitivaMountains>(*mBlocksDataBase, 1.f));
+  auto mapgen = std::make_unique<MapLoader>(std::make_unique<WorldGeneratorFlat>(*mBlocksDataBase));
   mapgen->SetWorld(mWorld.get());
 
   mWorld->SetLoader(std::move(mapgen));
@@ -39,7 +41,7 @@ Game::Game(const Arguments & arguments)
   setMouseLocked(true);
 
   mCamera.SetResolution(defaultFramebuffer.viewport().size());
-  mCamera.Move({0, 40, 0});
+  mCamera.Move({0, 70, 0});
 }
 
 void Game::drawEvent()

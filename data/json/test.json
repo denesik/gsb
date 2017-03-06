@@ -14,7 +14,7 @@
       ]
     }
   },
-    {
+  {
 	"name": "grass_micro",
     "id": 3,
     "tesselator": {
@@ -52,6 +52,21 @@
       "type": "TesselatorSolidBlock",
       "tex": [
         "data/test_white.tga","data/test_white.tga","data/test_white.tga","data/test_white.tga","data/test_white.tga","data/test_white.tga"
+      ]
+    }
+  },
+  {
+	"name": "dirt",
+    "id": 6,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/dirt.tga",
+        "data/dirt.tga",
+        "data/dirt.tga",
+        "data/dirt.tga",
+        "data/dirt.tga",
+        "data/dirt.tga"
       ]
     }
   }
