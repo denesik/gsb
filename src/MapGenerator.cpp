@@ -45,6 +45,11 @@ bool solid(float tx, float ty, float tz)
 
 void PrimitivaMountains::Generate(Sector &sector)
 {
+  BlockId air = 0;
+  BlockId grass = 2;//db.BlockIdFromName("grass");
+  BlockId grass_micro = 3;
+
+
   auto sw = cs::StoW(sector.GetPos());
   for (auto k = 0; k < SECTOR_SIZE; ++k)
   {
@@ -56,12 +61,10 @@ void PrimitivaMountains::Generate(Sector &sector)
         {
           if (!solid(sw.x() + i, sw.y() + j + 1, sw.z() + k))
           {
-            sector.SetBlockId({ i,j,k }, 3);
+            sector.CreateBlock({ i,j,k }, grass_micro);
 
-            auto dyn = std::make_unique<BlockDynamicPart>();
-            dyn->mTesselatorData = std::make_unique<TesselatorData>();
-            auto &data = TesselatorMicroBlock::ToMicroblockData(*dyn->mTesselatorData);
-            const auto &tess = static_cast<const TesselatorMicroBlock &>(*db.GetBlockStaticPart(3)->GetTesselator());
+            auto &data = TesselatorMicroBlock::ToMicroblockData(*sector.GetTesselatorData({ i,j,k }));
+            const auto &tess = static_cast<const TesselatorMicroBlock &>(*db.GetBlockStaticPart(grass_micro)->GetTesselator());
 
             for (auto k1 = 0; k1 < tess.Size(); ++k1)
             {
@@ -73,13 +76,12 @@ void PrimitivaMountains::Generate(Sector &sector)
                 }
               }
             }
-            sector.SetBlockDynamic({ i,j,k }, std::move(dyn));
           }
           else
-            sector.SetBlockId({ i,j,k }, 2);
+            sector.CreateBlock({ i,j,k }, grass);
         }
         else
-          sector.SetBlockId({ i,j,k }, 0);
+          sector.CreateBlock({ i,j,k }, air);
       }
     }
   }

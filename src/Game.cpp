@@ -84,7 +84,7 @@ void Game::drawEvent()
   debugLines.addLine(mCamera.Position(), mCamera.Position() + ray * 1, { 1,1,1 });
 
   if (ImGui::IsMouseDown(0))
-    mWorld->SetBlockId(std::get<0>(picked), 0);
+    mWorld->CreateBlock(std::get<0>(picked), 0);
 
   /*if (rand() % 10 == 0)
   for(int i = 0; i < 100; i++) mWorld->SetBlockId({ rand() % 100 ,rand() % 100 ,rand() % 100 }, 0);*/

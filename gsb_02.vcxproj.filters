@@ -111,6 +111,9 @@
     <ClCompile Include="src\BlockDynamicPart.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="src\WorldGeneratorFlat.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -208,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="src\BlockDynamicPart.h">
       <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\WorldGeneratorFlat.h">
+      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

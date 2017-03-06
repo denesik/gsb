@@ -69,14 +69,14 @@ BlockId World::GetBlockId(const WBPos& pos) const
   return{};
 }
 
-void World::SetBlockId(const WBPos& pos, BlockId id)
+void World::CreateBlock(const WBPos& pos, BlockId id)
 {
   auto spos = cs::WBtoS(pos);
   auto sector = GetSector(spos);
   if (!sector.expired())
   {
     auto shared = sector.lock();
-    return shared->SetBlockId(cs::WBtoSB(pos), id);
+    return shared->CreateBlock(cs::WBtoSB(pos), id);
   }
 }
 

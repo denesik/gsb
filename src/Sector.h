@@ -16,6 +16,7 @@
 #include <Magnum/Math/Range.h>
 #include <memory>
 #include "BlockDynamicPart.h"
+#include <MagnumExternal/Optional/optional.hpp>
 
 class IMapGenerator;
 class World;
@@ -39,10 +40,10 @@ public:
   void ApplyGenerator(IMapGenerator &generator);
 
   BlockId GetBlockId(SBPos pos) const;
-  void SetBlockId(SBPos pos, BlockId id);
 
-  void SetBlockDynamic(SBPos pos, std::unique_ptr<BlockDynamicPart> dyn);
-  BlockDynamicPart & GetBlockDynamic(SBPos pos);
+  void CreateBlock(SBPos pos, BlockId id);
+
+  std::optional<TesselatorData &> GetTesselatorData(SBPos pos);
 
 private:
   std::array<BlockId, SECTOR_CAPACITY> mStaticBlocks;

@@ -9,13 +9,7 @@ Sector::Sector(World &world, const SPos &pos)
   : mWorld(world), mPos(pos)
 {
   // generate sector
-  mStaticBlocks.fill(2);
-//   mStaticBlocks[cs::SBtoBI({0, 31, 0})] = 3;
-//   mDinamicBlocks[cs::SBtoBI({ 0, 31, 0 })] = std::make_unique<BlockDinamicPart>();
-//   mDinamicBlocks[cs::SBtoBI({ 0, 31, 0 })]->mTesselatorData = std::make_unique<TesselatorData>();
-//   auto &data = TesselatorMicroBlock::ToMicroblockData(*(mDinamicBlocks[cs::SBtoBI({ 0, 31, 0 })]->mTesselatorData));
-// 
-//   data[TesselatorMicroBlock::ToIndex({0, 2, 0})] = 1;
+  mStaticBlocks.fill(0);
 }
 
 
@@ -76,18 +70,15 @@ BlockId Sector::GetBlockId(SBPos pos) const
   return mStaticBlocks[cs::SBtoBI(pos)];
 }
 
-void Sector::SetBlockId(SBPos pos, BlockId id)
+void Sector::CreateBlock(SBPos pos, BlockId id)
 {
-  mStaticBlocks[cs::SBtoBI(pos)] = id;
+  auto block = mWorld.GetBlocksDataBase().CreateBlock(id);
+  mStaticBlocks[cs::SBtoBI(pos)] = std::get<0>(block);
+  mDinamicBlocks[cs::SBtoBI(pos)] = std::move(std::get<1>(block));
   mNeedCompile = true;
 }
 
-void Sector::SetBlockDynamic(SBPos pos, std::unique_ptr<BlockDynamicPart> dyn)
+std::optional<TesselatorData &> Sector::GetTesselatorData(SBPos pos)
 {
-  mDinamicBlocks[cs::SBtoBI(pos)] = std::move(dyn);
-}
-
-BlockDynamicPart& Sector::GetBlockDynamic(SBPos pos)
-{
-  return *mDinamicBlocks[cs::SBtoBI(pos)];
+  return *mDinamicBlocks[cs::SBtoBI(pos)]->mTesselatorData;
 }
