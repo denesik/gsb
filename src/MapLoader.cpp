@@ -1,22 +1,50 @@
 #include "MapLoader.h"
 #include "Sector.h"
 
+/*  mThread = std::thread([this]()
+  {
+    while (!mClose)
+    {
+      std::unique_lock<std::mutex> lock(mMutex);
+      if (mRunned)
+      {
+        Process();
+        mRunned = false;
+      }
+      mCv.wait(lock);
+    }
+  });
+}
+
+SectorCompiler::~SectorCompiler()
+{
+  mClose = true;
+  mCv.notify_one();
+  mThread.join();
+}*/
+
 MapLoader::MapLoader(std::unique_ptr<IMapGenerator> generator) : mGenerator(std::move(generator))
 {
-  mUpdate = std::thread([this]()
+  mThread = std::thread([this]()
   {
-    while (!mUpdateEnd)
+    while (!mThreadStop)
     {
-      Update();
-      std::this_thread::sleep_for(std::chrono::milliseconds(10));
+      std::unique_lock<std::mutex> lock(mMutex);
+      if (mRunned)
+      {
+        Process();
+        mRunned = false;
+      }
+      mCv.wait(lock);
     }
   });
 }
 
 MapLoader::~MapLoader()
 {
-  mUpdateEnd = true;
-  mUpdate.join();
+  mThreadStop = true;
+  mCv.notify_one();
+  mThread.join();
 }
 
 std::shared_ptr<Sector> MapLoader::GetSector(SPos pos)
@@ -41,12 +69,20 @@ std::shared_ptr<Sector> MapLoader::GetSector(SPos pos)
     if (find == mQueue.end())
       mQueue.emplace(pos);
     mQueueLock.unlock();
+
+    Run();
   }
 
   return{};
 }
 
-void MapLoader::Update()
+void MapLoader::Run()
+{
+    mRunned = true;
+    mCv.notify_one();
+}
+
+void MapLoader::Process()
 {
   mQueueLock.lock();
   if(mQueue.empty())

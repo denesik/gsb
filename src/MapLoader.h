@@ -17,8 +17,10 @@ public:
 
   std::shared_ptr<Sector> GetSector(SPos pos) override;
 
+  void Run();
+
 private:
-  void Update();
+  void Process();
 
   std::unique_ptr<IMapGenerator> mGenerator;
 
@@ -28,6 +30,10 @@ private:
   std::unordered_set<SPos> mQueue;
   std::mutex mQueueLock;
 
-  std::thread mUpdate;
-  std::atomic<bool> mUpdateEnd = false;
+  std::thread mThread;
+  std::atomic<bool> mThreadStop = false;  
+
+  std::mutex mMutex;
+  std::condition_variable mCv;
+  std::atomic<bool> mRunned = false;
 };
