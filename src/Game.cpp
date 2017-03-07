@@ -35,13 +35,13 @@ Game::Game(const Arguments & arguments)
   mWorld->SetLoader(std::move(mapgen));
 
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{});
-  mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 1);
+  mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 0);
 
   setSwapInterval(0);
   setMouseLocked(true);
 
   mCamera.SetResolution(defaultFramebuffer.viewport().size());
-  mCamera.Move({0, 70, 0});
+  mCamera.Move({0, 0, 0});
 }
 
 void Game::drawEvent()
@@ -53,7 +53,7 @@ void Game::drawEvent()
 
 	defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
 
-  mCamera.Move(mCameraVelocity * 0.003f);
+  mCamera.Move(mCameraVelocity * 0.006f);
   mCamera.Rotate(mCameraAngle * 0.003f);
 
   /*
@@ -69,24 +69,47 @@ void Game::drawEvent()
     mCallback(std::make_unique<GameEventRotate>(glm::vec3(val / 200.f, 0.0f, 0.0f)));
   }*/
 
-  auto ray = mCamera.Ray({ ImGui::GetMousePos().x, ImGui::GetMousePos().y });
-  auto picked = Brezenham::PickFirst(mCamera.Position(), ray, 100, [&](Magnum::Vector3i pos)
+  //auto ray = mCamera.Ray({ ImGui::GetMousePos().x, ImGui::GetMousePos().y });
+  auto ray = mCamera.Ray({ static_cast<Float>(defaultFramebuffer.viewport().centerX()) , 
+    static_cast<Float>(defaultFramebuffer.viewport().centerY()) });
+//   auto picked = Brezenham::PickFirst(mCamera.Position(), ray, 100, [&](Magnum::Vector3i pos)
+//   {
+//     return mWorld->GetBlockId(pos) != 0;
+//   }, &debugLines);
+
+  auto blocks = voxel_traversal(mCamera.Position(), mCamera.Position() + ray.normalized() * 100.0f);
+  
+  Vector3i picked;
+  for (auto &i : blocks)
   {
-    return mWorld->GetBlockId(pos) != 0;
-  }, &debugLines);
+    if (mWorld->GetBlockId(i) != 0)
+    {
+      picked = i;
+      break;
+    }
+  }
 
-  debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 2,1,1 }, { 1,1,1 });
-  debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 1,2,1 }, { 1,1,1 });
-  debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 1,1,2 }, { 1,1,1 });
+  debugLines.addLine(picked, picked + Vector3i{ 1,0,0 }, { 1,1,1 });
+  debugLines.addLine(picked, picked + Vector3i{ 0,1,0 }, { 1,1,1 });
+  debugLines.addLine(picked, picked + Vector3i{ 0,0,1 }, { 1,1,1 });
 
-  debugLines.addLine(std::get<0>(picked) + Vector3i{ 2,2,2 }, std::get<0>(picked) + Vector3i{ 1,2,2 }, { 1,1,1 });
-  debugLines.addLine(std::get<0>(picked) + Vector3i{ 2,2,2 }, std::get<0>(picked) + Vector3i{ 2,1,2 }, { 1,1,1 });
-  debugLines.addLine(std::get<0>(picked) + Vector3i{ 2,2,2 }, std::get<0>(picked) + Vector3i{ 2,2,1 }, { 1,1,1 });
+  debugLines.addLine(picked + Vector3i{ 1,1,1 }, picked + Vector3i{ 0,1,1 }, { 1,1,1 });
+  debugLines.addLine(picked + Vector3i{ 1,1,1 }, picked + Vector3i{ 1,0,1 }, { 1,1,1 });
+  debugLines.addLine(picked + Vector3i{ 1,1,1 }, picked + Vector3i{ 1,1,0 }, { 1,1,1 });
+
+
+//   debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 1,0,0 }, { 1,1,1 });
+//   debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 0,1,0 }, { 1,1,1 });
+//   debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 0,0,1 }, { 1,1,1 });
+// 
+//   debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 0,1,1 }, { 1,1,1 });
+//   debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 1,0,1 }, { 1,1,1 });
+//   debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 1,1,0 }, { 1,1,1 });
 
   debugLines.addLine(mCamera.Position(), mCamera.Position() + ray * 1, { 1,1,1 });
 
   if (ImGui::IsMouseDown(0))
-    mWorld->CreateBlock(std::get<0>(picked), 0);
+    mWorld->CreateBlock(picked, 0);
 
   /*if (rand() % 10 == 0)
   for(int i = 0; i < 100; i++) mWorld->SetBlockId({ rand() % 100 ,rand() % 100 ,rand() % 100 }, 0);*/

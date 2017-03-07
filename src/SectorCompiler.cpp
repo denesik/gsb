@@ -78,49 +78,49 @@ const std::vector<Magnum::UnsignedInt> & SectorCompiler::GetIndexData() const
   return mIndexData;
 }
 
-void SectorCompiler::ProcessSolidBlock(IndexType index, const STPos &pos)
+void SectorCompiler::ProcessSolidBlock(IndexType index, const STPos &tpos)
 {
   // Рисовать сторону если тесселятор у смежного блока отсутствует или другого типа.
   int side = SideFlags::NONE;
   {
-    const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Left(pos))]);
+    const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Left(tpos))]);
     if (!block || !block->GetTesselator() || block->GetTesselator()->Type() != Tesselator::TesselatorType::SOLID_BLOCK)
       side |= SideFlags::LEFT;
   }
   {
-    const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Right(pos))]);
+    const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Right(tpos))]);
     if (!block || !block->GetTesselator() || block->GetTesselator()->Type() != Tesselator::TesselatorType::SOLID_BLOCK)
       side |= SideFlags::RIGHT;
   }
   {
-    const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Top(pos))]);
+    const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Top(tpos))]);
     if (!block || !block->GetTesselator() || block->GetTesselator()->Type() != Tesselator::TesselatorType::SOLID_BLOCK)
       side |= SideFlags::TOP;
   }
   {
-    const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Bottom(pos))]);
+    const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Bottom(tpos))]);
     if (!block || !block->GetTesselator() || block->GetTesselator()->Type() != Tesselator::TesselatorType::SOLID_BLOCK)
       side |= SideFlags::BOTTOM;
   }
   {
-    const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Back(pos))]);
+    const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Back(tpos))]);
     if (!block || !block->GetTesselator() || block->GetTesselator()->Type() != Tesselator::TesselatorType::SOLID_BLOCK)
       side |= SideFlags::BACK;
   }
   {
-    const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Front(pos))]);
+    const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Front(tpos))]);
     if (!block || !block->GetTesselator() || block->GetTesselator()->Type() != Tesselator::TesselatorType::SOLID_BLOCK)
       side |= SideFlags::FRONT;
   }
 
   const auto *tesselator = static_cast<const TesselatorSolidBlock *>(mDataBase.GetBlockStaticPart(mTesselators[index])->GetTesselator().get());
-  tesselator->PushBack(mVertexData, mIndexData, mIndexOffset, WPos(pos), static_cast<SideFlags>(side));
+  tesselator->PushBack(mVertexData, mIndexData, mIndexOffset, WPos(cs::TItoSB(index)), static_cast<SideFlags>(side));
 }
 
-void SectorCompiler::ProcessMicroBlock(IndexType index, const STPos &pos)
+void SectorCompiler::ProcessMicroBlock(IndexType index, const STPos &tpos)
 {
   const auto *tesselator = static_cast<const TesselatorMicroBlock *>(mDataBase.GetBlockStaticPart(mTesselators[index])->GetTesselator().get());
-  tesselator->PushBack(mTesselatorsData[index], mVertexData, mIndexData, mIndexOffset, WPos(pos));
+  tesselator->PushBack(mTesselatorsData[index], mVertexData, mIndexData, mIndexOffset, WPos(cs::TItoSB(index)));
 }
 
 void SectorCompiler::Process()

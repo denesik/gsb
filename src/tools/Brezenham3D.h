@@ -1,6 +1,9 @@
 #pragma once
 #include <Magnum/SceneGraph/AbstractFeature.h>
 #include "CoordSystem.h"
+#include <vector>
+#include <Magnum/Magnum.h>
+#include <Magnum/Math/Vector2.h>
 
 namespace Magnum {
   class DebugLines;
@@ -17,3 +20,5 @@ public:
     Magnum::DebugLines * lines_render = nullptr
   );
 };
+
+std::vector<Magnum::Vector3i> voxel_traversal(const Magnum::Vector3 &ray_start, const Magnum::Vector3 &ray_end);

@@ -56,13 +56,14 @@ void UpdatableSectors::Remove(const SPos &pos)
 
 void UpdatableSectors::Update()
 {
-  const double N = 10.0;
+  const double N = 60.0;
   bool updating = false;
   if (mTimer.Elapsed() > 1.0 / N)
   {
     mTimer.Start();
     updating = true;
   }
+  updating = true;
 
   if (updating)
   for (auto &site : mSectors)

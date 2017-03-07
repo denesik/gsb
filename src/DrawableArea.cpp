@@ -48,6 +48,7 @@ void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
     mTimer.Start();
     loading = true;
   }
+  loading = true;
 
   const auto &frustum = camera.Frustum(); 
 
