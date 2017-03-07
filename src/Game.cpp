@@ -40,8 +40,9 @@ Game::Game(const Arguments & arguments)
   setSwapInterval(0);
   setMouseLocked(true);
 
-  mCamera.SetResolution(defaultFramebuffer.viewport().size());
-  mCamera.Move({0, 0, 0});
+  mCamera = std::make_unique<Camera>(mWorld->mPlayer);
+  mCamera->SetViewport(defaultFramebuffer.viewport());
+  mWorld->mPlayer.SetPos({ 0, 70, 0 });
 }
 
 void Game::drawEvent()
@@ -53,9 +54,9 @@ void Game::drawEvent()
 
 	defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
 
-  mCamera.Move(mCameraVelocity * 0.006f);
-  mCamera.Rotate(mCameraAngle * 0.003f);
-
+  mWorld->mPlayer.Move(mCameraVelocity * 0.006f);
+  mWorld->mPlayer.Rotate(mCameraAngle * 0.003f);
+  mWorld->mPlayer.Update();
   /*
   float val = mMouse.DeltaX();
   if (mMouse.GetCentring())
@@ -70,14 +71,14 @@ void Game::drawEvent()
   }*/
 
   //auto ray = mCamera.Ray({ ImGui::GetMousePos().x, ImGui::GetMousePos().y });
-  auto ray = mCamera.Ray({ static_cast<Float>(defaultFramebuffer.viewport().centerX()) , 
+  auto ray = mCamera->Ray({ static_cast<Float>(defaultFramebuffer.viewport().centerX()) , 
     static_cast<Float>(defaultFramebuffer.viewport().centerY()) });
 //   auto picked = Brezenham::PickFirst(mCamera.Position(), ray, 100, [&](Magnum::Vector3i pos)
 //   {
 //     return mWorld->GetBlockId(pos) != 0;
 //   }, &debugLines);
 
-  auto blocks = voxel_traversal(mCamera.Position(), mCamera.Position() + ray.normalized() * 100.0f);
+  auto blocks = voxel_traversal(mWorld->mPlayer.Pos(), mWorld->mPlayer.Pos() + ray.normalized() * 100.0f);
   
   Vector3i picked;
   for (auto &i : blocks)
@@ -106,7 +107,7 @@ void Game::drawEvent()
 //   debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 1,0,1 }, { 1,1,1 });
 //   debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 1,1,0 }, { 1,1,1 });
 
-  debugLines.addLine(mCamera.Position(), mCamera.Position() + ray * 1, { 1,1,1 });
+  debugLines.addLine(mWorld->mPlayer.Pos(), mWorld->mPlayer.Pos() + ray * 1, { 1,1,1 });
 
   if (ImGui::IsMouseDown(0))
     mWorld->CreateBlock(picked, 0);
@@ -117,10 +118,10 @@ void Game::drawEvent()
   mShader.setColor({ 1.0f, 0.7f, 0.7f })
     .setTexture(atlas.Texture());
 
-  mDrawableArea->Draw(mCamera, mShader);
+  mDrawableArea->Draw(*mCamera, mShader);
   mWorld->GetUpdatableSectors().Update();
 
-  debugLines.draw(mCamera.Project() * mCamera.View());
+  debugLines.draw(mCamera->Project() * mCamera->View());
   debugLines.reset();
 
   //if (false)
@@ -176,7 +177,7 @@ void Game::drawEvent()
 void Game::viewportEvent(const Vector2i& size)
 {
   defaultFramebuffer.setViewport({ {}, size });
-  mCamera.SetResolution(size);
+  mCamera->SetViewport(defaultFramebuffer.viewport());
 }
 
 void Game::keyPressEvent(KeyEvent& event)
@@ -238,8 +239,8 @@ void Game::mouseMoveEvent(MouseMoveEvent& event)
 {
   if (centering)
   {
-    mCamera.Rotate(Vector3(0.0f, -event.relativePosition().y() / 800.f, 0.0f));
-    mCamera.Rotate(Vector3(-event.relativePosition().x() / 800.f, 0.0f, 0.0f));
+    mWorld->mPlayer.Rotate(Vector3(0.0f, -event.relativePosition().y() / 800.f, 0.0f));
+    mWorld->mPlayer.Rotate(Vector3(-event.relativePosition().x() / 800.f, 0.0f, 0.0f));
   }
   mImguiPort.mouseMoveEvent(event);
 }

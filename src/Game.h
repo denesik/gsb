@@ -81,6 +81,6 @@ private:
   DebugLines debugLines;
   bool centering = true;
 
-  Camera mCamera;
+  std::unique_ptr<Camera> mCamera;
 };
 

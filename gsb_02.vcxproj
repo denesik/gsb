@@ -26,6 +26,7 @@
     <ClCompile Include="src\BlocksDataBase.cpp" />
     <ClCompile Include="src\BlockStaticPart.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Creature.cpp" />
     <ClCompile Include="src\DrawableArea.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\IMapLoader.cpp" />
@@ -47,7 +48,7 @@
     <ClCompile Include="src\tools\Brezenham3D.cpp" />
     <ClCompile Include="src\tools\DebugLines.cpp" />
     <ClCompile Include="src\tools\FpsCounter.cpp" />
-    <ClCompile Include="src\Transformation.cpp" />
+    <ClCompile Include="src\Movable.cpp" />
     <ClCompile Include="src\UpdatableArea.cpp" />
     <ClCompile Include="src\UpdatableSectors.cpp" />
     <ClCompile Include="src\World.cpp" />
@@ -59,6 +60,7 @@
     <ClInclude Include="src\BlockStaticPart.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\configure.h" />
+    <ClInclude Include="src\Creature.h" />
     <ClInclude Include="src\DrawableArea.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\IMapGenerator.h" />
@@ -82,7 +84,7 @@
     <ClInclude Include="src\tools\CoordSystem.h" />
     <ClInclude Include="src\tools\DebugLines.h" />
     <ClInclude Include="src\tools\FpsCounter.h" />
-    <ClInclude Include="src\Transformation.h" />
+    <ClInclude Include="src\Movable.h" />
     <ClInclude Include="src\UpdatableArea.h" />
     <ClInclude Include="src\UpdatableSectors.h" />
     <ClInclude Include="src\World.h" />

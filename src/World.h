@@ -9,6 +9,7 @@
 #include "UpdatableSectors.h"
 #include "IMapGenerator.h"
 #include "IMapLoader.h"
+#include "Creature.h"
 
 class World
 {
@@ -34,6 +35,8 @@ public:
   UpdatableSectors &GetUpdatableSectors();
 
   void SetLoader(std::unique_ptr<IMapLoader> loader);
+
+  Creature mPlayer;
 
 private:
   std::unordered_map<SPos, std::shared_ptr<Sector>> mSectors;

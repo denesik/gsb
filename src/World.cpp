@@ -3,7 +3,7 @@
 
 
 World::World(const BlocksDataBase &blocksDataBase)
-  : mBlocksDataBase(blocksDataBase), mUpdatableSectors(*this)
+  : mBlocksDataBase(blocksDataBase), mUpdatableSectors(*this), mPlayer(*this)
 {
 }
 

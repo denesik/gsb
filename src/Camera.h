@@ -5,40 +5,32 @@
 #include <Magnum/Magnum.h>
 #include <Magnum/Math/Quaternion.h>
 #include <Magnum/Math/Vector3.h>
-#include <Magnum/Math/Vector2.h>
 #include <Magnum/Math/Matrix4.h>
 #include <Magnum/Math/Frustum.h>
+#include <Magnum/Math/Vector2.h>
+#include "Movable.h"
+#include <Magnum/Math/Range.h>
 
-class Camera
+class Camera/* : public Movable*/
 {
 public:
-  Camera();
+  Camera(Movable &movable);
   ~Camera();
 
-  void SetResolution(const Magnum::Vector2i &size);
-  void Rotate(const Magnum::Vector3 &dir);
-  void Move(const Magnum::Vector3 &dist);
-  void LookAt(const Magnum::Vector3 &target);
+  void SetViewport(const Magnum::Range2Di &viewport);
 
   Magnum::Vector3 Unproject(Magnum::Vector2 pixel, float depth);
   Magnum::Vector3 Ray(Magnum::Vector2 pixel);
 
   Magnum::Matrix4 Project();
   Magnum::Matrix4 View();
-  Magnum::Vector3 Position() const;
 
   Magnum::Frustum Frustum();
 
 private:
-  Magnum::Quaternion mQuat;
-  Magnum::Vector3 mPos;
-  Magnum::Vector3 mDir;
+  Movable &mMovable;
 
-  Magnum::Vector3 mRight;
-  Magnum::Vector3 mForward;
-  Magnum::Vector3 mUp;
-
-  Magnum::Vector2 mResolution;
+  Magnum::Range2D mViewport;
   Magnum::Vector2 mFov;
 
   Magnum::Frustum mFrustum;

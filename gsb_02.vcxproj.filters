@@ -33,9 +33,6 @@
     <ClCompile Include="src\TextureAtlas.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="src\Transformation.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="src\BlocksDataBase.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
@@ -114,6 +111,12 @@
     <ClCompile Include="src\WorldGeneratorFlat.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="src\Movable.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Creature.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -141,9 +144,6 @@
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\Tesselator.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Transformation.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\StandartShader.h">
@@ -214,6 +214,12 @@
     </ClInclude>
     <ClInclude Include="src\WorldGeneratorFlat.h">
       <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Movable.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Creature.h">
+      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
