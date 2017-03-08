@@ -43,6 +43,9 @@ Game::Game(const Arguments & arguments)
   mCamera = std::make_unique<Camera>(mWorld->mPlayer);
   mCamera->SetViewport(defaultFramebuffer.viewport());
   mWorld->mPlayer.SetPos({ 0, 70, 0 });
+
+
+  mTimeline.start();
 }
 
 void Game::drawEvent()
@@ -170,7 +173,7 @@ void Game::drawEvent()
   }
 
   swapBuffers();
-
+  mTimeline.nextFrame();
   redraw();
 }
 
@@ -185,15 +188,15 @@ void Game::keyPressEvent(KeyEvent& event)
   mImguiPort.keyPressEvent(event);
 
   if (event.key() == KeyEvent::Key::A)
-    mCameraVelocity.x() = -10.0f;
+    mCameraVelocity.x() = -1000.0f * mTimeline.previousFrameDuration();
   if (event.key() == KeyEvent::Key::D)
-    mCameraVelocity.x() = 10.0f;
+    mCameraVelocity.x() = 1000.0f * mTimeline.previousFrameDuration();
 
   if (event.key() == KeyEvent::Key::W)
-    mCameraVelocity.z() = -10.0f;
+    mCameraVelocity.z() = -1000.0f * mTimeline.previousFrameDuration();
 
   if (event.key() == KeyEvent::Key::S)
-    mCameraVelocity.z() = 10.0f;
+    mCameraVelocity.z() = 1000.0f * mTimeline.previousFrameDuration();
 
   event.setAccepted();
 }

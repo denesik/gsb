@@ -29,6 +29,8 @@
 #include "Camera.h"
 #include "tools/DebugLines.h"
 
+#include <Magnum/Timeline.h>
+
 using namespace Magnum;
 
 class Game : public Platform::Application
@@ -71,6 +73,7 @@ private:
   Vector3 mCameraVelocity;
   Vector3 mCameraAngle;
 
+  Timeline mTimeline;
 
   std::unique_ptr<BlocksDataBase> mBlocksDataBase;
   std::unique_ptr<World> mWorld;
