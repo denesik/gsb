@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="agent">
+      <UniqueIdentifier>{a500637d-3ceb-4ef4-8ae1-e715a1a692d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="agent\agents">
+      <UniqueIdentifier>{0ce028bd-750c-496b-82da-7e15afb924f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Game.cpp">
@@ -117,6 +123,9 @@
     <ClCompile Include="src\Creature.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="src\agent\Agent.cpp">
+      <Filter>agent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -220,6 +229,12 @@
     </ClInclude>
     <ClInclude Include="src\Creature.h">
       <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="src\agent\Agent.hpp">
+      <Filter>agent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\agent\Agent.h">
+      <Filter>agent</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
