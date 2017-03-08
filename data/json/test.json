@@ -114,5 +114,12 @@
     "type": "Item",
     "id": 3,
     "name": "iron_ore"
+  },
+  {
+    "section": "recipe",
+    "type": "Recipe",
+    "id": 1,
+    "input": [["coal", 1], ["iron_ore", 1]],
+    "output": [["iron_ingot", 1]]
   }
 ]

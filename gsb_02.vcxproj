@@ -70,6 +70,7 @@
     <ClInclude Include="src\Creature.h" />
     <ClInclude Include="src\DrawableArea.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\IGui.h" />
     <ClInclude Include="src\IItem.h" />
     <ClInclude Include="src\IJsonSerializable.h" />
     <ClInclude Include="src\IMapGenerator.h" />
@@ -155,7 +156,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)..\3rdparty\msvc14_x86\include;$(ProjectDir)..\3rdparty\msvc14_x86\include\MagnumExternal\OpenGL;$(ProjectDir)..\3rdparty\msvc14_x86\include\SDL2;$(ProjectDir)..\3rdparty\msvc14_x86\include\GLFW;$(ProjectDir)rapidjson\include;$(ProjectDir)..\3rdparty\msvc14_x86\boost;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\3rdparty\msvc14_x86\include;$(ProjectDir)..\3rdparty\msvc14_x86\include\MagnumExternal\OpenGL;$(ProjectDir)..\3rdparty\msvc14_x86\include\SDL2;$(ProjectDir)..\3rdparty\msvc14_x86\include\GLFW;$(ProjectDir)rapidjson\include;$(ProjectDir)..\3rdparty\msvc14_x86\boost;$(ProjectDir)src\;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)..\3rdparty\msvc14_x86\lib;$(ProjectDir)..\3rdparty\msvc14_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
     <SourcePath>src;$(SourcePath)</SourcePath>
   </PropertyGroup>

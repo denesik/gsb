@@ -8,6 +8,7 @@
 #include <rapidjson/document.h>
 #include <memory>
 #include "IJsonSerializable.h"
+#include "IGui.h"
 
 namespace Magnum {
   class Timeline;
@@ -25,7 +26,7 @@ std::unique_ptr<T> make_agent(Args&&... args)
   return std::make_unique<T>(std::forward<Args>(args)...);
 }
 
-class GSB_NOVTABLE Agent : public IJsonSerializable
+class GSB_NOVTABLE Agent : public IJsonSerializable, public IGui
 {
 public:
   Agent() = default;
@@ -33,7 +34,7 @@ public:
 
   virtual PAgent Clone() const = 0;
   virtual AgentId Id() const = 0;
-  virtual void DrawGui(Magnum::Timeline dt);
+  void DrawGui(Magnum::Timeline dt) override;
 
   GameObject* Parent() const;
 

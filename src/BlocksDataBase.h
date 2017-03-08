@@ -42,7 +42,6 @@ public:
 
 private:
   std::array<std::tuple<std::unique_ptr<BlockStaticPart>, std::unique_ptr<BlockDynamicPart>>, 0xFFFF> mBlocks;
-  std::unordered_map<BlockId, std::vector<std::unique_ptr<Agent>>> mAgents;
   std::unordered_map<std::string, BlockId> mBlockNames;
 
   std::array<std::unique_ptr<IItem>, 0xFFFF> mItems;

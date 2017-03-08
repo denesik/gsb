@@ -272,5 +272,8 @@
     <ClInclude Include="src\IRecipe.h">
       <Filter>Файлы исходного кода\interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="src\IGui.h">
+      <Filter>Файлы исходного кода\interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

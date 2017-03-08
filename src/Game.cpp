@@ -101,9 +101,9 @@ void Game::drawEvent()
   {
     auto p = mWorld->GetBlockDynamic(picked);
     if (p)
-      mDrawModal = [p](Timeline dt) { p->DrawGui(dt); };
+      mDrawModal = picked;
     else
-      mDrawModal = nullptr;
+      mDrawModal = {};
   }
 
   mShader.setColor({ 1.0f, 0.7f, 0.7f })
@@ -157,11 +157,13 @@ void Game::drawEvent()
       ImGui::ShowTestWindow(&show_test_window);
     }
 
-    if (mDrawModal)
+    if (mDrawModal != WBPos{})
     {
       ImGui::SetNextWindowSize(ImVec2(500, 100), ImGuiSetCond_FirstUseEver);
       ImGui::Begin("Selected");
-      mDrawModal(mTimeline);
+      auto p = mWorld->GetBlockDynamic(mDrawModal);
+      if (p)
+        p->DrawGui(mTimeline);
       ImGui::End();
     }
     mImguiPort.Draw();

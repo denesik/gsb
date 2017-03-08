@@ -77,7 +77,7 @@ private:
 
   Timeline mTimeline;
 
-  std::function<void(Timeline)> mDrawModal;
+  WBPos mDrawModal;
 
   std::unique_ptr<BlocksDataBase> mBlocksDataBase;
   std::unique_ptr<World> mWorld;
