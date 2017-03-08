@@ -60,26 +60,9 @@ void Game::drawEvent()
   mWorld->mPlayer.Move(mCameraVelocity * 0.006f);
   mWorld->mPlayer.Rotate(mCameraAngle * 0.003f);
   mWorld->mPlayer.Update();
-  /*
-  float val = mMouse.DeltaX();
-  if (mMouse.GetCentring())
-  {
-    mCallback(std::make_unique<GameEventRotate>(glm::vec3(0.0f, 0.0f, val / 200.f)));
-  }
 
-  val = mMouse.DeltaY();
-  if (mMouse.GetCentring())
-  {
-    mCallback(std::make_unique<GameEventRotate>(glm::vec3(val / 200.f, 0.0f, 0.0f)));
-  }*/
-
-  //auto ray = mCamera.Ray({ ImGui::GetMousePos().x, ImGui::GetMousePos().y });
   auto ray = mCamera->Ray({ static_cast<Float>(defaultFramebuffer.viewport().centerX()) ,
     static_cast<Float>(defaultFramebuffer.viewport().centerY()) });
-  //   auto picked = Brezenham::PickFirst(mCamera.Position(), ray, 100, [&](Magnum::Vector3i pos)
-  //   {
-  //     return mWorld->GetBlockId(pos) != 0;
-  //   }, &debugLines);
 
   auto blocks = voxel_traversal(mWorld->mPlayer.Pos(), mWorld->mPlayer.Pos() + ray.normalized() * 100.0f);
 
@@ -101,15 +84,6 @@ void Game::drawEvent()
   debugLines.addLine(picked + Vector3i{ 1,1,1 }, picked + Vector3i{ 1,0,1 }, { 1,1,1 });
   debugLines.addLine(picked + Vector3i{ 1,1,1 }, picked + Vector3i{ 1,1,0 }, { 1,1,1 });
 
-
-  //   debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 1,0,0 }, { 1,1,1 });
-  //   debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 0,1,0 }, { 1,1,1 });
-  //   debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 0,0,1 }, { 1,1,1 });
-  // 
-  //   debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 0,1,1 }, { 1,1,1 });
-  //   debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 1,0,1 }, { 1,1,1 });
-  //   debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 1,1,0 }, { 1,1,1 });
-
   debugLines.addLine(mWorld->mPlayer.Pos(), mWorld->mPlayer.Pos() + ray * 1, { 1,1,1 });
 
   if (ImGui::IsMouseClicked(0))
@@ -120,9 +94,6 @@ void Game::drawEvent()
     else
       mDrawModal = nullptr;
   }
-
-  /*if (rand() % 10 == 0)
-  for(int i = 0; i < 100; i++) mWorld->SetBlockId({ rand() % 100 ,rand() % 100 ,rand() % 100 }, 0);*/
 
   mShader.setColor({ 1.0f, 0.7f, 0.7f })
     .setTexture(atlas.Texture());
