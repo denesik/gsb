@@ -10,6 +10,7 @@
 #include <bitset>
 #include <Magnum/Magnum.h>
 #include <Magnum/Math/Range.h>
+#include "IJsonSerializable.h"
 
 typedef std::bitset<8 * 8 * 8> TessMicroBlockData;
 

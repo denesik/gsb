@@ -1,12 +1,10 @@
 #pragma once
-#include <array>
-#include "tools/CoordSystem.h"
-#include "BlockStaticPart.h"
+#include <tools/Common.h>
 
 class Sector;
 class BlocksDataBase;
 
-class IMapGenerator
+class GSB_NOVTABLE IMapGenerator
 {
 public:
   IMapGenerator(const BlocksDataBase &db) : m_Db(db) { }

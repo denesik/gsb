@@ -31,13 +31,14 @@
     <ClCompile Include="src\Creature.cpp" />
     <ClCompile Include="src\DrawableArea.cpp" />
     <ClCompile Include="src\Game.cpp" />
-    <ClCompile Include="src\IMapLoader.cpp" />
     <ClCompile Include="src\ImguiPort.cpp" />
+    <ClCompile Include="src\Item.cpp" />
     <ClCompile Include="src\JsonDataBase.cpp" />
     <ClCompile Include="src\Log.cpp" />
     <ClCompile Include="src\MapGenerator.cpp" />
     <ClCompile Include="src\MapLoader.cpp" />
     <ClCompile Include="src\PerlinNoise.cpp" />
+    <ClCompile Include="src\Recipe.cpp" />
     <ClCompile Include="src\Sector.cpp" />
     <ClCompile Include="src\SectorCompiler.cpp" />
     <ClCompile Include="src\TemplateFactory.h" />
@@ -68,14 +69,17 @@
     <ClInclude Include="src\Creature.h" />
     <ClInclude Include="src\DrawableArea.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\IJsonSerializable.h" />
     <ClInclude Include="src\IMapGenerator.h" />
     <ClInclude Include="src\IMapLoader.h" />
     <ClInclude Include="src\ImguiPort.h" />
+    <ClInclude Include="src\Item.h" />
     <ClInclude Include="src\JsonDataBase.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\MapGenerator.h" />
     <ClInclude Include="src\MapLoader.h" />
     <ClInclude Include="src\PerlinNoise.h" />
+    <ClInclude Include="src\Recipe.h" />
     <ClInclude Include="src\Sector.h" />
     <ClInclude Include="src\SectorCompiler.h" />
     <ClInclude Include="src\Serialize.h" />
@@ -86,6 +90,7 @@
     <ClInclude Include="src\StandartShader.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\tools\Brezenham3D.h" />
+    <ClInclude Include="src\tools\Common.h" />
     <ClInclude Include="src\tools\CoordSystem.h" />
     <ClInclude Include="src\tools\Crc32.h" />
     <ClInclude Include="src\tools\DebugLines.h" />
@@ -152,7 +157,7 @@
     <SourcePath>src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)..\3rdparty\msvc14_x86\include;$(ProjectDir)..\3rdparty\msvc14_x86\include\MagnumExternal\OpenGL;$(ProjectDir)..\3rdparty\msvc14_x86\include\SDL2;$(ProjectDir)..\3rdparty\msvc14_x86\include\GLFW;$(ProjectDir)rapidjson\include;$(ProjectDir)..\3rdparty\msvc14_x86\boost;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\3rdparty\msvc14_x86\include;$(ProjectDir)..\3rdparty\msvc14_x86\include\MagnumExternal\OpenGL;$(ProjectDir)..\3rdparty\msvc14_x86\include\SDL2;$(ProjectDir)..\3rdparty\msvc14_x86\include\GLFW;$(ProjectDir)rapidjson\include;$(ProjectDir)..\3rdparty\msvc14_x86\boost;$(ProjectDir)src\;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)..\3rdparty\msvc14_x86\lib;$(ProjectDir)..\3rdparty\msvc14_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
