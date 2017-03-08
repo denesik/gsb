@@ -1,6 +1,6 @@
 [
   {
-	"name": "grass",
+    "name": "grass",
     "id": 2,
     "tesselator": {
       "type": "TesselatorSolidBlock",
@@ -15,7 +15,7 @@
     }
   },
   {
-	"name": "grass_micro",
+    "name": "grass_micro",
     "id": 3,
     "tesselator": {
       "type": "TesselatorMicroBlock",
@@ -31,7 +31,7 @@
     }
   },
   {
-	"name": "stone",
+    "name": "stone",
     "id": 4,
     "tesselator": {
       "type": "TesselatorSolidBlock",
@@ -46,7 +46,7 @@
     }
   },
   {
-	"name": "test_white",
+    "name": "test_white",
     "id": 5,
     "tesselator": {
       "type": "TesselatorSolidBlock",
@@ -56,7 +56,7 @@
     }
   },
   {
-	"name": "dirt",
+    "name": "dirt",
     "id": 6,
     "tesselator": {
       "type": "TesselatorSolidBlock",
@@ -69,5 +69,26 @@
         "data/dirt.tga"
       ]
     }
+  },
+  {
+    "name": "furnance",
+    "id": 7,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/dirt.tga",
+        "data/dirt.tga",
+        "data/dirt.tga",
+        "data/dirt.tga",
+        "data/dirt.tga",
+        "data/dirt.tga"
+      ]
+    },
+    "agents":[
+      {
+        "type":"Chest",
+        "test":2
+      }
+    ]
   }
 ]

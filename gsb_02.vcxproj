@@ -23,6 +23,7 @@
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
     <ClCompile Include="src\agent\Agent.cpp" />
+    <ClCompile Include="src\agent\agents\Chest.cpp" />
     <ClCompile Include="src\BlockDynamicPart.cpp" />
     <ClCompile Include="src\BlocksDataBase.cpp" />
     <ClCompile Include="src\BlockStaticPart.cpp" />
@@ -58,6 +59,7 @@
   <ItemGroup>
     <ClInclude Include="src\agent\Agent.h" />
     <ClInclude Include="src\agent\Agent.hpp" />
+    <ClInclude Include="src\agent\agents\Chest.h" />
     <ClInclude Include="src\BlockDynamicPart.h" />
     <ClInclude Include="src\BlocksDataBase.h" />
     <ClInclude Include="src\BlockStaticPart.h" />
@@ -85,6 +87,7 @@
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\tools\Brezenham3D.h" />
     <ClInclude Include="src\tools\CoordSystem.h" />
+    <ClInclude Include="src\tools\Crc32.h" />
     <ClInclude Include="src\tools\DebugLines.h" />
     <ClInclude Include="src\tools\FpsCounter.h" />
     <ClInclude Include="src\Movable.h" />

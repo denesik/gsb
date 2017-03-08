@@ -126,6 +126,9 @@
     <ClCompile Include="src\agent\Agent.cpp">
       <Filter>agent</Filter>
     </ClCompile>
+    <ClCompile Include="src\agent\agents\Chest.cpp">
+      <Filter>agent\agents</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -235,6 +238,12 @@
     </ClInclude>
     <ClInclude Include="src\agent\Agent.h">
       <Filter>agent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\agent\agents\Chest.h">
+      <Filter>agent\agents</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tools\Crc32.h">
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

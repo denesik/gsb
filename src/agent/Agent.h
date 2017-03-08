@@ -9,9 +9,15 @@
 
 class GameObject;
 
-using PAgent = std::shared_ptr<class Agent>;
+using PAgent = std::unique_ptr<class Agent>;
 
 using AId = unsigned int;
+
+template<class T, class... Args>
+std::unique_ptr<T> make_agent(Args&&... args)
+{
+  return std::make_unique<T>(std::forward<Args>(args)...);
+}
 
 #ifdef _MSC_VER
 #define AM_NOVTABLE __declspec(novtable)
@@ -25,10 +31,7 @@ public:
   Agent() = default;
   virtual ~Agent() = default;
 
-  virtual PAgent Clone(GameObject *parent) = 0;
-
-  virtual bool IsBasedOn(const AId & type) = 0;
-
+  virtual PAgent Clone(GameObject *parent) const = 0;
   virtual void JsonLoad(const rapidjson::Value &val);
 
   GameObject* Parent() const;
@@ -37,21 +40,29 @@ protected:
   GameObject *mParent;
 };
 
-template <AId aId>
+template <class Base, AId aId>
 class NumeredAgent : public Agent
 {
 public:
   static constexpr AId TypeId() { return aId; }
+  PAgent Clone(GameObject* parent) const override
+  {
+    auto t = make_agent<Base>(*reinterpret_cast<const Base *>(this));
+    t->mParent = parent;
+    return t;
+  }
 };
 
-#define REGISTER_AGENT(type) REGISTER_ELEMENT(type, AgentFactory::Get(), StringIntern(#type))
+#define REGISTER_AGENT(type) REGISTER_ELEMENT(type, AgentFactory::Get(), #type)
 #define AGENT(type) virtual std::string GetName() const override { return #type; } \
 					static std::string TypeName() { return #type; } \
-				  virtual bool IsBasedOn(const Aid & aid) { return type::TypeId() == aid; }
+				  virtual bool IsBasedOn(const AId & aid) override { return type::TypeId() == aid; } \
+          static constexpr AId TypeId() { return aId; }
 
 #define AGENT_EX(type, base) virtual std::string GetName() const override { return #type; } \
 					static std::string TypeName() { return #type; } \
-				  virtual bool IsBasedOn(const Aid & aid) { if(type::TypeId() == aid) return true; return base::IsBasedOn(type); }
+				  virtual bool IsBasedOn(const AId & aid) override { if(type::TypeId() == aid) return true; return base::IsBasedOn(type); } \
+          static constexpr AId TypeId() { return aId; }
 
 struct AgentFactory : boost::noncopyable
 {

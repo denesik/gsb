@@ -4,6 +4,7 @@
 
 #include <memory>
 #include "Tesselator.h"
+#include "agent/Agent.h"
 
 
 class BlockDynamicPart
@@ -15,6 +16,8 @@ public:
   std::unique_ptr<BlockDynamicPart> Clone();
 
   std::unique_ptr<TesselatorData> mTesselatorData;
+
+  std::vector<Agent> mAgents;
 };
 
 

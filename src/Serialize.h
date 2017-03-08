@@ -36,13 +36,13 @@ public:
   template <typename Last>
   static void deserialize(const rapidjson::Value &val, const Last &last)
   {
-    __deserialize(val, last.first, last.second);
+    _deserialize(val, last.first, last.second);
   }
 
   template <typename First, typename... Rest>
   static void deserialize(const rapidjson::Value &val, const First &first, const Rest&... rest)
   {
-    __deserialize(val, first.first, first.second);
+    _deserialize(val, first.first, first.second);
     deserialize(val, rest...);
   }
 };
