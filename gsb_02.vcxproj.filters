@@ -19,6 +19,9 @@
     <Filter Include="agent\agents">
       <UniqueIdentifier>{0ce028bd-750c-496b-82da-7e15afb924f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы исходного кода\interfaces">
+      <UniqueIdentifier>{12691a93-d26e-4734-88af-5aa3f0ea83ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Game.cpp">
@@ -133,7 +136,7 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\IRecipe.cpp">
-      <Filter>Файлы исходного кода</Filter>
+      <Filter>Файлы исходного кода\interfaces</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -206,13 +209,7 @@
     <ClInclude Include="src\PerlinNoise.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\IMapGenerator.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
     <ClInclude Include="src\MapLoader.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
-    <ClInclude Include="src\IMapLoader.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\tools\Brezenham3D.h">
@@ -257,17 +254,23 @@
     <ClInclude Include="src\Item.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\IJsonSerializable.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
     <ClInclude Include="src\tools\Common.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\IRecipe.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
     <ClInclude Include="src\IItem.h">
-      <Filter>Файлы исходного кода</Filter>
+      <Filter>Файлы исходного кода\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IJsonSerializable.h">
+      <Filter>Файлы исходного кода\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IMapGenerator.h">
+      <Filter>Файлы исходного кода\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IMapLoader.h">
+      <Filter>Файлы исходного кода\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IRecipe.h">
+      <Filter>Файлы исходного кода\interfaces</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
