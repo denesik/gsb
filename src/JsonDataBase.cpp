@@ -60,7 +60,7 @@ bool LoadBlock(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::V
 
       if (static_part->GetTesselator()->UseTesselatorData())
       {
-        dynamic_part = std::make_unique<BlockDynamicPart>();
+        dynamic_part = std::make_unique<BlockDynamicPart>(id, db);
         dynamic_part->GetTesselatorData() = std::make_unique<TesselatorData>();
       }
     }
@@ -69,7 +69,7 @@ bool LoadBlock(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::V
   if (val.HasMember("agents"))
   {
     if (!dynamic_part)
-      dynamic_part = std::make_unique<BlockDynamicPart>();
+      dynamic_part = std::make_unique<BlockDynamicPart>(id, db);
 
     const rapidjson::Value &arr = val["agents"];
     if (val["agents"].IsArray())

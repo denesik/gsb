@@ -15,6 +15,8 @@
 #include "IRecipe.h"
 #include "IItem.h"
 
+// TODO: Заменить const std::unique_ptr<***> & 
+// на std::optional<const *** &>  ???
 class BlocksDataBase
 {
 public:
@@ -34,9 +36,14 @@ public:
   /// Создает блок.
   /// Если невозможно создать блоксданным ид вернет блок воздуха.
   std::tuple<BlockId, std::unique_ptr<BlockDynamicPart>> CreateBlock(BlockId id) const;
+  
   void AddRecipe(std::unique_ptr<IRecipe> move);
+  
   void AddItem(const std::string &name, ItemId id, std::unique_ptr<IItem> move);
+  
   ItemId ItemIdFromName(const std::string& name);
+
+  const std::unique_ptr<IItem> &GetItem(ItemId id) const;
 
   const TextureAtlas &GetAtlasItems() const;
 

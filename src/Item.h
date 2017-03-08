@@ -8,16 +8,17 @@
 #include <Magnum/Magnum.h>
 #include <Magnum/Math/Range.h>
 #include "BlocksDataBase.h"
+#include "IGui.h"
 
-class Item : public IItem
+class Item : public IItem/*, public IGui*/
 {
 public:
   Item();
   ~Item();
 
-  void JsonLoad(BlocksDataBase & db, const rapidjson::Value & val);
+  void JsonLoad(BlocksDataBase & db, const rapidjson::Value & val) override;
 
-  void GuiDraw();
+  void DrawGui(const Magnum::Timeline &dt) const /*override*/;
 
 private:
   Magnum::Range2D mTextureCoord;

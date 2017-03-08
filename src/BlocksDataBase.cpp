@@ -71,6 +71,11 @@ ItemId BlocksDataBase::ItemIdFromName(const std::string& name)
   return mItemNames[name];
 }
 
+const std::unique_ptr<IItem> & BlocksDataBase::GetItem(ItemId id) const
+{
+  return mItems[id];
+}
+
 std::tuple<BlockId, std::unique_ptr<BlockDynamicPart>> BlocksDataBase::CreateBlock(BlockId id) const
 {
   const auto &dyn = std::get<1>(mBlocks[id]);

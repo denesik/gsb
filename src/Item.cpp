@@ -17,7 +17,7 @@ void Item::JsonLoad(BlocksDataBase & db, const rapidjson::Value & val)
   mTextureCoord = db.GetAtlasItems().GetTextureCoord("data/items/dirt.tga").value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } });
 }
 
-void Item::GuiDraw()
+void Item::DrawGui(const Magnum::Timeline &dt) const
 {
   ImGui::ImageButton(ImTextureID(mTextId), ImVec2(32, 32), ImVec2(mTextureCoord.left(), mTextureCoord.bottom()), ImVec2(mTextureCoord.right(), mTextureCoord.top()));
 }

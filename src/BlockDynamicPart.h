@@ -7,11 +7,16 @@
 #include "agent/Agent.h"
 #include <boost/container/flat_map.hpp>
 #include "IGui.h"
+#include "BlockStaticPart.h"
+
+class BlocksDataBase;
 
 class BlockDynamicPart : public IGui
 {
 public:
-  BlockDynamicPart();
+  // TODO: Скорей всего надо передавать сектор вместо бд.
+  BlockDynamicPart(BlockId id, const BlocksDataBase &db);
+  BlockDynamicPart(const BlockDynamicPart &other);
   ~BlockDynamicPart();
 
   std::unique_ptr<BlockDynamicPart> Clone();
@@ -23,9 +28,14 @@ public:
 
   bool AddAgent(std::unique_ptr<Agent> agent);
 
-private:
-  std::unique_ptr<TesselatorData> mTesselatorData;
+  const std::unique_ptr<BlockStaticPart> &GetStaticPart() const;
 
+  const BlocksDataBase &GetDataBase() const;
+
+private:
+  const BlocksDataBase &mDb;
+  const BlockId mBlockId;
+  std::unique_ptr<TesselatorData> mTesselatorData;
   boost::container::flat_map<AgentId, std::unique_ptr<Agent>> mAgents;
 
 public:
