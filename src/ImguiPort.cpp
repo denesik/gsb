@@ -52,13 +52,30 @@ void ImguiPort::Load()
   int width, height;
   int pixel_size;
   io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height, &pixel_size);
+  io.Fonts->TexID = 0;
+
+  mTexture.resize(2);
 
   ImageView2D image{ PixelFormat::RGBA, PixelType::UnsignedByte, { width, height },{ pixels, std::size_t(pixel_size * width * height) } };
-
-  mTexture.setMagnificationFilter(Sampler::Filter::Linear)
+  mTexture[0].setMagnificationFilter(Sampler::Filter::Linear)
     .setMinificationFilter(Sampler::Filter::Linear)
     .setStorage(0, TextureFormat::RGBA, image.size())
     .setImage(0, TextureFormat::RGBA, image);
+
+
+  mAtlas.LoadDirectory("data/items");
+
+  mTexture[1].setMagnificationFilter(Sampler::Filter::Linear)
+    .setMinificationFilter(Sampler::Filter::Linear)
+    .setStorage(0, TextureFormat::RGBA, mAtlas.Size());
+
+  // Перед использованием setSubImage нужно залить текстуру данными с помощью setImage
+  {
+    std::vector<UnsignedByte> zero_data(mAtlas.Size().x() * mAtlas.Size().y() * 4);
+    mTexture[1].setImage(0, TextureFormat::RGBA,
+      ImageView2D(PixelFormat::RGBA, PixelType::UnsignedByte, mAtlas.Size(), { zero_data.data(), zero_data.size() }));
+  }
+  mAtlas.Fill(mTexture[1]);
 
   mesh.setPrimitive(MeshPrimitive::Triangles);
   mesh.addVertexBuffer(mVertexBuffer, 0, ImguiShader::Position{}, ImguiShader::TextureCoordinates{},
@@ -218,7 +235,7 @@ void ImguiPort::Draw()
     { -1.0f,                  1.0f,                   0.0f, 1.0f },
   };
   mShader.setProjectMatrix(ortho_projection);
-  mShader.setTexture(mTexture);
+  
 
   for (int n = 0; n < draw_data->CmdListsCount; n++)
   {
@@ -232,6 +249,7 @@ void ImguiPort::Draw()
     {
       const ImDrawCmd* pcmd = &cmd_list->CmdBuffer[cmd_i];
 
+      mShader.setTexture(mTexture[(size_t)(intptr_t)pcmd->TextureId]);
       Renderer::setScissor({ {(int)pcmd->ClipRect.x, fb_height - (int)(pcmd->ClipRect.w)}, {(int)(pcmd->ClipRect.z), fb_height - (int)(pcmd->ClipRect.y)} });
 
       mesh.setCount(pcmd->ElemCount);
@@ -280,6 +298,11 @@ void ImguiPort::textInputEvent(const Platform::Application::TextInputEvent& even
 {
   ImGuiIO& io = ImGui::GetIO();
   io.AddInputCharactersUTF8(event.text().data());
+}
+
+const TextureAtlas & ImguiPort::Atlas() const
+{
+  return mAtlas;
 }
 
 ImguiShader::ImguiShader()

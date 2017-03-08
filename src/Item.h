@@ -3,7 +3,11 @@
 #define Item_h__
 
 #include <stdint.h>
-#include "IItem.h"
+#include <rapidjson/document.h>
+#include "TextureAtlas.h"
+#include <Magnum/Magnum.h>
+#include <Magnum/Math/Range.h>
+#include "BlocksDataBase.h"
 
 class Item : public IItem
 {
@@ -11,8 +15,14 @@ public:
   Item();
   ~Item();
 
+  void JsonLoad(BlocksDataBase & db, const rapidjson::Value & val);
 
-  void JsonLoad(BlocksDataBase & db, const rapidjson::Value& val) override;
+  void GuiDraw();
+
+private:
+  Magnum::Range2D mTextureCoord;
+  const size_t mTextId = 1;
+
 };
 
 REGISTER_ITEM_CLASS(Item);

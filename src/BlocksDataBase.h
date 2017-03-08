@@ -18,7 +18,7 @@
 class BlocksDataBase
 {
 public:
-  BlocksDataBase(const TextureAtlas &atlas);
+  BlocksDataBase(const TextureAtlas &atlas, const TextureAtlas &atlas_items);
   ~BlocksDataBase();
 
   const std::unique_ptr<BlockStaticPart> &GetBlockStaticPart(BlockId id) const;
@@ -38,6 +38,8 @@ public:
   void AddItem(const std::string &name, ItemId id, std::unique_ptr<IItem> move);
   ItemId ItemIdFromName(const std::string& name);
 
+  const TextureAtlas &GetAtlasItems() const;
+
 private:
   std::array<std::tuple<std::unique_ptr<BlockStaticPart>, std::unique_ptr<BlockDynamicPart>>, 0xFFFF> mBlocks;
   std::unordered_map<BlockId, std::vector<std::unique_ptr<Agent>>> mAgents;
@@ -52,6 +54,7 @@ private:
   std::unordered_map<ItemId, std::vector<const IRecipe *>> mItemRecipe;
 
   const TextureAtlas &mAtlas;
+  const TextureAtlas &mAtlasItems;
 };
 
 
