@@ -99,9 +99,6 @@
     <ClCompile Include="src\MapLoader.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="src\IMapLoader.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="src\TesselatorMicroBlock.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
@@ -128,6 +125,9 @@
     </ClCompile>
     <ClCompile Include="src\agent\Agent.cpp">
       <Filter>agent</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Recipe.cpp">
+      <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\Item.cpp">
       <Filter>Файлы исходного кода</Filter>
@@ -248,8 +248,20 @@
     <ClInclude Include="src\agent\Agents.hpp">
       <Filter>agent</Filter>
     </ClInclude>
+    <ClInclude Include="src\Recipe.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
     <ClInclude Include="src\Item.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IJsonSerializable.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tools\Common.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IRecipe.h">
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

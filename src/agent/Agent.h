@@ -3,9 +3,11 @@
 #define Agent_h_
 
 #include "../TemplateFactory.h"
+#include <tools/Common.h>
 #include <boost/noncopyable.hpp>
 #include <rapidjson/document.h>
 #include <memory>
+#include "IJsonSerializable.h"
 
 namespace Magnum {
   class Timeline;
@@ -23,20 +25,13 @@ std::unique_ptr<T> make_agent(Args&&... args)
   return std::make_unique<T>(std::forward<Args>(args)...);
 }
 
-#ifdef _MSC_VER
-#define AM_NOVTABLE __declspec(novtable)
-#elif
-#define AM_NOVTABLE /*__declspec(novtable)*/
-#endif
-
-class AM_NOVTABLE Agent
+class GSB_NOVTABLE Agent : public IJsonSerializable
 {
 public:
   Agent() = default;
   virtual ~Agent() = default;
 
   virtual PAgent Clone() const = 0;
-  virtual void JsonLoad(const rapidjson::Value &val);
   virtual AgentId Id() const = 0;
   virtual void DrawGui(Magnum::Timeline dt);
 

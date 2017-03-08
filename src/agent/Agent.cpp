@@ -2,10 +2,6 @@
 #include <Magnum/Timeline.h>
 #include "../../imgui/imgui.h"
 
-void Agent::JsonLoad(const rapidjson::Value& val)
-{
-}
-
 void Agent::DrawGui(Magnum::Timeline dt)
 {
 }
