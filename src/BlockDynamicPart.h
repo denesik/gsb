@@ -17,7 +17,7 @@ public:
 
   std::unique_ptr<TesselatorData> mTesselatorData;
 
-  std::vector<Agent> mAgents;
+  std::vector<std::unique_ptr<Agent>> mAgents;
 };
 
 

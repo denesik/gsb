@@ -11,7 +11,7 @@ class GameObject;
 
 using PAgent = std::unique_ptr<class Agent>;
 
-using AId = unsigned int;
+using AgentId = unsigned int;
 
 template<class T, class... Args>
 std::unique_ptr<T> make_agent(Args&&... args)
@@ -31,7 +31,7 @@ public:
   Agent() = default;
   virtual ~Agent() = default;
 
-  virtual PAgent Clone(GameObject *parent) const = 0;
+  virtual PAgent Clone() const = 0;
   virtual void JsonLoad(const rapidjson::Value &val);
 
   GameObject* Parent() const;
@@ -40,15 +40,14 @@ protected:
   GameObject *mParent;
 };
 
-template <class Base, AId aId>
+template <class Base, AgentId aId>
 class NumeredAgent : public Agent
 {
 public:
-  static constexpr AId TypeId() { return aId; }
-  PAgent Clone(GameObject* parent) const override
+  static constexpr AgentId TypeId() { return aId; }
+  PAgent Clone() const override
   {
     auto t = make_agent<Base>(*reinterpret_cast<const Base *>(this));
-    t->mParent = parent;
     return t;
   }
 };

@@ -123,11 +123,11 @@
     <ClCompile Include="src\Creature.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="src\agent\Agent.cpp">
-      <Filter>agent</Filter>
-    </ClCompile>
     <ClCompile Include="src\agent\agents\Chest.cpp">
       <Filter>agent\agents</Filter>
+    </ClCompile>
+    <ClCompile Include="src\agent\Agent.cpp">
+      <Filter>agent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -233,9 +233,6 @@
     <ClInclude Include="src\Creature.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="src\agent\Agent.hpp">
-      <Filter>agent</Filter>
-    </ClInclude>
     <ClInclude Include="src\agent\Agent.h">
       <Filter>agent</Filter>
     </ClInclude>
@@ -244,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="src\tools\Crc32.h">
       <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\agent\Agents.hpp">
+      <Filter>agent</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

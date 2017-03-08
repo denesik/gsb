@@ -58,7 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\agent\Agent.h" />
-    <ClInclude Include="src\agent\Agent.hpp" />
+    <ClInclude Include="src\agent\Agents.hpp" />
     <ClInclude Include="src\agent\agents\Chest.h" />
     <ClInclude Include="src\BlockDynamicPart.h" />
     <ClInclude Include="src\BlocksDataBase.h" />

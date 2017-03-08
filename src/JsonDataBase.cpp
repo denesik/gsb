@@ -4,6 +4,8 @@
 #include <boost/filesystem.hpp>
 #include "Tesselator.h"
 #include "BlocksDataBase.h"
+#include <boost/exception/diagnostic_information.hpp>
+#include "agent/Agents.hpp"
 
 JsonDataBase::JsonDataBase(const std::string path) : mPath(path)
 {
@@ -58,7 +60,7 @@ void JsonDataBase::Load(const TextureAtlas &atlas, BlocksDataBase &db) const
 
           bool dyn = false;
           std::string name;
-          BlockId id;
+          BlockId id = 0;
           if (val.HasMember("name"))
           {
             name = val["name"].GetString();
@@ -96,8 +98,11 @@ void JsonDataBase::Load(const TextureAtlas &atlas, BlocksDataBase &db) const
             } 
           }
 
-          /*if (val.HasMember("agents"))
+          if (val.HasMember("agents"))
           {
+            if(!dynamic_part)
+              dynamic_part = std::make_unique<BlockDynamicPart>();
+
             rapidjson::Value &arr = val["agents"];
             if (val["agents"].IsArray())
             {
@@ -106,21 +111,21 @@ void JsonDataBase::Load(const TextureAtlas &atlas, BlocksDataBase &db) const
                 rapidjson::Value &part = arr[a];
                 if (part.HasMember("type")) {
                   std::string agenttype = part["type"].GetString();
-                  auto c = AgentFactory::Get().Create(StringIntern(agenttype));
-                  if (!c)
+                  auto agent = AgentFactory::Get().Create(agenttype);
+                  if (!agent)
                   {
                     LOG(error) << "record \"" << id << "\" agent #" << a + 1 << " has unknown type = " << agenttype;
                     continue;
                   }
                   try {
-                    c->JsonLoad(part);
+                    agent->JsonLoad(part);
                   }
                   catch (...) {
                     LOG(error) << boost::current_exception_diagnostic_information(true);
                     LOG(error) << id << "'s agent " << agenttype << " json deserialize failed. See agents documentation";
                     continue;
                   }
-                  b->mAgents[StringIntern(agenttype)] = std::move(c);
+                  dynamic_part->mAgents.emplace_back(std::move(agent));
                 }
                 else
                 {
@@ -132,7 +137,7 @@ void JsonDataBase::Load(const TextureAtlas &atlas, BlocksDataBase &db) const
             {
               LOG(error) << "record \"" << id << "\" parts is not valid agents array";
             }
-          }*/
+          }
 
           db.AddBlock(name, id, std::move(static_part), std::move(dynamic_part));
         }
