@@ -73,6 +73,7 @@
     <ClInclude Include="src\IMapGenerator.h" />
     <ClInclude Include="src\IMapLoader.h" />
     <ClInclude Include="src\ImguiPort.h" />
+    <ClInclude Include="src\IRecipe.h" />
     <ClInclude Include="src\Item.h" />
     <ClInclude Include="src\JsonDataBase.h" />
     <ClInclude Include="src\Log.h" />

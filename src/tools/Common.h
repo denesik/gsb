@@ -1,6 +1,8 @@
 #pragma once
 #include <stdexcept>
 
+typedef uint32_t ItemId;
+
 #ifdef _MSC_VER
 #define GSB_NOVTABLE __declspec(novtable)
 #elif
