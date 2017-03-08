@@ -4,8 +4,8 @@
 
 using namespace Magnum;
 
-BlocksDataBase::BlocksDataBase(const TextureAtlas &atlas)
-  : mAtlas(atlas)
+BlocksDataBase::BlocksDataBase(const TextureAtlas &atlas, const TextureAtlas &atlas_items)
+  : mAtlas(atlas), mAtlasItems(atlas_items)
 {
 
   
@@ -52,4 +52,9 @@ std::tuple<BlockId, std::unique_ptr<BlockDynamicPart>> BlocksDataBase::CreateBlo
 {
   const auto &dyn = std::get<1>(mBlocks[id]);
   return{ id , dyn ? dyn->Clone() : nullptr };
+}
+
+const TextureAtlas & BlocksDataBase::GetAtlasItems() const
+{
+  return mAtlasItems;
 }

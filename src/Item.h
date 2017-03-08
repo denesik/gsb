@@ -7,6 +7,7 @@
 #include "TextureAtlas.h"
 #include <Magnum/Magnum.h>
 #include <Magnum/Math/Range.h>
+#include "BlocksDataBase.h"
 
 class Item
 {
@@ -14,7 +15,7 @@ public:
   Item();
   ~Item();
 
-  void JsonLoad(const rapidjson::Value & val, const TextureAtlas &atlas);
+  void JsonLoad(BlocksDataBase & db, const rapidjson::Value & val);
 
   void GuiDraw();
 

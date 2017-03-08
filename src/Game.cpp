@@ -34,7 +34,7 @@ Game::Game(const Arguments & arguments)
   }
   atlas.Fill(mTexture);
 
-  mBlocksDataBase = std::make_unique<BlocksDataBase>(atlas);
+  mBlocksDataBase = std::make_unique<BlocksDataBase>(atlas, mImguiPort.Atlas());
   mBlocksDataBase->ApplyLoader(std::make_unique<JsonDataBase>("data/json"));
 
   mWorld = std::make_unique<World>(*mBlocksDataBase);

@@ -12,9 +12,9 @@ Item::~Item()
 {
 }
 
-void Item::JsonLoad(const rapidjson::Value & val, const TextureAtlas &atlas)
+void Item::JsonLoad(BlocksDataBase & db, const rapidjson::Value & val)
 {
-  mTextureCoord = atlas.GetTextureCoord("data/items/dirt.tga").value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } });
+  mTextureCoord = db.GetAtlasItems().GetTextureCoord("data/items/dirt.tga").value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } });
 }
 
 void Item::GuiDraw()

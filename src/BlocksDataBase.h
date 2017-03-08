@@ -16,7 +16,7 @@
 class BlocksDataBase
 {
 public:
-  BlocksDataBase(const TextureAtlas &atlas);
+  BlocksDataBase(const TextureAtlas &atlas, const TextureAtlas &atlas_items);
   ~BlocksDataBase();
 
   const std::unique_ptr<BlockStaticPart> &GetBlockStaticPart(BlockId id) const;
@@ -33,12 +33,15 @@ public:
   /// Если невозможно создать блоксданным ид вернет блок воздуха.
   std::tuple<BlockId, std::unique_ptr<BlockDynamicPart>> CreateBlock(BlockId id) const;
 
+  const TextureAtlas &GetAtlasItems() const;
+
 private:
   std::array<std::tuple<std::unique_ptr<BlockStaticPart>, std::unique_ptr<BlockDynamicPart>>, 0xFFFF> mBlocks;
   std::unordered_map<BlockId, std::vector<std::unique_ptr<Agent>>> mAgents;
   std::unordered_map<std::string, BlockId> mBlockNames;
 
   const TextureAtlas &mAtlas;
+  const TextureAtlas &mAtlasItems;
 };
 
 
