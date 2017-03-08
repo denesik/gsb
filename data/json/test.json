@@ -1,5 +1,6 @@
 [
   {
+    "section": "block",
     "name": "grass",
     "id": 2,
     "tesselator": {
@@ -15,6 +16,7 @@
     }
   },
   {
+    "section": "block",
     "name": "grass_micro",
     "id": 3,
     "tesselator": {
@@ -31,6 +33,7 @@
     }
   },
   {
+    "section": "block",
     "name": "stone",
     "id": 4,
     "tesselator": {
@@ -46,6 +49,7 @@
     }
   },
   {
+    "section": "block",
     "name": "test_white",
     "id": 5,
     "tesselator": {
@@ -56,6 +60,7 @@
     }
   },
   {
+    "section": "block",
     "name": "dirt",
     "id": 6,
     "tesselator": {
@@ -71,6 +76,7 @@
     }
   },
   {
+    "section": "block",
     "name": "furnance",
     "id": 7,
     "tesselator": {
@@ -90,5 +96,23 @@
         "test":2
       }
     ]
+  },
+  {
+    "section": "item",
+    "type": "Item",
+    "id": 1,
+    "name": "coal"
+  },
+  {
+    "section": "item",
+    "type": "Item",
+    "id": 2,
+    "name": "iron_ingot"
+  },
+  {
+    "section": "item",
+    "type": "Item",
+    "id": 3,
+    "name": "iron_ore"
   }
 ]

@@ -1,4 +1,5 @@
 #include "Recipe.h"
+#include "Serialize.h"
 
 bool Recipe::CanCraft(const Chest& c) const
 {
@@ -10,23 +11,17 @@ bool Recipe::Craft(const Chest& c) const
   throw NotImplemented();
 }
 
-const std::vector<std::tuple<ItemId, size_t>> & Recipe::Components() const
+const std::vector<RecipeIn> & Recipe::Components() const
 {
   return mComponents;
 }
 
-const std::vector<std::tuple<ItemId, size_t>> & Recipe::Results() const
+const std::vector<RecipeOut> & Recipe::Results() const
 {
-  return mComponents;
+  return mResults;
 }
 
-void Recipe::JsonLoad(const rapidjson::Value& val)
+void Recipe::JsonLoad(BlocksDataBase & db, const rapidjson::Value& val)
 {
-  throw NotImplemented();
-}
-
-RecipeFactory::FactoryType& RecipeFactory::Get()
-{
-  static FactoryType factory;
-  return factory;
+  JSONLOAD(sge::make_nvp("input", mComponents), sge::make_nvp("output", mResults));
 }

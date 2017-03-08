@@ -32,6 +32,7 @@
     <ClCompile Include="src\DrawableArea.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\ImguiPort.cpp" />
+    <ClCompile Include="src\IRecipe.cpp" />
     <ClCompile Include="src\Item.cpp" />
     <ClCompile Include="src\JsonDataBase.cpp" />
     <ClCompile Include="src\Log.cpp" />
@@ -69,6 +70,7 @@
     <ClInclude Include="src\Creature.h" />
     <ClInclude Include="src\DrawableArea.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\IItem.h" />
     <ClInclude Include="src\IJsonSerializable.h" />
     <ClInclude Include="src\IMapGenerator.h" />
     <ClInclude Include="src\IMapLoader.h" />

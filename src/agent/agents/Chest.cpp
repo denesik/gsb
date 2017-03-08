@@ -12,7 +12,7 @@ Chest::Chest(const Chest& other) : test(other.test)
 
 }
 
-void Chest::JsonLoad(const rapidjson::Value& val)
+void Chest::JsonLoad(BlocksDataBase & db, const rapidjson::Value& val)
 {
   JSONLOAD(NVP(test));
 }

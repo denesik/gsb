@@ -132,6 +132,9 @@
     <ClCompile Include="src\Item.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="src\IRecipe.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -261,6 +264,9 @@
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\IRecipe.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IItem.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>

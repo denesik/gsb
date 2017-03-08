@@ -55,7 +55,7 @@ public:
   AgentId Id() const override { return aId; }
 };
 
-#define REGISTER_AGENT(type) REGISTER_ELEMENT(type, AgentFactory::Get(), #type)
+#define REGISTER_AGENT_CLASS(type) REGISTER_ELEMENT(type, AgentFactory::Get(), #type)
 
 struct AgentFactory : boost::noncopyable
 {

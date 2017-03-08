@@ -11,14 +11,14 @@ class Recipe : public IRecipe
 public:
   bool CanCraft(const Chest & c) const override;
   bool Craft(const Chest & c) const override;
-  const std::vector<std::tuple<ItemId, size_t>> & Components() const override;
-  const std::vector<std::tuple<ItemId, size_t>> & Results() const override;
+  const std::vector<RecipeIn> & Components() const override;
+  const std::vector<RecipeOut> & Results() const override;
 
-  void JsonLoad(const rapidjson::Value& val) override;
+  void JsonLoad(BlocksDataBase & db, const rapidjson::Value& val) override;
 
 private:
-  std::vector<std::tuple<ItemId, size_t>> mComponents;
-  std::vector<std::tuple<ItemId, size_t>> mResults;
+  std::vector<RecipeIn> mComponents;
+  std::vector<RecipeOut> mResults;
 };
 
-REGISTER_RECIPE(Recipe);
+REGISTER_RECIPE_CLASS(Recipe);

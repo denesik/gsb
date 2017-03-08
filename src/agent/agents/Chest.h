@@ -8,11 +8,11 @@ public:
   Chest();
   Chest(const Chest & other);
 
-  void JsonLoad(const rapidjson::Value &val) override;
+  void JsonLoad(BlocksDataBase & db, const rapidjson::Value &val) override;
   void DrawGui(Magnum::Timeline dt) override;
 
 private:
   int test = 0;
 };
 
-REGISTER_AGENT(Chest);
+REGISTER_AGENT_CLASS(Chest);

@@ -14,9 +14,11 @@
 #include <Magnum/Math/Vector4.h>
 
 #define NVP(T) sge::make_nvp(#T, T)
-#define JSONLOAD(...) DeserializeHelper::deserialize(val, __VA_ARGS__)
+#define JSONLOAD(...) DeserializeHelper::deserialize(db, val, __VA_ARGS__)
 #define BINSAVE(...) BinSaveHelper::bserialize(val, __VA_ARGS__)
 #define BINLOAD(...) BinLoadHelper::bdeserialize(val, __VA_ARGS__)
+
+class BlocksDataBase;
 
 namespace sge {
   template <class T>
@@ -28,67 +30,67 @@ namespace sge {
 class DeserializeHelper
 {
 public:
-  static void deserialize(const rapidjson::Value &val)
+  static void deserialize(BlocksDataBase & db, const rapidjson::Value &val)
   {
     (void)val;
   }
 
   template <typename Last>
-  static void deserialize(const rapidjson::Value &val, const Last &last)
+  static void deserialize(BlocksDataBase & db, const rapidjson::Value &val, const Last &last)
   {
-    _deserialize(val, last.first, last.second);
+    _deserialize(db, val, last.first, last.second);
   }
 
   template <typename First, typename... Rest>
-  static void deserialize(const rapidjson::Value &val, const First &first, const Rest&... rest)
+  static void deserialize(BlocksDataBase & db, const rapidjson::Value &val, const First &first, const Rest&... rest)
   {
-    _deserialize(val, first.first, first.second);
-    deserialize(val, rest...);
+    _deserialize(db, val, first.first, first.second);
+    deserialize(db, val, rest...);
   }
 };
 
 namespace 
 {
   template<typename _Ty>
-  void _deserialize_array_part(const rapidjson::Value &val, _Ty &target)
+  void _deserialize_array_part(BlocksDataBase & db, const rapidjson::Value &val, _Ty &target)
   {
-    target.JsonLoad(val);
+    target.JsonLoad(db, val);
   }
 
   template<typename _Ty>
-  void _deserialize_array_part(const rapidjson::Value &arr, std::vector<_Ty> &target)
+  void _deserialize_array_part(BlocksDataBase & db, const rapidjson::Value &arr, std::vector<_Ty> &target)
   {
     if (arr.IsArray())
     {
       for (decltype(arr.Size()) i = 0; i < arr.Size(); i++)
       {
         _Ty part;
-        _deserialize_array_part(arr[i], part);
+        _deserialize_array_part(db, arr[i], part);
         target.push_back(std::move(part));
       }
     }
   }
 
   template<typename _Ty>
-  void _deserialize(const rapidjson::Value &val, const char *s, _Ty &target)
+  void _deserialize(BlocksDataBase & db, const rapidjson::Value &val, const char *s, _Ty &target)
   {
     if (!val.HasMember(s))
       return;
     const rapidjson::Value &v = val[s];
-    target.JsonLoad(v);
+    target.JsonLoad(db, v);
   }
 
   template<typename _Ty>
-  void _deserialize(const rapidjson::Value &val, const char *s, std::shared_ptr<_Ty> &target)
+  void _deserialize(BlocksDataBase & db, const rapidjson::Value &val, const char *s, std::shared_ptr<_Ty> &target)
   {
     if (!val.HasMember(s))
       return;
     const rapidjson::Value &v = val[s];
-    target->JsonLoad(v);
+    target->JsonLoad(db, v);
   }
 
   template<typename _Ty>
-  void _deserialize(const rapidjson::Value &val, const char *s, std::vector<_Ty> &target)
+  void _deserialize(BlocksDataBase & db, const rapidjson::Value &val, const char *s, std::vector<_Ty> &target)
   {
     if (val.HasMember(s) && val[s].IsArray())
     {
@@ -96,13 +98,13 @@ namespace
       for (decltype(arr.Size()) i = 0; i < arr.Size(); i++)
       {
         _Ty part;
-        _deserialize_array_part(arr[i], part);
+        _deserialize_array_part(db, arr[i], part);
         target.push_back(std::move(part));
       }
     }
   }
 
-  template<> void _deserialize(const rapidjson::Value &val, const char *s, int &target)
+  template<> void _deserialize(BlocksDataBase & db, const rapidjson::Value &val, const char *s, int &target)
   {
     if (val.HasMember(s))
     {
@@ -112,7 +114,7 @@ namespace
     }
   }
 
-  template<> void _deserialize(const rapidjson::Value &val, const char *s, std::string &target)
+  template<> void _deserialize(BlocksDataBase & db, const rapidjson::Value &val, const char *s, std::string &target)
   {
     if (val.HasMember(s))
     {
@@ -122,7 +124,7 @@ namespace
     }
   }
 
-  template<> void _deserialize(const rapidjson::Value &val, const char *s, float &target)
+  template<> void _deserialize(BlocksDataBase & db, const rapidjson::Value &val, const char *s, float &target)
   {
     if (val.HasMember(s))
     {
@@ -132,7 +134,7 @@ namespace
     }
   }
 
-  template<> void _deserialize(const rapidjson::Value &val, const char *s, bool &target)
+  template<> void _deserialize(BlocksDataBase & db, const rapidjson::Value &val, const char *s, bool &target)
   {
     if (val.HasMember(s))
     {
@@ -142,7 +144,7 @@ namespace
     }
   }
 
-  template<> void _deserialize(const rapidjson::Value &val, const char *s, Magnum::Vector2 &target)
+  template<> void _deserialize(BlocksDataBase & db, const rapidjson::Value &val, const char *s, Magnum::Vector2 &target)
   {
     if (val.HasMember(s) && val[s].IsArray())
     {
@@ -155,7 +157,7 @@ namespace
     }
   }
 
-  template<> void _deserialize(const rapidjson::Value &val, const char *s, Magnum::Vector3 &target)
+  template<> void _deserialize(BlocksDataBase & db, const rapidjson::Value &val, const char *s, Magnum::Vector3 &target)
   {
     if (val.HasMember(s) && val[s].IsArray())
     {
@@ -170,7 +172,7 @@ namespace
     }
   }
 
-  template<> void _deserialize(const rapidjson::Value &val, const char *s, Magnum::Vector4 &target)
+  template<> void _deserialize(BlocksDataBase & db, const rapidjson::Value &val, const char *s, Magnum::Vector4 &target)
   {
     if (val.HasMember(s) && val[s].IsArray())
     {
@@ -187,7 +189,7 @@ namespace
     }
   }
 
-  template<> void _deserialize(const rapidjson::Value &val, const char *s, std::vector<int> &target)
+  template<> void _deserialize(BlocksDataBase & db, const rapidjson::Value &val, const char *s, std::vector<int> &target)
   {
     if (val.HasMember(s))
     {
@@ -201,7 +203,7 @@ namespace
     }
   }
 
-  template<> void _deserialize(const rapidjson::Value &val, const char *s, std::vector<std::string> &target)
+  template<> void _deserialize(BlocksDataBase & db, const rapidjson::Value &val, const char *s, std::vector<std::string> &target)
   {
     if (val.HasMember(s) && val[s].IsArray())
     {
@@ -215,7 +217,7 @@ namespace
     }
   }
 
-  template<> void _deserialize(const rapidjson::Value &val, const char *s, std::vector<bool> &target)
+  template<> void _deserialize(BlocksDataBase & db, const rapidjson::Value &val, const char *s, std::vector<bool> &target)
   {
     if (val.HasMember(s) && val[s].IsArray())
     {
@@ -229,7 +231,7 @@ namespace
     }
   }
 
-  template<> void _deserialize(const rapidjson::Value &val, const char *s, std::vector<float> &target)
+  template<> void _deserialize(BlocksDataBase & db, const rapidjson::Value &val, const char *s, std::vector<float> &target)
   {
     if (val.HasMember(s) && val[s].IsArray())
     {
