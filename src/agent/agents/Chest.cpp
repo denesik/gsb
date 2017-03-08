@@ -17,7 +17,7 @@ void Chest::JsonLoad(BlocksDataBase & db, const rapidjson::Value& val)
   JSONLOAD(NVP(test));
 }
 
-void Chest::DrawGui(Magnum::Timeline dt)
+void Chest::DrawGui(const Magnum::Timeline &dt)
 {
   ImGui::Text(std::to_string(test).c_str());
   if (ImGui::Button("inc"))

@@ -8,5 +8,5 @@ namespace Magnum {
 class GSB_NOVTABLE IGui
 {
 public:
-  virtual void DrawGui(Magnum::Timeline dt) = 0;
+  virtual void DrawGui(const Magnum::Timeline &dt) = 0;
 };

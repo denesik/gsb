@@ -61,7 +61,7 @@ bool LoadBlock(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::V
       if (static_part->GetTesselator()->UseTesselatorData())
       {
         dynamic_part = std::make_unique<BlockDynamicPart>();
-        dynamic_part->mTesselatorData = std::make_unique<TesselatorData>();
+        dynamic_part->GetTesselatorData() = std::make_unique<TesselatorData>();
       }
     }
   }
@@ -94,7 +94,7 @@ bool LoadBlock(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::V
             LOG(error) << id << "'s agent " << agenttype << " json deserialize failed. See agents documentation. SKIP AGENT.";
             continue;
           }
-          dynamic_part->mAgents.insert(std::make_pair(agent->Id(), std::move(agent)));
+          dynamic_part->AddAgent(std::move(agent));
         }
         else
         {

@@ -2,11 +2,11 @@
 #include <Magnum/Timeline.h>
 #include "../../imgui/imgui.h"
 
-void Agent::DrawGui(Magnum::Timeline dt)
+void Agent::DrawGui(const Magnum::Timeline &dt)
 {
 }
 
-GameObject* Agent::Parent() const
+BlockDynamicPart* Agent::Parent() const
 {
   return mParent;
 }

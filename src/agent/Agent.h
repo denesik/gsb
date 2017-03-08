@@ -14,17 +14,10 @@ namespace Magnum {
   class Timeline;
 }
 
-class GameObject;
-
-using PAgent = std::unique_ptr<class Agent>;
+class BlockDynamicPart;
 
 using AgentId = unsigned int;
 
-template<class T, class... Args>
-std::unique_ptr<T> make_agent(Args&&... args)
-{
-  return std::make_unique<T>(std::forward<Args>(args)...);
-}
 
 class GSB_NOVTABLE Agent : public IJsonSerializable, public IGui
 {
@@ -32,14 +25,14 @@ public:
   Agent() = default;
   virtual ~Agent() = default;
 
-  virtual PAgent Clone() const = 0;
+  virtual std::unique_ptr<Agent> Clone(BlockDynamicPart *parent) const = 0;
   virtual AgentId Id() const = 0;
-  void DrawGui(Magnum::Timeline dt) override;
+  void DrawGui(const Magnum::Timeline &dt) override;
 
-  GameObject* Parent() const;
+  BlockDynamicPart *Parent() const;
 
 protected:
-  GameObject *mParent;
+  BlockDynamicPart *mParent = nullptr;
 };
 
 template <class Base, AgentId aId>
@@ -47,9 +40,10 @@ class NumeredAgent : public Agent
 {
 public:
   static constexpr AgentId TypeId() { return aId; }
-  PAgent Clone() const override
+  std::unique_ptr<Agent> Clone(BlockDynamicPart *parent) const override
   {
-    auto t = make_agent<Base>(*reinterpret_cast<const Base *>(this));
+    auto t = std::make_unique<Base>(*static_cast<const Base *>(this));
+    t->mParent = parent;
     return t;
   }
 

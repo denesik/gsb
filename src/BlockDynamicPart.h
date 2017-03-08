@@ -6,8 +6,9 @@
 #include "Tesselator.h"
 #include "agent/Agent.h"
 #include <boost/container/flat_map.hpp>
+#include "IGui.h"
 
-class BlockDynamicPart
+class BlockDynamicPart : public IGui
 {
 public:
   BlockDynamicPart();
@@ -15,12 +16,17 @@ public:
 
   std::unique_ptr<BlockDynamicPart> Clone();
 
+  void DrawGui(const Magnum::Timeline &dt) override;
+
+  std::unique_ptr<TesselatorData> &GetTesselatorData();
+  const std::unique_ptr<TesselatorData> &GetTesselatorData() const;
+
+  bool AddAgent(std::unique_ptr<Agent> agent);
+
+private:
   std::unique_ptr<TesselatorData> mTesselatorData;
 
-  boost::container::flat_map<AgentId, PAgent> mAgents;
-
-public:
-  void DrawGui(Magnum::Timeline dt) const;
+  boost::container::flat_map<AgentId, std::unique_ptr<Agent>> mAgents;
 
 public:
   template<class T>
