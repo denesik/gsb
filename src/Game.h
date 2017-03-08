@@ -67,6 +67,8 @@ private:
   ImVec4 clear_color = ImColor(114, 144, 154);
 
   TextureAtlas atlas;
+  Magnum::Texture2D mTexture;
+
 
   StandartShader mShader;
 

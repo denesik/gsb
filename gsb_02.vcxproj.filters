@@ -129,6 +129,9 @@
     <ClCompile Include="src\agent\Agent.cpp">
       <Filter>agent</Filter>
     </ClCompile>
+    <ClCompile Include="src\Item.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -244,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="src\agent\Agents.hpp">
       <Filter>agent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Item.h">
+      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

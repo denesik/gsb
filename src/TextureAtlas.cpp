@@ -9,11 +9,13 @@
 #include <Magnum/TextureFormat.h>
 #include <Magnum/PixelFormat.h>
 #include <algorithm>
+#include <Magnum/ImageView.h>
 
 using namespace Corrade::Utility;
 using namespace Magnum;
 
-TextureAtlas::TextureAtlas()
+TextureAtlas::TextureAtlas(const Magnum::Vector2i &max_size)
+  : mSize(max_size)
 {
 }
 
@@ -30,8 +32,8 @@ void TextureAtlas::LoadDirectory(const std::string &directory)
 
   auto files = Directory::list(directory, Directory::Flag::SkipDirectories);
 
-  std::vector<Trade::ImageData2D> images;
-  std::vector<Vector2i> sizes;
+  //std::vector<Trade::ImageData2D> images;
+  //std::vector<Vector2i> mSizes;
 
   for (const auto &name : files)
   {
@@ -41,42 +43,42 @@ void TextureAtlas::LoadDirectory(const std::string &directory)
       if (image)
       {
         file_names.push_back(Directory::join(directory, name));
-        sizes.push_back(image->size());
-        images.push_back(std::move(*image));
+        mSizes.push_back(image->size());
+        mImageData.emplace_back(std::move(*image));
+        mImageViews.emplace_back(mImageData.back());
       }
     }
   }
+}
 
-  Vector2i atlas_size(1024);
-  auto ranges = TextureTools::atlas(atlas_size, sizes);
+void TextureAtlas::AddImage(const std::string &name, const Magnum::ImageView2D &image)
+{
+  file_names.push_back(name);
+  mSizes.push_back(image.size());
+  mImageViews.emplace_back(image);
+}
+
+void TextureAtlas::Fill(Magnum::Texture2D &texture)
+{
+  auto ranges = TextureTools::atlas(mSize, mSizes);
 
   for (const auto &r : ranges)
   {
-    Vector2 scale(1.0f / (static_cast<Vector2>(atlas_size)));
+    Vector2 scale(1.0f / (static_cast<Vector2>(mSize)));
     coordinates.push_back({ static_cast<Vector2>(r.bottomLeft()) * scale , static_cast<Vector2>(r.topRight()) * scale });
   }
 
-  _texture.setWrapping(Sampler::Wrapping::ClampToEdge)
-    .setMagnificationFilter(Sampler::Filter::Linear)
-    .setMinificationFilter(Sampler::Filter::Linear);
-
-  // Перед использованием setSubImage нужно залить текстуру данными с помощью setImage
+  for (size_t i = 0; i < mImageViews.size(); ++i)
   {
-    std::vector<UnsignedByte> zero_data(atlas_size.x() * atlas_size.y() * 3);
-    _texture.setImage(0, TextureFormat::RGB8,
-      ImageView2D(PixelFormat::RGB, PixelType::UnsignedByte, atlas_size, {zero_data.data(), zero_data.size()}));
+    texture.setSubImage(0, ranges[i].bottomLeft(), mImageViews[i]);
   }
 
-  for (size_t i = 0; i < images.size(); ++i)
-  {
-    _texture.setSubImage(0, ranges[i].bottomLeft(), images[i]); 
-  }
-
-}
-
-Magnum::Texture2D & TextureAtlas::Texture()
-{
-  return _texture;
+  mImageData.clear();
+  mImageData.shrink_to_fit();  
+  mImageViews.clear();
+  mImageViews.shrink_to_fit();
+  mSizes.clear();
+  mSizes.shrink_to_fit();
 }
 
 std::optional<Magnum::Range2D> TextureAtlas::GetTextureCoord(const std::string &name) const
@@ -88,5 +90,10 @@ std::optional<Magnum::Range2D> TextureAtlas::GetTextureCoord(const std::string &
     return{ coordinates[index] };
   }
   return{};
+}
+
+const Magnum::Vector2i & TextureAtlas::Size() const
+{
+  return mSize;
 }
 

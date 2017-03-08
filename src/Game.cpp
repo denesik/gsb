@@ -22,6 +22,17 @@ Game::Game(const Arguments & arguments)
   : Platform::Application{ arguments, Configuration{}.setTitle("Magnum Textured Triangle Example").setWindowFlags(Configuration::WindowFlag::Resizable) }
 {
   atlas.LoadDirectory("data");
+  mTexture.setWrapping(Sampler::Wrapping::ClampToEdge)
+    .setMagnificationFilter(Sampler::Filter::Linear)
+    .setMinificationFilter(Sampler::Filter::Linear);
+
+  // Перед использованием setSubImage нужно залить текстуру данными с помощью setImage
+  {
+    std::vector<UnsignedByte> zero_data(atlas.Size().x() * atlas.Size().y() * 3);
+    mTexture.setImage(0, TextureFormat::RGB8,
+      ImageView2D(PixelFormat::RGB, PixelType::UnsignedByte, atlas.Size(), { zero_data.data(), zero_data.size() }));
+  }
+  atlas.Fill(mTexture);
 
   mBlocksDataBase = std::make_unique<BlocksDataBase>(atlas);
   mBlocksDataBase->ApplyLoader(std::make_unique<JsonDataBase>("data/json"));
@@ -96,7 +107,7 @@ void Game::drawEvent()
   }
 
   mShader.setColor({ 1.0f, 0.7f, 0.7f })
-    .setTexture(atlas.Texture());
+    .setTexture(mTexture);
 
   mDrawableArea->Draw(*mCamera, mShader);
   mWorld->GetUpdatableSectors().Update();

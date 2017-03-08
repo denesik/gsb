@@ -10,6 +10,8 @@
 #include <Magnum/Mesh.h>
 #include <Magnum/Timeline.h>
 #include <Magnum/Attribute.h>
+#include "TextureAtlas.h"
+#include <vector>
 
 using namespace Magnum;
 
@@ -64,8 +66,10 @@ public:
 
   void textInputEvent(const Platform::Application::TextInputEvent& event);
 
+  const TextureAtlas &Atlas() const;
+
 private:
-  Texture2D mTexture;
+  std::vector<Texture2D> mTexture;
   ImguiShader mShader;
   Buffer mVertexBuffer;
   Buffer mIndexBuffer;
@@ -76,6 +80,8 @@ private:
   Vector2i mMousePos;
 
   Mesh mesh;
+
+  TextureAtlas mAtlas;
 
 private:
   void Init();
