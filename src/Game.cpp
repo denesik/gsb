@@ -27,7 +27,7 @@ Game::Game(const Arguments & arguments)
   mBlocksDataBase->ApplyLoader(std::make_unique<JsonDataBase>("data/json"));
 
   mWorld = std::make_unique<World>(*mBlocksDataBase);
-  
+
   //auto mapgen = std::make_unique<MapLoader>(std::make_unique<PrimitivaMountains>(*mBlocksDataBase, 1.f));
   auto mapgen = std::make_unique<MapLoader>(std::make_unique<WorldGeneratorFlat>(*mBlocksDataBase));
   mapgen->SetWorld(mWorld.get());
@@ -55,7 +55,7 @@ void Game::drawEvent()
   Renderer::enable(Renderer::Feature::DepthTest);
   Renderer::enable(Renderer::Feature::FaceCulling);
 
-	defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
+  defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
 
   mWorld->mPlayer.Move(mCameraVelocity * 0.006f);
   mWorld->mPlayer.Rotate(mCameraAngle * 0.003f);
@@ -74,15 +74,15 @@ void Game::drawEvent()
   }*/
 
   //auto ray = mCamera.Ray({ ImGui::GetMousePos().x, ImGui::GetMousePos().y });
-  auto ray = mCamera->Ray({ static_cast<Float>(defaultFramebuffer.viewport().centerX()) , 
+  auto ray = mCamera->Ray({ static_cast<Float>(defaultFramebuffer.viewport().centerX()) ,
     static_cast<Float>(defaultFramebuffer.viewport().centerY()) });
-//   auto picked = Brezenham::PickFirst(mCamera.Position(), ray, 100, [&](Magnum::Vector3i pos)
-//   {
-//     return mWorld->GetBlockId(pos) != 0;
-//   }, &debugLines);
+  //   auto picked = Brezenham::PickFirst(mCamera.Position(), ray, 100, [&](Magnum::Vector3i pos)
+  //   {
+  //     return mWorld->GetBlockId(pos) != 0;
+  //   }, &debugLines);
 
   auto blocks = voxel_traversal(mWorld->mPlayer.Pos(), mWorld->mPlayer.Pos() + ray.normalized() * 100.0f);
-  
+
   Vector3i picked;
   for (auto &i : blocks)
   {
@@ -102,18 +102,24 @@ void Game::drawEvent()
   debugLines.addLine(picked + Vector3i{ 1,1,1 }, picked + Vector3i{ 1,1,0 }, { 1,1,1 });
 
 
-//   debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 1,0,0 }, { 1,1,1 });
-//   debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 0,1,0 }, { 1,1,1 });
-//   debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 0,0,1 }, { 1,1,1 });
-// 
-//   debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 0,1,1 }, { 1,1,1 });
-//   debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 1,0,1 }, { 1,1,1 });
-//   debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 1,1,0 }, { 1,1,1 });
+  //   debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 1,0,0 }, { 1,1,1 });
+  //   debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 0,1,0 }, { 1,1,1 });
+  //   debugLines.addLine(std::get<0>(picked), std::get<0>(picked) + Vector3i{ 0,0,1 }, { 1,1,1 });
+  // 
+  //   debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 0,1,1 }, { 1,1,1 });
+  //   debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 1,0,1 }, { 1,1,1 });
+  //   debugLines.addLine(std::get<0>(picked) + Vector3i{ 1,1,1 }, std::get<0>(picked) + Vector3i{ 1,1,0 }, { 1,1,1 });
 
   debugLines.addLine(mWorld->mPlayer.Pos(), mWorld->mPlayer.Pos() + ray * 1, { 1,1,1 });
 
-  if (ImGui::IsMouseDown(0))
-    mWorld->CreateBlock(picked, 0);
+  if (ImGui::IsMouseClicked(0))
+  {
+    auto p = mWorld->GetBlockDynamic(picked);
+    if (p)
+      mDrawModal = [p](Timeline dt) { p->DrawGui(dt); };
+    else
+      mDrawModal = nullptr;
+  }
 
   /*if (rand() % 10 == 0)
   for(int i = 0; i < 100; i++) mWorld->SetBlockId({ rand() % 100 ,rand() % 100 ,rand() % 100 }, 0);*/
@@ -169,6 +175,13 @@ void Game::drawEvent()
       ImGui::ShowTestWindow(&show_test_window);
     }
 
+    if (mDrawModal)
+    {
+      ImGui::SetNextWindowSize(ImVec2(500, 100), ImGuiSetCond_FirstUseEver);
+      ImGui::Begin("Selected");
+      mDrawModal(mTimeline);
+      ImGui::End();
+    }
     mImguiPort.Draw();
   }
 

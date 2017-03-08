@@ -5,7 +5,7 @@
 #include <memory>
 #include "Tesselator.h"
 #include "agent/Agent.h"
-
+#include <boost/container/flat_map.hpp>
 
 class BlockDynamicPart
 {
@@ -17,7 +17,34 @@ public:
 
   std::unique_ptr<TesselatorData> mTesselatorData;
 
-  std::vector<std::unique_ptr<Agent>> mAgents;
+  boost::container::flat_map<AgentId, PAgent> mAgents;
+
+public:
+  void DrawGui(Magnum::Timeline dt) const;
+
+public:
+  template<class T>
+  T *GetAgent()
+  {
+    AgentId name = T::TypeId();
+    auto it = mAgents.find(name);
+    if (it != mAgents.end())
+    {
+      return static_cast<T*>(it->second.get());
+    }
+    return nullptr;
+  }
+  template<class T>
+  bool HasAgent()
+  {
+    AgentId & name = T::TypeId();
+    auto it = mAgents.find(name);
+    if (it != mAgents.end())
+    {
+      return true;
+    }
+    return false;
+  }
 };
 
 

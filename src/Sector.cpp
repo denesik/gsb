@@ -2,6 +2,7 @@
 #include "World.h"
 #include "MapGenerator.h"
 #include "TesselatorMicroBlock.h"
+#include <Magnum/Timeline.h>
 
 using namespace Magnum;
 
@@ -68,6 +69,11 @@ void Sector::ApplyGenerator(IMapGenerator &generator)
 BlockId Sector::GetBlockId(SBPos pos) const
 {
   return mStaticBlocks[cs::SBtoBI(pos)];
+}
+
+BlockDynamicPart* Sector::GetBlockDynamic(const WBPos& pos) const
+{
+  return mDinamicBlocks[cs::SBtoBI(pos)].get();
 }
 
 void Sector::CreateBlock(SBPos pos, BlockId id)

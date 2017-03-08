@@ -76,12 +76,12 @@
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [
-        "data/dirt.tga",
-        "data/dirt.tga",
-        "data/dirt.tga",
-        "data/dirt.tga",
-        "data/dirt.tga",
-        "data/dirt.tga"
+        "data/furnance_side.tga",
+        "data/furnance_front.tga",
+        "data/furnance_side.tga",
+        "data/furnance_side.tga",
+        "data/furnance_top_bottom.tga",
+        "data/furnance_top_bottom.tga"
       ]
     },
     "agents":[

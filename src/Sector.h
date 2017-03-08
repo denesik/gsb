@@ -3,17 +3,11 @@
 #define Sector_h__
 
 #include <Magnum/Magnum.h>
-#include <Magnum/Math/Matrix4.h>
-#include <Magnum/Mesh.h>
-#include <Magnum/Buffer.h>
 
 #include "BlockStaticPart.h"
 #include <array>
 #include "SectorCompiler.h"
 #include "tools\CoordSystem.h"
-#include <Magnum/AbstractShaderProgram.h>
-#include <Magnum/Math/Frustum.h>
-#include <Magnum/Math/Range.h>
 #include <memory>
 #include "BlockDynamicPart.h"
 #include <MagnumExternal/Optional/optional.hpp>
@@ -40,6 +34,7 @@ public:
   void ApplyGenerator(IMapGenerator &generator);
 
   BlockId GetBlockId(SBPos pos) const;
+  BlockDynamicPart* GetBlockDynamic(const WBPos& pos) const;
 
   void CreateBlock(SBPos pos, BlockId id);
 

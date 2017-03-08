@@ -7,6 +7,10 @@
 #include <rapidjson/document.h>
 #include <memory>
 
+namespace Magnum {
+  class Timeline;
+}
+
 class GameObject;
 
 using PAgent = std::unique_ptr<class Agent>;
@@ -33,6 +37,8 @@ public:
 
   virtual PAgent Clone() const = 0;
   virtual void JsonLoad(const rapidjson::Value &val);
+  virtual AgentId Id() const = 0;
+  virtual void DrawGui(Magnum::Timeline dt);
 
   GameObject* Parent() const;
 
@@ -50,6 +56,8 @@ public:
     auto t = make_agent<Base>(*reinterpret_cast<const Base *>(this));
     return t;
   }
+
+  AgentId Id() const override { return aId; }
 };
 
 #define REGISTER_AGENT(type) REGISTER_ELEMENT(type, AgentFactory::Get(), #type)

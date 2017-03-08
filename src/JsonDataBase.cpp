@@ -125,7 +125,7 @@ void JsonDataBase::Load(const TextureAtlas &atlas, BlocksDataBase &db) const
                     LOG(error) << id << "'s agent " << agenttype << " json deserialize failed. See agents documentation";
                     continue;
                   }
-                  dynamic_part->mAgents.emplace_back(std::move(agent));
+                  dynamic_part->mAgents.insert(std::make_pair(agent->Id(), std::move(agent)));
                 }
                 else
                 {

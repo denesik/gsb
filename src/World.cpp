@@ -69,6 +69,19 @@ BlockId World::GetBlockId(const WBPos& pos) const
   return{};
 }
 
+BlockDynamicPart* World::GetBlockDynamic(const WBPos& pos) const
+{
+  auto spos = cs::WBtoS(pos);
+  auto sector = GetSector(spos);
+  if (!sector.expired())
+  {
+    auto shared = sector.lock();
+    return shared->GetBlockDynamic(cs::WBtoSB(pos));
+  }
+
+  return {};
+}
+
 void World::CreateBlock(const WBPos& pos, BlockId id)
 {
   auto spos = cs::WBtoS(pos);

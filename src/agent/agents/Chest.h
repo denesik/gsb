@@ -9,6 +9,7 @@ public:
   Chest(const Chest & other);
 
   void JsonLoad(const rapidjson::Value &val) override;
+  void DrawGui(Magnum::Timeline dt) override;
 
 private:
   int test = 0;
