@@ -53,15 +53,6 @@ public:
 };
 
 #define REGISTER_AGENT(type) REGISTER_ELEMENT(type, AgentFactory::Get(), #type)
-#define AGENT(type) virtual std::string GetName() const override { return #type; } \
-					static std::string TypeName() { return #type; } \
-				  virtual bool IsBasedOn(const AId & aid) override { return type::TypeId() == aid; } \
-          static constexpr AId TypeId() { return aId; }
-
-#define AGENT_EX(type, base) virtual std::string GetName() const override { return #type; } \
-					static std::string TypeName() { return #type; } \
-				  virtual bool IsBasedOn(const AId & aid) override { if(type::TypeId() == aid) return true; return base::IsBasedOn(type); } \
-          static constexpr AId TypeId() { return aId; }
 
 struct AgentFactory : boost::noncopyable
 {
