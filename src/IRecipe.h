@@ -37,7 +37,7 @@ public:
   virtual ~IRecipe() = default;
 
   virtual bool CanCraft(const Chest & c) const = 0;
-  virtual bool Craft(const Chest & c) const = 0;
+  virtual bool Craft(Chest & c) const = 0;
   virtual const std::vector<RecipeIn> & Components() const = 0;
   virtual const std::vector<RecipeOut> & Results() const = 0;
 };

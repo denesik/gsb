@@ -16,6 +16,10 @@ public:
 
   void AddItem(ItemId id, size_t count);
 
+  bool RemoveItem(ItemId id, size_t count);
+
+  const std::vector<std::tuple<ItemId, size_t>> &Items() const;
+
 private:
   int test = 0;
 

@@ -10,7 +10,7 @@ class Recipe : public IRecipe
 {
 public:
   bool CanCraft(const Chest & c) const override;
-  bool Craft(const Chest & c) const override;
+  bool Craft(Chest & c) const override;
   const std::vector<RecipeIn> & Components() const override;
   const std::vector<RecipeOut> & Results() const override;
 

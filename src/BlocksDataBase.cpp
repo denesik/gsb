@@ -86,3 +86,41 @@ const TextureAtlas & BlocksDataBase::GetAtlasItems() const
 {
   return mAtlasItems;
 }
+
+std::vector<const IRecipe *> BlocksDataBase::GetRecipes(const std::vector<std::tuple<ItemId, size_t>> &items) const
+{
+  std::vector<const IRecipe *> result;
+
+  // 1. Пробегаем по рецептам.
+  // 2. Каждую компоненту рецепта ищем в списке итемов.
+  // 3. Если компоненты нет -- рецепт не сработает.
+  for (const auto &rec : mRecipes)
+  {
+    const auto &components = rec->Components();
+    bool rec_found = true;
+    for (const auto &c : components)
+    {
+      bool comp_found = false;
+      for (auto i : items)
+      {
+        if (c.id == std::get<0>(i))
+        {
+          comp_found = true;
+          break;
+        }
+      }
+      if (!comp_found)
+      {
+        rec_found = false;
+        break;
+      }
+    }
+
+    if (rec_found)
+    {
+      result.emplace_back(rec.get());
+    }
+  }
+
+  return result;
+}

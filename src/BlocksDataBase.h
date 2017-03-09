@@ -47,6 +47,11 @@ public:
 
   const TextureAtlas &GetAtlasItems() const;
 
+  /// Получить список рецептов для указанного списка итемов.
+  /// TODO: Переделать что б не было сырого указателя.
+  /// Вероятно ид рецептов нужны.
+  std::vector<const IRecipe *> GetRecipes(const std::vector<std::tuple<ItemId, size_t>> &items) const;
+
 private:
   std::array<std::tuple<std::unique_ptr<BlockStaticPart>, std::unique_ptr<BlockDynamicPart>>, 0xFFFF> mBlocks;
   std::unordered_map<std::string, BlockId> mBlockNames;

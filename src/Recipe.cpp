@@ -1,14 +1,43 @@
 #include "Recipe.h"
 #include "Serialize.h"
+#include "agent/agents/Chest.h"
 
 bool Recipe::CanCraft(const Chest& c) const
 {
   throw NotImplemented();
 }
 
-bool Recipe::Craft(const Chest& c) const
+bool Recipe::Craft(Chest& chest) const
 {
-  throw NotImplemented();
+  // Ищем нужные компоненты.
+  // Если присутствуют все - удаляем их.
+  // Добавляем новую компоненту.
+
+  const auto &items = chest.Items();
+  for (const auto &c : mComponents)
+  {
+    bool found = false;
+    for (const auto &i : items)
+    {
+      if (c.id == std::get<0>(i))
+      {
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      return false;
+    }
+  }
+
+  for (const auto &c : mComponents)
+    chest.RemoveItem(c.id, 0);
+
+  for (const auto &r : mResults)
+    chest.AddItem(r.id, 0);
+
+  return true;
 }
 
 const std::vector<RecipeIn> & Recipe::Components() const
