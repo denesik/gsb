@@ -3,10 +3,11 @@
 #include "agent/Agent.h"
 #include <vector>
 #include "IRecipe.h"
+#include "tools/Crc32.h"
 
 class Chest;
 
-class Recipe : public IRecipe
+class Recipe : public INumeredRecipe<gsb::crc32<std::string>()("Recipe")>
 {
 public:
   bool CanCraft(const Chest & c) const override;
