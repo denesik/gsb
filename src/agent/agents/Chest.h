@@ -20,6 +20,8 @@ public:
 
   const std::vector<std::tuple<ItemId, size_t>> &Items() const;
 
+  void Test();
+
 private:
   int test = 0;
 

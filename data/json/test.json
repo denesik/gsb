@@ -97,6 +97,28 @@
       }
     ]
   },
+    {
+    "section": "block",
+    "name": "hopper",
+    "id": 8,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "piston_top_normal.tga",
+        "piston_top_normal.tga",
+        "piston_top_normal.tga",
+        "piston_top_normal.tga",
+        "piston_top_normal.tga",
+        "piston_top_normal.tga"
+      ]
+    },
+    "agents":[
+      {
+        "type":"Chest",
+        "test":2
+      }
+    ]
+  },
   {
     "section": "item",
     "type": "Item",

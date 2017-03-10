@@ -45,6 +45,9 @@ void Chest::DrawGui(const Magnum::Timeline &dt)
       rec->Craft(*this);
     }
   }
+
+  if (ImGui::Button("move"))
+    Test();
 }
 
 void Chest::AddItem(ItemId id, size_t count)
@@ -71,4 +74,24 @@ bool Chest::RemoveItem(ItemId id, size_t count)
 const std::vector<std::tuple<ItemId, size_t>> & Chest::Items() const
 {
   return mItems;
+}
+
+void Chest::Test()
+{
+  // Тестовая функция.
+  // Имитируем выполнение из блока.
+  for (int i = 0; i < 6; ++i)
+  {
+    auto agent = mParent->GetAgent(Id(), static_cast<SideIndex>(i), AgentDirection::in);
+    if (agent)
+    {
+      auto &a = static_cast<Chest &>(*agent);
+      if (!mItems.empty())
+      {
+        a.AddItem(std::get<0>(mItems.back()), std::get<1>(mItems.back()));
+        mItems.resize(mItems.size() - 1);
+      }
+    }
+  }
+
 }
