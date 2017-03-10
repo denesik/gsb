@@ -31,7 +31,15 @@ std::unique_ptr<BlockDynamicPart> BlockAutoCrafter::Clone()
 
 void BlockAutoCrafter::DrawGui(const Magnum::Timeline &dt)
 {
-  BlockDynamicPart::DrawGui(dt);
+  //BlockDynamicPart::DrawGui(dt);
+
+  for (size_t i = 0; i < mAgents.size(); ++i)
+  {
+    ImGui::PushID(i);
+    mAgents[i]->DrawGui(dt);
+    ImGui::PopID();
+  }
+
   if (ImGui::Button("Update"))
   {
     Update();

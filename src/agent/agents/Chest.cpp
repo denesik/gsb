@@ -30,9 +30,19 @@ void Chest::DrawGui(const Magnum::Timeline &dt)
   }
 
   const auto &db = mParent->GetDataBase();
-  for (auto &i : mItems)
+  for (size_t i = 0; i < 16; i++)
   {
-    static_cast<const Item &>(*(db.GetItem(std::get<0>(i)))).DrawGui(dt);
+    //ImGui::PushID(i);
+    if (i < mItems.size())
+    {
+      static_cast<const Item &>(*(db.GetItem(std::get<0>(mItems[i])))).DrawGui(dt);
+    }
+    else
+    {
+      ImGui::Dummy(ImVec2(32, 32));
+    }
+    if ((i % 4) < 3) ImGui::SameLine();
+    //ImGui::PopID();
   }
 }
 

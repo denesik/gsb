@@ -29,7 +29,10 @@ std::unique_ptr<BlockDynamicPart> BlockDynamicPart::Clone()
 void BlockDynamicPart::DrawGui(const Magnum::Timeline &dt)
 {
   for (const auto & ag : mAgents)
+  {
     ag->DrawGui(dt);
+  }
+    
 }
 
 std::unique_ptr<TesselatorData> & BlockDynamicPart::GetTesselatorData()
