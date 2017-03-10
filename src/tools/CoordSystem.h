@@ -21,19 +21,32 @@ enum
   SECTOR_COUNT_HEIGHT = 8,
 };
 
+// TODO BOTTOM --> DOWN
+enum SideIndex : int
+{
+  IFRONT = 0,
+  IRIGHT = 1,
+  IBACK = 2,
+  ILEFT = 3,
+  ITOP = 4,
+  IBOTTOM = 5,
+};
+
 enum SideFlags : int
 {
   NONE = 0,
 
-  FRONT = 1 << 0,
-  RIGHT = 1 << 1,
-  BACK = 1 << 2,
-  LEFT = 1 << 3,
-  TOP = 1 << 4,
-  BOTTOM = 1 << 5,
+  FRONT = 1 << IFRONT,
+  RIGHT = 1 << IRIGHT,
+  BACK = 1 << IBACK,
+  LEFT = 1 << ILEFT,
+  TOP = 1 << ITOP,
+  BOTTOM = 1 << IBOTTOM,
 
   ALL = 0x3F,
 };
+
+
 
 inline int SideFlagIndex(SideFlags side)
 {

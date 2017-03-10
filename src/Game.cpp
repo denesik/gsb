@@ -17,6 +17,7 @@
 #include "MapLoader.h"
 #include "tools/Brezenham3D.h"
 #include "WorldGeneratorFlat.h"
+#include <boost/optional.hpp>
 
 Game::Game(const Arguments & arguments)
   : Platform::Application{ arguments, Configuration{}.setTitle("Magnum Textured Triangle Example").setWindowFlags(Configuration::WindowFlag::Resizable) }
