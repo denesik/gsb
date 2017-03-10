@@ -31,13 +31,17 @@ public:
 
   virtual std::unique_ptr<BlockDynamicPart> Clone();
 
+  virtual void Update() {};
+
   void DrawGui(const Magnum::Timeline &dt) override;
 
   std::unique_ptr<TesselatorData> &GetTesselatorData();
   const std::unique_ptr<TesselatorData> &GetTesselatorData() const;
 
-  bool AddAgent(std::unique_ptr<Agent> agent);
+  // TODO: Сделать JsonLoad и убрать туда это.
+  bool AddAgent(std::unique_ptr<Agent> agent); 
 
+  // Вероятно этот метод protected.
   const std::unique_ptr<BlockStaticPart> &GetStaticPart() const;
 
   const BlocksDataBase &GetDataBase() const;
@@ -54,11 +58,13 @@ public:
 public:
   BlocksDataBase *mDb;
   BlockId mBlockId;
-private:
+protected:
   std::unique_ptr<TesselatorData> mTesselatorData;
   //boost::container::flat_multimap<AgentId, std::unique_ptr<Agent>> mAgents;
   std::vector<std::unique_ptr<Agent>> mAgents;
 };
+
+
 
 
 #define REGISTER_BLOCK_CLASS(type) REGISTER_ELEMENT(type, BlockFactory::Get(), #type)

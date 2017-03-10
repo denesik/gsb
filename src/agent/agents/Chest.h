@@ -8,6 +8,8 @@
 class Chest : public NumeredAgent<Chest, gsb::crc32<std::string>()("Chest")>
 {
 public:
+  using ItemList = std::vector<std::tuple<ItemId, size_t>>;
+
   Chest();
   Chest(const Chest & other);
 
@@ -18,14 +20,10 @@ public:
 
   bool RemoveItem(ItemId id, size_t count);
 
-  const std::vector<std::tuple<ItemId, size_t>> &Items() const;
-
-  void Test();
+  const ItemList &Items() const;
 
 private:
-  int test = 0;
-
-  std::vector<std::tuple<ItemId, size_t>> mItems;
+  ItemList mItems;
 
 };
 

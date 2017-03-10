@@ -12,7 +12,7 @@ Chest::Chest()
 {
 }
 
-Chest::Chest(const Chest& other) : test(other.test)
+Chest::Chest(const Chest& other)
 {
   AddItem(1, 1);
 }
@@ -20,15 +20,12 @@ Chest::Chest(const Chest& other) : test(other.test)
 void Chest::JsonLoad(BlocksDataBase & db, const rapidjson::Value& val)
 {
   Agent::JsonLoad(db, val);
-  JSONLOAD(NVP(test));
 }
 
 void Chest::DrawGui(const Magnum::Timeline &dt)
 {
-  ImGui::Text(std::to_string(test).c_str());
   if (ImGui::Button("add"))
   {
-    test++;
     AddItem(1, 1);
   }
 
@@ -37,18 +34,6 @@ void Chest::DrawGui(const Magnum::Timeline &dt)
   {
     static_cast<const Item &>(*(db.GetItem(std::get<0>(i)))).DrawGui(dt);
   }
-
-  if (ImGui::Button("rec")) 
-  {
-    const auto &recipes = db.GetRecipes(Recipe(), mItems);
-    for (const auto &rec : recipes)
-    {
-      rec->Craft(*this);
-    }
-  }
-
-  if (ImGui::Button("move"))
-    Test();
 }
 
 void Chest::AddItem(ItemId id, size_t count)
@@ -72,36 +57,36 @@ bool Chest::RemoveItem(ItemId id, size_t count)
   return false;
 }
 
-const std::vector<std::tuple<ItemId, size_t>> & Chest::Items() const
+const Chest::ItemList & Chest::Items() const
 {
   return mItems;
 }
 
-void Chest::Test()
-{
-  // Тестовая функция.
-  // Имитируем выполнение из блока.
-  BlockDynamicPart *block = nullptr;
-  for (int i = 0; i < 6; ++i)
-  {
-    block = mParent->GetNeighbour(static_cast<SideIndex>(i));
-    if (block != nullptr)
-      break;
-  }
-
-  if (block != nullptr)
-  for (int i = 0; i < 6; ++i)
-  {
-    auto agent = block->GetAgent(Id(), static_cast<SideIndex>(i), AgentDirection::in);
-    if (agent)
-    {
-      auto &a = static_cast<Chest &>(*agent);
-      if (!mItems.empty())
-      {
-        a.AddItem(std::get<0>(mItems.back()), std::get<1>(mItems.back()));
-        mItems.resize(mItems.size() - 1);
-      }
-    }
-  }
-
-}
+// void Chest::Test()
+// {
+//   // Тестовая функция.
+//   // Имитируем выполнение из блока.
+//   BlockDynamicPart *block = nullptr;
+//   for (int i = 0; i < 6; ++i)
+//   {
+//     block = mParent->GetNeighbour(static_cast<SideIndex>(i));
+//     if (block != nullptr)
+//       break;
+//   }
+// 
+//   if (block != nullptr)
+//   for (int i = 0; i < 6; ++i)
+//   {
+//     auto agent = block->GetAgent(Id(), static_cast<SideIndex>(i), AgentDirection::in);
+//     if (agent)
+//     {
+//       auto &a = static_cast<Chest &>(*agent);
+//       if (!mItems.empty())
+//       {
+//         a.AddItem(std::get<0>(mItems.back()), std::get<1>(mItems.back()));
+//         mItems.resize(mItems.size() - 1);
+//       }
+//     }
+//   }
+// 
+// }

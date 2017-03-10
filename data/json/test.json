@@ -93,8 +93,10 @@
 	"type":"BlockAutoCrafter",
     "agents":[
       {
-        "type":"Chest",
-        "test":2
+        "type":"Chest"
+      },
+	  {
+        "type":"Chest"
       }
     ]
   },
