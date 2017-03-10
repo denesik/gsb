@@ -247,6 +247,20 @@ namespace cs
   {
     return{ pos.x(), pos.y(), pos.z() - 1 };
   }
+
+  inline SBPos Side(const SBPos &pos, SideIndex side)
+  {
+    using func_ptr = SBPos (*)(const SBPos &);
+    static func_ptr funcs[6];
+    funcs[IFRONT] = &Front;
+    funcs[IRIGHT] = &Right;
+    funcs[IBACK] = &Back;
+    funcs[ILEFT] = &Left;
+    funcs[ITOP] = &Top;
+    funcs[IBOTTOM] = &Bottom;
+
+    return funcs[side](pos);
+  }
 }
 
 namespace std

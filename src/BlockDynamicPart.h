@@ -23,6 +23,7 @@ enum class AgentDirection
   in,
   out,
 };
+class Sector;
 
 // К каждой стороне блока можно прибиндить несколько интерфейсов разного типа и указать направление.
 // 
@@ -30,7 +31,7 @@ class BlockDynamicPart : public IGui
 {
 public:
   // TODO: Скорей всего надо передавать сектор вместо бд.
-  BlockDynamicPart(BlockId id, const BlocksDataBase &db);
+  BlockDynamicPart(BlockId id, const BlocksDataBase &db, Sector &sector, IndexType pos);
   BlockDynamicPart(const BlockDynamicPart &other);
   ~BlockDynamicPart();
 
@@ -51,6 +52,12 @@ public:
 
   /// Получить интерфейс по заданному типу интерфейса, стороне и направления.
   boost::optional<Agent &> GetAgent(AgentId type, SideIndex side, AgentDirection dir);
+
+  BlockDynamicPart *GetNeighbour(SideIndex side);
+
+public:
+  IndexType pos;
+  Sector &m_sector;
 
 private:
   const BlocksDataBase &mDb;

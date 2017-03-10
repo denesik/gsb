@@ -82,6 +82,12 @@ void Sector::CreateBlock(SBPos pos, BlockId id)
   mStaticBlocks[cs::SBtoBI(pos)] = std::get<0>(block);
   mDinamicBlocks[cs::SBtoBI(pos)] = std::move(std::get<1>(block));
   mNeedCompile = true;
+
+  if (mDinamicBlocks[cs::SBtoBI(pos)])
+  {
+    mDinamicBlocks[cs::SBtoBI(pos)]->m_sector = this;
+    mDinamicBlocks[cs::SBtoBI(pos)]->pos = cs::SBtoBI(pos);
+  }
 }
 
 std::optional<TesselatorData &> Sector::GetTesselatorData(SBPos pos)
