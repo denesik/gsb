@@ -87,3 +87,8 @@ boost::optional<Agent &> BlockDynamicPart::GetAgent(AgentId type, SideIndex side
 
   return{};
 }
+
+BlockDynamicPart *BlockDynamicPart::GetNeighbour(SideIndex side)
+{
+  return m_sector.GetBlockDynamic(cs::Side(cs::BItoSB(pos), side));
+}

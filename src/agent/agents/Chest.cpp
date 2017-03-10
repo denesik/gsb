@@ -80,6 +80,15 @@ void Chest::Test()
 {
   // Тестовая функция.
   // Имитируем выполнение из блока.
+  auto block = nullptr;
+  for (int i = 0; i < 6; ++i)
+  {
+    block = mParent->GetNeighbour(i);
+    if (block != nullptr)
+      break;
+  }
+
+  if (block != nullptr)
   for (int i = 0; i < 6; ++i)
   {
     auto agent = mParent->GetAgent(Id(), static_cast<SideIndex>(i), AgentDirection::in);
