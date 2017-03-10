@@ -31,7 +31,7 @@ class BlockDynamicPart : public IGui
 {
 public:
   // TODO: Скорей всего надо передавать сектор вместо бд.
-  BlockDynamicPart(BlockId id, const BlocksDataBase &db, Sector &sector, IndexType pos);
+  BlockDynamicPart(BlockId id, const BlocksDataBase &db);
   BlockDynamicPart(const BlockDynamicPart &other);
   ~BlockDynamicPart();
 
@@ -57,7 +57,7 @@ public:
 
 public:
   IndexType pos;
-  Sector &m_sector;
+  Sector *m_sector;
 
 private:
   const BlocksDataBase &mDb;
@@ -68,6 +68,8 @@ private:
 
   struct in_out
   {
+    in_out() = default;
+    in_out(const in_out &) = default;
     std::vector<size_t> in;
     std::vector<size_t> out;
   };

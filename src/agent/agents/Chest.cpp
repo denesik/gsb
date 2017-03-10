@@ -80,10 +80,10 @@ void Chest::Test()
 {
   // Тестовая функция.
   // Имитируем выполнение из блока.
-  auto block = nullptr;
+  BlockDynamicPart *block = nullptr;
   for (int i = 0; i < 6; ++i)
   {
-    block = mParent->GetNeighbour(i);
+    block = mParent->GetNeighbour(static_cast<SideIndex>(i));
     if (block != nullptr)
       break;
   }
@@ -91,7 +91,7 @@ void Chest::Test()
   if (block != nullptr)
   for (int i = 0; i < 6; ++i)
   {
-    auto agent = mParent->GetAgent(Id(), static_cast<SideIndex>(i), AgentDirection::in);
+    auto agent = block->GetAgent(Id(), static_cast<SideIndex>(i), AgentDirection::in);
     if (agent)
     {
       auto &a = static_cast<Chest &>(*agent);

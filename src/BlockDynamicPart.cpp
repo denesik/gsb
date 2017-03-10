@@ -2,6 +2,7 @@
 #include <Magnum/Timeline.h>
 #include "BlocksDataBase.h"
 #include <algorithm>
+#include "Sector.h"
 
 BlockDynamicPart::BlockDynamicPart(BlockId id, const BlocksDataBase &db)
   : mBlockId(id), mDb(db)
@@ -10,7 +11,7 @@ BlockDynamicPart::BlockDynamicPart(BlockId id, const BlocksDataBase &db)
 
 
 BlockDynamicPart::BlockDynamicPart(const BlockDynamicPart &other)
-  : mBlockId(other.mBlockId), mDb(other.mDb)
+  : mBlockId(other.mBlockId), mDb(other.mDb), mBindingSide(other.mBindingSide)
 {
   if (other.mTesselatorData) mTesselatorData = std::make_unique<TesselatorData>(*mTesselatorData);
 }
@@ -24,7 +25,7 @@ std::unique_ptr<BlockDynamicPart> BlockDynamicPart::Clone()
   auto part = std::make_unique<BlockDynamicPart>(*this);
   for (const auto & ag : mAgents)
     //part->mAgents.insert(std::make_pair(ag.second->Id(), ag.second->Clone(this)));
-    part->mAgents.push_back(ag->Clone(this));
+    part->mAgents.push_back(ag->Clone(part.get()));
   return part;
 }
 
@@ -90,5 +91,5 @@ boost::optional<Agent &> BlockDynamicPart::GetAgent(AgentId type, SideIndex side
 
 BlockDynamicPart *BlockDynamicPart::GetNeighbour(SideIndex side)
 {
-  return m_sector.GetBlockDynamic(cs::Side(cs::BItoSB(pos), side));
+  return m_sector->GetBlockDynamic(cs::Side(cs::BItoSB(pos), side));
 }
