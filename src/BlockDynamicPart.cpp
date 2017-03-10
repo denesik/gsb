@@ -4,8 +4,7 @@
 #include <algorithm>
 #include "Sector.h"
 
-BlockDynamicPart::BlockDynamicPart(BlockId id, const BlocksDataBase &db)
-  : mBlockId(id), mDb(db)
+BlockDynamicPart::BlockDynamicPart()
 {
 }
 
@@ -14,6 +13,8 @@ BlockDynamicPart::BlockDynamicPart(const BlockDynamicPart &other)
   : mBlockId(other.mBlockId), mDb(other.mDb)
 {
   if (other.mTesselatorData) mTesselatorData = std::make_unique<TesselatorData>(*mTesselatorData);
+  for (const auto & ag : other.mAgents)
+    mAgents.push_back(ag->Clone(this));
 }
 
 BlockDynamicPart::~BlockDynamicPart()
@@ -22,11 +23,7 @@ BlockDynamicPart::~BlockDynamicPart()
 
 std::unique_ptr<BlockDynamicPart> BlockDynamicPart::Clone()
 {
-  auto part = std::make_unique<BlockDynamicPart>(*this);
-  for (const auto & ag : mAgents)
-    //part->mAgents.insert(std::make_pair(ag.second->Id(), ag.second->Clone(this)));
-    part->mAgents.push_back(ag->Clone(part.get()));
-  return part;
+  return std::make_unique<BlockDynamicPart>(*this);
 }
 
 void BlockDynamicPart::DrawGui(const Magnum::Timeline &dt)
@@ -53,12 +50,12 @@ bool BlockDynamicPart::AddAgent(std::unique_ptr<Agent> agent)
 
 const std::unique_ptr<BlockStaticPart> & BlockDynamicPart::GetStaticPart() const
 {
-  return mDb.GetBlockStaticPart(mBlockId);
+  return mDb->GetBlockStaticPart(mBlockId);
 }
 
 const BlocksDataBase &BlockDynamicPart::GetDataBase() const
 {
-  return mDb;
+  return *mDb;
 }
 
 boost::optional<Agent &> BlockDynamicPart::GetAgent(AgentId type, SideIndex side, AgentDirection dir)
@@ -79,4 +76,10 @@ boost::optional<Agent &> BlockDynamicPart::GetAgent(AgentId type, SideIndex side
 BlockDynamicPart *BlockDynamicPart::GetNeighbour(SideIndex side)
 {
   return m_sector->GetBlockDynamic(cs::Side(cs::BItoSB(pos), side));
+}
+
+BlockFactory::FactoryType& BlockFactory::Get()
+{
+  static FactoryType factory;
+  return factory;
 }

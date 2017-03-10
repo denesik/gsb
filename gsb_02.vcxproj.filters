@@ -138,6 +138,9 @@
     <ClCompile Include="src\IRecipe.cpp">
       <Filter>Файлы исходного кода\interfaces</Filter>
     </ClCompile>
+    <ClCompile Include="src\BlockAutoCrafter.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -274,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="src\IGui.h">
       <Filter>Файлы исходного кода\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BlockAutoCrafter.h">
+      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

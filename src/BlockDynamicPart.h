@@ -2,6 +2,7 @@
 #ifndef BlockDinamicPart_h__
 #define BlockDinamicPart_h__
 
+#include "TemplateFactory.h"
 #include <memory>
 #include "Tesselator.h"
 #include "agent/Agent.h"
@@ -19,17 +20,16 @@
 class BlocksDataBase;
 class Sector;
 
-// К каждой стороне блока можно прибиндить несколько интерфейсов разного типа и указать направление.
 // 
 class BlockDynamicPart : public IGui
 {
 public:
   // TODO: Скорей всего надо передавать сектор вместо бд.
-  BlockDynamicPart(BlockId id, const BlocksDataBase &db);
+  BlockDynamicPart();
   BlockDynamicPart(const BlockDynamicPart &other);
   ~BlockDynamicPart();
 
-  std::unique_ptr<BlockDynamicPart> Clone();
+  virtual std::unique_ptr<BlockDynamicPart> Clone();
 
   void DrawGui(const Magnum::Timeline &dt) override;
 
@@ -51,14 +51,22 @@ public:
   IndexType pos;
   Sector *m_sector;
 
+public:
+  BlocksDataBase *mDb;
+  BlockId mBlockId;
 private:
-  const BlocksDataBase &mDb;
-  const BlockId mBlockId;
   std::unique_ptr<TesselatorData> mTesselatorData;
   //boost::container::flat_multimap<AgentId, std::unique_ptr<Agent>> mAgents;
   std::vector<std::unique_ptr<Agent>> mAgents;
 };
 
 
+#define REGISTER_BLOCK_CLASS(type) REGISTER_ELEMENT(type, BlockFactory::Get(), #type)
+
+struct BlockFactory : boost::noncopyable
+{
+  using FactoryType = TemplateFactory<std::string, BlockDynamicPart>;
+  static FactoryType &Get();
+};
 
 #endif // BlockDinamicPart_h__

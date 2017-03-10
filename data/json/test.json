@@ -90,6 +90,7 @@
         "data/furnance_top_bottom.tga"
       ]
     },
+	"type":"BlockAutoCrafter",
     "agents":[
       {
         "type":"Chest",

@@ -47,6 +47,13 @@ bool LoadBlock(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::V
   auto static_part = std::make_unique<BlockStaticPart>();
   std::unique_ptr<BlockDynamicPart> dynamic_part = nullptr;
 
+  if (val.HasMember("type"))
+  {
+    std::string type = val["type"].GetString();
+    if (!dynamic_part)
+      dynamic_part = BlockFactory::Get().Create(type);
+  }
+
   if (val.HasMember("tesselator"))
   {
     const rapidjson::Value &tess_json = val["tesselator"];
@@ -60,7 +67,7 @@ bool LoadBlock(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::V
 
       if (static_part->GetTesselator()->UseTesselatorData())
       {
-        dynamic_part = std::make_unique<BlockDynamicPart>(id, db);
+        dynamic_part = std::make_unique<BlockDynamicPart>();
         dynamic_part->GetTesselatorData() = std::make_unique<TesselatorData>();
       }
     }
@@ -69,7 +76,7 @@ bool LoadBlock(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::V
   if (val.HasMember("agents"))
   {
     if (!dynamic_part)
-      dynamic_part = std::make_unique<BlockDynamicPart>(id, db);
+      dynamic_part = std::make_unique<BlockDynamicPart>();
 
     const rapidjson::Value &arr = val["agents"];
     if (val["agents"].IsArray())
@@ -107,6 +114,11 @@ bool LoadBlock(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::V
     {
       LOG(error) << "record \"" << id << "\" parts is not valid agents array.";
     }
+  }
+  if (dynamic_part)
+  {
+    dynamic_part->mBlockId = id;
+    dynamic_part->mDb = &db;
   }
 
   db.AddBlock(name, id, std::move(static_part), std::move(dynamic_part));
