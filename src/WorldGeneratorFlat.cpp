@@ -39,7 +39,7 @@ void WorldGeneratorFlat::Generate(Sector &sector)
     }
     else
     {
-      if(wb_pos.y() == dirt_level + 1 && rand() % 100 == 1)
+      if(wb_pos.y() == dirt_level + 1 && (rand() % 100 == 1 || rand() % 100 == 2))
         sector.CreateBlock(sb_pos, furnance);
       else
         sector.CreateBlock(sb_pos, air);
