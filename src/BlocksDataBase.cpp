@@ -50,13 +50,15 @@ bool BlocksDataBase::AddBlock(const std::string &name, BlockId id, std::unique_p
 
 void BlocksDataBase::AddRecipe(std::unique_ptr<IRecipe> move)
 {
-  mRecipes.emplace_back(std::move(move));
-  const IRecipe * recipe = mRecipes[mRecipes.size() - 1].get();
+  auto& specified_recipes = mRecipes[move->Id()];
 
-  for (const auto & inp : recipe->Components())
+  specified_recipes.emplace_back(std::move(move));
+  const IRecipe* recipe = specified_recipes[specified_recipes.size() - 1].get();
+
+  for (const auto& inp : recipe->Components())
     mItemUsing[inp.id].push_back(recipe);
 
-  for (const auto & inp : recipe->Results())
+  for (const auto& inp : recipe->Results())
     mItemRecipe[inp.id].push_back(recipe);
 }
 
@@ -87,14 +89,14 @@ const TextureAtlas & BlocksDataBase::GetAtlasItems() const
   return mAtlasItems;
 }
 
-std::vector<const IRecipe *> BlocksDataBase::GetRecipes(const std::vector<std::tuple<ItemId, size_t>> &items) const
+std::vector<const IRecipe *> BlocksDataBase::GetRecipes(const IRecipe & as_this, const std::vector<std::tuple<ItemId, size_t>> &items) const
 {
   std::vector<const IRecipe *> result;
 
   // 1. Пробегаем по рецептам.
   // 2. Каждую компоненту рецепта ищем в списке итемов.
   // 3. Если компоненты нет -- рецепт не сработает.
-  for (const auto &rec : mRecipes)
+  for (const auto &rec : GetSameRecipes(as_this))
   {
     const auto &components = rec->Components();
     bool rec_found = true;
@@ -123,4 +125,13 @@ std::vector<const IRecipe *> BlocksDataBase::GetRecipes(const std::vector<std::t
   }
 
   return result;
+}
+
+const std::vector<std::unique_ptr<IRecipe>> & BlocksDataBase::GetSameRecipes(const IRecipe& as_this) const
+{
+  auto same = mRecipes.find(as_this.Id());
+  if (same != mRecipes.end())
+    return same->second;
+  
+  return{};
 }

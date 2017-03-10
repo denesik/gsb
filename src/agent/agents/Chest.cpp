@@ -6,6 +6,7 @@
 #include "../../BlocksDataBase.h"
 #include "../../Item.h"
 #include <algorithm>
+#include "Recipe.h"
 
 Chest::Chest()
 {
@@ -38,7 +39,7 @@ void Chest::DrawGui(const Magnum::Timeline &dt)
 
   if (ImGui::Button("rec")) 
   {
-    const auto &recipes = db.GetRecipes(mItems);
+    const auto &recipes = db.GetRecipes(Recipe(), mItems);
     for (const auto &rec : recipes)
     {
       rec->Craft(*this);

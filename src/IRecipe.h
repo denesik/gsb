@@ -6,6 +6,8 @@
 
 class Chest;
 
+using RecipeId = unsigned int;
+
 class RecipeIn : public IJsonSerializable
 {
 public:
@@ -40,6 +42,17 @@ public:
   virtual bool Craft(Chest & c) const = 0;
   virtual const std::vector<RecipeIn> & Components() const = 0;
   virtual const std::vector<RecipeOut> & Results() const = 0;
+
+  virtual RecipeId Id() const = 0;
+};
+
+template <RecipeId aId>
+class INumeredRecipe : public IRecipe
+{
+public:
+  static constexpr RecipeId TypeId() { return aId; }
+
+  RecipeId Id() const override { return aId; }
 };
 
 #define REGISTER_RECIPE_CLASS(type) REGISTER_ELEMENT(type, RecipeFactory::Get(), #type)

@@ -35,6 +35,8 @@ protected:
   BlockDynamicPart *mParent = nullptr;
 };
 
+//TODO: сделать модную инстанциацию строкой
+//http://stackoverflow.com/questions/15858141/conveniently-declaring-compile-time-strings-in-c/15863804#15863804
 template <class Base, AgentId aId>
 class NumeredAgent : public Agent
 {

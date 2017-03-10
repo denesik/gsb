@@ -14,6 +14,7 @@
 #include <array>
 #include "IRecipe.h"
 #include "IItem.h"
+#include <map>
 
 // TODO: Заменить const std::unique_ptr<***> & 
 // на std::optional<const *** &>  ???
@@ -36,9 +37,9 @@ public:
   /// Создает блок.
   /// Если невозможно создать блоксданным ид вернет блок воздуха.
   std::tuple<BlockId, std::unique_ptr<BlockDynamicPart>> CreateBlock(BlockId id) const;
-  
+
   void AddRecipe(std::unique_ptr<IRecipe> move);
-  
+
   void AddItem(const std::string &name, ItemId id, std::unique_ptr<IItem> move);
   
   ItemId ItemIdFromName(const std::string& name);
@@ -50,7 +51,8 @@ public:
   /// Получить список рецептов для указанного списка итемов.
   /// TODO: Переделать что б не было сырого указателя.
   /// Вероятно ид рецептов нужны.
-  std::vector<const IRecipe *> GetRecipes(const std::vector<std::tuple<ItemId, size_t>> &items) const;
+  std::vector<const IRecipe *> GetRecipes(const IRecipe & as_this, const std::vector<std::tuple<ItemId, size_t>> &items) const;
+  const std::vector<std::unique_ptr<IRecipe>> & GetSameRecipes(const IRecipe & as_this) const;
 
 private:
   std::array<std::tuple<std::unique_ptr<BlockStaticPart>, std::unique_ptr<BlockDynamicPart>>, 0xFFFF> mBlocks;
@@ -59,7 +61,7 @@ private:
   std::array<std::unique_ptr<IItem>, 0xFFFF> mItems;
   std::unordered_map<std::string, ItemId> mItemNames;
 
-  std::vector<std::unique_ptr<IRecipe>> mRecipes;
+  std::map<RecipeId, std::vector<std::unique_ptr<IRecipe>>> mRecipes;
 
   std::unordered_map<ItemId, std::vector<const IRecipe *>> mItemUsing;
   std::unordered_map<ItemId, std::vector<const IRecipe *>> mItemRecipe;
