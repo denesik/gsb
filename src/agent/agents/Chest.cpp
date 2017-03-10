@@ -19,6 +19,7 @@ Chest::Chest(const Chest& other) : test(other.test)
 
 void Chest::JsonLoad(BlocksDataBase & db, const rapidjson::Value& val)
 {
+  Agent::JsonLoad(db, val);
   JSONLOAD(NVP(test));
 }
 

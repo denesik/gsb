@@ -17,12 +17,6 @@
 
 
 class BlocksDataBase;
-
-enum class AgentDirection
-{
-  in,
-  out,
-};
 class Sector;
 
 // К каждой стороне блока можно прибиндить несколько интерфейсов разного типа и указать направление.
@@ -42,9 +36,7 @@ public:
   std::unique_ptr<TesselatorData> &GetTesselatorData();
   const std::unique_ptr<TesselatorData> &GetTesselatorData() const;
 
-  size_t AddAgent(std::unique_ptr<Agent> agent);
-
-  bool Binding(size_t index, SideIndex side, AgentDirection dir);
+  bool AddAgent(std::unique_ptr<Agent> agent);
 
   const std::unique_ptr<BlockStaticPart> &GetStaticPart() const;
 
@@ -63,41 +55,8 @@ private:
   const BlocksDataBase &mDb;
   const BlockId mBlockId;
   std::unique_ptr<TesselatorData> mTesselatorData;
-  //boost::container::flat_map<AgentId, std::unique_ptr<Agent>> mAgents;
+  //boost::container::flat_multimap<AgentId, std::unique_ptr<Agent>> mAgents;
   std::vector<std::unique_ptr<Agent>> mAgents;
-
-  struct in_out
-  {
-    in_out() = default;
-    in_out(const in_out &) = default;
-    std::vector<size_t> in;
-    std::vector<size_t> out;
-  };
-  std::array<in_out, 6 > mBindingSide;
-
-public:
-  template<class T>
-  T *GetAgent()
-  {
-    AgentId name = T::TypeId();
-    auto it = mAgents.find(name);
-    if (it != mAgents.end())
-    {
-      return static_cast<T*>(it->second.get());
-    }
-    return nullptr;
-  }
-  template<class T>
-  bool HasAgent()
-  {
-    AgentId & name = T::TypeId();
-    auto it = mAgents.find(name);
-    if (it != mAgents.end())
-    {
-      return true;
-    }
-    return false;
-  }
 };
 
 

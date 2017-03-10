@@ -11,7 +11,7 @@ BlockDynamicPart::BlockDynamicPart(BlockId id, const BlocksDataBase &db)
 
 
 BlockDynamicPart::BlockDynamicPart(const BlockDynamicPart &other)
-  : mBlockId(other.mBlockId), mDb(other.mDb), mBindingSide(other.mBindingSide)
+  : mBlockId(other.mBlockId), mDb(other.mDb)
 {
   if (other.mTesselatorData) mTesselatorData = std::make_unique<TesselatorData>(*mTesselatorData);
 }
@@ -45,20 +45,9 @@ const std::unique_ptr<TesselatorData> & BlockDynamicPart::GetTesselatorData() co
   return mTesselatorData;
 }
 
-size_t BlockDynamicPart::AddAgent(std::unique_ptr<Agent> agent)
+bool BlockDynamicPart::AddAgent(std::unique_ptr<Agent> agent)
 {
-  //auto res = mAgents.insert(std::make_pair(agent->Id(), std::move(agent)));
-  //return res.second;
   mAgents.push_back(std::move(agent));
-  return mAgents.size() - 1;
-}
-
-bool BlockDynamicPart::Binding(size_t index, SideIndex side, AgentDirection dir)
-{
-  auto &vec = dir == AgentDirection::in ? mBindingSide[side].in : mBindingSide[side].out;
-
-  vec.push_back(index);
-
   return true;
 }
 
@@ -74,16 +63,14 @@ const BlocksDataBase &BlockDynamicPart::GetDataBase() const
 
 boost::optional<Agent &> BlockDynamicPart::GetAgent(AgentId type, SideIndex side, AgentDirection dir)
 {
-  auto &vec = dir == AgentDirection::in ? mBindingSide[side].in : mBindingSide[side].out;
-
-  auto it = std::find_if(vec.begin(), vec.end(), [this, type](size_t val)
+  auto it = std::find_if(mAgents.begin(), mAgents.end(), [this, type, side, dir](const decltype(mAgents)::value_type &val)
   {
-    return mAgents[val]->Id() == type;
+    return val->Id() == type && ((val->GetDirection(side) & dir) == dir);
   });
 
-  if (it != vec.end())
+  if (it != mAgents.end())
   {
-    return{ *mAgents[*it] };
+    return{ **it };
   }
 
   return{};

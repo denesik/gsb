@@ -96,48 +96,6 @@ bool LoadBlock(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::V
           }
 
           auto binding = dynamic_part->AddAgent(std::move(agent));
-          
-          if(val.HasMember("bindings") && val["bindings"].IsArray())
-          {
-            const auto& bindings = val["bindings"];
-            for (decltype(bindings.Size()) b = 0; b < bindings.Size(); b++)
-            {
-              std::string directions = bindings[b].GetString();
-              SideIndex side;
-              switch (directions[0])
-              {
-              case 'r': side = IRIGHT; break;
-              case 'l': side = ILEFT; break;
-              case 't': side = ITOP; break;
-              case 'd': side = IBOTTOM; break;
-              case 'f': side = IFRONT; break;
-              case 'b': side = IBACK; break;
-              default: continue; //TODO: материться
-              }
-              if (directions[1] != '_') dynamic_part->Binding(binding, side, AgentDirection::in);
-              if (directions[2] != '_') dynamic_part->Binding(binding, side, AgentDirection::out);
-            }
-          }
-          else
-          {
-            dynamic_part->Binding(binding, IBACK, AgentDirection::in);
-            dynamic_part->Binding(binding, IBACK, AgentDirection::out);
-
-            dynamic_part->Binding(binding, IFRONT, AgentDirection::in);
-            dynamic_part->Binding(binding, IFRONT, AgentDirection::out);
-
-            dynamic_part->Binding(binding, ILEFT, AgentDirection::in);
-            dynamic_part->Binding(binding, ILEFT, AgentDirection::out);
-
-            dynamic_part->Binding(binding, IRIGHT, AgentDirection::in);
-            dynamic_part->Binding(binding, IRIGHT, AgentDirection::out);
-
-            dynamic_part->Binding(binding, ITOP, AgentDirection::in);
-            dynamic_part->Binding(binding, ITOP, AgentDirection::out);
-
-            dynamic_part->Binding(binding, IBOTTOM, AgentDirection::in);
-            dynamic_part->Binding(binding, IBOTTOM, AgentDirection::out);
-          }
         }
         else
         {

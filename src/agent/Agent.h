@@ -9,6 +9,8 @@
 #include <memory>
 #include "IJsonSerializable.h"
 #include "IGui.h"
+#include <array>
+#include "../tools/CoordSystem.h"
 
 namespace Magnum {
   class Timeline;
@@ -18,6 +20,13 @@ class BlockDynamicPart;
 
 using AgentId = unsigned int;
 
+//TODO: ѕерегрузка операторов.
+enum /*class*/ AgentDirection
+{
+  none = 0,
+  in = 1 << 0,
+  out = 1 << 1,
+};
 
 class GSB_NOVTABLE Agent : public IJsonSerializable, public IGui
 {
@@ -28,11 +37,17 @@ public:
   virtual std::unique_ptr<Agent> Clone(BlockDynamicPart *parent) const = 0;
   virtual AgentId Id() const = 0;
   void DrawGui(const Magnum::Timeline &dt) override;
+  void JsonLoad(BlocksDataBase & db, const rapidjson::Value &val) override;
 
   BlockDynamicPart *Parent() const;
 
+  // ѕолучить направление на указанной стороне.
+  AgentDirection GetDirection(SideIndex side);
+
 protected:
   BlockDynamicPart *mParent = nullptr;
+  
+  std::array<AgentDirection, 6> mSides;
 };
 
 //TODO: сделать модную инстанциацию строкой
@@ -45,10 +60,11 @@ public:
   std::unique_ptr<Agent> Clone(BlockDynamicPart *parent) const override
   {
     auto t = std::make_unique<Base>(*static_cast<const Base *>(this));
-    t->mParent = parent;
+    t->mSides = mSides;
+    t->mParent = parent; // TODO  ривовато, надо бы перенести в конструктор.
     return t;
   }
-
+    
   AgentId Id() const override { return aId; }
 };
 
