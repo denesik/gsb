@@ -129,11 +129,8 @@ std::vector<const IRecipe *> BlocksDataBase::GetRecipes(const IRecipe & as_this,
 
 const std::vector<std::unique_ptr<IRecipe>> & BlocksDataBase::GetSameRecipes(const IRecipe& as_this) const
 {
-  auto same = mRecipes.find(as_this.Id());
-  if (same != mRecipes.end())
-    return same->second;
-  
   static const std::vector<std::unique_ptr<IRecipe>> null;
 
-  return null;
+  auto same = mRecipes.find(as_this.Id());
+  return same == mRecipes.end() ? null : same->second;
 }
