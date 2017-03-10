@@ -82,34 +82,12 @@
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [
-        "data/furnance_side.tga",
         "data/furnance_front.tga",
+        "data/furnance_side.tga",
         "data/furnance_side.tga",
         "data/furnance_side.tga",
         "data/furnance_top_bottom.tga",
         "data/furnance_top_bottom.tga"
-      ]
-    },
-    "agents":[
-      {
-        "type":"Chest",
-        "test":2
-      }
-    ]
-  },
-    {
-    "section": "block",
-    "name": "hopper",
-    "id": 8,
-    "tesselator": {
-      "type": "TesselatorSolidBlock",
-      "tex": [
-        "piston_top_normal.tga",
-        "piston_top_normal.tga",
-        "piston_top_normal.tga",
-        "piston_top_normal.tga",
-        "piston_top_normal.tga",
-        "piston_top_normal.tga"
       ]
     },
     "agents":[
