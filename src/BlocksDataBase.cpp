@@ -133,5 +133,7 @@ const std::vector<std::unique_ptr<IRecipe>> & BlocksDataBase::GetSameRecipes(con
   if (same != mRecipes.end())
     return same->second;
   
-  return{};
+  static const std::vector<std::unique_ptr<IRecipe>> null;
+
+  return null;
 }
