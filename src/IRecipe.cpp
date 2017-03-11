@@ -1,5 +1,6 @@
 #include "IRecipe.h"
 #include <BlocksDataBase.h>
+#include "Serialize.h"
 
 void RecipeIn::JsonLoad(BlocksDataBase& db, const rapidjson::Value& val)
 {
@@ -39,4 +40,14 @@ RecipeFactory::FactoryType& RecipeFactory::Get()
 {
   static FactoryType factory;
   return factory;
+}
+
+void IRecipe::JsonLoad(BlocksDataBase & db, const rapidjson::Value& val)
+{
+  JSONLOAD(sge::make_nvp("time", mTime));
+}
+
+float IRecipe::Time() const
+{
+  return mTime;
 }

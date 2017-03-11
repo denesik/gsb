@@ -4,6 +4,7 @@
 #include <vector>
 #include <tuple>
 #include "../../tools/Common.h"
+#include <boost/optional/optional.hpp>
 
 class Chest : public NumeredAgent<Chest, gsb::crc32<std::string>()("Chest")>
 {
@@ -16,14 +17,21 @@ public:
   void JsonLoad(BlocksDataBase & db, const rapidjson::Value &val) override;
   void DrawGui(const Magnum::Timeline &dt) override;
 
-  void AddItem(ItemId id, size_t count);
+  // Возвращает сколько итемов добавлено
+  size_t AddItem(ItemId id, size_t count);
 
-  bool RemoveItem(ItemId id, size_t count);
+  // Возвращает сколько итемов удалено
+  size_t RemoveItem(ItemId id, size_t count);
+
+  /// Количество итемов с указанным ид.
+  size_t ItemCount(ItemId id) const;
 
   const ItemList &Items() const;
 
 private:
   ItemList mItems;
+
+  boost::optional<size_t> find_item(ItemId id) const;
 
 };
 

@@ -10,8 +10,6 @@ class Chest;
 class Recipe : public INumeredRecipe<gsb::crc32<std::string>()("Recipe")>
 {
 public:
-  bool CanCraft(const Chest & c) const override;
-  bool Craft(Chest & c) const override;
   const std::vector<RecipeIn> & Components() const override;
   const std::vector<RecipeOut> & Results() const override;
 

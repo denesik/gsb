@@ -4,6 +4,8 @@
 
 
 #include "BlockDynamicPart.h"
+#include "Timer.h"
+#include "IRecipe.h"
 
 // Содержит 2 крафтера.
 class BlockAutoCrafter : public BlockDynamicPart
@@ -17,11 +19,11 @@ public:
 
   void DrawGui(const Magnum::Timeline &dt) override;
 
-  void Update() override;
+  void Update(const Magnum::Timeline &dt) override;
 
 private:
-
-
+  const IRecipe *m_current_recipe = nullptr;
+  Timer mTimer;
 };
 
 REGISTER_BLOCK_CLASS(BlockAutoCrafter);

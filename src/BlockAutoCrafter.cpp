@@ -40,13 +40,14 @@ void BlockAutoCrafter::DrawGui(const Magnum::Timeline &dt)
     ImGui::PopID();
   }
 
-  if (ImGui::Button("Update"))
-  {
-    Update();
-  }
+//   if (ImGui::Button("Update"))
+//   {
+//     Update();
+//   }
+  Update(dt);
 }
 
-void BlockAutoCrafter::Update()
+void BlockAutoCrafter::Update(const Magnum::Timeline &dt)
 {
   // Запрашиваем у инпута список итемов, по данному списку формируем список рецептов.
   // Если есть хотя бы один рецепт, крафтим первый.
@@ -56,18 +57,30 @@ void BlockAutoCrafter::Update()
   auto &output = static_cast<Chest &>(*mAgents[1]);
   auto &db = *mDb;
 
-  const auto &recipes = db.GetRecipes(Recipe(), input.Items());
-  if (!recipes.empty())
+  if (m_current_recipe)
   {
-    const auto &components = recipes.front()->Components();
-    const auto &results = recipes.front()->Results();
-    for (auto c : components)
+    if (mTimer.Elapsed() >= m_current_recipe->Time())
     {
-      input.RemoveItem(c.id, c.count);
+      const auto &components = m_current_recipe->Components();
+      const auto &results = m_current_recipe->Results();
+      for (auto c : components)
+      {
+        input.RemoveItem(c.id, c.count);
+      }
+      for (auto r : results)
+      {
+        output.AddItem(r.id, r.count);
+      }
+      m_current_recipe = nullptr;
     }
-    for (auto r : results)
+  }
+  else
+  {
+    const auto &recipes = db.GetRecipes(Recipe(), input.Items());
+    if (!recipes.empty())
     {
-      output.AddItem(r.id, r.count);
+      m_current_recipe = recipes.front();
     }
+    mTimer.Start();
   }
 }

@@ -239,9 +239,6 @@
     <ClInclude Include="src\Movable.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\Creature.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="src\agent\Agent.h">
       <Filter>agent</Filter>
     </ClInclude>
@@ -282,10 +279,13 @@
       <Filter>Файлы исходного кода\interfaces</Filter>
     </ClInclude>
     <ClInclude Include="src\BlockAutoCrafter.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Creature.h">
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\imgui\imgui_widgets.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

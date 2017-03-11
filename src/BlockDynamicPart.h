@@ -31,7 +31,7 @@ public:
 
   virtual std::unique_ptr<BlockDynamicPart> Clone();
 
-  virtual void Update() {};
+  virtual void Update(const Magnum::Timeline &dt) {};
 
   void DrawGui(const Magnum::Timeline &dt) override;
 

@@ -12,7 +12,7 @@ public:
 
   void Start();
 
-  double Elapsed() const;
+  float Elapsed() const;
 
 private:
   std::chrono::high_resolution_clock::time_point mStartTime;

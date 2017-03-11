@@ -8,6 +8,8 @@
 #include "Recipe.h"
 #include "../../../imgui/imgui.h"
 #include "../../imgui/imgui_widgets.h"
+#include <string>
+#include <algorithm>
 
 Chest::Chest()
 {
@@ -15,7 +17,6 @@ Chest::Chest()
 
 Chest::Chest(const Chest& other)
 {
-  AddItem(1, 1);
 }
 
 void Chest::JsonLoad(BlocksDataBase & db, const rapidjson::Value& val)
@@ -29,6 +30,11 @@ void Chest::DrawGui(const Magnum::Timeline &dt)
   {
     AddItem(1, 1);
   }
+  ImGui::SameLine();
+  if (ImGui::Button("del"))
+  {
+    RemoveItem(1, 1);
+  }
 
   const auto &db = mParent->GetDataBase();
   for (size_t i = 0; i < 16; i++)
@@ -37,7 +43,8 @@ void Chest::DrawGui(const Magnum::Timeline &dt)
     if (i < mItems.size())
     {
       const auto &coord = static_cast<const Item &>(*(db.GetItem(std::get<0>(mItems[i])))).TextureCoord();
-      ImGui::Image(ImTextureID(1), "123", ImVec2(32, 32), ImVec2(coord.left(), coord.bottom()), ImVec2(coord.right(), coord.top()));
+      
+      ImGui::Image(ImTextureID(1), std::to_string(std::get<1>(mItems[i])).c_str(), ImVec2(32, 32), ImVec2(coord.left(), coord.bottom()), ImVec2(coord.right(), coord.top()));
     }
     else
     {
@@ -48,25 +55,43 @@ void Chest::DrawGui(const Magnum::Timeline &dt)
   }
 }
 
-void Chest::AddItem(ItemId id, size_t count)
+size_t Chest::AddItem(ItemId id, size_t count)
 {
-  mItems.emplace_back(id, count);
-}
-
-bool Chest::RemoveItem(ItemId id, size_t count)
-{
-  auto it = std::find_if(mItems.begin(), mItems.end(), [id](const decltype(mItems)::value_type &val)
+  if (auto index = find_item(id))
   {
-    return std::get<0>(val) == id;
-  });
-
-  if (it != mItems.end())
+    std::get<1>(mItems[*index]) += count;
+  }
+  else
   {
-    mItems.erase(it);
-    return true;
+    mItems.emplace_back(id, count);
   }
 
-  return false;
+  return count;
+}
+
+size_t Chest::RemoveItem(ItemId id, size_t count)
+{
+  if (auto index = find_item(id))
+  {
+    if (count <= std::get<1>(mItems[*index])) std::get<1>(mItems[*index]) -= count;
+
+    if (std::get<1>(mItems[*index]) == 0)
+    {
+      std::swap(mItems[*index], mItems.back());
+      mItems.resize(mItems.size() - 1);
+    }
+  }
+
+  return count;
+}
+
+size_t Chest::ItemCount(ItemId id) const
+{
+  if (auto index = find_item(id))
+  {
+    return std::get<1>(mItems[*index]);
+  }
+  return 0;
 }
 
 const Chest::ItemList & Chest::Items() const
@@ -74,31 +99,16 @@ const Chest::ItemList & Chest::Items() const
   return mItems;
 }
 
-// void Chest::Test()
-// {
-//   // Тестовая функция.
-//   // Имитируем выполнение из блока.
-//   BlockDynamicPart *block = nullptr;
-//   for (int i = 0; i < 6; ++i)
-//   {
-//     block = mParent->GetNeighbour(static_cast<SideIndex>(i));
-//     if (block != nullptr)
-//       break;
-//   }
-// 
-//   if (block != nullptr)
-//   for (int i = 0; i < 6; ++i)
-//   {
-//     auto agent = block->GetAgent(Id(), static_cast<SideIndex>(i), AgentDirection::in);
-//     if (agent)
-//     {
-//       auto &a = static_cast<Chest &>(*agent);
-//       if (!mItems.empty())
-//       {
-//         a.AddItem(std::get<0>(mItems.back()), std::get<1>(mItems.back()));
-//         mItems.resize(mItems.size() - 1);
-//       }
-//     }
-//   }
-// 
-// }
+boost::optional<size_t> Chest::find_item(ItemId id) const
+{
+  auto it = std::find_if(mItems.begin(), mItems.end(), [id](const decltype(mItems)::value_type &val)
+  {
+    return std::get<0>(val) == id;
+  });
+
+  if (it != mItems.end())
+    return (std::distance(mItems.begin(), it));
+
+  return{};
+}
+
