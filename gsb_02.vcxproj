@@ -32,6 +32,7 @@
     <ClCompile Include="src\Creature.cpp" />
     <ClCompile Include="src\DrawableArea.cpp" />
     <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\IMapGenerator.cpp" />
     <ClCompile Include="src\ImguiPort.cpp" />
     <ClCompile Include="src\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\IRecipe.cpp" />

@@ -5,6 +5,8 @@ namespace Magnum {
   class Timeline;
 }
 
+using GuiFunction = std::function<void(const Magnum::Timeline &dt)>;
+
 class GSB_NOVTABLE IGui
 {
 public:
