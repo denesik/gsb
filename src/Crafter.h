@@ -16,7 +16,7 @@ class Crafter
 {
 public:
   // TODO: избавиться от unique ptr
-  Crafter(std::unique_ptr<IRecipe> recipe);
+  Crafter(std::unique_ptr<IRecipe> recipe, bool fast_components = false);
 
   void Update(const Magnum::Timeline &dt, const BlocksDataBase &db);
   void SetInput(Agent &agent);
@@ -46,6 +46,8 @@ private:
 
   float m_time = 0.0f;
 
+  // Компоненты уничтожаются в начале крафта или в конце?
+  bool m_fast_components = false;
 };
 
 

@@ -9,7 +9,7 @@
 
 BlockAutoCrafter::BlockAutoCrafter()
   : mCrafter(std::unique_ptr<IRecipe>(new Recipe)),
-    mGenerator(std::unique_ptr<IRecipe>(new RecipeBurn))
+    mGenerator(std::unique_ptr<IRecipe>(new RecipeBurn), true)
 {
 }
 
@@ -21,7 +21,7 @@ BlockAutoCrafter::~BlockAutoCrafter()
 BlockAutoCrafter::BlockAutoCrafter(const BlockAutoCrafter &other)
   : BlockDynamicPart(other), 
     mCrafter(std::unique_ptr<IRecipe>(new Recipe)),
-    mGenerator(std::unique_ptr<IRecipe>(new RecipeBurn))
+    mGenerator(std::unique_ptr<IRecipe>(new RecipeBurn), true)
 {
   
 }
@@ -59,19 +59,19 @@ void BlockAutoCrafter::DrawGui(const Magnum::Timeline &dt)
   ImGui::PushID(1);
   {
     auto &input = *mAgents[2];
-    auto &output = *mAgents[3];
+    //auto &output = *mAgents[3];
     mGenerator.SetInput(input);
-    mGenerator.SetOutput(output);
+    mGenerator.SetOutput(input);
 
     ImGui::PushID(0);
     input.DrawGui(dt);
     ImGui::PopID();
 
-    ImGui::SameLine();
-
-    ImGui::PushID(1);
-    output.DrawGui(dt);
-    ImGui::PopID();
+//     ImGui::SameLine();
+// 
+//     ImGui::PushID(1);
+//     output.DrawGui(dt);
+//     ImGui::PopID();
 
     ImGui::ProgressBar(mGenerator.Progress(), ImVec2(0.0f, 0.0f), " ");
   }

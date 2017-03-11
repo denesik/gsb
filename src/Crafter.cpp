@@ -3,8 +3,8 @@
 #include "Recipe.h"
 #include <Magnum\Timeline.h>
 
-Crafter::Crafter(std::unique_ptr<IRecipe> recipe)
-  : m_recipe_type(std::move(recipe))
+Crafter::Crafter(std::unique_ptr<IRecipe> recipe, bool fast_components)
+  : m_recipe_type(std::move(recipe)), m_fast_components(fast_components)
 {
 }
 
@@ -18,26 +18,50 @@ void Crafter::Update(const Magnum::Timeline &dt, const BlocksDataBase &db)
   if (m_current_recipe && m_runned)
   {
     // Крафтим.
-    m_time += dt.previousFrameDuration();
+    bool enable = true;
+    const auto &components = m_current_recipe->Components();
 
-    if (m_time >= m_current_recipe->Time())
+    // Если нужно удалить компоненты в конце крафта, проверяем не исчезли ли компоненты.
+    if (!m_fast_components)
+    for (const auto &c : components)
     {
-      const auto &components = m_current_recipe->Components();
-      const auto &results = m_current_recipe->Results();
-      for (const auto &c : components)
+      // Если требуется больше итемов чем есть в сундуке не крафтим.
+      if (c.count > mInput->ItemCount(c.id))
       {
-        mInput->RemoveItem(c.id, c.count);
+        m_current_recipe = nullptr;
+        m_runned = false;
+        m_time = 0.0f;
+        enable = false;
+        break;
       }
-      for (const auto &r : results)
+    }
+
+    if (enable)
+    {
+      m_time += dt.previousFrameDuration();
+
+      if (m_time >= m_current_recipe->Time())
       {
-        mOutput->AddItem(r.id, r.count);
+        // Закончили крафт. Если нужно, удаляем компоненты.
+        if (!m_fast_components)
+        for (const auto &c : components)
+        {
+          mInput->RemoveItem(c.id, c.count);
+        }
+
+        const auto &results = m_current_recipe->Results();
+        for (const auto &r : results)
+        {
+          mOutput->AddItem(r.id, r.count);
+        }
+        m_current_recipe = nullptr;
+        m_runned = false;
+        m_time = 0.0f;
       }
-      m_current_recipe = nullptr;
-      m_runned = false;
-      m_time = 0.0f;
     }
   }
 
+  // Узнаем, можем ли мы что то скрафтить.
   if (!m_current_recipe)
   {
     const auto &recipes = db.GetRecipes(*m_recipe_type, mInput->Items());
@@ -70,6 +94,15 @@ float Crafter::Progress() const
 
 void Crafter::Run()
 {
+  // Запускаем крафт. Если нужно удалить компоненты при запуске, делаем это.
+  if (m_fast_components)
+  {
+    const auto &components = m_current_recipe->Components();
+    for (const auto &c : components)
+    {
+      mInput->RemoveItem(c.id, c.count);
+    }
+  }
   m_runned = true;
 }
 
