@@ -8,9 +8,8 @@
 #include <Magnum/Magnum.h>
 #include <Magnum/Math/Range.h>
 #include "BlocksDataBase.h"
-#include "IGui.h"
 
-class Item : public IItem/*, public IGui*/
+class Item : public IItem
 {
 public:
   Item();
@@ -18,7 +17,7 @@ public:
 
   void JsonLoad(BlocksDataBase & db, const rapidjson::Value & val) override;
 
-  void DrawGui(const Magnum::Timeline &dt) const /*override*/;
+  const Magnum::Range2D &TextureCoord() const;
 
 private:
   Magnum::Range2D mTextureCoord;

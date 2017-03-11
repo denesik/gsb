@@ -1,12 +1,13 @@
 #include "Chest.h"
 #include "../../Serialize.h"
 #include <Magnum/Timeline.h>
-#include "../../../imgui/imgui.h"
 #include "../../BlockDynamicPart.h"
 #include "../../BlocksDataBase.h"
 #include "../../Item.h"
 #include <algorithm>
 #include "Recipe.h"
+#include "../../../imgui/imgui.h"
+#include "../../imgui/imgui_widgets.h"
 
 Chest::Chest()
 {
@@ -35,7 +36,8 @@ void Chest::DrawGui(const Magnum::Timeline &dt)
     //ImGui::PushID(i);
     if (i < mItems.size())
     {
-      static_cast<const Item &>(*(db.GetItem(std::get<0>(mItems[i])))).DrawGui(dt);
+      const auto &coord = static_cast<const Item &>(*(db.GetItem(std::get<0>(mItems[i])))).TextureCoord();
+      ImGui::Image(ImTextureID(1), "123", ImVec2(32, 32), ImVec2(coord.left(), coord.bottom()), ImVec2(coord.right(), coord.top()));
     }
     else
     {

@@ -1,5 +1,6 @@
 #include "Item.h"
-#include "..\imgui\imgui.h"
+
+
 
 using namespace Magnum;
 
@@ -21,7 +22,7 @@ void Item::JsonLoad(BlocksDataBase & db, const rapidjson::Value & val)
   }
 }
 
-void Item::DrawGui(const Magnum::Timeline &dt) const
+const Magnum::Range2D & Item::TextureCoord() const
 {
-  ImGui::ImageButton(ImTextureID(mTextId), ImVec2(32, 32), ImVec2(mTextureCoord.left(), mTextureCoord.bottom()), ImVec2(mTextureCoord.right(), mTextureCoord.top()));
+  return mTextureCoord;
 }

@@ -141,6 +141,9 @@
     <ClCompile Include="src\BlockAutoCrafter.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="src\imgui\imgui_widgets.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -279,6 +282,9 @@
       <Filter>Файлы исходного кода\interfaces</Filter>
     </ClInclude>
     <ClInclude Include="src\BlockAutoCrafter.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imgui_widgets.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

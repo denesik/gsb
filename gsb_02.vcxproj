@@ -33,6 +33,7 @@
     <ClCompile Include="src\DrawableArea.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\ImguiPort.cpp" />
+    <ClCompile Include="src\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\IRecipe.cpp" />
     <ClCompile Include="src\Item.cpp" />
     <ClCompile Include="src\JsonDataBase.cpp" />
@@ -78,6 +79,7 @@
     <ClInclude Include="src\IMapGenerator.h" />
     <ClInclude Include="src\IMapLoader.h" />
     <ClInclude Include="src\ImguiPort.h" />
+    <ClInclude Include="src\imgui\imgui_widgets.h" />
     <ClInclude Include="src\IRecipe.h" />
     <ClInclude Include="src\Item.h" />
     <ClInclude Include="src\JsonDataBase.h" />
