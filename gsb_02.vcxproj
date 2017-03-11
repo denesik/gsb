@@ -29,6 +29,7 @@
     <ClCompile Include="src\BlocksDataBase.cpp" />
     <ClCompile Include="src\BlockStaticPart.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Crafter.cpp" />
     <ClCompile Include="src\Creature.cpp" />
     <ClCompile Include="src\DrawableArea.cpp" />
     <ClCompile Include="src\Game.cpp" />
@@ -42,6 +43,7 @@
     <ClCompile Include="src\MapLoader.cpp" />
     <ClCompile Include="src\PerlinNoise.cpp" />
     <ClCompile Include="src\Recipe.cpp" />
+    <ClCompile Include="src\RecipeBurn.cpp" />
     <ClCompile Include="src\Sector.cpp" />
     <ClCompile Include="src\SectorCompiler.cpp" />
     <ClCompile Include="src\TemplateFactory.h" />
@@ -70,6 +72,7 @@
     <ClInclude Include="src\BlockStaticPart.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\configure.h" />
+    <ClInclude Include="src\Crafter.h" />
     <ClInclude Include="src\Creature.h" />
     <ClInclude Include="src\DrawableArea.h" />
     <ClInclude Include="src\Game.h" />
@@ -88,6 +91,7 @@
     <ClInclude Include="src\MapLoader.h" />
     <ClInclude Include="src\PerlinNoise.h" />
     <ClInclude Include="src\Recipe.h" />
+    <ClInclude Include="src\RecipeBurn.h" />
     <ClInclude Include="src\Sector.h" />
     <ClInclude Include="src\SectorCompiler.h" />
     <ClInclude Include="src\Serialize.h" />

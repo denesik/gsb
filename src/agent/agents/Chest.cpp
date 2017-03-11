@@ -26,6 +26,8 @@ void Chest::JsonLoad(BlocksDataBase & db, const rapidjson::Value& val)
 
 void Chest::DrawGui(const Magnum::Timeline &dt)
 {
+  ImGui::BeginGroup();
+
   if (ImGui::Button("add"))
   {
     AddItem(1, 1);
@@ -37,22 +39,25 @@ void Chest::DrawGui(const Magnum::Timeline &dt)
   }
 
   const auto &db = mParent->GetDataBase();
-  for (size_t i = 0; i < 16; i++)
+  ImDrawList* draw_list = ImGui::GetWindowDrawList();
+  for (size_t i = 0; i < 4; i++)
   {
+    ImVec2 base_pos = ImGui::GetCursorScreenPos();
     //ImGui::PushID(i);
     if (i < mItems.size())
     {
       const auto &coord = static_cast<const Item &>(*(db.GetItem(std::get<0>(mItems[i])))).TextureCoord();
-      
       ImGui::Image(ImTextureID(1), std::to_string(std::get<1>(mItems[i])).c_str(), ImVec2(32, 32), ImVec2(coord.left(), coord.bottom()), ImVec2(coord.right(), coord.top()));
     }
     else
     {
       ImGui::Dummy(ImVec2(32, 32));
     }
-    if ((i % 4) < 3) ImGui::SameLine();
+    draw_list->AddRect(base_pos, ImVec2(base_pos.x + 32, base_pos.y + 32), IM_COL32(255, 255, 255, 100));
+    if ((i % 2) < 1) ImGui::SameLine();
     //ImGui::PopID();
   }
+  ImGui::EndGroup();
 }
 
 size_t Chest::AddItem(ItemId id, size_t count)

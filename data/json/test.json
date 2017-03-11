@@ -97,6 +97,12 @@
       },
 	  {
         "type":"Chest"
+      },
+	  {
+        "type":"Chest"
+      },
+	  {
+        "type":"Chest"
       }
     ]
   },
@@ -133,6 +139,14 @@
     "type": "Recipe",
     "id": 2,
 	"time": 5.0,
+    "input": [["coal", 1]],
+    "output": [["iron_ingot", 1]]
+  },
+  {
+    "section": "recipe",
+    "type": "RecipeBurn",
+    "id": 2,
+	"time": 3.0,
     "input": [["coal", 1]],
     "output": [["iron_ingot", 1]]
   }

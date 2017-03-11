@@ -22,3 +22,5 @@ float Timer::Elapsed() const
   auto endTime = std::chrono::high_resolution_clock::now();
   return std::chrono::duration<float, std::milli>(endTime - mStartTime).count() / 1000.0f;
 }
+
+

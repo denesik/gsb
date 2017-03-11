@@ -45,9 +45,20 @@ RecipeFactory::FactoryType& RecipeFactory::Get()
 void IRecipe::JsonLoad(BlocksDataBase & db, const rapidjson::Value& val)
 {
   JSONLOAD(sge::make_nvp("time", mTime));
+  JSONLOAD(sge::make_nvp("input", mComponents), sge::make_nvp("output", mResults));
 }
 
 float IRecipe::Time() const
 {
   return mTime;
+}
+
+const std::vector<RecipeIn> & IRecipe::Components() const
+{
+  return mComponents;
+}
+
+const std::vector<RecipeOut> & IRecipe::Results() const
+{
+  return mResults;
 }

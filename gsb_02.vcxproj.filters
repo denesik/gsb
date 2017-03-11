@@ -144,6 +144,12 @@
     <ClCompile Include="src\imgui\imgui_widgets.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="src\Crafter.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RecipeBurn.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -286,6 +292,12 @@
     </ClInclude>
     <ClInclude Include="src\imgui\imgui_widgets.h">
       <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Crafter.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RecipeBurn.h">
+      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

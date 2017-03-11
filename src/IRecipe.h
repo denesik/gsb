@@ -38,8 +38,8 @@ class GSB_NOVTABLE IRecipe : public IJsonSerializable
 public:
   virtual ~IRecipe() = default;
 
-  virtual const std::vector<RecipeIn> & Components() const = 0;
-  virtual const std::vector<RecipeOut> & Results() const = 0;
+  virtual const std::vector<RecipeIn> & Components() const;
+  virtual const std::vector<RecipeOut> & Results() const;
 
   void JsonLoad(BlocksDataBase & db, const rapidjson::Value& val) override;
 
@@ -49,6 +49,8 @@ public:
 
 protected:
   float mTime = 0; // ¬рем€ в мс.
+  std::vector<RecipeIn> mComponents;
+  std::vector<RecipeOut> mResults;
 };
 
 template <RecipeId aId>
