@@ -19,13 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FastNoise\FastNoise.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
     <ClCompile Include="src\accessors\Accessor.cpp" />
     <ClCompile Include="src\accessors\AccessorItem.cpp" />
+    <ClCompile Include="src\BiomeMapGenerator.cpp" />
     <ClCompile Include="src\BlockAutoCrafter.cpp" />
     <ClCompile Include="src\Block.cpp" />
+    <ClCompile Include="src\ConfiguratableMapGenerator.cpp" />
     <ClCompile Include="src\DataBase.cpp" />
     <ClCompile Include="src\StaticBlock.cpp" />
     <ClCompile Include="src\Camera.cpp" />
@@ -66,8 +69,10 @@
     <ClInclude Include="src\accessors\Accessor.h" />
     <ClInclude Include="src\accessors\AccessorItem.h" />
     <ClInclude Include="src\accessors\Accessors.hpp" />
+    <ClInclude Include="src\BiomeMapGenerator.h" />
     <ClInclude Include="src\BlockAutoCrafter.h" />
     <ClInclude Include="src\Block.h" />
+    <ClInclude Include="src\ConfiguratableMapGenerator.h" />
     <ClInclude Include="src\DataBase.h" />
     <ClInclude Include="src\StaticBlock.h" />
     <ClInclude Include="src\Camera.h" />

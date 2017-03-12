@@ -17,9 +17,11 @@
 #include "MapLoader.h"
 #include "tools/Brezenham3D.h"
 #include "WorldGeneratorFlat.h"
+#include "ConfiguratableMapGenerator.h"
 #include <boost/optional.hpp>
 #include <exception>
 #include <IMapLoader.h>
+#include <BiomeMapGenerator.h>
 
 Game::Game(const Arguments & arguments)
   : Platform::Application{ arguments, Configuration{}.setTitle("Magnum Textured Triangle Example").setWindowFlags(Configuration::WindowFlag::Resizable) }
@@ -44,11 +46,14 @@ Game::Game(const Arguments & arguments)
 
   mWorld = std::make_unique<World>(*mBlocksDataBase);
 
-  //auto mapgen = std::make_unique<MapLoader>(std::make_unique<PrimitivaMountains>(*mBlocksDataBase, 1.f));
-  auto mapgen = std::make_unique<MapLoader>(std::make_unique<WorldGeneratorFlat>(*mBlocksDataBase));
-  mapgen->SetWorld(mWorld.get());
+  auto mapgen_biome = std::make_unique<BiomeMapGenerator>(*mBlocksDataBase, 1234);
+  mapgen_biome->AddBiome(std::make_unique<ConfiguratableMapGenerator>(*mBlocksDataBase, 1.f), 1.f, "primitive_mountains");
+  //mapgen_biome->AddBiome(std::make_unique<WorldGeneratorFlat>(*mBlocksDataBase), 1.f, "flat");
 
-  mWorld->SetLoader(std::move(mapgen));
+  auto maploader = std::make_unique<MapLoader>(std::move(mapgen_biome));
+  
+  maploader->SetWorld(mWorld.get());
+  mWorld->SetLoader(std::move(maploader));
 
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{});
   mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 0);

@@ -29,6 +29,16 @@ static const Magnum::Vector3 gVertexCube[] =
   { 1.0f, 1.0f, 1.0f },// BACK LT
 };
 
+static const Magnum::Vector3 gNormalData[] =
+{
+  {  0,  0, -1 }, // front
+  { -1,  0,  0 }, // right +
+  {  0,  0,  1 }, // back +
+  {  1,  0,  0 }, // left  
+  {  0,  1,  0 }, // top
+  {  0, -1,  0 }, // bot
+};
+
 static const Magnum::Vector3 gVertexData[] =
 {
   gVertexCube[FLB],gVertexCube[FRB],gVertexCube[FRT],gVertexCube[FLT], // front
@@ -38,6 +48,7 @@ static const Magnum::Vector3 gVertexData[] =
   gVertexCube[FLT],gVertexCube[FRT],gVertexCube[BRT],gVertexCube[BLT], // top
   gVertexCube[BLB],gVertexCube[BRB],gVertexCube[FRB],gVertexCube[FLB], // bot
 };
+
 
 static const Magnum::Vector2 gTextureSide[] =
 {
@@ -85,10 +96,13 @@ void TesselatorSolidBlock::PushBack(std::vector<TesselatorVertex> &vertex,
     {
       for (size_t j = 0; j < 4; ++j)
       {
-        vertex.emplace_back(mVertexData[i * 4 + j] + pos, Vector2{
+        vertex.emplace_back(
+          mVertexData[i * 4 + j] + pos,
+          Vector2{
           gTextureSide[j].x() * (mTextureCoord[i].right() - mTextureCoord[i].left()) + mTextureCoord[i].left(),
           gTextureSide[j].y() * (mTextureCoord[i].top() - mTextureCoord[i].bottom()) + mTextureCoord[i].bottom()
-        });
+        },
+          gNormalData[i]);
       }
 
       for (size_t j = 0; j < 6; ++j)

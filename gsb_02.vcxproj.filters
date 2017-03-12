@@ -19,6 +19,9 @@
     <Filter Include="Файлы исходного кода\Accessors">
       <UniqueIdentifier>{a500637d-3ceb-4ef4-8ae1-e715a1a692d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы исходного кода\FastNoise">
+      <UniqueIdentifier>{42e3c5f9-a606-4329-b14e-9c30b108e740}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Game.cpp">
@@ -146,6 +149,15 @@
     </ClCompile>
     <ClCompile Include="src\accessors\AccessorItem.cpp">
       <Filter>Файлы исходного кода\Accessors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BiomeMapGenerator.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConfiguratableMapGenerator.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="FastNoise\FastNoise.cpp">
+      <Filter>Файлы исходного кода\FastNoise</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -294,6 +306,12 @@
       <Filter>Файлы исходного кода\Accessors</Filter>
     </ClInclude>
     <ClInclude Include="src\RecipeHand.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BiomeMapGenerator.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ConfiguratableMapGenerator.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>

@@ -130,7 +130,7 @@ void DrawableArea::UpdatePos(const SPos &pos)
 SectorRenderData::SectorRenderData()
 {
   mesh.setPrimitive(MeshPrimitive::Triangles);
-  mesh.addVertexBuffer(vertex_buffer, 0, StandartShader::Position{}, StandartShader::TextureCoordinates{});
+  mesh.addVertexBuffer(vertex_buffer, 0, StandartShader::Position{}, StandartShader::TextureCoordinates{}, StandartShader::Normal{});
   mesh.setIndexBuffer(index_buffer, 0, Mesh::IndexType::UnsignedInt);
 }
 

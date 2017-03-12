@@ -17,12 +17,13 @@ struct TesselatorVertex
 {
   TesselatorVertex() = default;
 
-  TesselatorVertex(const Magnum::Vector3 &_vertex, const Magnum::Vector2 &_textcoord)
-    : vertex(_vertex), textcoord(_textcoord)
+  TesselatorVertex(const Magnum::Vector3 &_vertex, const Magnum::Vector2 &_textcoord, const Magnum::Vector3 &_normal)
+    : vertex(_vertex), textcoord(_textcoord), normal(_normal)
   {}
 
   Magnum::Vector3 vertex;
   Magnum::Vector2 textcoord;
+  Magnum::Vector3 normal;
 };
 
 class Tesselator

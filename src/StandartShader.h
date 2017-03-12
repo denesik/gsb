@@ -13,6 +13,7 @@ class StandartShader : public AbstractShaderProgram {
 public:
 	typedef Attribute<0, Vector3> Position;
 	typedef Attribute<1, Vector2> TextureCoordinates;
+  typedef Attribute<4, Vector3> Normal;
 
 	explicit StandartShader();
 
