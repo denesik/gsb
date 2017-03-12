@@ -12,12 +12,13 @@ class DataBase;
 
 // TODO: Сделать для этого класс интерфейс.
 // TODO: Написать кнструкторы
+// Вероятно классы логики должны настраиваться родителем (класс блока) а не через json.
 class Crafter
 {
 public:
   Crafter() = delete;
 
-  Crafter(const DataBase & db, const rapidjson::Value &json);
+  Crafter(std::unique_ptr<IRecipe> recipe, bool fast);
 
   Crafter(const Crafter &other);
 
@@ -56,7 +57,6 @@ private:
   bool m_fast_components = false;
 
 private:
-  std::unique_ptr<IRecipe> LoadRecipe(const DataBase & db, const rapidjson::Value &json) const;
 };
 
 

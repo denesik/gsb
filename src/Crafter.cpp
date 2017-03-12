@@ -13,13 +13,10 @@ Crafter::Crafter(const Crafter &other)
 
 }
 
-Crafter::Crafter(const DataBase & db, const rapidjson::Value &json)
-  : m_recipe_type(LoadRecipe(db, json))
+Crafter::Crafter(std::unique_ptr<IRecipe> recipe, bool fast)
+  : m_recipe_type(std::move(recipe)), m_fast_components(fast)
 {
-  if (json.HasMember("fast") && json["fast"].IsBool())
-  {
-    m_fast_components = json["fast"].GetBool();
-  }
+
 }
 
 void Crafter::Update(const Magnum::Timeline &dt, const DataBase &db)
@@ -133,15 +130,4 @@ bool Crafter::Runned() const
 bool Crafter::Ready() const
 {
   return m_current_recipe != nullptr;
-}
-
-std::unique_ptr<IRecipe> Crafter::LoadRecipe(const DataBase & db, const rapidjson::Value &json) const
-{
-  if (json.HasMember("Recipe"))
-  {
-    std::string type = json["Recipe"].GetString();
-    return RecipeFactory::Get().Create(type);
-  }
-
-  return{};
 }

@@ -8,8 +8,8 @@
 
 BlockAutoCrafter::BlockAutoCrafter(const DataBase & db, const rapidjson::Value &val)
   : Block(db, val),
-  mCrafter(db, *CrafterValue("Crafter1", db, val)),
-  mGenerator(db, *CrafterValue("Crafter2", db, val))
+  mCrafter(CrafterType("Crafter1", db, val), CrafterFast("Crafter1", db, val)),
+  mGenerator(CrafterType("Crafter2", db, val), CrafterFast("Crafter2", db, val))
 {
 
 }
@@ -102,14 +102,32 @@ void BlockAutoCrafter::Update(const Magnum::Timeline &dt)
   mGenerator.Update(dt, *mDb);
 }
 
-boost::optional<const rapidjson::Value&> BlockAutoCrafter::CrafterValue(const char *type, const DataBase & db, const rapidjson::Value &val) const
+std::unique_ptr<IRecipe> BlockAutoCrafter::CrafterType(const char *type, const DataBase & db, const rapidjson::Value &val) const
 {
   if (val.HasMember(type))
   {
     const rapidjson::Value &crafter = val[type];
-    return {crafter};
+    if (crafter.HasMember("Recipe"))
+    {
+      std::string type = crafter["Recipe"].GetString();
+      return RecipeFactory::Get().Create(type);
+    }
+    return{};
+  }
+  return{};
+}
+
+bool BlockAutoCrafter::CrafterFast(const char *type, const DataBase & db, const rapidjson::Value &val) const
+{
+  if (val.HasMember(type))
+  {
+    const rapidjson::Value &crafter = val[type];
+    if (crafter.HasMember("fast") && crafter["fast"].IsBool())
+    {
+      return crafter["fast"].GetBool();
+    }
   }
 
-  return{};
+  return false;
 }
 

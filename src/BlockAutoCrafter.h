@@ -32,7 +32,8 @@ private:
   Crafter mGenerator;
 
 private:
-  boost::optional<const rapidjson::Value&> CrafterValue(const char *type, const DataBase & db, const rapidjson::Value &json) const;
+  std::unique_ptr<IRecipe> CrafterType(const char *type, const DataBase & db, const rapidjson::Value &json) const;
+  bool CrafterFast(const char *type, const DataBase & db, const rapidjson::Value &json) const;
 };
 
 REGISTER_BLOCK_CLASS(BlockAutoCrafter);
