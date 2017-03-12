@@ -13,14 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="agent">
-      <UniqueIdentifier>{a500637d-3ceb-4ef4-8ae1-e715a1a692d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="agent\agents">
-      <UniqueIdentifier>{0ce028bd-750c-496b-82da-7e15afb924f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Файлы исходного кода\interfaces">
       <UniqueIdentifier>{12691a93-d26e-4734-88af-5aa3f0ea83ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Accessors">
+      <UniqueIdentifier>{a500637d-3ceb-4ef4-8ae1-e715a1a692d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -138,9 +135,6 @@
     <ClCompile Include="src\RecipeBurn.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="src\agent\Accessor.cpp">
-      <Filter>agent</Filter>
-    </ClCompile>
     <ClCompile Include="src\Block.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
@@ -150,8 +144,11 @@
     <ClCompile Include="src\DataBase.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="src\agent\agents\AccessorItem.cpp">
-      <Filter>agent\agents</Filter>
+    <ClCompile Include="src\accessors\Accessor.cpp">
+      <Filter>Файлы исходного кода\Accessors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\accessors\AccessorItem.cpp">
+      <Filter>Файлы исходного кода\Accessors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -278,15 +275,6 @@
     <ClInclude Include="src\imgui\imgui_widgets.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\Crafter.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RecipeBurn.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="src\agent\Accessor.h">
-      <Filter>agent</Filter>
-    </ClInclude>
     <ClInclude Include="src\Block.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
@@ -296,11 +284,20 @@
     <ClInclude Include="src\DataBase.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\agent\agents\AccessorItem.h">
-      <Filter>agent\agents</Filter>
+    <ClInclude Include="src\Crafter.h">
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\agent\Accessors.hpp">
-      <Filter>agent</Filter>
+    <ClInclude Include="src\RecipeBurn.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\accessors\Accessor.h">
+      <Filter>Файлы исходного кода\Accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\accessors\AccessorItem.h">
+      <Filter>Файлы исходного кода\Accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\accessors\Accessors.hpp">
+      <Filter>Файлы исходного кода\Accessors</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

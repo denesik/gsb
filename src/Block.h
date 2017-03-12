@@ -5,7 +5,7 @@
 #include "TemplateFactory.h"
 #include <memory>
 #include "Tesselator.h"
-#include "agent/Accessor.h"
+#include "accessors/Accessor.h"
 #include <boost/container/flat_map.hpp>
 #include "IGui.h"
 #include "StaticBlock.h"
@@ -39,7 +39,7 @@ public:
   const std::unique_ptr<TesselatorData> &GetTesselatorData() const;
 
   // TODO: Сделать JsonLoad и убрать туда это.
-  bool AddAgent(std::unique_ptr<Accessor> agent); 
+  bool AddAgent(std::unique_ptr<Accessor> accessor);
 
   // Вероятно этот метод protected.
   const std::unique_ptr<StaticBlock> &GetStaticPart() const;

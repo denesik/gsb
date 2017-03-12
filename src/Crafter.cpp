@@ -72,14 +72,14 @@ void Crafter::Update(const Magnum::Timeline &dt, const DataBase &db)
   }
 }
 
-void Crafter::SetInput(Accessor &agent)
+void Crafter::SetInput(Accessor &accessor)
 {
-  mInput = &static_cast<AccessorItem &>(agent);
+  mInput = &static_cast<AccessorItem &>(accessor);
 }
 
-void Crafter::SetOutput(Accessor &agent)
+void Crafter::SetOutput(Accessor &accessor)
 {
-  mOutput = &static_cast<AccessorItem &>(agent);
+  mOutput = &static_cast<AccessorItem &>(accessor);
 }
 
 float Crafter::Progress() const

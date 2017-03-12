@@ -1,5 +1,5 @@
 #include "BlockAutoCrafter.h"
-#include "agent\agents\AccessorItem.h"
+#include "accessors\AccessorItem.h"
 #include "DataBase.h"
 #include "..\imgui\imgui.h"
 #include "RecipeBurn.h"

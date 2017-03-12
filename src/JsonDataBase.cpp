@@ -5,7 +5,7 @@
 #include "Tesselator.h"
 #include "DataBase.h"
 #include <boost/exception/diagnostic_information.hpp>
-#include "agent/Accessors.hpp"
+#include "accessors/Accessors.hpp"
 #include "Item.h"
 
 JsonDataBase::JsonDataBase(const std::string path) : mPath(path)
@@ -87,26 +87,26 @@ bool LoadBlock(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &
         if (part.HasMember("type"))
         {
           std::string agenttype = part["type"].GetString();
-          auto agent = AgentFactory::Get().Create(agenttype);
-          if (!agent)
+          auto accessor = AgentFactory::Get().Create(agenttype);
+          if (!accessor)
           {
-            LOG(error) << "record \"" << id << "\" agent #" << a << " has unknown type = " << agenttype << ". SKIP AGENT.";
+            LOG(error) << "record \"" << id << "\" accessor #" << a << " has unknown type = " << agenttype << ". SKIP AGENT.";
             continue;
           }
           try {
-            agent->JsonLoad(db, part);
+            accessor->JsonLoad(db, part);
           }
           catch (...) {
             LOG(error) << boost::current_exception_diagnostic_information(true);
-            LOG(error) << id << "'s agent " << agenttype << " json deserialize failed. See agents documentation. SKIP AGENT.";
+            LOG(error) << id << "'s accessor " << agenttype << " json deserialize failed. See agents documentation. SKIP AGENT.";
             continue;
           }
 
-          auto binding = dynamic_part->AddAgent(std::move(agent));
+          auto binding = dynamic_part->AddAgent(std::move(accessor));
         }
         else
         {
-          LOG(error) << "record \"" << id << "\" agent #" << a + 1 << " has no type.";
+          LOG(error) << "record \"" << id << "\" accessor #" << a + 1 << " has no type.";
         }
       }
     }

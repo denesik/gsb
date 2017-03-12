@@ -22,8 +22,8 @@
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
-    <ClCompile Include="src\agent\Accessor.cpp" />
-    <ClCompile Include="src\agent\agents\AccessorItem.cpp" />
+    <ClCompile Include="src\accessors\Accessor.cpp" />
+    <ClCompile Include="src\accessors\AccessorItem.cpp" />
     <ClCompile Include="src\BlockAutoCrafter.cpp" />
     <ClCompile Include="src\Block.cpp" />
     <ClCompile Include="src\DataBase.cpp" />
@@ -64,9 +64,9 @@
     <ClCompile Include="src\WorldGeneratorFlat.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\agent\Accessor.h" />
-    <ClInclude Include="src\agent\Accessors.hpp" />
-    <ClInclude Include="src\agent\agents\AccessorItem.h" />
+    <ClInclude Include="src\accessors\Accessor.h" />
+    <ClInclude Include="src\accessors\AccessorItem.h" />
+    <ClInclude Include="src\accessors\Accessors.hpp" />
     <ClInclude Include="src\BlockAutoCrafter.h" />
     <ClInclude Include="src\Block.h" />
     <ClInclude Include="src\DataBase.h" />

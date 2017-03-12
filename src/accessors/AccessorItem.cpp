@@ -1,13 +1,13 @@
 #include "AccessorItem.h"
-#include "../../Serialize.h"
+#include "../Serialize.h"
 #include <Magnum/Timeline.h>
-#include "../../Block.h"
-#include "../../DataBase.h"
-#include "../../Item.h"
+#include "../Block.h"
+#include "../DataBase.h"
+#include "../Item.h"
 #include <algorithm>
 #include "Recipe.h"
-#include "../../../imgui/imgui.h"
-#include "../../imgui/imgui_widgets.h"
+#include "../../imgui/imgui.h"
+#include "../imgui/imgui_widgets.h"
 #include <string>
 #include <algorithm>
 

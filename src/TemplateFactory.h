@@ -5,10 +5,10 @@ This software is distributed freely under the terms of the MIT LICENSE.
 See "LICENSE.txt"
 *******************************************************************************/
 
-#include "Log.h"
 #ifndef AGENTFACTORY_H
 #define AGENTFACTORY_H
 
+#include "Log.h"
 #include <map>
 #include <memory>
 #include <functional>
@@ -37,13 +37,13 @@ public:
     auto i = map_.find(id);
     if (i == map_.end())
     {
-      LOG(trace) << "agent class id = \"" << id << "\" register";
+      LOG(trace) << "class id = \"" << id << "\" register";
       map_.insert(FactoryMap::value_type(id, func));
     }
     else
     {
       if (!comment.empty())
-        LOG(trace) << "agent class id = \"" << id << "\" override with message: " << comment;
+        LOG(trace) << "class id = \"" << id << "\" override with message: " << comment;
       i->second = func;
     }
   }

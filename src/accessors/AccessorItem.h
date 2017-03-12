@@ -1,9 +1,9 @@
 #pragma once
-#include "../Accessor.h"
-#include "../../tools/Crc32.h"
+#include "Accessor.h"
+#include "../tools/Crc32.h"
 #include <vector>
 #include <tuple>
-#include "../../tools/Common.h"
+#include "../tools/Common.h"
 #include <boost/optional/optional.hpp>
 
 class AccessorItem : public NumeredAgent<AccessorItem, gsb::crc32<std::string>()("Chest")>

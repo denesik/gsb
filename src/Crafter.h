@@ -5,7 +5,7 @@
 #include <Magnum/Magnum.h>
 #include "IRecipe.h"
 #include "Timer.h"
-#include "agent/agents/AccessorItem.h"
+#include "accessors/AccessorItem.h"
 #include <memory>
 
 class DataBase;
@@ -19,8 +19,8 @@ public:
   Crafter(std::unique_ptr<IRecipe> recipe, bool fast_components = false);
 
   void Update(const Magnum::Timeline &dt, const DataBase &db);
-  void SetInput(Accessor &agent);
-  void SetOutput(Accessor &agent);
+  void SetInput(Accessor &accessor);
+  void SetOutput(Accessor &accessor);
 
   float Progress() const; // TODO int?
 

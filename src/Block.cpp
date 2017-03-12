@@ -45,9 +45,9 @@ const std::unique_ptr<TesselatorData> & Block::GetTesselatorData() const
   return mTesselatorData;
 }
 
-bool Block::AddAgent(std::unique_ptr<Accessor> agent)
+bool Block::AddAgent(std::unique_ptr<Accessor> accessor)
 {
-  mAgents.push_back(std::move(agent));
+  mAgents.push_back(std::move(accessor));
   return true;
 }
 
