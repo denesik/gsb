@@ -71,7 +71,7 @@ BlockId Sector::GetBlockId(SBPos pos) const
   return mStaticBlocks[cs::SBtoBI(pos)];
 }
 
-BlockDynamicPart* Sector::GetBlockDynamic(const WBPos& pos) const
+Block* Sector::GetBlockDynamic(const WBPos& pos) const
 {
   return mDinamicBlocks[cs::SBtoBI(pos)].get();
 }

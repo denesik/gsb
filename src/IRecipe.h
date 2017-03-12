@@ -4,7 +4,7 @@
 #include <vector>
 #include "IJsonSerializable.h"
 
-class Chest;
+class AccessorItem;
 
 using RecipeId = unsigned int;
 
@@ -15,7 +15,7 @@ public:
   int count = 1;
 
   // <"id"[, count]>
-  void JsonLoad(BlocksDataBase& db, const rapidjson::Value& val) override;
+  void JsonLoad(DataBase& db, const rapidjson::Value& val) override;
 
   bool operator ==(const RecipeIn& other) const;
 };
@@ -28,7 +28,7 @@ public:
   float chance = 1.0;
 
   // <"id"[, count[, chance]]>
-  void JsonLoad(BlocksDataBase& db, const rapidjson::Value& val) override;
+  void JsonLoad(DataBase& db, const rapidjson::Value& val) override;
 
   bool operator ==(const RecipeOut& other) const;
 };
@@ -38,17 +38,28 @@ class GSB_NOVTABLE IRecipe : public IJsonSerializable
 public:
   virtual ~IRecipe() = default;
 
-  virtual const std::vector<RecipeIn> & Components() const = 0;
-  virtual const std::vector<RecipeOut> & Results() const = 0;
+  virtual const std::vector<RecipeIn> & Components() const;
+  virtual const std::vector<RecipeOut> & Results() const;
 
-  void JsonLoad(BlocksDataBase & db, const rapidjson::Value& val) override;
+  void JsonLoad(DataBase & db, const rapidjson::Value& val) override;
 
   virtual RecipeId Id() const = 0;
 
   float Time() const;
 
+  // TODO_Recipe 
+  // В случае наследования рецепты должны уметь клонироваться.
+  // Ситуация: в блок автокрафтер из json задается тип рецепта который он умеет крафтить.
+  // Загружаем автокрафтер в бд - все хорошо. Клонируем блок из бд в мир - рецепт должен склонироваться,
+  // что бы сохранить свой тип, т.к. он полиморфный.
+  // В случае тегов рецепты не нужно клонировать, просто скопируется тег. 
+  // Даже фиктивный рецепт наверняка не нужен будет, что бы задать автокрафтеру кого он умеет крафтить.
+  virtual std::unique_ptr<IRecipe> Clone() = 0; 
+
 protected:
   float mTime = 0; // Время в мс.
+  std::vector<RecipeIn> mComponents;
+  std::vector<RecipeOut> mResults;
 };
 
 template <RecipeId aId>

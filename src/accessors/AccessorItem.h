@@ -1,20 +1,20 @@
 #pragma once
-#include "../Agent.h"
-#include "../../tools/Crc32.h"
+#include "Accessor.h"
+#include "../tools/Crc32.h"
 #include <vector>
 #include <tuple>
-#include "../../tools/Common.h"
+#include "../tools/Common.h"
 #include <boost/optional/optional.hpp>
 
-class Chest : public NumeredAgent<Chest, gsb::crc32<std::string>()("Chest")>
+class AccessorItem : public NumeredAgent<AccessorItem, gsb::crc32<std::string>()("AccessorItem")>
 {
 public:
   using ItemList = std::vector<std::tuple<ItemId, size_t>>;
 
-  Chest();
-  Chest(const Chest & other);
+  AccessorItem();
+  AccessorItem(const AccessorItem & other);
 
-  void JsonLoad(BlocksDataBase & db, const rapidjson::Value &val) override;
+  void JsonLoad(const DataBase & db, const rapidjson::Value &val) override;
   void DrawGui(const Magnum::Timeline &dt) override;
 
   // ¬озвращает сколько итемов добавлено
@@ -35,4 +35,4 @@ private:
 
 };
 
-REGISTER_AGENT_CLASS(Chest);
+REGISTER_AGENT_CLASS(AccessorItem);

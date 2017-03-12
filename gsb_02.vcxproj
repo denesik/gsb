@@ -22,13 +22,14 @@
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
-    <ClCompile Include="src\agent\Agent.cpp" />
-    <ClCompile Include="src\agent\agents\Chest.cpp" />
+    <ClCompile Include="src\accessors\Accessor.cpp" />
+    <ClCompile Include="src\accessors\AccessorItem.cpp" />
     <ClCompile Include="src\BlockAutoCrafter.cpp" />
-    <ClCompile Include="src\BlockDynamicPart.cpp" />
-    <ClCompile Include="src\BlocksDataBase.cpp" />
-    <ClCompile Include="src\BlockStaticPart.cpp" />
+    <ClCompile Include="src\Block.cpp" />
+    <ClCompile Include="src\DataBase.cpp" />
+    <ClCompile Include="src\StaticBlock.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Crafter.cpp" />
     <ClCompile Include="src\Creature.cpp" />
     <ClCompile Include="src\DrawableArea.cpp" />
     <ClCompile Include="src\Game.cpp" />
@@ -43,7 +44,6 @@
     <ClCompile Include="src\MapGenerator.cpp" />
     <ClCompile Include="src\MapLoader.cpp" />
     <ClCompile Include="src\PerlinNoise.cpp" />
-    <ClCompile Include="src\Recipe.cpp" />
     <ClCompile Include="src\Sector.cpp" />
     <ClCompile Include="src\SectorCompiler.cpp" />
     <ClCompile Include="src\TemplateFactory.h" />
@@ -63,15 +63,16 @@
     <ClCompile Include="src\WorldGeneratorFlat.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\agent\Agent.h" />
-    <ClInclude Include="src\agent\Agents.hpp" />
-    <ClInclude Include="src\agent\agents\Chest.h" />
+    <ClInclude Include="src\accessors\Accessor.h" />
+    <ClInclude Include="src\accessors\AccessorItem.h" />
+    <ClInclude Include="src\accessors\Accessors.hpp" />
     <ClInclude Include="src\BlockAutoCrafter.h" />
-    <ClInclude Include="src\BlockDynamicPart.h" />
-    <ClInclude Include="src\BlocksDataBase.h" />
-    <ClInclude Include="src\BlockStaticPart.h" />
+    <ClInclude Include="src\Block.h" />
+    <ClInclude Include="src\DataBase.h" />
+    <ClInclude Include="src\StaticBlock.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\configure.h" />
+    <ClInclude Include="src\Crafter.h" />
     <ClInclude Include="src\Creature.h" />
     <ClInclude Include="src\DrawableArea.h" />
     <ClInclude Include="src\Game.h" />
@@ -89,7 +90,8 @@
     <ClInclude Include="src\MapGenerator.h" />
     <ClInclude Include="src\MapLoader.h" />
     <ClInclude Include="src\PerlinNoise.h" />
-    <ClInclude Include="src\Recipe.h" />
+    <ClInclude Include="src\RecipeHand.h" />
+    <ClInclude Include="src\RecipeBurn.h" />
     <ClInclude Include="src\Sector.h" />
     <ClInclude Include="src\SectorCompiler.h" />
     <ClInclude Include="src\Serialize.h" />

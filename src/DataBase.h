@@ -4,13 +4,13 @@
 
 #include <vector>
 #include <memory>
-#include "BlockStaticPart.h"
+#include "StaticBlock.h"
 #include "TextureAtlas.h"
 #include "JsonDataBase.h"
 #include <unordered_map>
 #include <string>
 #include <MagnumExternal/Optional/optional.hpp>
-#include "BlockDynamicPart.h"
+#include "Block.h"
 #include <array>
 #include "IRecipe.h"
 #include "IItem.h"
@@ -18,13 +18,13 @@
 
 // TODO: Заменить const std::unique_ptr<***> & 
 // на std::optional<const *** &>  ???
-class BlocksDataBase
+class DataBase
 {
 public:
-  BlocksDataBase(const TextureAtlas &atlas, const TextureAtlas &atlas_items);
-  ~BlocksDataBase();
+  DataBase(const TextureAtlas &atlas, const TextureAtlas &atlas_items);
+  ~DataBase();
 
-  const std::unique_ptr<BlockStaticPart> &GetBlockStaticPart(BlockId id) const;
+  const std::unique_ptr<StaticBlock> &GetBlockStaticPart(BlockId id) const;
 
   void ApplyLoader(std::unique_ptr<IDataBaseLoader> loader);
 
@@ -32,11 +32,11 @@ public:
 
   /// Добавить блок в БД.
   /// Если блок с указанным ид существует, он не добавляется и возвращается false.
-  bool AddBlock(const std::string &name, BlockId id, std::unique_ptr<BlockStaticPart> static_part, std::unique_ptr<BlockDynamicPart> dynamic_part);
+  bool AddBlock(const std::string &name, BlockId id, std::unique_ptr<StaticBlock> static_part, std::unique_ptr<Block> dynamic_part);
 
   /// Создает блок.
   /// Если невозможно создать блоксданным ид вернет блок воздуха.
-  std::tuple<BlockId, std::unique_ptr<BlockDynamicPart>> CreateBlock(BlockId id) const;
+  std::tuple<BlockId, std::unique_ptr<Block>> CreateBlock(BlockId id) const;
 
   void AddRecipe(std::unique_ptr<IRecipe> move);
 
@@ -55,7 +55,7 @@ public:
   const std::vector<std::unique_ptr<IRecipe>> & GetSameRecipes(const IRecipe & as_this) const;
 
 private:
-  std::array<std::tuple<std::unique_ptr<BlockStaticPart>, std::unique_ptr<BlockDynamicPart>>, 0xFFFF> mBlocks;
+  std::array<std::tuple<std::unique_ptr<StaticBlock>, std::unique_ptr<Block>>, 0xFFFF> mBlocks;
   std::unordered_map<std::string, BlockId> mBlockNames;
 
   std::array<std::unique_ptr<IItem>, 0xFFFF> mItems;

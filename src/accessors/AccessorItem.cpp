@@ -1,31 +1,33 @@
-#include "Chest.h"
-#include "../../Serialize.h"
+#include "AccessorItem.h"
+#include "../Serialize.h"
 #include <Magnum/Timeline.h>
-#include "../../BlockDynamicPart.h"
-#include "../../BlocksDataBase.h"
-#include "../../Item.h"
+#include "../Block.h"
+#include "../DataBase.h"
+#include "../Item.h"
 #include <algorithm>
-#include "Recipe.h"
-#include "../../../imgui/imgui.h"
-#include "../../imgui/imgui_widgets.h"
+#include "RecipeHand.h"
+#include "../../imgui/imgui.h"
+#include "../imgui/imgui_widgets.h"
 #include <string>
 #include <algorithm>
 
-Chest::Chest()
+AccessorItem::AccessorItem()
 {
 }
 
-Chest::Chest(const Chest& other)
+AccessorItem::AccessorItem(const AccessorItem& other)
 {
 }
 
-void Chest::JsonLoad(BlocksDataBase & db, const rapidjson::Value& val)
+void AccessorItem::JsonLoad(const DataBase & db, const rapidjson::Value& val)
 {
-  Agent::JsonLoad(db, val);
+  Accessor::JsonLoad(db, val);
 }
 
-void Chest::DrawGui(const Magnum::Timeline &dt)
+void AccessorItem::DrawGui(const Magnum::Timeline &dt)
 {
+  ImGui::BeginGroup();
+
   if (ImGui::Button("add"))
   {
     AddItem(1, 1);
@@ -37,25 +39,28 @@ void Chest::DrawGui(const Magnum::Timeline &dt)
   }
 
   const auto &db = mParent->GetDataBase();
-  for (size_t i = 0; i < 16; i++)
+  ImDrawList* draw_list = ImGui::GetWindowDrawList();
+  for (size_t i = 0; i < 4; i++)
   {
+    ImVec2 base_pos = ImGui::GetCursorScreenPos();
     //ImGui::PushID(i);
     if (i < mItems.size())
     {
       const auto &coord = static_cast<const Item &>(*(db.GetItem(std::get<0>(mItems[i])))).TextureCoord();
-      
       ImGui::Image(ImTextureID(1), std::to_string(std::get<1>(mItems[i])).c_str(), ImVec2(32, 32), ImVec2(coord.left(), coord.bottom()), ImVec2(coord.right(), coord.top()));
     }
     else
     {
       ImGui::Dummy(ImVec2(32, 32));
     }
-    if ((i % 4) < 3) ImGui::SameLine();
+    draw_list->AddRect(base_pos, ImVec2(base_pos.x + 32, base_pos.y + 32), IM_COL32(255, 255, 255, 100));
+    if ((i % 2) < 1) ImGui::SameLine();
     //ImGui::PopID();
   }
+  ImGui::EndGroup();
 }
 
-size_t Chest::AddItem(ItemId id, size_t count)
+size_t AccessorItem::AddItem(ItemId id, size_t count)
 {
   if (auto index = find_item(id))
   {
@@ -69,7 +74,7 @@ size_t Chest::AddItem(ItemId id, size_t count)
   return count;
 }
 
-size_t Chest::RemoveItem(ItemId id, size_t count)
+size_t AccessorItem::RemoveItem(ItemId id, size_t count)
 {
   if (auto index = find_item(id))
   {
@@ -85,7 +90,7 @@ size_t Chest::RemoveItem(ItemId id, size_t count)
   return count;
 }
 
-size_t Chest::ItemCount(ItemId id) const
+size_t AccessorItem::ItemCount(ItemId id) const
 {
   if (auto index = find_item(id))
   {
@@ -94,12 +99,12 @@ size_t Chest::ItemCount(ItemId id) const
   return 0;
 }
 
-const Chest::ItemList & Chest::Items() const
+const AccessorItem::ItemList & AccessorItem::Items() const
 {
   return mItems;
 }
 
-boost::optional<size_t> Chest::find_item(ItemId id) const
+boost::optional<size_t> AccessorItem::find_item(ItemId id) const
 {
   auto it = std::find_if(mItems.begin(), mItems.end(), [id](const decltype(mItems)::value_type &val)
   {

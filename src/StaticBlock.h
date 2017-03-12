@@ -13,11 +13,11 @@ typedef uint16_t BlockId;
 // Содержит константные данные для блока.
 // Материал, тесселятор и т.д.
 
-class BlockStaticPart
+class StaticBlock
 {
 public:
-  BlockStaticPart();
-  ~BlockStaticPart();
+  StaticBlock();
+  ~StaticBlock();
 
   void SetTesselator(std::unique_ptr<Tesselator> tesselator);
 

@@ -16,48 +16,51 @@ namespace Magnum {
   class Timeline;
 }
 
-class BlockDynamicPart;
+class Block;
 
-using AgentId = unsigned int;
+using AccessorId = unsigned int;
 
 //TODO: Перегрузка операторов.
-enum /*class*/ AgentDirection
+enum /*class*/ AccessorDirection
 {
   none = 0,
   in = 1 << 0,
   out = 1 << 1,
 };
 
-class GSB_NOVTABLE Agent : public IJsonSerializable, public IGui
+class GSB_NOVTABLE Accessor : public IGui
 {
 public:
-  Agent() = default;
-  virtual ~Agent() = default;
+  Accessor() = default;
+  virtual ~Accessor() = default;
 
-  virtual std::unique_ptr<Agent> Clone(BlockDynamicPart *parent) const = 0;
-  virtual AgentId Id() const = 0;
+  virtual std::unique_ptr<Accessor> Clone(Block *parent) const = 0;
+
+  virtual AccessorId Id() const = 0;
+  
   void DrawGui(const Magnum::Timeline &dt) override;
-  void JsonLoad(BlocksDataBase & db, const rapidjson::Value &val) override;
+  
+  virtual void JsonLoad(const DataBase & db, const rapidjson::Value &val);
 
-  BlockDynamicPart *Parent() const;
+  Block *Parent() const;
 
   // Получить направление на указанной стороне.
-  AgentDirection GetDirection(SideIndex side);
+  AccessorDirection GetDirection(SideIndex side);
 
 protected:
-  BlockDynamicPart *mParent = nullptr;
+  Block *mParent = nullptr;
   
-  std::array<AgentDirection, 6> mSides;
+  std::array<AccessorDirection, 6> mSides;
 };
 
 //TODO: сделать модную инстанциацию строкой
 //http://stackoverflow.com/questions/15858141/conveniently-declaring-compile-time-strings-in-c/15863804#15863804
-template <class Base, AgentId aId>
-class NumeredAgent : public Agent
+template <class Base, AccessorId aId>
+class NumeredAgent : public Accessor
 {
 public:
-  static constexpr AgentId TypeId() { return aId; }
-  std::unique_ptr<Agent> Clone(BlockDynamicPart *parent) const override
+  static constexpr AccessorId TypeId() { return aId; }
+  std::unique_ptr<Accessor> Clone(Block *parent) const override
   {
     auto t = std::make_unique<Base>(*static_cast<const Base *>(this));
     t->mSides = mSides;
@@ -65,14 +68,14 @@ public:
     return t;
   }
     
-  AgentId Id() const override { return aId; }
+  AccessorId Id() const override { return aId; }
 };
 
 #define REGISTER_AGENT_CLASS(type) REGISTER_ELEMENT(type, AgentFactory::Get(), #type)
 
 struct AgentFactory : boost::noncopyable
 {
-  using FactoryType = TemplateFactory<std::string, Agent>;
+  using FactoryType = TemplateFactory<std::string, Accessor>;
   static FactoryType &Get();
 };
 

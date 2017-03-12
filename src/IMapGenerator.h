@@ -8,12 +8,12 @@
 #include <vector>
 
 class Sector;
-class BlocksDataBase;
+class DataBase;
 
 class GSB_NOVTABLE IMapGenerator : public IGui
 {
 public:
-  IMapGenerator(const BlocksDataBase &db) : m_Db(db) { }
+  IMapGenerator(const DataBase &db) : m_Db(db) { }
   virtual ~IMapGenerator() = default;
   virtual void Generate(Sector &sector) = 0;
   

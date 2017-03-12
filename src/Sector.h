@@ -4,12 +4,12 @@
 
 #include <Magnum/Magnum.h>
 
-#include "BlockStaticPart.h"
+#include "StaticBlock.h"
 #include <array>
 #include "SectorCompiler.h"
 #include "tools\CoordSystem.h"
 #include <memory>
-#include "BlockDynamicPart.h"
+#include "Block.h"
 #include <MagnumExternal/Optional/optional.hpp>
 
 class IMapGenerator;
@@ -34,7 +34,7 @@ public:
   void ApplyGenerator(IMapGenerator &generator);
 
   BlockId GetBlockId(SBPos pos) const;
-  BlockDynamicPart* GetBlockDynamic(const WBPos& pos) const;
+  Block* GetBlockDynamic(const WBPos& pos) const;
 
   void CreateBlock(SBPos pos, BlockId id);
 
@@ -42,7 +42,7 @@ public:
 
 private:
   std::array<BlockId, SECTOR_CAPACITY> mStaticBlocks;
-  std::array<std::unique_ptr<BlockDynamicPart>, SECTOR_CAPACITY> mDinamicBlocks;
+  std::array<std::unique_ptr<Block>, SECTOR_CAPACITY> mDinamicBlocks;
   const SPos mPos;
 
   World &mWorld;

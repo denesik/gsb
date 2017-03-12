@@ -14,7 +14,7 @@
 class World
 {
 public:
-  World(const BlocksDataBase &blocksDataBase);
+  World(const DataBase &blocksDataBase);
   ~World();
 
   /// Загрузить сектор в указанной позиции.
@@ -25,12 +25,12 @@ public:
   /// Выгрузить сектор.
   void UnLoadSector(const SPos &pos);
 
-  const BlocksDataBase &GetBlocksDataBase() const;
+  const DataBase &GetBlocksDataBase() const;
 
   std::weak_ptr<Sector> GetSector(const SPos &pos) const;
   std::vector<std::weak_ptr<Sector>> GetColumn(const CSPos &pos) const;
   BlockId GetBlockId(const WBPos &pos) const;
-  BlockDynamicPart* GetBlockDynamic(const WBPos &pos) const;
+  Block* GetBlockDynamic(const WBPos &pos) const;
   void CreateBlock(const WBPos &pos, BlockId id);
 
   UpdatableSectors &GetUpdatableSectors();
@@ -44,7 +44,7 @@ public:
 
 private:
   std::unordered_map<SPos, std::shared_ptr<Sector>> mSectors;
-  const BlocksDataBase &mBlocksDataBase;
+  const DataBase &mBlocksDataBase;
 
   UpdatableSectors mUpdatableSectors;
   std::unique_ptr<IMapLoader> mLoader;

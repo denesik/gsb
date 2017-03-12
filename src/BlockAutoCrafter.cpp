@@ -1,69 +1,77 @@
 #include "BlockAutoCrafter.h"
-#include "agent\agents\Chest.h"
-#include "Recipe.h"
-#include "BlocksDataBase.h"
+#include "accessors\AccessorItem.h"
+#include "DataBase.h"
 #include "..\imgui\imgui.h"
+#include "RecipeBurn.h"
+#include "RecipeHand.h"
 
 
-
-BlockAutoCrafter::BlockAutoCrafter()
+BlockAutoCrafter::BlockAutoCrafter(const DataBase & db, const rapidjson::Value &val)
+  : Block(db, val),
+  mCrafter(CrafterType("Crafter1", db, val), CrafterFast("Crafter1", db, val)),
+  mGenerator(CrafterType("Crafter2", db, val), CrafterFast("Crafter2", db, val))
 {
-}
 
+}
 
 BlockAutoCrafter::~BlockAutoCrafter()
 {
 }
 
 BlockAutoCrafter::BlockAutoCrafter(const BlockAutoCrafter &other)
-  : BlockDynamicPart(other)
+  : Block(other), 
+    mCrafter(other.mCrafter),
+    mGenerator(other.mGenerator)
 {
-
+  
 }
 
-std::unique_ptr<BlockDynamicPart> BlockAutoCrafter::Clone()
+std::unique_ptr<Block> BlockAutoCrafter::Clone()
 {
-  BlockDynamicPart *ptr = new BlockAutoCrafter(*this);
-  std::unique_ptr<BlockDynamicPart> obj;
-  obj.reset(ptr);
-  return std::move(obj);
+  return std::unique_ptr<Block>(new BlockAutoCrafter(*this));
 }
 
 void BlockAutoCrafter::DrawGui(const Magnum::Timeline &dt)
 {
-  //BlockDynamicPart::DrawGui(dt);
-
-//   for (size_t i = 0; i < mAgents.size(); ++i)
-//   {
-//     ImGui::PushID(i);
-//     mAgents[i]->DrawGui(dt);
-//     ImGui::PopID();
-//   }
-
-  float progress = 0.0f;
-  if (m_current_recipe)
-  {
-    progress = ((mTimer.Elapsed() * 100.0f) / m_current_recipe->Time()) / 100.0f;
-  }
-
-  // time - 100
-  // elap - x
-  // x = elap * 100 / time
-  if (progress > 50.0f)
-  {
-    int t = 0;
-  }
-
-  auto &input = static_cast<Chest &>(*mAgents[0]);
-  auto &output = static_cast<Chest &>(*mAgents[1]);
   ImGui::PushID(0);
-  input.DrawGui(dt);
+  {
+    auto &input = *mAgents[0];
+    auto &output = *mAgents[1];
+    mCrafter.SetInput(input);
+    mCrafter.SetOutput(output);
+
+    ImGui::PushID(0);
+    input.DrawGui(dt);
+    ImGui::PopID();
+
+    ImGui::SameLine();
+
+    ImGui::PushID(1);
+    output.DrawGui(dt);
+    ImGui::PopID();
+
+    ImGui::ProgressBar(mCrafter.Progress(), ImVec2(0.0f, 0.0f), " ");
+  }
   ImGui::PopID();
-
-  ImGui::ProgressBar(progress, ImVec2(0.0f, 0.0f));
-
   ImGui::PushID(1);
-  output.DrawGui(dt);
+  {
+    auto &input = *mAgents[2];
+    //auto &output = *mAgents[3];
+    mGenerator.SetInput(input);
+    mGenerator.SetOutput(input);
+
+    ImGui::PushID(0);
+    input.DrawGui(dt);
+    ImGui::PopID();
+
+//     ImGui::SameLine();
+// 
+//     ImGui::PushID(1);
+//     output.DrawGui(dt);
+//     ImGui::PopID();
+
+    ImGui::ProgressBar(mGenerator.Progress(), ImVec2(0.0f, 0.0f), " ");
+  }
   ImGui::PopID();
 
   Update(dt);
@@ -71,39 +79,55 @@ void BlockAutoCrafter::DrawGui(const Magnum::Timeline &dt)
 
 void BlockAutoCrafter::Update(const Magnum::Timeline &dt)
 {
-  // Запрашиваем у инпута список итемов, по данному списку формируем список рецептов.
-  // Если есть хотя бы один рецепт, крафтим первый.
-  // Удаляем из инпута все компоненты.
-  // Добавляем в оутпут результаты.
-  auto &input = static_cast<Chest &>(*mAgents[0]);
-  auto &output = static_cast<Chest &>(*mAgents[1]);
-  auto &db = *mDb;
+  if (mGenerator.Ready())
+  {
+    if (mCrafter.Ready())
+    {
+      if (!mGenerator.Runned())
+        mGenerator.Run();
 
-  if (m_current_recipe)
-  {
-    if (mTimer.Elapsed() >= m_current_recipe->Time())
-    {
-      const auto &components = m_current_recipe->Components();
-      const auto &results = m_current_recipe->Results();
-      for (const auto &c : components)
-      {
-        input.RemoveItem(c.id, c.count);
-      }
-      for (const auto &r : results)
-      {
-        output.AddItem(r.id, r.count);
-      }
-      m_current_recipe = nullptr;
+      if (mGenerator.Runned() && !mCrafter.Runned())
+        mCrafter.Run();
     }
   }
-  
-  if (!m_current_recipe)
+  else
   {
-    const auto &recipes = db.GetRecipes(Recipe(), input.Items());
-    if (!recipes.empty())
+    if (mCrafter.Runned())
     {
-      m_current_recipe = recipes.front();
+      mCrafter.Stop();
     }
-    mTimer.Start();
   }
+
+  mCrafter.Update(dt, *mDb);
+  mGenerator.Update(dt, *mDb);
 }
+
+std::unique_ptr<IRecipe> BlockAutoCrafter::CrafterType(const char *type, const DataBase & db, const rapidjson::Value &val) const
+{
+  if (val.HasMember(type))
+  {
+    const rapidjson::Value &crafter = val[type];
+    if (crafter.HasMember("Recipe"))
+    {
+      std::string type = crafter["Recipe"].GetString();
+      return RecipeFactory::Get().Create(type);
+    }
+    return{};
+  }
+  return{};
+}
+
+bool BlockAutoCrafter::CrafterFast(const char *type, const DataBase & db, const rapidjson::Value &val) const
+{
+  if (val.HasMember(type))
+  {
+    const rapidjson::Value &crafter = val[type];
+    if (crafter.HasMember("fast") && crafter["fast"].IsBool())
+    {
+      return crafter["fast"].GetBool();
+    }
+  }
+
+  return false;
+}
+

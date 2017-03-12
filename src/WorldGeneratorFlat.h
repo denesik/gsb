@@ -8,7 +8,7 @@
 class WorldGeneratorFlat : public IMapGenerator
 {
 public:
-  WorldGeneratorFlat(const BlocksDataBase &db);
+  WorldGeneratorFlat(const DataBase &db);
   ~WorldGeneratorFlat();
 
   void Generate(Sector &sector) override;

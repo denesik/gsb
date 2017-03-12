@@ -13,14 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="agent">
-      <UniqueIdentifier>{a500637d-3ceb-4ef4-8ae1-e715a1a692d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="agent\agents">
-      <UniqueIdentifier>{0ce028bd-750c-496b-82da-7e15afb924f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Файлы исходного кода\interfaces">
       <UniqueIdentifier>{12691a93-d26e-4734-88af-5aa3f0ea83ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Accessors">
+      <UniqueIdentifier>{a500637d-3ceb-4ef4-8ae1-e715a1a692d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -40,12 +37,6 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\TextureAtlas.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BlocksDataBase.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BlockStaticPart.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\Tesselator.cpp">
@@ -111,9 +102,6 @@
     <ClCompile Include="src\tools\DebugLines.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="src\BlockDynamicPart.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="src\WorldGeneratorFlat.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
@@ -121,15 +109,6 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\Creature.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="src\agent\agents\Chest.cpp">
-      <Filter>agent\agents</Filter>
-    </ClCompile>
-    <ClCompile Include="src\agent\Agent.cpp">
-      <Filter>agent</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Recipe.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\Item.cpp">
@@ -150,6 +129,24 @@
     <ClCompile Include="src\IMapLoader.cpp">
       <Filter>Файлы исходного кода\interfaces</Filter>
     </ClCompile>
+    <ClCompile Include="src\Crafter.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Block.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StaticBlock.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DataBase.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\accessors\Accessor.cpp">
+      <Filter>Файлы исходного кода\Accessors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\accessors\AccessorItem.cpp">
+      <Filter>Файлы исходного кода\Accessors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -168,12 +165,6 @@
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\TesselatorSolidBlock.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
-    <ClInclude Include="src\BlocksDataBase.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
-    <ClInclude Include="src\BlockStaticPart.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\Tesselator.h">
@@ -236,28 +227,13 @@
     <ClInclude Include="src\TesselatorMicroBlock.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\BlockDynamicPart.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
     <ClInclude Include="src\WorldGeneratorFlat.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\Movable.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\agent\Agent.h">
-      <Filter>agent</Filter>
-    </ClInclude>
-    <ClInclude Include="src\agent\agents\Chest.h">
-      <Filter>agent\agents</Filter>
-    </ClInclude>
     <ClInclude Include="src\tools\Crc32.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
-    <ClInclude Include="src\agent\Agents.hpp">
-      <Filter>agent</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Recipe.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\Item.h">
@@ -291,6 +267,33 @@
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\imgui\imgui_widgets.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Block.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StaticBlock.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataBase.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Crafter.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RecipeBurn.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\accessors\Accessor.h">
+      <Filter>Файлы исходного кода\Accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\accessors\AccessorItem.h">
+      <Filter>Файлы исходного кода\Accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\accessors\Accessors.hpp">
+      <Filter>Файлы исходного кода\Accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RecipeHand.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>

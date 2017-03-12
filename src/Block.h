@@ -5,31 +5,33 @@
 #include "TemplateFactory.h"
 #include <memory>
 #include "Tesselator.h"
-#include "agent/Agent.h"
+#include "accessors/Accessor.h"
 #include <boost/container/flat_map.hpp>
 #include "IGui.h"
-#include "BlockStaticPart.h"
+#include "StaticBlock.h"
 #include <boost/optional/optional.hpp>
 #include "tools/CoordSystem.h"
 #include <array>
 #include <vector>
+#include <rapidjson/rapidjson.h>
 
 // TODO: clone std::unique_ptr --> move semantic
 
 
-class BlocksDataBase;
+class DataBase;
 class Sector;
 
-// 
-class BlockDynamicPart : public IGui
+// Интерфейс блока. Нельзя создать.
+class Block : public IGui
 {
 public:
   // TODO: Скорей всего надо передавать сектор вместо бд.
-  BlockDynamicPart();
-  BlockDynamicPart(const BlockDynamicPart &other);
-  ~BlockDynamicPart();
+  Block();
+  Block(const DataBase & db, const rapidjson::Value &json);
+  Block(const Block &other);
+  ~Block();
 
-  virtual std::unique_ptr<BlockDynamicPart> Clone();
+  virtual std::unique_ptr<Block> Clone();
 
   virtual void Update(const Magnum::Timeline &dt) {};
 
@@ -39,39 +41,37 @@ public:
   const std::unique_ptr<TesselatorData> &GetTesselatorData() const;
 
   // TODO: Сделать JsonLoad и убрать туда это.
-  bool AddAgent(std::unique_ptr<Agent> agent); 
+  bool AddAgent(std::unique_ptr<Accessor> accessor);
 
   // Вероятно этот метод protected.
-  const std::unique_ptr<BlockStaticPart> &GetStaticPart() const;
+  const std::unique_ptr<StaticBlock> &GetStaticPart() const;
 
-  const BlocksDataBase &GetDataBase() const;
+  const DataBase &GetDataBase() const;
 
   /// Получить интерфейс по заданному типу интерфейса, стороне и направления.
-  boost::optional<Agent &> GetAgent(AgentId type, SideIndex side, AgentDirection dir);
+  boost::optional<Accessor &> GetAgent(AccessorId type, SideIndex side, AccessorDirection dir);
 
-  BlockDynamicPart *GetNeighbour(SideIndex side);
+  Block *GetNeighbour(SideIndex side);
 
 public:
   IndexType pos;
   Sector *m_sector;
 
 public:
-  BlocksDataBase *mDb;
+  DataBase *mDb;
   BlockId mBlockId;
 protected:
   std::unique_ptr<TesselatorData> mTesselatorData;
   //boost::container::flat_multimap<AgentId, std::unique_ptr<Agent>> mAgents;
-  std::vector<std::unique_ptr<Agent>> mAgents;
+  std::vector<std::unique_ptr<Accessor>> mAgents;
 };
 
 
-
-
-#define REGISTER_BLOCK_CLASS(type) REGISTER_ELEMENT(type, BlockFactory::Get(), #type)
+#define REGISTER_BLOCK_CLASS(type) REGISTER_ELEMENT1(type, DataBase, rapidjson::Value, BlockFactory::Get(), #type)
 
 struct BlockFactory : boost::noncopyable
 {
-  using FactoryType = TemplateFactory<std::string, BlockDynamicPart>;
+  using FactoryType = TemplateFactory1<std::string, Block, DataBase, rapidjson::Value>;
   static FactoryType &Get();
 };
 

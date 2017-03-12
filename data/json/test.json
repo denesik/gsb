@@ -93,12 +93,28 @@
 	"type":"BlockAutoCrafter",
     "agents":[
       {
-        "type":"Chest"
+        "type":"AccessorItem"
       },
 	  {
-        "type":"Chest"
+        "type":"AccessorItem"
+      },
+	  {
+        "type":"AccessorItem"
+      },
+	  {
+        "type":"AccessorItem"
       }
-    ]
+    ],
+	"Crafter1":
+	{
+		"Recipe":"RecipeHand",
+		"fast":false
+	},
+	"Crafter2":
+	{
+		"Recipe":"RecipeBurn",
+		"fast":true
+	}
   },
   {
     "section": "item",
@@ -122,7 +138,7 @@
   },
   {
     "section": "recipe",
-    "type": "Recipe",
+    "type": "RecipeHand",
     "id": 1,
 	"time": 5.0,
     "input": [["coal", 1], ["iron_ore", 1]],
@@ -130,10 +146,18 @@
   },
   {
     "section": "recipe",
-    "type": "Recipe",
+    "type": "RecipeHand",
     "id": 2,
 	"time": 5.0,
     "input": [["coal", 1]],
     "output": [["iron_ingot", 1]]
+  },
+  {
+    "section": "recipe",
+    "type": "RecipeBurn",
+    "id": 2,
+	"time": 15.0,
+    "input": [["coal", 1]],
+    "output": []
   }
 ]

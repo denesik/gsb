@@ -2,7 +2,7 @@
 #include "MapGenerator.h"
 
 
-World::World(const BlocksDataBase &blocksDataBase)
+World::World(const DataBase &blocksDataBase)
   : mBlocksDataBase(blocksDataBase), mUpdatableSectors(*this), mPlayer(*this)
 {
 }
@@ -28,7 +28,7 @@ void World::UnLoadSector(const SPos &pos)
   mSectors.erase(pos);
 }
 
-const BlocksDataBase & World::GetBlocksDataBase() const
+const DataBase & World::GetBlocksDataBase() const
 {
   return mBlocksDataBase;
 }
@@ -69,7 +69,7 @@ BlockId World::GetBlockId(const WBPos& pos) const
   return{};
 }
 
-BlockDynamicPart* World::GetBlockDynamic(const WBPos& pos) const
+Block* World::GetBlockDynamic(const WBPos& pos) const
 {
   auto spos = cs::WBtoS(pos);
   auto sector = GetSector(spos);

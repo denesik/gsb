@@ -5,7 +5,7 @@
 #include "IMapGenerator.h"
 #include "../imgui/imgui.h"
 
-PrimitivaMountains::PrimitivaMountains(const BlocksDataBase &db, float power) : IMapGenerator(db), mPower(power)
+PrimitivaMountains::PrimitivaMountains(const DataBase &db, float power) : IMapGenerator(db), mPower(power)
 {
   AddCustomParameter([&](const Magnum::Timeline &) { ImGui::DragFloat("TopDownscaler", &mTopDownscaler); });
   AddCustomParameter([&](const Magnum::Timeline &) { ImGui::DragFloat("BotDownscaler", &mBotDownscaler); });
