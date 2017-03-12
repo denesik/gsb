@@ -7,6 +7,7 @@
 #include <tuple>
 #include <vector>
 
+
 class Sector;
 class DataBase;
 
@@ -20,7 +21,7 @@ public:
   void DrawGui(const Magnum::Timeline &);
   void AddCustomParameter(GuiFunction gui_update);
 protected:
-  const BlocksDataBase &m_Db;
+  const DataBase &m_Db;
 private:
   std::vector<GuiFunction> parameters;
 };
