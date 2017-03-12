@@ -23,7 +23,8 @@ public:
   Crafter(std::unique_ptr<IRecipe> recipe, bool fast, AccessorItem * a = nullptr, AccessorItem * b = nullptr);
 
 
-  Crafter(bool fast, AccessorItem * a = nullptr, AccessorItem * b = nullptr) {};
+  Crafter(bool fast, AccessorItem * input = nullptr, AccessorItem * output = nullptr)
+    : m_fast_components(fast), mInput(input), mOutput(output) {};
 
   Crafter(const Crafter &other);
 
@@ -46,8 +47,8 @@ public:
   bool Ready() const;
 
 private:
-  AccessorItem *mInput;
-  AccessorItem *mOutput;
+  AccessorItem *mInput = nullptr;
+  AccessorItem *mOutput = nullptr;
 
   // TODO_Recipe 
   // Теги избавят от этой гадости.
@@ -81,15 +82,10 @@ struct CrafterFactory : boost::noncopyable
 
 //REGISTER_CRAFTER_CLASS(Crafter, int);
 
-template<class T>
-T make()
-{
-  return T();
-}
 
 namespace                                           
 {                                                   
-  RegisterElement2<Crafter> RegisterElement2Crafter(CrafterFactory::Get(), "id", std::tuple<bool, AccessorItem *, AccessorItem* >());
+  RegisterElement2<Crafter> RegisterElement2Crafter(CrafterFactory::Get(), "Crafter", std::tuple<bool, AccessorItem *, AccessorItem* >());
 }
 
 #endif // Crafter_h__

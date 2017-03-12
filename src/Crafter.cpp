@@ -13,8 +13,8 @@ Crafter::Crafter(const Crafter &other)
 
 }
 
-Crafter::Crafter(std::unique_ptr<IRecipe> recipe, bool fast, AccessorItem *, AccessorItem *)
-  : m_recipe_type(std::move(recipe)), m_fast_components(fast)
+Crafter::Crafter(std::unique_ptr<IRecipe> recipe, bool fast, AccessorItem *input, AccessorItem *output)
+  : m_recipe_type(std::move(recipe)), m_fast_components(fast), mInput(input), mOutput(output)
 {
 
 }
@@ -25,6 +25,9 @@ void Crafter::Update(const Magnum::Timeline &dt, const DataBase &db)
   // Если есть хотя бы один рецепт, крафтим первый.
   // Удаляем из инпута все компоненты.
   // Добавляем в оутпут результаты.
+
+  auto val = CrafterFactory::Get().Create("Crafter", true, mInput, mOutput);
+  int t = 0;
 
   if (m_current_recipe && m_runned)
   {

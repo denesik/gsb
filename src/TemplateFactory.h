@@ -16,6 +16,7 @@ See "LICENSE.txt"
 #include "Log.h"
 #include <tuple>
 #include <type_traits>
+#include <boost/any.hpp>
 
 template <class IdType, class Base>
 class TemplateFactory : boost::noncopyable
@@ -148,7 +149,7 @@ public:
   using IdTypeUsing = IdType;
 protected:
   using BasePtr = std::unique_ptr<Base>;
-  using CreateFunc = std::function<BasePtr()>;
+  using CreateFunc = std::function<BasePtr(boost::any)>;
   using FactoryMap = std::map<IdType, CreateFunc>;
 
 public:
@@ -156,7 +157,10 @@ public:
   BasePtr Create(const IdType & id, Args... args) const
   {
     typename FactoryMap::const_iterator it = map_.find(id);
-    return (it != map_.end()) ? (it->second)() : BasePtr();
+
+    auto tuple = std::make_tuple(args...);
+
+    return (it != map_.end()) ? (it->second)(boost::any(tuple)) : nullptr;
   }
 
   void Add(const IdType & id, CreateFunc func, const std::string comment = "")
@@ -194,9 +198,10 @@ private:
   template<class Factory, class Tuple, std::size_t ...I>
   void call_func(Factory & factory, const typename Factory::IdTypeUsing & id, Tuple tuple, std::index_sequence<I...>)
   {
-    factory.Add(id, [tuple]() -> std::unique_ptr<T>
+    factory.Add(id, [](boost::any val) -> std::unique_ptr<T>
     {
-      return std::make_unique<T>(std::get<I>(tuple)...);//std::tuple_size<Tuple>::value
+      const auto &tuple = boost::any_cast<const Tuple &>(val);
+      return std::make_unique<T>(std::get<I>(tuple)...);
     });
   }
 };
