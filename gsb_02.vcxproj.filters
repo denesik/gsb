@@ -111,9 +111,6 @@
     <ClCompile Include="src\Creature.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="src\Recipe.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="src\Item.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
@@ -130,9 +127,6 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\Crafter.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RecipeBurn.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\Block.cpp">
@@ -239,9 +233,6 @@
     <ClInclude Include="src\tools\Crc32.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\Recipe.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
     <ClInclude Include="src\Item.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
@@ -298,6 +289,9 @@
     </ClInclude>
     <ClInclude Include="src\accessors\Accessors.hpp">
       <Filter>Файлы исходного кода\Accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RecipeHand.h">
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

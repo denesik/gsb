@@ -6,12 +6,12 @@
 #include "IRecipe.h"
 #include "tools/Crc32.h"
 
-class Recipe : public INumeredRecipe<gsb::crc32<std::string>()("Recipe")>
+class RecipeHand : public INumeredRecipe<gsb::crc32<std::string>()("RecipeHand")>
 {
 public:
 
 };
 
-REGISTER_RECIPE_CLASS(Recipe);
+REGISTER_RECIPE_CLASS(RecipeHand);
 
 #endif // Recipe_h__

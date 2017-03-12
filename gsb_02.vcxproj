@@ -43,8 +43,6 @@
     <ClCompile Include="src\MapGenerator.cpp" />
     <ClCompile Include="src\MapLoader.cpp" />
     <ClCompile Include="src\PerlinNoise.cpp" />
-    <ClCompile Include="src\Recipe.cpp" />
-    <ClCompile Include="src\RecipeBurn.cpp" />
     <ClCompile Include="src\Sector.cpp" />
     <ClCompile Include="src\SectorCompiler.cpp" />
     <ClCompile Include="src\TemplateFactory.h" />
@@ -91,7 +89,7 @@
     <ClInclude Include="src\MapGenerator.h" />
     <ClInclude Include="src\MapLoader.h" />
     <ClInclude Include="src\PerlinNoise.h" />
-    <ClInclude Include="src\Recipe.h" />
+    <ClInclude Include="src\RecipeHand.h" />
     <ClInclude Include="src\RecipeBurn.h" />
     <ClInclude Include="src\Sector.h" />
     <ClInclude Include="src\SectorCompiler.h" />

@@ -1,6 +1,6 @@
 #include "Crafter.h"
 #include "DataBase.h"
-#include "Recipe.h"
+#include "RecipeHand.h"
 #include <Magnum\Timeline.h>
 
 Crafter::Crafter(std::unique_ptr<IRecipe> recipe, bool fast_components)

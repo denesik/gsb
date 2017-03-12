@@ -3,12 +3,12 @@
 #include "DataBase.h"
 #include "..\imgui\imgui.h"
 #include "RecipeBurn.h"
-#include "Recipe.h"
+#include "RecipeHand.h"
 
 
 
 BlockAutoCrafter::BlockAutoCrafter()
-  : mCrafter(std::unique_ptr<IRecipe>(new Recipe)),
+  : mCrafter(std::unique_ptr<IRecipe>(new RecipeHand)),
     mGenerator(std::unique_ptr<IRecipe>(new RecipeBurn), true)
 {
 }
@@ -20,7 +20,7 @@ BlockAutoCrafter::~BlockAutoCrafter()
 
 BlockAutoCrafter::BlockAutoCrafter(const BlockAutoCrafter &other)
   : Block(other), 
-    mCrafter(std::unique_ptr<IRecipe>(new Recipe)),
+    mCrafter(std::unique_ptr<IRecipe>(new RecipeHand)),
     mGenerator(std::unique_ptr<IRecipe>(new RecipeBurn), true)
 {
   
