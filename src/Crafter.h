@@ -89,7 +89,7 @@ T make()
 
 namespace                                           
 {                                                   
-  RegisterElement2<Crafter> RegisterElement2Crafter(CrafterFactory::Get(), "id", make<bool>(), make<AccessorItem *>(), make<AccessorItem *>());
+  RegisterElement2<Crafter> RegisterElement2Crafter(CrafterFactory::Get(), "id", std::tuple<bool, AccessorItem *, AccessorItem* >());
 }
 
 #endif // Crafter_h__

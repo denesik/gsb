@@ -15,6 +15,7 @@ See "LICENSE.txt"
 #include <boost/noncopyable.hpp>
 #include "Log.h"
 #include <tuple>
+#include <type_traits>
 
 template <class IdType, class Base>
 class TemplateFactory : boost::noncopyable
@@ -182,11 +183,20 @@ class RegisterElement2
 {
 public:
   template <class Factory, class... Args>
-  RegisterElement2(Factory & factory, const typename Factory::IdTypeUsing & id, std::tuple<Args> args)
+  RegisterElement2(Factory & factory, const typename Factory::IdTypeUsing & id, std::tuple<Args...> args)
   {
-    factory.Add(id, [args]() -> std::unique_ptr<T> 
+    using Tuple = std::tuple<Args...>;
+
+    call_func(factory, id, args, std::index_sequence_for<Args...>{});
+  }
+
+private:
+  template<class Factory, class Tuple, std::size_t ...I>
+  void call_func(Factory & factory, const typename Factory::IdTypeUsing & id, Tuple tuple, std::index_sequence<I...>)
+  {
+    factory.Add(id, [tuple]() -> std::unique_ptr<T>
     {
-      return std::make_unique<T>(std::move(args)...);
+      return std::make_unique<T>(std::get<I>(tuple)...);//std::tuple_size<Tuple>::value
     });
   }
 };
