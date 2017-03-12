@@ -6,10 +6,15 @@
 #include "IRecipe.h"
 #include "tools/Crc32.h"
 
+// TODO_Recipe 
+// Этого бесполезного класса также не будет.
 class RecipeHand : public INumeredRecipe<gsb::crc32<std::string>()("RecipeHand")>
 {
 public:
-
+  std::unique_ptr<IRecipe> Clone() override
+  {
+    return std::unique_ptr<IRecipe>(new RecipeHand(*this));
+  }
 };
 
 REGISTER_RECIPE_CLASS(RecipeHand);

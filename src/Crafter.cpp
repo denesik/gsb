@@ -3,9 +3,23 @@
 #include "RecipeHand.h"
 #include <Magnum\Timeline.h>
 
-Crafter::Crafter(std::unique_ptr<IRecipe> recipe, bool fast_components)
-  : m_recipe_type(std::move(recipe)), m_fast_components(fast_components)
+
+
+//TODO_Recipe 
+// Теги избавят от этой гадости ввиде клонирования.
+Crafter::Crafter(const Crafter &other)
+  : m_recipe_type(other.m_recipe_type->Clone()), m_fast_components(other.m_fast_components)
 {
+
+}
+
+Crafter::Crafter(const DataBase & db, const rapidjson::Value &json)
+  : m_recipe_type(LoadRecipe(db, json))
+{
+  if (json.HasMember("fast") && json["fast"].IsBool())
+  {
+    m_fast_components = json["fast"].GetBool();
+  }
 }
 
 void Crafter::Update(const Magnum::Timeline &dt, const DataBase &db)
@@ -119,4 +133,15 @@ bool Crafter::Runned() const
 bool Crafter::Ready() const
 {
   return m_current_recipe != nullptr;
+}
+
+std::unique_ptr<IRecipe> Crafter::LoadRecipe(const DataBase & db, const rapidjson::Value &json) const
+{
+  if (json.HasMember("Recipe"))
+  {
+    std::string type = json["Recipe"].GetString();
+    return RecipeFactory::Get().Create(type);
+  }
+
+  return{};
 }

@@ -15,8 +15,11 @@ class DataBase;
 class Crafter
 {
 public:
-  // TODO: избавиться от unique ptr
-  Crafter(std::unique_ptr<IRecipe> recipe, bool fast_components = false);
+  Crafter() = delete;
+
+  Crafter(const DataBase & db, const rapidjson::Value &json);
+
+  Crafter(const Crafter &other);
 
   void Update(const Magnum::Timeline &dt, const DataBase &db);
   void SetInput(Accessor &accessor);
@@ -39,6 +42,9 @@ public:
 private:
   AccessorItem *mInput;
   AccessorItem *mOutput;
+
+  // TODO_Recipe 
+  // Теги избавят от этой гадости.
   std::unique_ptr<IRecipe> m_recipe_type;
 
   const IRecipe *m_current_recipe = nullptr;
@@ -48,6 +54,9 @@ private:
 
   // Компоненты уничтожаются в начале крафта или в конце?
   bool m_fast_components = false;
+
+private:
+  std::unique_ptr<IRecipe> LoadRecipe(const DataBase & db, const rapidjson::Value &json) const;
 };
 
 

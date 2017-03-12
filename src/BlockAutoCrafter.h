@@ -16,7 +16,7 @@
 class BlockAutoCrafter : public Block
 {
 public:
-  BlockAutoCrafter();
+  BlockAutoCrafter() = delete;
   ~BlockAutoCrafter();
   BlockAutoCrafter(const DataBase & db, const rapidjson::Value &json);
   BlockAutoCrafter(const BlockAutoCrafter &other);
@@ -30,6 +30,9 @@ public:
 private:
   Crafter mCrafter;
   Crafter mGenerator;
+
+private:
+  boost::optional<const rapidjson::Value&> CrafterValue(const char *type, const DataBase & db, const rapidjson::Value &json) const;
 };
 
 REGISTER_BLOCK_CLASS(BlockAutoCrafter);

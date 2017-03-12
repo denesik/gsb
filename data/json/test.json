@@ -104,7 +104,17 @@
 	  {
         "type":"AccessorItem"
       }
-    ]
+    ],
+	"Crafter1":
+	{
+		"Recipe":"RecipeHand",
+		"fast":false
+	},
+	"Crafter2":
+	{
+		"Recipe":"RecipeBurn",
+		"fast":true
+	}
   },
   {
     "section": "item",

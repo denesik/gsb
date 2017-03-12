@@ -6,18 +6,10 @@
 #include "RecipeHand.h"
 
 
-
-BlockAutoCrafter::BlockAutoCrafter()
-  : mCrafter(std::unique_ptr<IRecipe>(new RecipeHand)),
-    mGenerator(std::unique_ptr<IRecipe>(new RecipeBurn), true)
-{
-}
-
-
-BlockAutoCrafter::BlockAutoCrafter(const DataBase & db, const rapidjson::Value &json)
-  : Block(db, json),
-  mCrafter(std::unique_ptr<IRecipe>(new RecipeHand)),
-  mGenerator(std::unique_ptr<IRecipe>(new RecipeBurn), true)
+BlockAutoCrafter::BlockAutoCrafter(const DataBase & db, const rapidjson::Value &val)
+  : Block(db, val),
+  mCrafter(db, *CrafterValue("Crafter1", db, val)),
+  mGenerator(db, *CrafterValue("Crafter2", db, val))
 {
 
 }
@@ -28,18 +20,15 @@ BlockAutoCrafter::~BlockAutoCrafter()
 
 BlockAutoCrafter::BlockAutoCrafter(const BlockAutoCrafter &other)
   : Block(other), 
-    mCrafter(std::unique_ptr<IRecipe>(new RecipeHand)),
-    mGenerator(std::unique_ptr<IRecipe>(new RecipeBurn), true)
+    mCrafter(other.mCrafter),
+    mGenerator(other.mGenerator)
 {
   
 }
 
 std::unique_ptr<Block> BlockAutoCrafter::Clone()
 {
-  Block *ptr = new BlockAutoCrafter(*this);
-  std::unique_ptr<Block> obj;
-  obj.reset(ptr);
-  return std::move(obj);
+  return std::unique_ptr<Block>(new BlockAutoCrafter(*this));
 }
 
 void BlockAutoCrafter::DrawGui(const Magnum::Timeline &dt)
@@ -112,3 +101,15 @@ void BlockAutoCrafter::Update(const Magnum::Timeline &dt)
   mCrafter.Update(dt, *mDb);
   mGenerator.Update(dt, *mDb);
 }
+
+boost::optional<const rapidjson::Value&> BlockAutoCrafter::CrafterValue(const char *type, const DataBase & db, const rapidjson::Value &val) const
+{
+  if (val.HasMember(type))
+  {
+    const rapidjson::Value &crafter = val[type];
+    return {crafter};
+  }
+
+  return{};
+}
+
