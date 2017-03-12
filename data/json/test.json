@@ -93,16 +93,16 @@
 	"type":"BlockAutoCrafter",
     "agents":[
       {
-        "type":"Chest"
+        "type":"AccessorItem"
       },
 	  {
-        "type":"Chest"
+        "type":"AccessorItem"
       },
 	  {
-        "type":"Chest"
+        "type":"AccessorItem"
       },
 	  {
-        "type":"Chest"
+        "type":"AccessorItem"
       }
     ]
   },
@@ -128,7 +128,7 @@
   },
   {
     "section": "recipe",
-    "type": "Recipe",
+    "type": "RecipeHand",
     "id": 1,
 	"time": 5.0,
     "input": [["coal", 1], ["iron_ore", 1]],
@@ -136,7 +136,7 @@
   },
   {
     "section": "recipe",
-    "type": "Recipe",
+    "type": "RecipeHand",
     "id": 2,
 	"time": 5.0,
     "input": [["coal", 1]],

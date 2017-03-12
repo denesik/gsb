@@ -6,7 +6,7 @@
 #include "../tools/Common.h"
 #include <boost/optional/optional.hpp>
 
-class AccessorItem : public NumeredAgent<AccessorItem, gsb::crc32<std::string>()("Chest")>
+class AccessorItem : public NumeredAgent<AccessorItem, gsb::crc32<std::string>()("AccessorItem")>
 {
 public:
   using ItemList = std::vector<std::tuple<ItemId, size_t>>;
