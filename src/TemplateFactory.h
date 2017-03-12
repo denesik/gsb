@@ -206,22 +206,13 @@ private:
   }
 };
 
-// template <class T>
-// struct Helper;
-// 
-// template <class Ret, class... Args>
-// struct Helper<Ret(Args...)>
-// {
-//   using return_type = Ret;
-// };
-
-
 
 #define REGISTER_ELEMENT2(type, factory, id, ...) \
 namespace                                           \
 {                                                   \
-RegisterElement2<type> RegisterElement2##type<decltype(factory), type, __VA_ARGS__>(factory, id);  \
+RegisterElement2<type> RegisterElement2##type(factory, id, std::tuple<__VA_ARGS__>());  \
 }
+
 
 
 #endif // AGENTFACTORY_H

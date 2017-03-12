@@ -68,7 +68,7 @@ private:
 
 
 
-//#define REGISTER_CRAFTER_CLASS(type, ...) REGISTER_ELEMENT2(type, CrafterFactory::Get(), #type, __VA_ARGS__)
+#define REGISTER_CRAFTER_CLASS(type, ...) REGISTER_ELEMENT2(type, CrafterFactory::Get(), #type, __VA_ARGS__)
 
 struct CrafterFactory : boost::noncopyable
 {
@@ -80,12 +80,6 @@ struct CrafterFactory : boost::noncopyable
   }
 };
 
-//REGISTER_CRAFTER_CLASS(Crafter, int);
-
-
-namespace                                           
-{                                                   
-  RegisterElement2<Crafter> RegisterElement2Crafter(CrafterFactory::Get(), "Crafter", std::tuple<bool, AccessorItem *, AccessorItem* >());
-}
+REGISTER_CRAFTER_CLASS(Crafter, bool, AccessorItem *, AccessorItem *);
 
 #endif // Crafter_h__
