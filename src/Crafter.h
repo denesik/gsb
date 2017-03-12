@@ -7,18 +7,23 @@
 #include "Timer.h"
 #include "accessors/AccessorItem.h"
 #include <memory>
+#include "TemplateFactory.h"
 
 class DataBase;
 
 // TODO: Сделать для этого класс интерфейс.
 // TODO: Написать кнструкторы
 // Вероятно классы логики должны настраиваться родителем (класс блока) а не через json.
+// Простой крафтер. Крафтит итемы из инпут акцессера в оутпут акцессер.
 class Crafter
 {
 public:
   Crafter() = delete;
 
-  Crafter(std::unique_ptr<IRecipe> recipe, bool fast);
+  Crafter(std::unique_ptr<IRecipe> recipe, bool fast, AccessorItem * a = nullptr, AccessorItem * b = nullptr);
+
+
+  Crafter(bool fast, AccessorItem * a = nullptr, AccessorItem * b = nullptr) {};
 
   Crafter(const Crafter &other);
 
@@ -60,5 +65,31 @@ private:
 };
 
 
+
+
+//#define REGISTER_CRAFTER_CLASS(type, ...) REGISTER_ELEMENT2(type, CrafterFactory::Get(), #type, __VA_ARGS__)
+
+struct CrafterFactory : boost::noncopyable
+{
+  using FactoryType = TemplateFactory2<std::string, Crafter>;
+  static FactoryType &Get()
+  {
+    static FactoryType factory;
+    return factory;
+  }
+};
+
+//REGISTER_CRAFTER_CLASS(Crafter, int);
+
+template<class T>
+T make()
+{
+  return T();
+}
+
+namespace                                           
+{                                                   
+  RegisterElement2<Crafter> RegisterElement2Crafter(CrafterFactory::Get(), "id", make<bool>(), make<AccessorItem *>(), make<AccessorItem *>());
+}
 
 #endif // Crafter_h__

@@ -14,6 +14,7 @@ See "LICENSE.txt"
 #include <functional>
 #include <boost/noncopyable.hpp>
 #include "Log.h"
+#include <tuple>
 
 template <class IdType, class Base>
 class TemplateFactory : boost::noncopyable
@@ -131,6 +132,81 @@ namespace                                           \
 RegisterElement1<type, arg1, arg2> RegisterElement1##type(factory, id);  \
 }
 
+//**************************
+//**************************
+//**************************
+
+
+// template <class IdType, class FuncType>
+// class TemplateFactory2;
+
+template <class IdType, class Base>
+class TemplateFactory2 : boost::noncopyable
+{
+public:
+  using IdTypeUsing = IdType;
+protected:
+  using BasePtr = std::unique_ptr<Base>;
+  using CreateFunc = std::function<BasePtr()>;
+  using FactoryMap = std::map<IdType, CreateFunc>;
+
+public:
+  template<class... Args>
+  BasePtr Create(const IdType & id, Args... args) const
+  {
+    typename FactoryMap::const_iterator it = map_.find(id);
+    return (it != map_.end()) ? (it->second)() : BasePtr();
+  }
+
+  void Add(const IdType & id, CreateFunc func, const std::string comment = "")
+  {
+    auto i = map_.find(id);
+    if (i == map_.end())
+    {
+      LOG(trace) << "class id = \"" << id << "\" register";
+      map_.insert(FactoryMap::value_type(id, func));
+    }
+    else
+    {
+      if (!comment.empty())
+        LOG(trace) << "class id = \"" << id << "\" override with message: " << comment;
+      i->second = func;
+    }
+  }
+
+  FactoryMap map_;
+};
+
+template <class T>
+class RegisterElement2
+{
+public:
+  template <class Factory, class... Args>
+  RegisterElement2(Factory & factory, const typename Factory::IdTypeUsing & id, std::tuple<Args> args)
+  {
+    factory.Add(id, [args]() -> std::unique_ptr<T> 
+    {
+      return std::make_unique<T>(std::move(args)...);
+    });
+  }
+};
+
+// template <class T>
+// struct Helper;
+// 
+// template <class Ret, class... Args>
+// struct Helper<Ret(Args...)>
+// {
+//   using return_type = Ret;
+// };
+
+
+
+#define REGISTER_ELEMENT2(type, factory, id, ...) \
+namespace                                           \
+{                                                   \
+RegisterElement2<type> RegisterElement2##type<decltype(factory), type, __VA_ARGS__>(factory, id);  \
+}
 
 
 #endif // AGENTFACTORY_H

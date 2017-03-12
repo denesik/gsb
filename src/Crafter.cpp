@@ -13,7 +13,7 @@ Crafter::Crafter(const Crafter &other)
 
 }
 
-Crafter::Crafter(std::unique_ptr<IRecipe> recipe, bool fast)
+Crafter::Crafter(std::unique_ptr<IRecipe> recipe, bool fast, AccessorItem *, AccessorItem *)
   : m_recipe_type(std::move(recipe)), m_fast_components(fast)
 {
 
