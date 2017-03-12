@@ -7,7 +7,7 @@ void Accessor::DrawGui(const Magnum::Timeline &dt)
 {
 }
 
-void Accessor::JsonLoad(DataBase & db, const rapidjson::Value &val)
+void Accessor::JsonLoad(const DataBase & db, const rapidjson::Value &val)
 {
   if (val.HasMember("bindings") && val["bindings"].IsArray())
   {

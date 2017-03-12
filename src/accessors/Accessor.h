@@ -28,7 +28,7 @@ enum /*class*/ AccessorDirection
   out = 1 << 1,
 };
 
-class GSB_NOVTABLE Accessor : public IJsonSerializable, public IGui
+class GSB_NOVTABLE Accessor : public IGui
 {
 public:
   Accessor() = default;
@@ -40,7 +40,7 @@ public:
   
   void DrawGui(const Magnum::Timeline &dt) override;
   
-  void JsonLoad(DataBase & db, const rapidjson::Value &val) override;
+  virtual void JsonLoad(const DataBase & db, const rapidjson::Value &val);
 
   Block *Parent() const;
 

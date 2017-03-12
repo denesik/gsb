@@ -8,12 +8,17 @@
 #include "IRecipe.h"
 #include "Crafter.h"
 
+// Создается в БД с помощью фабрики.
+// Настройки блока задаются через json при создании.
+// Для создания в мире клонируется.
+
 // Содержит 2 крафтера.
 class BlockAutoCrafter : public Block
 {
 public:
   BlockAutoCrafter();
   ~BlockAutoCrafter();
+  BlockAutoCrafter(const DataBase & db, const rapidjson::Value &json);
   BlockAutoCrafter(const BlockAutoCrafter &other);
 
   std::unique_ptr<Block> Clone() override;

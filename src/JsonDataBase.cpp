@@ -51,7 +51,7 @@ bool LoadBlock(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &
   {
     std::string type = val["type"].GetString();
     if (!dynamic_part)
-      dynamic_part = BlockFactory::Get().Create(type);
+      dynamic_part = BlockFactory::Get().Create(type, db, val);
   }
 
   if (val.HasMember("tesselator"))
@@ -73,48 +73,6 @@ bool LoadBlock(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &
     }
   }
 
-  if (val.HasMember("agents"))
-  {
-    if (!dynamic_part)
-      dynamic_part = std::make_unique<Block>();
-
-    const rapidjson::Value &arr = val["agents"];
-    if (val["agents"].IsArray())
-    {
-      for (decltype(arr.Size()) a = 0; a < arr.Size(); a++)
-      {
-        const auto& part = arr[a];
-        if (part.HasMember("type"))
-        {
-          std::string agenttype = part["type"].GetString();
-          auto accessor = AgentFactory::Get().Create(agenttype);
-          if (!accessor)
-          {
-            LOG(error) << "record \"" << id << "\" accessor #" << a << " has unknown type = " << agenttype << ". SKIP AGENT.";
-            continue;
-          }
-          try {
-            accessor->JsonLoad(db, part);
-          }
-          catch (...) {
-            LOG(error) << boost::current_exception_diagnostic_information(true);
-            LOG(error) << id << "'s accessor " << agenttype << " json deserialize failed. See agents documentation. SKIP AGENT.";
-            continue;
-          }
-
-          auto binding = dynamic_part->AddAgent(std::move(accessor));
-        }
-        else
-        {
-          LOG(error) << "record \"" << id << "\" accessor #" << a + 1 << " has no type.";
-        }
-      }
-    }
-    else
-    {
-      LOG(error) << "record \"" << id << "\" parts is not valid agents array.";
-    }
-  }
   if (dynamic_part)
   {
     dynamic_part->mBlockId = id;

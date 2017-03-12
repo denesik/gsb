@@ -14,7 +14,7 @@ public:
   AccessorItem();
   AccessorItem(const AccessorItem & other);
 
-  void JsonLoad(DataBase & db, const rapidjson::Value &val) override;
+  void JsonLoad(const DataBase & db, const rapidjson::Value &val) override;
   void DrawGui(const Magnum::Timeline &dt) override;
 
   // ¬озвращает сколько итемов добавлено

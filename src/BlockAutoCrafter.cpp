@@ -14,6 +14,14 @@ BlockAutoCrafter::BlockAutoCrafter()
 }
 
 
+BlockAutoCrafter::BlockAutoCrafter(const DataBase & db, const rapidjson::Value &json)
+  : Block(db, json),
+  mCrafter(std::unique_ptr<IRecipe>(new RecipeHand)),
+  mGenerator(std::unique_ptr<IRecipe>(new RecipeBurn), true)
+{
+
+}
+
 BlockAutoCrafter::~BlockAutoCrafter()
 {
 }

@@ -13,6 +13,7 @@
 #include "tools/CoordSystem.h"
 #include <array>
 #include <vector>
+#include <rapidjson/rapidjson.h>
 
 // TODO: clone std::unique_ptr --> move semantic
 
@@ -20,12 +21,13 @@
 class DataBase;
 class Sector;
 
-// 
+// Интерфейс блока. Нельзя создать.
 class Block : public IGui
 {
 public:
   // TODO: Скорей всего надо передавать сектор вместо бд.
   Block();
+  Block(const DataBase & db, const rapidjson::Value &json);
   Block(const Block &other);
   ~Block();
 
@@ -65,13 +67,11 @@ protected:
 };
 
 
-
-
-#define REGISTER_BLOCK_CLASS(type) REGISTER_ELEMENT(type, BlockFactory::Get(), #type)
+#define REGISTER_BLOCK_CLASS(type) REGISTER_ELEMENT1(type, DataBase, rapidjson::Value, BlockFactory::Get(), #type)
 
 struct BlockFactory : boost::noncopyable
 {
-  using FactoryType = TemplateFactory<std::string, Block>;
+  using FactoryType = TemplateFactory1<std::string, Block, DataBase, rapidjson::Value>;
   static FactoryType &Get();
 };
 

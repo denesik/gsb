@@ -19,7 +19,7 @@ AccessorItem::AccessorItem(const AccessorItem& other)
 {
 }
 
-void AccessorItem::JsonLoad(DataBase & db, const rapidjson::Value& val)
+void AccessorItem::JsonLoad(const DataBase & db, const rapidjson::Value& val)
 {
   Accessor::JsonLoad(db, val);
 }

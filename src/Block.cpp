@@ -17,6 +17,34 @@ Block::Block(const Block &other)
     mAgents.push_back(ag->Clone(this));
 }
 
+// TODO: проверить исключения.
+Block::Block(const DataBase & db, const rapidjson::Value &val)
+{
+  if (val.HasMember("agents"))
+  {
+    const rapidjson::Value &arr = val["agents"];
+    if (val["agents"].IsArray())
+    {
+      for (decltype(arr.Size()) a = 0; a < arr.Size(); a++)
+      {
+        const auto& part = arr[a];
+        if (part.HasMember("type"))
+        {
+          std::string agenttype = part["type"].GetString();
+          auto accessor = AgentFactory::Get().Create(agenttype);
+          if (!accessor)
+          {
+            continue;
+          }
+          accessor->JsonLoad(db, part);
+
+          AddAgent(std::move(accessor));
+        }
+      }
+    }
+  }
+}
+
 Block::~Block()
 {
 }
