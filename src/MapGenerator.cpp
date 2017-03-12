@@ -3,26 +3,29 @@
 #include "Sector.h"
 #include "TesselatorMicroBlock.h"
 #include "IMapGenerator.h"
+#include "../imgui/imgui.h"
 
 PrimitivaMountains::PrimitivaMountains(const BlocksDataBase &db, float power) : IMapGenerator(db), mPower(power)
 {
+  AddCustomParameter([&](const Magnum::Timeline &) { ImGui::DragFloat("TopDownscaler", &mTopDownscaler); });
+  AddCustomParameter([&](const Magnum::Timeline &) { ImGui::DragFloat("BotDownscaler", &mBotDownscaler); });
 }
 
 #define GEN_OCT 5
-float flatness(float tx, float ty)
+float PrimitivaMountains::flatness(float tx, float ty)
 {
   return (PerlinNoise2D(tx, ty, 2, 2, GEN_OCT) + 1) / 2.f;
 }
-float dens(float tx, float ty, float tz)
+float PrimitivaMountains::dens(float tx, float ty, float tz)
 {
   auto flat = 1.f / 5.f;// flatness(tx / 1000.f, ty / 1000.f);
   if (ty < -SECTOR_SIZE)
     return 1;
 
   if (ty < 0)
-    return PerlinNoise3D(tx / 100.f, ty / 100.f, tz / 100.f, 1 + 5 * flat, 2, GEN_OCT) + ((-ty*(SECTOR_SIZE / 1000.f)));
+    return PerlinNoise3D(tx / mBotDownscaler, ty / mBotDownscaler, tz / mBotDownscaler, 1 + 5 * flat, 2, GEN_OCT) + ((-ty*(SECTOR_SIZE / 1000.f)));
 
-  return PerlinNoise3D(tx / 100.f, ty / 100.f, tz / 100.f, 1 + 5 * flat, 2, GEN_OCT) / ((ty + float(SECTOR_SIZE)) / float(SECTOR_SIZE));
+  return PerlinNoise3D(tx / mTopDownscaler, ty / mTopDownscaler, tz / mTopDownscaler, 1 + 5 * flat, 2, GEN_OCT) / ((ty + float(SECTOR_SIZE)) / float(SECTOR_SIZE));
 }
 float cluster(float tx, float ty, float tz)
 {
@@ -34,11 +37,11 @@ float cluster(float tx, float ty, float tz)
 // 0.31 = coal
 // 0.4 = almost everything
 // 1 = everything
-bool is_cluster(float tx, float ty, float tz, float type, float prob)
+bool PrimitivaMountains::is_cluster(float tx, float ty, float tz, float type, float prob)
 {
   return cluster(tx + type * 3571, ty + type * 3557, tz + type * 3559) + 1 < prob * 2.f;
 }
-bool solid(float tx, float ty, float tz)
+bool PrimitivaMountains::solid(float tx, float ty, float tz)
 {
   return dens(tx, ty, tz + 16) > 0.1;
 }
@@ -47,9 +50,9 @@ bool solid(float tx, float ty, float tz)
 void PrimitivaMountains::Generate(Sector &sector)
 {
   BlockId air = 0;
+  BlockId dirt = m_Db.BlockIdFromName("dirt").value_or(0);
   BlockId grass = m_Db.BlockIdFromName("grass").value_or(0);
-  BlockId grass_micro = m_Db.BlockIdFromName("grass_micro").value_or(0);
-
+  BlockId furnance = m_Db.BlockIdFromName("furnance").value_or(0);
 
   auto sw = cs::StoW(sector.GetPos());
   for (auto k = 0; k < SECTOR_SIZE; ++k)
@@ -60,12 +63,12 @@ void PrimitivaMountains::Generate(Sector &sector)
       {
         if (solid(sw.x() + i, sw.y() + j, sw.z() + k))
         {
-          if (!solid(sw.x() + i, sw.y() + j + 1, sw.z() + k))
+          if (!solid(sw.x() + i, sw.y() + j + 1, sw.z() + k) && rand()%20 == 1 && false)
           {
-            sector.CreateBlock({ i,j,k }, grass_micro);
+            sector.CreateBlock({ i,j,k }, grass);
 
             auto &data = TesselatorMicroBlock::ToMicroblockData(*sector.GetTesselatorData({ i,j,k }));
-            const auto &tess = static_cast<const TesselatorMicroBlock &>(*m_Db.GetBlockStaticPart(grass_micro)->GetTesselator());
+            const auto &tess = static_cast<const TesselatorMicroBlock &>(*m_Db.GetBlockStaticPart(grass)->GetTesselator());
 
             for (auto k1 = 0; k1 < tess.Size(); ++k1)
             {

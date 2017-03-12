@@ -22,8 +22,6 @@ public:
 private:
   void Process();
 
-  std::unique_ptr<IMapGenerator> mGenerator;
-
   std::unordered_map<SPos, std::shared_ptr<Sector>> mSectors;
   std::mutex mSectorLock;
 

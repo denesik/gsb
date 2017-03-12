@@ -145,7 +145,10 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\IMapGenerator.cpp">
-      <Filter>Файлы исходного кода</Filter>
+      <Filter>Файлы исходного кода\interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IMapLoader.cpp">
+      <Filter>Файлы исходного кода\interfaces</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

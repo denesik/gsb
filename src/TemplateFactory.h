@@ -15,21 +15,21 @@ See "LICENSE.txt"
 #include <boost/noncopyable.hpp>
 #include "Log.h"
 
-template <class IdType, class Base>
+template <class IdType, class Base, class ... Args>
 class TemplateFactory : boost::noncopyable
 {
 public:
   using IdTypeUsing = IdType;
 protected:
   using BasePtr = std::unique_ptr<Base>;
-  using CreateFunc = std::function<BasePtr()>;
+  using CreateFunc = std::function<BasePtr(Args...)>;
   using FactoryMap = std::map<IdType, CreateFunc>;
 
 public:
-  BasePtr Create(const IdType & id) const
+  BasePtr Create(const IdType & id, Args && ... args) const
   {
     typename FactoryMap::const_iterator it = map_.find(id);
-    return (it != map_.end()) ? (it->second)() : BasePtr();
+    return (it != map_.end()) ? (it->second)(std::forward<Args>(args)...) : BasePtr(std::forward<Args>(args)...);
   }
 
   void Add(const IdType & id, CreateFunc func, const std::string comment = "")

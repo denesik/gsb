@@ -36,6 +36,9 @@ public:
   UpdatableSectors &GetUpdatableSectors();
 
   void SetLoader(std::unique_ptr<IMapLoader> loader);
+  IMapLoader & GetMaploader();
+
+  void Wipe();
 
   Creature mPlayer;
 

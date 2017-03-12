@@ -103,3 +103,14 @@ void World::SetLoader(std::unique_ptr<IMapLoader> loader)
   mLoader = std::move(loader);
 }
 
+IMapLoader & World::GetMaploader()
+{
+	if(mLoader)
+		return *mLoader;
+}
+
+void World::Wipe()
+{
+	mSectors.clear();
+}
+

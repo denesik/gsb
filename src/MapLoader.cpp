@@ -23,7 +23,7 @@ SectorCompiler::~SectorCompiler()
   mThread.join();
 }*/
 
-MapLoader::MapLoader(std::unique_ptr<IMapGenerator> generator) : mGenerator(std::move(generator))
+MapLoader::MapLoader(std::unique_ptr<IMapGenerator> generator) : IMapLoader(std::move(generator))
 {
   mThread = std::thread([this]()
   {

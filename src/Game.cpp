@@ -18,6 +18,7 @@
 #include "tools/Brezenham3D.h"
 #include "WorldGeneratorFlat.h"
 #include <boost/optional.hpp>
+#include <IMapLoader.h>
 
 Game::Game(const Arguments & arguments)
   : Platform::Application{ arguments, Configuration{}.setTitle("Magnum Textured Triangle Example").setWindowFlags(Configuration::WindowFlag::Resizable) }
@@ -167,6 +168,12 @@ void Game::drawEvent()
         p->DrawGui(mTimeline);
       ImGui::End();
     }
+
+	mWorld->GetMaploader().GetGenerator().DrawGui(mTimeline);
+
+	if (ImGui::Button("wipe all"))
+		mWorld->Wipe();
+
     mImguiPort.Draw();
   }
 
