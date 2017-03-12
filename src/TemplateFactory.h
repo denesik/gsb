@@ -182,21 +182,28 @@ public:
   FactoryMap map_;
 };
 
+
+template<class... Args>
+struct TypeSaver
+{
+
+};
+
+
 template <class T>
 class RegisterElement2
 {
 public:
   template <class Factory, class... Args>
-  RegisterElement2(Factory & factory, const typename Factory::IdTypeUsing & id, std::tuple<Args...> args)
+  RegisterElement2(Factory & factory, const typename Factory::IdTypeUsing & id, TypeSaver<Args...>)
   {
     using Tuple = std::tuple<Args...>;
-
-    call_func(factory, id, args, std::index_sequence_for<Args...>{});
+    call_func<Tuple>(factory, id, std::index_sequence_for<Args...>{});
   }
 
 private:
-  template<class Factory, class Tuple, std::size_t ...I>
-  void call_func(Factory & factory, const typename Factory::IdTypeUsing & id, Tuple tuple, std::index_sequence<I...>)
+  template<class Tuple, class Factory, std::size_t ...I>
+  void call_func(Factory & factory, const typename Factory::IdTypeUsing & id, std::index_sequence<I...>)
   {
     factory.Add(id, [](boost::any val) -> std::unique_ptr<T>
     {
@@ -210,7 +217,7 @@ private:
 #define REGISTER_ELEMENT2(type, factory, id, ...) \
 namespace                                           \
 {                                                   \
-RegisterElement2<type> RegisterElement2##type(factory, id, std::tuple<__VA_ARGS__>());  \
+RegisterElement2<type> RegisterElement2##type(factory, id, TypeSaver<__VA_ARGS__>());  \
 }
 
 
