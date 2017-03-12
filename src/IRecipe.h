@@ -4,7 +4,7 @@
 #include <vector>
 #include "IJsonSerializable.h"
 
-class Chest;
+class AccessorItem;
 
 using RecipeId = unsigned int;
 
@@ -15,7 +15,7 @@ public:
   int count = 1;
 
   // <"id"[, count]>
-  void JsonLoad(BlocksDataBase& db, const rapidjson::Value& val) override;
+  void JsonLoad(DataBase& db, const rapidjson::Value& val) override;
 
   bool operator ==(const RecipeIn& other) const;
 };
@@ -28,7 +28,7 @@ public:
   float chance = 1.0;
 
   // <"id"[, count[, chance]]>
-  void JsonLoad(BlocksDataBase& db, const rapidjson::Value& val) override;
+  void JsonLoad(DataBase& db, const rapidjson::Value& val) override;
 
   bool operator ==(const RecipeOut& other) const;
 };
@@ -41,7 +41,7 @@ public:
   virtual const std::vector<RecipeIn> & Components() const;
   virtual const std::vector<RecipeOut> & Results() const;
 
-  void JsonLoad(BlocksDataBase & db, const rapidjson::Value& val) override;
+  void JsonLoad(DataBase & db, const rapidjson::Value& val) override;
 
   virtual RecipeId Id() const = 0;
 

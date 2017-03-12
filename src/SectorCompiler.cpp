@@ -5,7 +5,7 @@
 
 
 
-SectorCompiler::SectorCompiler(const BlocksDataBase &dataBase)
+SectorCompiler::SectorCompiler(const DataBase &dataBase)
   : mDataBase(dataBase)
 {
   mVertexData.reserve(40000);
@@ -36,7 +36,7 @@ SectorCompiler::~SectorCompiler()
   mThread.join();
 }
 
-void SectorCompiler::SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<BlockDynamicPart>, SECTOR_CAPACITY> &tess_data)
+void SectorCompiler::SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<Block>, SECTOR_CAPACITY> &tess_data)
 {
   for (size_t i = 0; i < SECTOR_CAPACITY; ++i)
   {
@@ -46,7 +46,7 @@ void SectorCompiler::SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data,
   }
 }
 
-void SectorCompiler::SetSide(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<BlockDynamicPart>, SECTOR_CAPACITY> &tess_data, SideFlags side)
+void SectorCompiler::SetSide(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<Block>, SECTOR_CAPACITY> &tess_data, SideFlags side)
 {
   auto index = SideFlagIndex(side);
   for (size_t i = 0; i < SECTOR_SIZE * SECTOR_SIZE; ++i)

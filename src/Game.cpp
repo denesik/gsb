@@ -8,7 +8,7 @@
 #include <Magnum/Renderer.h>
 #include <Magnum/Math/Matrix4.h>
 #include "TesselatorSolidBlock.h"
-#include "BlocksDataBase.h"
+#include "DataBase.h"
 #include "Sector.h"
 #include "World.h"
 #include "JsonDataBase.h"
@@ -18,10 +18,13 @@
 #include "tools/Brezenham3D.h"
 #include "WorldGeneratorFlat.h"
 #include <boost/optional.hpp>
+#include <exception>
 
 Game::Game(const Arguments & arguments)
   : Platform::Application{ arguments, Configuration{}.setTitle("Magnum Textured Triangle Example").setWindowFlags(Configuration::WindowFlag::Resizable) }
 {
+  auto t = std::uncaught_exceptions();
+
   atlas.LoadDirectory("data");
   mTexture.setWrapping(Sampler::Wrapping::ClampToEdge)
     .setMagnificationFilter(Sampler::Filter::Linear)
@@ -35,7 +38,7 @@ Game::Game(const Arguments & arguments)
   }
   atlas.Fill(mTexture);
 
-  mBlocksDataBase = std::make_unique<BlocksDataBase>(atlas, mImguiPort.Atlas());
+  mBlocksDataBase = std::make_unique<DataBase>(atlas, mImguiPort.Atlas());
   mBlocksDataBase->ApplyLoader(std::make_unique<JsonDataBase>("data/json"));
 
   mWorld = std::make_unique<World>(*mBlocksDataBase);

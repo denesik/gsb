@@ -1,8 +1,8 @@
 #include "IRecipe.h"
-#include <BlocksDataBase.h>
+#include <DataBase.h>
 #include "Serialize.h"
 
-void RecipeIn::JsonLoad(BlocksDataBase& db, const rapidjson::Value& val)
+void RecipeIn::JsonLoad(DataBase& db, const rapidjson::Value& val)
 {
   std::string name = val.Begin()->GetString();
   id = db.ItemIdFromName(name);
@@ -18,7 +18,7 @@ bool RecipeIn::operator==(const RecipeIn& other) const
   return id == other.id && count == other.count;
 }
 
-void RecipeOut::JsonLoad(BlocksDataBase& db, const rapidjson::Value& val)
+void RecipeOut::JsonLoad(DataBase& db, const rapidjson::Value& val)
 {
   std::string name = val.Begin()->GetString();
   id = db.ItemIdFromName(name);
@@ -42,7 +42,7 @@ RecipeFactory::FactoryType& RecipeFactory::Get()
   return factory;
 }
 
-void IRecipe::JsonLoad(BlocksDataBase & db, const rapidjson::Value& val)
+void IRecipe::JsonLoad(DataBase & db, const rapidjson::Value& val)
 {
   JSONLOAD(sge::make_nvp("time", mTime));
   JSONLOAD(sge::make_nvp("input", mComponents), sge::make_nvp("output", mResults));

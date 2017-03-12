@@ -4,7 +4,7 @@
 class PrimitivaMountains : public IMapGenerator
 {
 public:
-  PrimitivaMountains(const BlocksDataBase &db, float power);
+  PrimitivaMountains(const DataBase &db, float power);
   void Generate(Sector &sector) override;
 
 private:

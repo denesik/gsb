@@ -1,8 +1,8 @@
-#include "Chest.h"
+#include "AccessorItem.h"
 #include "../../Serialize.h"
 #include <Magnum/Timeline.h>
-#include "../../BlockDynamicPart.h"
-#include "../../BlocksDataBase.h"
+#include "../../Block.h"
+#include "../../DataBase.h"
 #include "../../Item.h"
 #include <algorithm>
 #include "Recipe.h"
@@ -11,20 +11,20 @@
 #include <string>
 #include <algorithm>
 
-Chest::Chest()
+AccessorItem::AccessorItem()
 {
 }
 
-Chest::Chest(const Chest& other)
+AccessorItem::AccessorItem(const AccessorItem& other)
 {
 }
 
-void Chest::JsonLoad(BlocksDataBase & db, const rapidjson::Value& val)
+void AccessorItem::JsonLoad(DataBase & db, const rapidjson::Value& val)
 {
-  Agent::JsonLoad(db, val);
+  Accessor::JsonLoad(db, val);
 }
 
-void Chest::DrawGui(const Magnum::Timeline &dt)
+void AccessorItem::DrawGui(const Magnum::Timeline &dt)
 {
   ImGui::BeginGroup();
 
@@ -60,7 +60,7 @@ void Chest::DrawGui(const Magnum::Timeline &dt)
   ImGui::EndGroup();
 }
 
-size_t Chest::AddItem(ItemId id, size_t count)
+size_t AccessorItem::AddItem(ItemId id, size_t count)
 {
   if (auto index = find_item(id))
   {
@@ -74,7 +74,7 @@ size_t Chest::AddItem(ItemId id, size_t count)
   return count;
 }
 
-size_t Chest::RemoveItem(ItemId id, size_t count)
+size_t AccessorItem::RemoveItem(ItemId id, size_t count)
 {
   if (auto index = find_item(id))
   {
@@ -90,7 +90,7 @@ size_t Chest::RemoveItem(ItemId id, size_t count)
   return count;
 }
 
-size_t Chest::ItemCount(ItemId id) const
+size_t AccessorItem::ItemCount(ItemId id) const
 {
   if (auto index = find_item(id))
   {
@@ -99,12 +99,12 @@ size_t Chest::ItemCount(ItemId id) const
   return 0;
 }
 
-const Chest::ItemList & Chest::Items() const
+const AccessorItem::ItemList & AccessorItem::Items() const
 {
   return mItems;
 }
 
-boost::optional<size_t> Chest::find_item(ItemId id) const
+boost::optional<size_t> AccessorItem::find_item(ItemId id) const
 {
   auto it = std::find_if(mItems.begin(), mItems.end(), [id](const decltype(mItems)::value_type &val)
   {

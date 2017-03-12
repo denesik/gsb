@@ -4,7 +4,7 @@
 #include "TesselatorMicroBlock.h"
 #include "IMapGenerator.h"
 
-PrimitivaMountains::PrimitivaMountains(const BlocksDataBase &db, float power) : IMapGenerator(db), mPower(power)
+PrimitivaMountains::PrimitivaMountains(const DataBase &db, float power) : IMapGenerator(db), mPower(power)
 {
 }
 

@@ -7,7 +7,7 @@
 #include "TextureAtlas.h"
 #include <Magnum/Magnum.h>
 #include <Magnum/Math/Range.h>
-#include "BlocksDataBase.h"
+#include "DataBase.h"
 
 class Item : public IItem
 {
@@ -15,7 +15,7 @@ public:
   Item();
   ~Item();
 
-  void JsonLoad(BlocksDataBase & db, const rapidjson::Value & val) override;
+  void JsonLoad(DataBase & db, const rapidjson::Value & val) override;
 
   const Magnum::Range2D &TextureCoord() const;
 

@@ -1,5 +1,5 @@
 #include "Crafter.h"
-#include "BlocksDataBase.h"
+#include "DataBase.h"
 #include "Recipe.h"
 #include <Magnum\Timeline.h>
 
@@ -8,7 +8,7 @@ Crafter::Crafter(std::unique_ptr<IRecipe> recipe, bool fast_components)
 {
 }
 
-void Crafter::Update(const Magnum::Timeline &dt, const BlocksDataBase &db)
+void Crafter::Update(const Magnum::Timeline &dt, const DataBase &db)
 {
   // Запрашиваем у инпута список итемов, по данному списку формируем список рецептов.
   // Если есть хотя бы один рецепт, крафтим первый.
@@ -72,14 +72,14 @@ void Crafter::Update(const Magnum::Timeline &dt, const BlocksDataBase &db)
   }
 }
 
-void Crafter::SetInput(Agent &agent)
+void Crafter::SetInput(Accessor &agent)
 {
-  mInput = &static_cast<Chest &>(agent);
+  mInput = &static_cast<AccessorItem &>(agent);
 }
 
-void Crafter::SetOutput(Agent &agent)
+void Crafter::SetOutput(Accessor &agent)
 {
-  mOutput = &static_cast<Chest &>(agent);
+  mOutput = &static_cast<AccessorItem &>(agent);
 }
 
 float Crafter::Progress() const

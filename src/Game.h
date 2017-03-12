@@ -21,7 +21,7 @@
 #include <Magnum/Timeline.h>
 #include <memory>
 #include "DrawableArea.h"
-#include "BlocksDataBase.h"
+#include "DataBase.h"
 #include "Sector.h"
 #include "World.h"
 #include "tools/FpsCounter.h"
@@ -79,7 +79,7 @@ private:
 
   WBPos mDrawModal;
 
-  std::unique_ptr<BlocksDataBase> mBlocksDataBase;
+  std::unique_ptr<DataBase> mBlocksDataBase;
   std::unique_ptr<World> mWorld;
   std::unique_ptr<UpdatableArea> mUpdatableArea;
   std::unique_ptr<DrawableArea> mDrawableArea; // Должна уничтожиться раньше чем мир и бд.

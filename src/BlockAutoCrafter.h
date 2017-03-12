@@ -3,20 +3,20 @@
 #define BlockAutoCrafter_h__
 
 
-#include "BlockDynamicPart.h"
+#include "Block.h"
 #include "Timer.h"
 #include "IRecipe.h"
 #include "Crafter.h"
 
 // Содержит 2 крафтера.
-class BlockAutoCrafter : public BlockDynamicPart
+class BlockAutoCrafter : public Block
 {
 public:
   BlockAutoCrafter();
   ~BlockAutoCrafter();
   BlockAutoCrafter(const BlockAutoCrafter &other);
 
-  std::unique_ptr<BlockDynamicPart> Clone() override;
+  std::unique_ptr<Block> Clone() override;
 
   void DrawGui(const Magnum::Timeline &dt) override;
 

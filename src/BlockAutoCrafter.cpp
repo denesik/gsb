@@ -1,6 +1,6 @@
 #include "BlockAutoCrafter.h"
-#include "agent\agents\Chest.h"
-#include "BlocksDataBase.h"
+#include "agent\agents\AccessorItem.h"
+#include "DataBase.h"
 #include "..\imgui\imgui.h"
 #include "RecipeBurn.h"
 #include "Recipe.h"
@@ -19,17 +19,17 @@ BlockAutoCrafter::~BlockAutoCrafter()
 }
 
 BlockAutoCrafter::BlockAutoCrafter(const BlockAutoCrafter &other)
-  : BlockDynamicPart(other), 
+  : Block(other), 
     mCrafter(std::unique_ptr<IRecipe>(new Recipe)),
     mGenerator(std::unique_ptr<IRecipe>(new RecipeBurn), true)
 {
   
 }
 
-std::unique_ptr<BlockDynamicPart> BlockAutoCrafter::Clone()
+std::unique_ptr<Block> BlockAutoCrafter::Clone()
 {
-  BlockDynamicPart *ptr = new BlockAutoCrafter(*this);
-  std::unique_ptr<BlockDynamicPart> obj;
+  Block *ptr = new BlockAutoCrafter(*this);
+  std::unique_ptr<Block> obj;
   obj.reset(ptr);
   return std::move(obj);
 }

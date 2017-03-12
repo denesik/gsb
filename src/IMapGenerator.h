@@ -7,12 +7,12 @@
 #include <tuple>
 
 class Sector;
-class BlocksDataBase;
+class DataBase;
 
 class GSB_NOVTABLE IMapGenerator : public IGui
 {
 public:
-  IMapGenerator(const BlocksDataBase &db) : m_Db(db) { }
+  IMapGenerator(const DataBase &db) : m_Db(db) { }
   virtual ~IMapGenerator() = default;
   virtual void Generate(Sector &sector) = 0;
   
@@ -33,5 +33,5 @@ public:
 	   ImGui::SliderFloat(name.c_str(), &out, std::get<0>(min_max), std::get<1>(min_max));
    }
 protected:
-  const BlocksDataBase &m_Db;
+  const DataBase &m_Db;
 };

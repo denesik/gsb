@@ -1,15 +1,15 @@
-#include "BlockDynamicPart.h"
+#include "Block.h"
 #include <Magnum/Timeline.h>
-#include "BlocksDataBase.h"
+#include "DataBase.h"
 #include <algorithm>
 #include "Sector.h"
 
-BlockDynamicPart::BlockDynamicPart()
+Block::Block()
 {
 }
 
 
-BlockDynamicPart::BlockDynamicPart(const BlockDynamicPart &other)
+Block::Block(const Block &other)
   : mBlockId(other.mBlockId), mDb(other.mDb)
 {
   if (other.mTesselatorData) mTesselatorData = std::make_unique<TesselatorData>(*mTesselatorData);
@@ -17,16 +17,16 @@ BlockDynamicPart::BlockDynamicPart(const BlockDynamicPart &other)
     mAgents.push_back(ag->Clone(this));
 }
 
-BlockDynamicPart::~BlockDynamicPart()
+Block::~Block()
 {
 }
 
-std::unique_ptr<BlockDynamicPart> BlockDynamicPart::Clone()
+std::unique_ptr<Block> Block::Clone()
 {
-  return std::make_unique<BlockDynamicPart>(*this);
+  return std::make_unique<Block>(*this);
 }
 
-void BlockDynamicPart::DrawGui(const Magnum::Timeline &dt)
+void Block::DrawGui(const Magnum::Timeline &dt)
 {
   for (const auto & ag : mAgents)
   {
@@ -35,33 +35,33 @@ void BlockDynamicPart::DrawGui(const Magnum::Timeline &dt)
     
 }
 
-std::unique_ptr<TesselatorData> & BlockDynamicPart::GetTesselatorData()
+std::unique_ptr<TesselatorData> & Block::GetTesselatorData()
 {
   return mTesselatorData;
 }
 
-const std::unique_ptr<TesselatorData> & BlockDynamicPart::GetTesselatorData() const
+const std::unique_ptr<TesselatorData> & Block::GetTesselatorData() const
 {
   return mTesselatorData;
 }
 
-bool BlockDynamicPart::AddAgent(std::unique_ptr<Agent> agent)
+bool Block::AddAgent(std::unique_ptr<Accessor> agent)
 {
   mAgents.push_back(std::move(agent));
   return true;
 }
 
-const std::unique_ptr<BlockStaticPart> & BlockDynamicPart::GetStaticPart() const
+const std::unique_ptr<StaticBlock> & Block::GetStaticPart() const
 {
   return mDb->GetBlockStaticPart(mBlockId);
 }
 
-const BlocksDataBase &BlockDynamicPart::GetDataBase() const
+const DataBase &Block::GetDataBase() const
 {
   return *mDb;
 }
 
-boost::optional<Agent &> BlockDynamicPart::GetAgent(AgentId type, SideIndex side, AgentDirection dir)
+boost::optional<Accessor &> Block::GetAgent(AccessorId type, SideIndex side, AccessorDirection dir)
 {
   auto it = std::find_if(mAgents.begin(), mAgents.end(), [this, type, side, dir](const decltype(mAgents)::value_type &val)
   {
@@ -76,7 +76,7 @@ boost::optional<Agent &> BlockDynamicPart::GetAgent(AgentId type, SideIndex side
   return{};
 }
 
-BlockDynamicPart *BlockDynamicPart::GetNeighbour(SideIndex side)
+Block *Block::GetNeighbour(SideIndex side)
 {
   return m_sector->GetBlockDynamic(cs::Side(cs::BItoSB(pos), side));
 }

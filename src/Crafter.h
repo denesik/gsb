@@ -5,10 +5,10 @@
 #include <Magnum/Magnum.h>
 #include "IRecipe.h"
 #include "Timer.h"
-#include "agent/agents/Chest.h"
+#include "agent/agents/AccessorItem.h"
 #include <memory>
 
-class BlocksDataBase;
+class DataBase;
 
 // TODO: Сделать для этого класс интерфейс.
 // TODO: Написать кнструкторы
@@ -18,9 +18,9 @@ public:
   // TODO: избавиться от unique ptr
   Crafter(std::unique_ptr<IRecipe> recipe, bool fast_components = false);
 
-  void Update(const Magnum::Timeline &dt, const BlocksDataBase &db);
-  void SetInput(Agent &agent);
-  void SetOutput(Agent &agent);
+  void Update(const Magnum::Timeline &dt, const DataBase &db);
+  void SetInput(Accessor &agent);
+  void SetOutput(Accessor &agent);
 
   float Progress() const; // TODO int?
 
@@ -37,8 +37,8 @@ public:
   bool Ready() const;
 
 private:
-  Chest *mInput;
-  Chest *mOutput;
+  AccessorItem *mInput;
+  AccessorItem *mOutput;
   std::unique_ptr<IRecipe> m_recipe_type;
 
   const IRecipe *m_current_recipe = nullptr;

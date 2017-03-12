@@ -3,9 +3,9 @@
 #include "Log.h"
 #include <boost/filesystem.hpp>
 #include "Tesselator.h"
-#include "BlocksDataBase.h"
+#include "DataBase.h"
 #include <boost/exception/diagnostic_information.hpp>
-#include "agent/Agents.hpp"
+#include "agent/Accessors.hpp"
 #include "Item.h"
 
 JsonDataBase::JsonDataBase(const std::string path) : mPath(path)
@@ -16,7 +16,7 @@ JsonDataBase::~JsonDataBase()
 {
 }
 
-bool LoadItem(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::Value &val, const std::string & name, int id)
+bool LoadItem(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &val, const std::string & name, int id)
 {
   std::string type = "Item";
 
@@ -42,10 +42,10 @@ bool LoadItem(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::Va
   return true;
 }
 
-bool LoadBlock(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::Value &val, const std::string & name, int id)
+bool LoadBlock(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &val, const std::string & name, int id)
 {
-  auto static_part = std::make_unique<BlockStaticPart>();
-  std::unique_ptr<BlockDynamicPart> dynamic_part = nullptr;
+  auto static_part = std::make_unique<StaticBlock>();
+  std::unique_ptr<Block> dynamic_part = nullptr;
 
   if (val.HasMember("type"))
   {
@@ -67,7 +67,7 @@ bool LoadBlock(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::V
 
       if (static_part->GetTesselator()->UseTesselatorData())
       {
-        dynamic_part = std::make_unique<BlockDynamicPart>();
+        dynamic_part = std::make_unique<Block>();
         dynamic_part->GetTesselatorData() = std::make_unique<TesselatorData>();
       }
     }
@@ -76,7 +76,7 @@ bool LoadBlock(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::V
   if (val.HasMember("agents"))
   {
     if (!dynamic_part)
-      dynamic_part = std::make_unique<BlockDynamicPart>();
+      dynamic_part = std::make_unique<Block>();
 
     const rapidjson::Value &arr = val["agents"];
     if (val["agents"].IsArray())
@@ -125,7 +125,7 @@ bool LoadBlock(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::V
   return true;
 }
 
-bool LoadRecipe(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::Value &val, const std::string & name, int id)
+bool LoadRecipe(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &val, const std::string & name, int id)
 {
   std::string type;
 
@@ -151,14 +151,14 @@ bool LoadRecipe(const TextureAtlas &atlas, BlocksDataBase &db, const rapidjson::
   return true;
 }
 
-static std::unordered_map<std::string, std::function<bool(const TextureAtlas &, BlocksDataBase &, const rapidjson::Value &, const std::string &, int)>> section_loaders = {
+static std::unordered_map<std::string, std::function<bool(const TextureAtlas &, DataBase &, const rapidjson::Value &, const std::string &, int)>> section_loaders = {
   { "block", &LoadBlock },
   { "item", &LoadItem },
   { "recipe", &LoadRecipe },
 };
 
 
-void JsonDataBase::Load(const TextureAtlas &atlas, BlocksDataBase &db) const
+void JsonDataBase::Load(const TextureAtlas &atlas, DataBase &db) const
 {
   boost::filesystem::path targetDir(mPath);
   boost::filesystem::directory_iterator iter(targetDir);

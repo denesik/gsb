@@ -22,12 +22,12 @@
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
-    <ClCompile Include="src\agent\Agent.cpp" />
-    <ClCompile Include="src\agent\agents\Chest.cpp" />
+    <ClCompile Include="src\agent\Accessor.cpp" />
+    <ClCompile Include="src\agent\agents\AccessorItem.cpp" />
     <ClCompile Include="src\BlockAutoCrafter.cpp" />
-    <ClCompile Include="src\BlockDynamicPart.cpp" />
-    <ClCompile Include="src\BlocksDataBase.cpp" />
-    <ClCompile Include="src\BlockStaticPart.cpp" />
+    <ClCompile Include="src\Block.cpp" />
+    <ClCompile Include="src\DataBase.cpp" />
+    <ClCompile Include="src\StaticBlock.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Crafter.cpp" />
     <ClCompile Include="src\Creature.cpp" />
@@ -64,13 +64,13 @@
     <ClCompile Include="src\WorldGeneratorFlat.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\agent\Agent.h" />
-    <ClInclude Include="src\agent\Agents.hpp" />
-    <ClInclude Include="src\agent\agents\Chest.h" />
+    <ClInclude Include="src\agent\Accessor.h" />
+    <ClInclude Include="src\agent\Accessors.hpp" />
+    <ClInclude Include="src\agent\agents\AccessorItem.h" />
     <ClInclude Include="src\BlockAutoCrafter.h" />
-    <ClInclude Include="src\BlockDynamicPart.h" />
-    <ClInclude Include="src\BlocksDataBase.h" />
-    <ClInclude Include="src\BlockStaticPart.h" />
+    <ClInclude Include="src\Block.h" />
+    <ClInclude Include="src\DataBase.h" />
+    <ClInclude Include="src\StaticBlock.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\configure.h" />
     <ClInclude Include="src\Crafter.h" />

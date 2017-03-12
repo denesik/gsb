@@ -1,10 +1,10 @@
 #include "WorldGeneratorFlat.h"
-#include "BlocksDataBase.h"
+#include "DataBase.h"
 #include "Sector.h"
 
 
 
-WorldGeneratorFlat::WorldGeneratorFlat(const BlocksDataBase &db)
+WorldGeneratorFlat::WorldGeneratorFlat(const DataBase &db)
   : IMapGenerator(db)
 {
 }
