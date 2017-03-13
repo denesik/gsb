@@ -27,10 +27,6 @@ void Crafter::Update(const Magnum::Timeline &dt, const DataBase &db)
   // Удаляем из инпута все компоненты.
   // Добавляем в оутпут результаты.
 
-  auto val = CrafterFactory::Get().Create("Crafter", m_recipe_type->Clone(), true, mInput, mOutput);
-  int t = 0;
-
-
   if (m_current_recipe && m_runned)
   {
     // Крафтим.

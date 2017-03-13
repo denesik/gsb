@@ -109,5 +109,5 @@ std::chrono::high_resolution_clock::duration FpsCounter::LastDuration() const
 
 float FpsCounter::LastDelta() const
 {
-  return std::chrono::duration_cast<std::chrono::seconds>(LastDuration()).count();
+  return static_cast<float>(std::chrono::duration_cast<std::chrono::seconds>(LastDuration()).count());
 }

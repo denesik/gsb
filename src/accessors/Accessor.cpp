@@ -51,8 +51,3 @@ AccessorDirection Accessor::GetDirection(SideIndex side)
   return mSides[side];
 }
 
-AgentFactory::FactoryType& AgentFactory::Get()
-{
-  static FactoryType factory;
-  return factory;
-}

@@ -12,7 +12,7 @@ class RecipeIn : public IJsonSerializable
 {
 public:
   ItemId id;
-  int count = 1;
+  size_t count = 1;
 
   // <"id"[, count]>
   void JsonLoad(DataBase& db, const rapidjson::Value& val) override;
@@ -24,7 +24,7 @@ class RecipeOut : public IJsonSerializable
 {
 public:
   ItemId id;
-  int count = 1;
+  size_t count = 1;
   float chance = 1.0;
 
   // <"id"[, count[, chance]]>
@@ -76,11 +76,3 @@ public:
   RecipeId Id() const override { return aId; }
 };
 
-
-//#define REGISTER_RECIPE_CLASS(type) REGISTER_ELEMENT(type, RecipeFactory::Get(), #type)
-//
-// struct RecipeFactory : boost::noncopyable
-// {
-//   using FactoryType = TemplateFactory<std::string, IRecipe>;
-//   static FactoryType& Get();
-//};

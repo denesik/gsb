@@ -66,20 +66,4 @@ private:
 };
 
 
-
-
-#define REGISTER_CRAFTER_CLASS(type, ...) REGISTER_ELEMENT_ANY(type, CrafterFactory::Get(), #type, __VA_ARGS__)
-
-struct CrafterFactory : boost::noncopyable
-{
-  using FactoryType = TemplateFactoryAny<std::string, Crafter>;
-  static FactoryType &Get()
-  {
-    static FactoryType factory;
-    return factory;
-  }
-};
-
-REGISTER_CRAFTER_CLASS(Crafter, std::unique_ptr<IRecipe>, bool, AccessorItem *, AccessorItem *);
-
 #endif // Crafter_h__

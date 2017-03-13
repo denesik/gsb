@@ -9,6 +9,12 @@
 #include <Magnum/Math/Range.h>
 #include "DataBase.h"
 
+class Item;
+namespace
+{
+  static auto item_loaded = IItem::factory::Register<Item>::add("Item");
+}
+
 class Item : public IItem
 {
 public:
@@ -25,6 +31,5 @@ private:
 
 };
 
-REGISTER_ITEM_CLASS(Item);
 
 #endif // Item_h__

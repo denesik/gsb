@@ -6,6 +6,7 @@
 #include "DebugLines.h"
 #include <limits>
 
+/*
 int mod(int value, int modulus) {
   return (value % modulus + modulus) % modulus;
 }
@@ -25,6 +26,7 @@ template <typename T>
 int signum(T x) {
   return x >= T(0) ? T(1) : T(-1);
 }
+
 
 
 std::tuple<WBPos, Magnum::Vector3> Brezenham::PickFirst(
@@ -112,6 +114,7 @@ std::tuple<WBPos, Magnum::Vector3> Brezenham::PickFirst(
 
   return std::make_tuple(Magnum::Vector3i(x, y, z), face);
 }
+*/
 
 const float _bin_size = 1;
 

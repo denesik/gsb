@@ -5,6 +5,7 @@
 #include <Magnum/Magnum.h>
 #include <Magnum/Math/Vector2.h>
 
+/*
 namespace Magnum {
   class DebugLines;
 }
@@ -19,6 +20,6 @@ public:
     std::function<bool(const WBPos &)> collider,
     Magnum::DebugLines * lines_render = nullptr
   );
-};
+};*/
 
 std::vector<Magnum::Vector3i> voxel_traversal(const Magnum::Vector3 &ray_start, const Magnum::Vector3 &ray_end);

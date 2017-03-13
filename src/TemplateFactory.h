@@ -38,12 +38,18 @@ public:
 
   static ElementType create(const Id &id, Args &&...args)
   {
-    const auto &it = container.find(id);
-    return (it != container.end()) ? (it->second)(std::forward<Args>(args)...) : nullptr;
+    const auto &it = GetContainer().find(id);
+    return (it != GetContainer().end()) ? (it->second)(std::forward<Args>(args)...) : nullptr;
   }
 
 private:
-  static Container container;
+  static Container &GetContainer()
+  {
+    static Container container;
+    return container;
+  };
+
+
   template <class Factory, class Type>
   friend class FactoryRegister;
 public:
@@ -69,11 +75,11 @@ public:
       return std::make_unique<Element>(std::forward<Args>(args)...);
     };
 
-    const auto &it = FactoryType::container.find(id);
-    if (it == FactoryType::container.end())
+    const auto &it = FactoryType::GetContainer().find(id);
+    if (it == FactoryType::GetContainer().end())
     {
       LOG(trace) << "class id = \"" << id << "\" register";
-      FactoryType::container.insert(Container::value_type(id, func));
+      FactoryType::GetContainer().insert(Container::value_type(id, func));
     }
     else
     {
@@ -91,6 +97,7 @@ public:
 ////////////////////////////////
 ////////////////////////////////
 ////////////////////////////////
+/*
 
 
 template <class IdType, class Base>
@@ -149,8 +156,8 @@ namespace                                           \
 RegisterElement<type> RegisterElement##type(factory, id);  \
 }
 
-//*****************
-//****************
+// *****************
+// ****************
 // TODO: переделать на Base(Args)
 
 template <class IdType, class Base, class Arg1, class Arg2>
@@ -209,9 +216,9 @@ namespace                                           \
 RegisterElement1<type, arg1, arg2> RegisterElement1##type(factory, id);  \
 }
 
-//**************************
-//**************************
-//**************************
+// **************************
+// **************************
+// **************************
 
 
 // template <class IdType, class FuncType>
@@ -296,6 +303,7 @@ namespace                                           \
 {                                                   \
 RegisterElementAny<type> RegisterElementAny##type(factory, id, TypeSaver<__VA_ARGS__>());  \
 }
+*/
 
 
 

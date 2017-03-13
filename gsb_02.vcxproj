@@ -27,8 +27,6 @@
     <ClCompile Include="src\BlockAutoCrafter.cpp" />
     <ClCompile Include="src\Block.cpp" />
     <ClCompile Include="src\DataBase.cpp" />
-    <ClCompile Include="src\RecipeBurn.cpp" />
-    <ClCompile Include="src\RecipeHand.cpp" />
     <ClCompile Include="src\StaticBlock.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Crafter.cpp" />

@@ -11,7 +11,7 @@ PrimitivaMountains::PrimitivaMountains(const DataBase &db, float power) : IMapGe
 #define GEN_OCT 5
 float flatness(float tx, float ty)
 {
-  return (PerlinNoise2D(tx, ty, 2, 2, GEN_OCT) + 1) / 2.f;
+  return (static_cast<float>(PerlinNoise2D(tx, ty, 2, 2, GEN_OCT)) + 1.0f) / 2.f;
 }
 float dens(float tx, float ty, float tz)
 {
@@ -20,13 +20,13 @@ float dens(float tx, float ty, float tz)
     return 1;
 
   if (ty < 0)
-    return PerlinNoise3D(tx / 100.f, ty / 100.f, tz / 100.f, 1 + 5 * flat, 2, GEN_OCT) + ((-ty*(SECTOR_SIZE / 1000.f)));
+    return static_cast<float>(PerlinNoise3D(tx / 100.f, ty / 100.f, tz / 100.f, 1 + 5 * flat, 2, GEN_OCT)) + ((-ty*(SECTOR_SIZE / 1000.f)));
 
-  return PerlinNoise3D(tx / 100.f, ty / 100.f, tz / 100.f, 1 + 5 * flat, 2, GEN_OCT) / ((ty + float(SECTOR_SIZE)) / float(SECTOR_SIZE));
+  return static_cast<float>(PerlinNoise3D(tx / 100.f, ty / 100.f, tz / 100.f, 1 + 5 * flat, 2, GEN_OCT)) / ((ty + float(SECTOR_SIZE)) / float(SECTOR_SIZE));
 }
 float cluster(float tx, float ty, float tz)
 {
-  return PerlinNoise3D(tx / 3.f, ty / 3.f, tz / 3.f, 1 + 5, 2, 1);
+  return static_cast<float>(PerlinNoise3D(tx / 3.f, ty / 3.f, tz / 3.f, 1 + 5, 2, 1));
 }
 // examples:
 // 0.2 = nothing

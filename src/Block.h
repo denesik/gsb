@@ -25,6 +25,8 @@ class Sector;
 class Block : public IGui
 {
 public:
+  using factory = TemplateFactory3<std::string, Block, void(const DataBase &, const rapidjson::Value &)>;
+
   // TODO: Скорей всего надо передавать сектор вместо бд.
   Block();
   Block(const DataBase & db, const rapidjson::Value &json);
@@ -64,15 +66,6 @@ protected:
   std::unique_ptr<TesselatorData> mTesselatorData;
   //boost::container::flat_multimap<AgentId, std::unique_ptr<Agent>> mAgents;
   std::vector<std::unique_ptr<Accessor>> mAgents;
-};
-
-
-#define REGISTER_BLOCK_CLASS(type) REGISTER_ELEMENT1(type, DataBase, rapidjson::Value, BlockFactory::Get(), #type)
-
-struct BlockFactory : boost::noncopyable
-{
-  using FactoryType = TemplateFactory1<std::string, Block, DataBase, rapidjson::Value>;
-  static FactoryType &Get();
 };
 
 #endif // BlockDinamicPart_h__

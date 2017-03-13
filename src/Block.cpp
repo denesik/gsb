@@ -31,7 +31,7 @@ Block::Block(const DataBase & db, const rapidjson::Value &val)
         if (part.HasMember("type"))
         {
           std::string agenttype = part["type"].GetString();
-          auto accessor = AgentFactory::Get().Create(agenttype);
+          auto accessor = Accessor::factory::create(agenttype);
           if (!accessor)
           {
             continue;
@@ -109,8 +109,3 @@ Block *Block::GetNeighbour(SideIndex side)
   return m_sector->GetBlockDynamic(cs::Side(cs::BItoSB(pos), side));
 }
 
-BlockFactory::FactoryType& BlockFactory::Get()
-{
-  static FactoryType factory;
-  return factory;
-}
