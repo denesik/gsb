@@ -110,7 +110,7 @@ std::unique_ptr<IRecipe> BlockAutoCrafter::CrafterType(const char *type, const D
     if (crafter.HasMember("Recipe"))
     {
       std::string type = crafter["Recipe"].GetString();
-      return RecipeFactory::Get().Create(type);
+      return IRecipe::factory::create(type);
     }
     return{};
   }

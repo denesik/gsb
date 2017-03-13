@@ -8,6 +8,11 @@
 #include "tools/CoordSystem.h"
 #include <array>
 
+class TesselatorSolidBlock;
+namespace
+{
+  static auto TesselatorSolidBlockLoaded = Tesselator::factory::Register<TesselatorSolidBlock>::add("TesselatorSolidBlock");
+}
 
 class TesselatorSolidBlock : public Tesselator
 {
@@ -31,7 +36,6 @@ private:
   std::array<Magnum::Vector3, 24> mVertexData;
 };
 
-REGISTER_TESSELLATOR(TesselatorSolidBlock)
 
 
 #endif // TesselatorSolidBlock_h__

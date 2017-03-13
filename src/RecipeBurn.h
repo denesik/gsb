@@ -6,6 +6,12 @@
 #include "IRecipe.h"
 #include "tools/Crc32.h"
 
+class RecipeBurn;
+namespace
+{
+  static auto RecipeBurnLoaded = IRecipe::factory::Register<RecipeBurn>::add("RecipeBurn");
+}
+
 // TODO_Recipe 
 // Этого бесполезного класса также не будет.
 class RecipeBurn : public INumeredRecipe<gsb::crc32<std::string>()("RecipeBurn")>
@@ -17,6 +23,6 @@ public:
   }
 };
 
-REGISTER_RECIPE_CLASS(RecipeBurn);
+//REGISTER_RECIPE_CLASS(RecipeBurn);
 
 #endif // RecipeBurn_h__

@@ -23,7 +23,7 @@ bool LoadItem(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &v
   if (val.HasMember("type"))
     type = val["type"].GetString();
 
-  auto recipe = ItemFactory::Get().Create(type);
+  auto recipe = IItem::factory::create(type);
   if (!recipe)
   {
     LOG(error) << "item #" << 0 << " has unknown type = " << type << ". SKIP.";
@@ -51,7 +51,7 @@ bool LoadBlock(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &
   {
     std::string type = val["type"].GetString();
     if (!dynamic_part)
-      dynamic_part = BlockFactory::Get().Create(type, db, val);
+      dynamic_part = Block::factory::create(type, db, val);
   }
 
   if (val.HasMember("tesselator"))
@@ -60,7 +60,7 @@ bool LoadBlock(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &
     if (tess_json.HasMember("type"))
     {
       std::string tess_type = tess_json["type"].GetString();
-      std::unique_ptr<Tesselator> tess = TessellatorFactory::Get().Create(tess_type);
+      std::unique_ptr<Tesselator> tess = Tesselator::factory::create(tess_type);
       tess->JsonLoad(tess_json, atlas);
 
       static_part->SetTesselator(std::move(tess));
@@ -90,7 +90,7 @@ bool LoadRecipe(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value 
   if (val.HasMember("type"))
     type = val["type"].GetString();
 
-  auto recipe = RecipeFactory::Get().Create(type);
+  auto recipe = IRecipe::factory::create(type);
   if (!recipe)
   {
     LOG(error) << "recipe has unknown type = " << type << ". SKIP.";

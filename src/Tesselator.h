@@ -25,9 +25,12 @@ struct TesselatorVertex
   Magnum::Vector2 textcoord;
 };
 
+
 class Tesselator
 {
 public:
+  using factory = TemplateFactory<std::string, Tesselator, void()>;
+
   enum class TesselatorType
   {
     SOLID_BLOCK,
@@ -44,13 +47,6 @@ public:
 
 private:
   const TesselatorType mType;
-};
-
-#define REGISTER_TESSELLATOR(type) REGISTER_ELEMENT(type, TessellatorFactory::Get(), #type)
-struct TessellatorFactory : boost::noncopyable
-{
-  using FactoryType = TemplateFactory<std::string, Tesselator>;
-  static FactoryType &Get();
 };
 
 #endif // Tesselator_h__

@@ -12,7 +12,7 @@ class RecipeIn : public IJsonSerializable
 {
 public:
   ItemId id;
-  int count = 1;
+  size_t count = 1;
 
   // <"id"[, count]>
   void JsonLoad(DataBase& db, const rapidjson::Value& val) override;
@@ -24,7 +24,7 @@ class RecipeOut : public IJsonSerializable
 {
 public:
   ItemId id;
-  int count = 1;
+  size_t count = 1;
   float chance = 1.0;
 
   // <"id"[, count[, chance]]>
@@ -36,6 +36,8 @@ public:
 class GSB_NOVTABLE IRecipe : public IJsonSerializable
 {
 public:
+  using factory = TemplateFactory<std::string, IRecipe, void()>;
+
   virtual ~IRecipe() = default;
 
   virtual const std::vector<RecipeIn> & Components() const;
@@ -54,6 +56,9 @@ public:
   // что бы сохранить свой тип, т.к. он полиморфный.
   // В случае тегов рецепты не нужно клонировать, просто скопируется тег. 
   // Даже фиктивный рецепт наверняка не нужен будет, что бы задать автокрафтеру кого он умеет крафтить.
+  //
+  // К тому же для добавления нового типа рецепта нужно создавать класс и компилить прогу.
+  // С тегами это не нужно.
   virtual std::unique_ptr<IRecipe> Clone() = 0; 
 
 protected:
@@ -71,10 +76,3 @@ public:
   RecipeId Id() const override { return aId; }
 };
 
-#define REGISTER_RECIPE_CLASS(type) REGISTER_ELEMENT(type, RecipeFactory::Get(), #type)
-
-struct RecipeFactory : boost::noncopyable
-{
-  using FactoryType = TemplateFactory<std::string, IRecipe>;
-  static FactoryType& Get();
-};

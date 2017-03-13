@@ -6,6 +6,12 @@
 #include "../tools/Common.h"
 #include <boost/optional/optional.hpp>
 
+class AccessorItem;
+namespace
+{
+  static auto AccessorItemLoaded = Accessor::factory::Register<AccessorItem>::add("AccessorItem");
+}
+
 class AccessorItem : public NumeredAgent<AccessorItem, gsb::crc32<std::string>()("AccessorItem")>
 {
 public:
@@ -34,5 +40,3 @@ private:
   boost::optional<size_t> find_item(ItemId id) const;
 
 };
-
-REGISTER_AGENT_CLASS(AccessorItem);

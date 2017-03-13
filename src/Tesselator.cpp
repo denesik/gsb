@@ -16,9 +16,3 @@ Tesselator::TesselatorType Tesselator::Type() const
 {
   return mType;
 }
-
-TessellatorFactory::FactoryType& TessellatorFactory::Get()
-{
-  static FactoryType inst;
-  return inst;
-}

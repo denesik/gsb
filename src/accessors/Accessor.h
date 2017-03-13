@@ -31,6 +31,8 @@ enum /*class*/ AccessorDirection
 class GSB_NOVTABLE Accessor : public IGui
 {
 public:
+  using factory = TemplateFactory<std::string, Accessor, void()>;
+
   Accessor() = default;
   virtual ~Accessor() = default;
 
@@ -71,12 +73,5 @@ public:
   AccessorId Id() const override { return aId; }
 };
 
-#define REGISTER_AGENT_CLASS(type) REGISTER_ELEMENT(type, AgentFactory::Get(), #type)
-
-struct AgentFactory : boost::noncopyable
-{
-  using FactoryType = TemplateFactory<std::string, Accessor>;
-  static FactoryType &Get();
-};
 
 #endif // Agent_h_

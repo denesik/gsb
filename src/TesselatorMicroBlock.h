@@ -15,6 +15,12 @@
 typedef std::bitset<8 * 8 * 8> TessMicroBlockData;
 
 
+class TesselatorMicroBlock;
+namespace
+{
+  static auto TesselatorMicroBlockLoaded = Tesselator::factory::Register<TesselatorMicroBlock>::add("TesselatorMicroBlock");
+}
+
 class TesselatorMicroBlock : public Tesselator
 {
 public:
@@ -74,6 +80,5 @@ private:
   }
 };
 
-REGISTER_TESSELLATOR(TesselatorMicroBlock)
 
 #endif // TesselatorMicroBlock_h__

@@ -2,6 +2,8 @@
 #include <DataBase.h>
 #include "Serialize.h"
 
+
+
 void RecipeIn::JsonLoad(DataBase& db, const rapidjson::Value& val)
 {
   std::string name = val.Begin()->GetString();
@@ -26,7 +28,7 @@ void RecipeOut::JsonLoad(DataBase& db, const rapidjson::Value& val)
   if (val.Capacity() >= 2)
     count = val[1].GetInt();
   if (val.Capacity() >= 3)
-    chance = val[2].GetDouble();
+    chance = static_cast<float>(val[2].GetDouble());
 }
 
 bool RecipeOut::operator==(const RecipeOut& other) const
@@ -36,11 +38,11 @@ bool RecipeOut::operator==(const RecipeOut& other) const
   return id == other.id && count == other.count && chance == other.chance;
 }
 
-RecipeFactory::FactoryType& RecipeFactory::Get()
-{
-  static FactoryType factory;
-  return factory;
-}
+// RecipeFactory::FactoryType& RecipeFactory::Get()
+// {
+//   static FactoryType factory;
+//   return factory;
+// }
 
 void IRecipe::JsonLoad(DataBase & db, const rapidjson::Value& val)
 {

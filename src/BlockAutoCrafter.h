@@ -12,7 +12,14 @@
 // Настройки блока задаются через json при создании.
 // Для создания в мире клонируется.
 
-// Содержит 2 крафтера.
+class BlockAutoCrafter;
+namespace
+{
+  static auto item_loaded = Block::factory::Register<BlockAutoCrafter>::add("BlockAutoCrafter");
+}
+
+// Блок автокрафта.
+// Использует 2 крафтера.
 class BlockAutoCrafter : public Block
 {
 public:
@@ -35,7 +42,5 @@ private:
   std::unique_ptr<IRecipe> CrafterType(const char *type, const DataBase & db, const rapidjson::Value &json) const;
   bool CrafterFast(const char *type, const DataBase & db, const rapidjson::Value &json) const;
 };
-
-REGISTER_BLOCK_CLASS(BlockAutoCrafter);
 
 #endif // BlockAutoCrafter_h__

@@ -7,18 +7,24 @@
 #include "Timer.h"
 #include "accessors/AccessorItem.h"
 #include <memory>
+#include "TemplateFactory.h"
 
 class DataBase;
 
 // TODO: Сделать для этого класс интерфейс.
 // TODO: Написать кнструкторы
 // Вероятно классы логики должны настраиваться родителем (класс блока) а не через json.
+// Простой крафтер. Крафтит итемы из инпут акцессера в оутпут акцессер.
 class Crafter
 {
 public:
   Crafter() = delete;
 
-  Crafter(std::unique_ptr<IRecipe> recipe, bool fast);
+  Crafter(const std::unique_ptr<IRecipe> &recipe, bool fast, AccessorItem * a = nullptr, AccessorItem * b = nullptr);
+
+
+  Crafter(bool fast, AccessorItem * input = nullptr, AccessorItem * output = nullptr)
+    : m_fast_components(fast), mInput(input), mOutput(output) {};
 
   Crafter(const Crafter &other);
 
@@ -41,8 +47,8 @@ public:
   bool Ready() const;
 
 private:
-  AccessorItem *mInput;
-  AccessorItem *mOutput;
+  AccessorItem *mInput = nullptr;
+  AccessorItem *mOutput = nullptr;
 
   // TODO_Recipe 
   // Теги избавят от этой гадости.
@@ -58,7 +64,6 @@ private:
 
 private:
 };
-
 
 
 #endif // Crafter_h__
