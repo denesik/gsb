@@ -78,10 +78,22 @@ const std::unique_ptr<IItem> & DataBase::GetItem(ItemId id) const
   return mItems[id];
 }
 
-std::tuple<BlockId, std::unique_ptr<Block>> DataBase::CreateBlock(BlockId id) const
+std::tuple<BlockId, std::unique_ptr<TesselatorData>, std::unique_ptr<Block>> DataBase::CreateBlock(BlockId id) const
 {
-  const auto &dyn = std::get<1>(mBlocks[id]);
-  return{ id , dyn ? dyn->Clone() : nullptr };
+  std::unique_ptr<TesselatorData> tess_data;
+  std::unique_ptr<Block> block;
+
+  const auto &static_block = std::get<0>(mBlocks[id]);
+  if (static_block)
+  {
+    const auto &dyn = std::get<1>(mBlocks[id]);
+    const auto &tesselator = static_block->GetTesselator();
+
+    tess_data = (tesselator && tesselator->UseTesselatorData()) ? std::make_unique<TesselatorData>() : nullptr;
+    block = dyn ? dyn->Clone() : nullptr;
+  }
+
+  return{ id , std::move(tess_data), std::move(block) };
 }
 
 const TextureAtlas & DataBase::GetAtlasItems() const

@@ -53,6 +53,7 @@ void PrimitivaMountains::Generate(Sector &sector)
   BlockId dirt = m_Db.BlockIdFromName("dirt").value_or(0);
   BlockId grass = m_Db.BlockIdFromName("grass").value_or(0);
   BlockId furnance = m_Db.BlockIdFromName("furnance").value_or(0);
+  BlockId grass_micro = m_Db.BlockIdFromName("grass_micro").value_or(0);
 
   auto sw = cs::StoW(sector.GetPos());
   for (auto k = 0; k < SECTOR_SIZE; ++k)
@@ -63,12 +64,12 @@ void PrimitivaMountains::Generate(Sector &sector)
       {
         if (solid(sw.x() + i, sw.y() + j, sw.z() + k))
         {
-          if (!solid(sw.x() + i, sw.y() + j + 1, sw.z() + k) && rand()%20 == 1 && false)
+          if (!solid(sw.x() + i, sw.y() + j + 1, sw.z() + k) && rand()%20 == 1 /*&& false*/)
           {
-            sector.CreateBlock({ i,j,k }, grass);
+            sector.CreateBlock({ i,j,k }, grass_micro);
 
             auto &data = TesselatorMicroBlock::ToMicroblockData(*sector.GetTesselatorData({ i,j,k }));
-            const auto &tess = static_cast<const TesselatorMicroBlock &>(*m_Db.GetBlockStaticPart(grass)->GetTesselator());
+            const auto &tess = static_cast<const TesselatorMicroBlock &>(*m_Db.GetBlockStaticPart(grass_micro)->GetTesselator());
 
             for (auto k1 = 0; k1 < tess.Size(); ++k1)
             {

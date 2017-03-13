@@ -12,7 +12,6 @@ Block::Block()
 Block::Block(const Block &other)
   : mBlockId(other.mBlockId), mDb(other.mDb)
 {
-  if (other.mTesselatorData) mTesselatorData = std::make_unique<TesselatorData>(*mTesselatorData);
   for (const auto & ag : other.mAgents)
     mAgents.push_back(ag->Clone(*this));
 }
@@ -59,16 +58,6 @@ void Block::DrawGui(const Magnum::Timeline &dt)
     ag->DrawGui(dt);
   }
     
-}
-
-std::unique_ptr<TesselatorData> & Block::GetTesselatorData()
-{
-  return mTesselatorData;
-}
-
-const std::unique_ptr<TesselatorData> & Block::GetTesselatorData() const
-{
-  return mTesselatorData;
 }
 
 bool Block::AddAgent(std::unique_ptr<Accessor> accessor)

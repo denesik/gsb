@@ -39,9 +39,6 @@ public:
 
   void DrawGui(const Magnum::Timeline &dt) override;
 
-  std::unique_ptr<TesselatorData> &GetTesselatorData();
-  const std::unique_ptr<TesselatorData> &GetTesselatorData() const;
-
   // TODO: Сделать JsonLoad и убрать туда это.
   bool AddAgent(std::unique_ptr<Accessor> accessor);
 
@@ -63,7 +60,6 @@ public:
   DataBase *mDb;
   BlockId mBlockId;
 protected:
-  std::unique_ptr<TesselatorData> mTesselatorData;
   //boost::container::flat_multimap<AgentId, std::unique_ptr<Agent>> mAgents;
   std::vector<std::unique_ptr<Accessor>> mAgents;
 };

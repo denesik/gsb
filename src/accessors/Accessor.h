@@ -53,8 +53,6 @@ public:
   /// rtti
   virtual AccessorId Id() const = 0;
   
-  void DrawGui(const Magnum::Timeline &dt) override {};/* = 0;*/
-
   Block &Parent() const;
 
   // ѕолучить направление на указанной стороне.

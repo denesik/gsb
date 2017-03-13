@@ -36,7 +36,7 @@ public:
 
   /// —оздает блок.
   /// ≈сли невозможно создать блоксданным ид вернет блок воздуха.
-  std::tuple<BlockId, std::unique_ptr<Block>> CreateBlock(BlockId id) const;
+  std::tuple<BlockId, std::unique_ptr<TesselatorData>,  std::unique_ptr<Block>> CreateBlock(BlockId id) const;
 
   void AddRecipe(std::unique_ptr<IRecipe> move);
 

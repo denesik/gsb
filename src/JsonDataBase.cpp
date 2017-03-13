@@ -63,12 +63,6 @@ bool LoadBlock(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &
       tess->JsonLoad(tess_json, atlas);
 
       static_part->SetTesselator(std::move(tess));
-
-      if (static_part->GetTesselator()->UseTesselatorData())
-      {
-        dynamic_part = std::make_unique<Block>();
-        dynamic_part->GetTesselatorData() = std::make_unique<TesselatorData>();
-      }
     }
   }
 

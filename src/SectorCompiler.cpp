@@ -36,24 +36,24 @@ SectorCompiler::~SectorCompiler()
   mThread.join();
 }
 
-void SectorCompiler::SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<Block>, SECTOR_CAPACITY> &tess_data)
+void SectorCompiler::SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<TesselatorData>, SECTOR_CAPACITY> &tess_data)
 {
   for (size_t i = 0; i < SECTOR_CAPACITY; ++i)
   {
     mTesselators[mIndexMiddle[i]] = data[i];
-    if (tess_data[i] && tess_data[i]->GetTesselatorData())
-      mTesselatorsData[mIndexMiddle[i]] = *tess_data[i]->GetTesselatorData();
+    if (tess_data[i])
+      mTesselatorsData[mIndexMiddle[i]] = *tess_data[i];
   }
 }
 
-void SectorCompiler::SetSide(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<Block>, SECTOR_CAPACITY> &tess_data, SideFlags side)
+void SectorCompiler::SetSide(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<TesselatorData>, SECTOR_CAPACITY> &tess_data, SideFlags side)
 {
   auto index = SideFlagIndex(side);
   for (size_t i = 0; i < SECTOR_SIZE * SECTOR_SIZE; ++i)
   {
     mTesselators[mIndexTess[index][i]] = data[mIndexBlocks[index][i]];
-    if (tess_data[mIndexBlocks[index][i]] && tess_data[mIndexBlocks[index][i]]->GetTesselatorData())
-      mTesselatorsData[mIndexTess[index][i]] = *tess_data[mIndexBlocks[index][i]]->GetTesselatorData();
+    if (tess_data[mIndexBlocks[index][i]])
+      mTesselatorsData[mIndexTess[index][i]] = *tess_data[mIndexBlocks[index][i]];
   }
 }
 

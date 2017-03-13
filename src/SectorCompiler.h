@@ -22,9 +22,9 @@ public:
   SectorCompiler(const DataBase &dataBase);
   ~SectorCompiler();
 
-  void SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<Block>, SECTOR_CAPACITY> &tess_data);
+  void SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<TesselatorData>, SECTOR_CAPACITY> &tess_data);
 
-  void SetSide(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<Block>, SECTOR_CAPACITY> &tess_data, SideFlags side);
+  void SetSide(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<TesselatorData>, SECTOR_CAPACITY> &tess_data, SideFlags side);
 
   void Run();
 

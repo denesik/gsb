@@ -294,7 +294,7 @@
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="fwd.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

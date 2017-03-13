@@ -11,6 +11,7 @@
 #include <memory>
 #include "Block.h"
 #include <MagnumExternal/Optional/optional.hpp>
+#include "Tesselator.h"
 
 class IMapGenerator;
 class World;
@@ -36,6 +37,9 @@ public:
   BlockId GetBlockId(SBPos pos) const;
   Block* GetBlockDynamic(const WBPos& pos) const;
 
+//   std::unique_ptr<TesselatorData> &GetTesselatorData(SBPos pos);
+//   const std::unique_ptr<TesselatorData> &GetTesselatorData(SBPos pos) const;
+
   void CreateBlock(SBPos pos, BlockId id);
 
   std::optional<TesselatorData &> GetTesselatorData(SBPos pos);
@@ -43,6 +47,8 @@ public:
 private:
   std::array<BlockId, SECTOR_CAPACITY> mStaticBlocks;
   std::array<std::unique_ptr<Block>, SECTOR_CAPACITY> mDinamicBlocks;
+  std::array<std::unique_ptr<TesselatorData>, SECTOR_CAPACITY> mTesselatorData;
+  
   const SPos mPos;
 
   World &mWorld;
