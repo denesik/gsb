@@ -36,7 +36,7 @@ public:
 class GSB_NOVTABLE IRecipe : public IJsonSerializable
 {
 public:
-  using factory = TemplateFactory3<std::string, IRecipe, void()>;
+  using factory = TemplateFactory<std::string, IRecipe, void()>;
 
   virtual ~IRecipe() = default;
 

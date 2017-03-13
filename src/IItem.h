@@ -7,7 +7,7 @@
 class GSB_NOVTABLE IItem : public IJsonSerializable
 {
 public:
-  using factory = TemplateFactory3<std::string, IItem, void()>;
+  using factory = TemplateFactory<std::string, IItem, void()>;
 
   virtual ~IItem() = default;
 };

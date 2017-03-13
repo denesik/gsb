@@ -25,7 +25,7 @@ class Sector;
 class Block : public IGui
 {
 public:
-  using factory = TemplateFactory3<std::string, Block, void(const DataBase &, const rapidjson::Value &)>;
+  using factory = TemplateFactory<std::string, Block, void(const DataBase &, const rapidjson::Value &)>;
 
   // TODO: Скорей всего надо передавать сектор вместо бд.
   Block();

@@ -31,7 +31,7 @@ enum /*class*/ AccessorDirection
 class GSB_NOVTABLE Accessor : public IGui
 {
 public:
-  using factory = TemplateFactory3<std::string, Accessor, void()>;
+  using factory = TemplateFactory<std::string, Accessor, void()>;
 
   Accessor() = default;
   virtual ~Accessor() = default;

@@ -29,7 +29,7 @@ struct TesselatorVertex
 class Tesselator
 {
 public:
-  using factory = TemplateFactory3<std::string, Tesselator, void()>;
+  using factory = TemplateFactory<std::string, Tesselator, void()>;
 
   enum class TesselatorType
   {
