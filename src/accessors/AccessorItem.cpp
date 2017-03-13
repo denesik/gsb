@@ -11,18 +11,28 @@
 #include <string>
 #include <algorithm>
 
-AccessorItem::AccessorItem()
-{
-}
 
-AccessorItem::AccessorItem(const AccessorItem& other)
-{
-}
 
-void AccessorItem::JsonLoad(const DataBase & db, const rapidjson::Value& val)
-{
-  Accessor::JsonLoad(db, val);
-}
+
+AccessorItem::AccessorItem(const AccessorItem &other)
+  : ParentType(other)
+{}
+
+AccessorItem::AccessorItem(AccessorItem &&other)
+  : ParentType(std::move(other))
+{}
+
+AccessorItem::AccessorItem(const AccessorItem &other, Block &parent)
+  : ParentType(other, parent)
+{}
+
+AccessorItem::AccessorItem(AccessorItem &&other, Block &parent)
+  : ParentType(std::move(other), parent)
+{}
+
+AccessorItem::AccessorItem(const DataBase &db, const rapidjson::Value &val, Block &parent)
+  : ParentType(db, val, parent)
+{}
 
 void AccessorItem::DrawGui(const Magnum::Timeline &dt)
 {
@@ -38,7 +48,7 @@ void AccessorItem::DrawGui(const Magnum::Timeline &dt)
     RemoveItem(1, 1);
   }
 
-  const auto &db = mParent->GetDataBase();
+  const auto &db = mParent.GetDataBase();
   ImDrawList* draw_list = ImGui::GetWindowDrawList();
   for (size_t i = 0; i < 4; i++)
   {

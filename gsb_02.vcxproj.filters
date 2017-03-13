@@ -290,11 +290,11 @@
     <ClInclude Include="src\accessors\AccessorItem.h">
       <Filter>Файлы исходного кода\Accessors</Filter>
     </ClInclude>
-    <ClInclude Include="src\accessors\Accessors.hpp">
-      <Filter>Файлы исходного кода\Accessors</Filter>
-    </ClInclude>
     <ClInclude Include="src\RecipeHand.h">
       <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd.h">
+      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

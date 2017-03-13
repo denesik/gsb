@@ -63,9 +63,9 @@
     <ClCompile Include="src\WorldGeneratorFlat.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="fwd.h" />
     <ClInclude Include="src\accessors\Accessor.h" />
     <ClInclude Include="src\accessors\AccessorItem.h" />
-    <ClInclude Include="src\accessors\Accessors.hpp" />
     <ClInclude Include="src\BlockAutoCrafter.h" />
     <ClInclude Include="src\Block.h" />
     <ClInclude Include="src\DataBase.h" />

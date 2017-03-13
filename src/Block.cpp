@@ -14,7 +14,7 @@ Block::Block(const Block &other)
 {
   if (other.mTesselatorData) mTesselatorData = std::make_unique<TesselatorData>(*mTesselatorData);
   for (const auto & ag : other.mAgents)
-    mAgents.push_back(ag->Clone(this));
+    mAgents.push_back(ag->Clone(*this));
 }
 
 // TODO: проверить исключения.
@@ -31,13 +31,11 @@ Block::Block(const DataBase & db, const rapidjson::Value &val)
         if (part.HasMember("type"))
         {
           std::string agenttype = part["type"].GetString();
-          auto accessor = Accessor::factory::create(agenttype);
+          auto accessor = Accessor::factory::create(agenttype, db, part, *this);
           if (!accessor)
           {
             continue;
           }
-          accessor->JsonLoad(db, part);
-
           AddAgent(std::move(accessor));
         }
       }

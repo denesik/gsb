@@ -1,13 +1,33 @@
 #include "Accessor.h"
 #include <Magnum/Timeline.h>
 #include "../../imgui/imgui.h"
+#include "../Block.h"
+#include <rapidjson/document.h>
 
-
-void Accessor::DrawGui(const Magnum::Timeline &dt)
+Accessor::Accessor(const Accessor &other)
+  : mParent(other.mParent), mSides(other.mSides)
 {
 }
 
-void Accessor::JsonLoad(const DataBase & db, const rapidjson::Value &val)
+Accessor::Accessor(Accessor &&other)
+  : mParent(other.mParent), mSides(std::move(other.mSides))
+{
+}
+
+Accessor::Accessor(const Accessor &other, Block &parent)
+  : mParent(parent), mSides(other.mSides)
+{
+
+}
+
+Accessor::Accessor(Accessor &&other, Block &parent)
+  : mParent(parent), mSides(std::move(other.mSides))
+{
+
+}
+
+Accessor::Accessor(const DataBase &db, const rapidjson::Value &val, Block &parent)
+  : mParent(parent)
 {
   if (val.HasMember("bindings") && val["bindings"].IsArray())
   {
@@ -41,7 +61,7 @@ void Accessor::JsonLoad(const DataBase & db, const rapidjson::Value &val)
   }
 }
 
-Block* Accessor::Parent() const
+Block &Accessor::Parent() const
 {
   return mParent;
 }

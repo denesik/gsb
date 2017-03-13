@@ -15,12 +15,26 @@ namespace
 class AccessorItem : public NumeredAgent<AccessorItem, gsb::crc32<std::string>()("AccessorItem")>
 {
 public:
+  using ParentType = NumeredAgent<AccessorItem, gsb::crc32<std::string>()("AccessorItem")>;
   using ItemList = std::vector<std::tuple<ItemId, size_t>>;
 
-  AccessorItem();
-  AccessorItem(const AccessorItem & other);
+  AccessorItem() = delete;
+  ~AccessorItem() override = default;
 
-  void JsonLoad(const DataBase & db, const rapidjson::Value &val) override;
+  AccessorItem(const AccessorItem &other);
+  AccessorItem(AccessorItem &&other);
+  /// Не используем операторы копирования и перемещения.
+  const AccessorItem &operator=(const AccessorItem &other) = delete;
+  AccessorItem &operator=(AccessorItem &&other) = delete;
+
+  /// Конструкторы для клонирования.
+  AccessorItem(const AccessorItem &other, Block &parent);
+  AccessorItem(AccessorItem &&other, Block &parent);
+
+  /// Создаем элемент через фабрику.
+  AccessorItem(const DataBase &db, const rapidjson::Value &val, Block &parent);
+
+
   void DrawGui(const Magnum::Timeline &dt) override;
 
   // Возвращает сколько итемов добавлено
@@ -37,6 +51,6 @@ public:
 private:
   ItemList mItems;
 
+private:
   boost::optional<size_t> find_item(ItemId id) const;
-
 };

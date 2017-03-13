@@ -5,7 +5,6 @@
 #include "Tesselator.h"
 #include "DataBase.h"
 #include <boost/exception/diagnostic_information.hpp>
-#include "accessors/Accessors.hpp"
 #include "Item.h"
 
 JsonDataBase::JsonDataBase(const std::string path) : mPath(path)
