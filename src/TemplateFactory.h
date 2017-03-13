@@ -17,6 +17,7 @@ See "LICENSE.txt"
 #include <tuple>
 #include <type_traits>
 #include <boost/any.hpp>
+#include <boost/type_index.hpp>
 
 template <class IdType, class Base>
 class TemplateFactory : boost::noncopyable
@@ -143,24 +144,22 @@ RegisterElement1<type, arg1, arg2> RegisterElement1##type(factory, id);  \
 // class TemplateFactory2;
 
 template <class IdType, class Base>
-class TemplateFactory2 : boost::noncopyable
+class TemplateFactoryAny : boost::noncopyable
 {
 public:
   using IdTypeUsing = IdType;
 protected:
   using BasePtr = std::unique_ptr<Base>;
-  using CreateFunc = std::function<BasePtr(boost::any)>;
+  using CreateFunc = std::function<BasePtr(const boost::any &val)>;
   using FactoryMap = std::map<IdType, CreateFunc>;
 
 public:
   template<class... Args>
-  BasePtr Create(const IdType & id, Args... args) const
+  BasePtr Create(const IdType & id, const Args &...args) const
   {
     typename FactoryMap::const_iterator it = map_.find(id);
 
-    auto tuple = std::make_tuple(args...);
-
-    return (it != map_.end()) ? (it->second)(boost::any(tuple)) : nullptr;
+    return (it != map_.end()) ? (it->second)(boost::any(std::tuple<const Args &...>(args...))) : nullptr;
   }
 
   void Add(const IdType & id, CreateFunc func, const std::string comment = "")
@@ -191,13 +190,13 @@ struct TypeSaver
 
 
 template <class T>
-class RegisterElement2
+class RegisterElementAny
 {
 public:
   template <class Factory, class... Args>
-  RegisterElement2(Factory & factory, const typename Factory::IdTypeUsing & id, TypeSaver<Args...>)
+  RegisterElementAny(Factory & factory, const typename Factory::IdTypeUsing & id, TypeSaver<Args...>)
   {
-    using Tuple = std::tuple<Args...>;
+    using Tuple = std::tuple<const Args &...>;
     call_func<Tuple>(factory, id, std::index_sequence_for<Args...>{});
   }
 
@@ -205,19 +204,23 @@ private:
   template<class Tuple, class Factory, std::size_t ...I>
   void call_func(Factory & factory, const typename Factory::IdTypeUsing & id, std::index_sequence<I...>)
   {
-    factory.Add(id, [](boost::any val) -> std::unique_ptr<T>
+    factory.Add(id, [](const boost::any &val) -> std::unique_ptr<T>
     {
-      const auto &tuple = boost::any_cast<const Tuple &>(val);
+      LOG(trace) << "------" << boost::typeindex::type_id<Tuple>().name();
+      LOG(trace) << "------" << val.type().name();
+
+      auto tuple = boost::any_cast<Tuple>(val); 
       return std::make_unique<T>(std::get<I>(tuple)...);
     });
   }
 };
 
 
-#define REGISTER_ELEMENT2(type, factory, id, ...) \
+
+#define REGISTER_ELEMENT_ANY(type, factory, id, ...) \
 namespace                                           \
 {                                                   \
-RegisterElement2<type> RegisterElement2##type(factory, id, TypeSaver<__VA_ARGS__>());  \
+RegisterElementAny<type> RegisterElementAny##type(factory, id, TypeSaver<__VA_ARGS__>());  \
 }
 
 

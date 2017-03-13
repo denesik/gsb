@@ -20,7 +20,7 @@ class Crafter
 public:
   Crafter() = delete;
 
-  Crafter(std::unique_ptr<IRecipe> recipe, bool fast, AccessorItem * a = nullptr, AccessorItem * b = nullptr);
+  Crafter(const std::unique_ptr<IRecipe> &recipe, bool fast, AccessorItem * a = nullptr, AccessorItem * b = nullptr);
 
 
   Crafter(bool fast, AccessorItem * input = nullptr, AccessorItem * output = nullptr)
@@ -68,11 +68,11 @@ private:
 
 
 
-#define REGISTER_CRAFTER_CLASS(type, ...) REGISTER_ELEMENT2(type, CrafterFactory::Get(), #type, __VA_ARGS__)
+#define REGISTER_CRAFTER_CLASS(type, ...) REGISTER_ELEMENT_ANY(type, CrafterFactory::Get(), #type, __VA_ARGS__)
 
 struct CrafterFactory : boost::noncopyable
 {
-  using FactoryType = TemplateFactory2<std::string, Crafter>;
+  using FactoryType = TemplateFactoryAny<std::string, Crafter>;
   static FactoryType &Get()
   {
     static FactoryType factory;
@@ -80,6 +80,6 @@ struct CrafterFactory : boost::noncopyable
   }
 };
 
-REGISTER_CRAFTER_CLASS(Crafter, bool, AccessorItem *, AccessorItem *);
+REGISTER_CRAFTER_CLASS(Crafter, std::unique_ptr<IRecipe>, bool, AccessorItem *, AccessorItem *);
 
 #endif // Crafter_h__
