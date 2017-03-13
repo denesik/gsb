@@ -17,6 +17,6 @@ public:
   }
 };
 
-REGISTER_RECIPE_CLASS(RecipeHand);
+//REGISTER_RECIPE_CLASS(RecipeHand);
 
 #endif // Recipe_h__

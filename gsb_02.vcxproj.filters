@@ -144,6 +144,12 @@
     <ClCompile Include="src\accessors\AccessorItem.cpp">
       <Filter>Файлы исходного кода\Accessors</Filter>
     </ClCompile>
+    <ClCompile Include="src\RecipeBurn.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RecipeHand.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">

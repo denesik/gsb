@@ -6,12 +6,18 @@
 #include "RecipeHand.h"
 
 
+using factory = TemplateFactory3<std::string, Block, void(const DataBase &, const rapidjson::Value &)>;
+
+
+
+
 BlockAutoCrafter::BlockAutoCrafter(const DataBase & db, const rapidjson::Value &val)
   : Block(db, val),
   mCrafter(CrafterType("Crafter1", db, val), CrafterFast("Crafter1", db, val)),
   mGenerator(CrafterType("Crafter2", db, val), CrafterFast("Crafter2", db, val))
 {
-
+  auto t1 = factory::create("", db, val);
+  auto t2 = factory::Register<BlockAutoCrafter>::add("");
 }
 
 BlockAutoCrafter::~BlockAutoCrafter()

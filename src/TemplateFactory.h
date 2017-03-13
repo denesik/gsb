@@ -19,6 +19,80 @@ See "LICENSE.txt"
 #include <boost/any.hpp>
 #include <boost/type_index.hpp>
 
+
+
+
+template <class ID, class Base, class Args>
+class TemplateFactory3;
+
+template <class ID, class Base, class ...Args>
+class TemplateFactory3<ID, Base, void(Args...)>
+{
+private:
+  using Id = ID;
+  using ElementType = std::unique_ptr<Base>;
+  using Creator = std::function<ElementType(Args &&...)>;
+  using Container = std::map<Id, Creator>;
+  using FactoryType = TemplateFactory3<Id, Base, void(Args...)>;
+public:
+
+  static ElementType create(const Id &id, Args &&...args)
+  {
+    const auto &it = container.find(id);
+    return (it != container.end()) ? (it->second)(std::forward<Args>(args)...) : nullptr;
+  }
+
+private:
+  static Container container;
+  template <class Factory, class Type>
+  friend class FactoryRegister;
+public:
+  template<class T>
+  using Register = FactoryRegister<FactoryType, T>;
+};
+
+template <template<typename, typename, typename...> class Factory, typename ID, typename Base, typename Element, typename... Args>
+class FactoryRegister<Factory<ID, Base, void(Args...)>, Element>
+{
+private:
+  using Id = ID;
+  using ElementType = std::unique_ptr<Base>;
+  using Creator = std::function<ElementType(Args &&...)>;
+  using Container = std::map<Id, Creator>;
+  using FactoryType = TemplateFactory3<Id, Base, void(Args...)>;
+public:
+
+  static bool add(const Id &id)
+  {
+    Creator func = [](Args &&...args) -> std::unique_ptr<Element>
+    {
+      return std::make_unique<Element>(std::forward<Args>(args)...);
+    };
+
+    const auto &it = FactoryType::container.find(id);
+    if (it == FactoryType::container.end())
+    {
+      LOG(trace) << "class id = \"" << id << "\" register";
+      FactoryType::container.insert(Container::value_type(id, func));
+    }
+    else
+    {
+      LOG(trace) << "class id = \"" << id << "\" override with message: ";
+      it->second = func;
+    }
+
+    return true;
+  }
+};
+
+
+////////////////////////////////
+////////////////////////////////
+////////////////////////////////
+////////////////////////////////
+////////////////////////////////
+
+
 template <class IdType, class Base>
 class TemplateFactory : boost::noncopyable
 {

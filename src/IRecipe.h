@@ -36,6 +36,8 @@ public:
 class GSB_NOVTABLE IRecipe : public IJsonSerializable
 {
 public:
+  using factory = TemplateFactory3<std::string, IRecipe, void()>;
+
   virtual ~IRecipe() = default;
 
   virtual const std::vector<RecipeIn> & Components() const;
@@ -74,10 +76,11 @@ public:
   RecipeId Id() const override { return aId; }
 };
 
-#define REGISTER_RECIPE_CLASS(type) REGISTER_ELEMENT(type, RecipeFactory::Get(), #type)
 
-struct RecipeFactory : boost::noncopyable
-{
-  using FactoryType = TemplateFactory<std::string, IRecipe>;
-  static FactoryType& Get();
-};
+//#define REGISTER_RECIPE_CLASS(type) REGISTER_ELEMENT(type, RecipeFactory::Get(), #type)
+//
+// struct RecipeFactory : boost::noncopyable
+// {
+//   using FactoryType = TemplateFactory<std::string, IRecipe>;
+//   static FactoryType& Get();
+//};

@@ -17,6 +17,6 @@ public:
   }
 };
 
-REGISTER_RECIPE_CLASS(RecipeBurn);
+//REGISTER_RECIPE_CLASS(RecipeBurn);
 
 #endif // RecipeBurn_h__

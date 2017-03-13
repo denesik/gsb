@@ -90,7 +90,7 @@ bool LoadRecipe(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value 
   if (val.HasMember("type"))
     type = val["type"].GetString();
 
-  auto recipe = RecipeFactory::Get().Create(type);
+  auto recipe = IRecipe::factory::create(type, db, val);
   if (!recipe)
   {
     LOG(error) << "recipe has unknown type = " << type << ". SKIP.";
