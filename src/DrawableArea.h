@@ -17,11 +17,17 @@
 #include <Magnum/Math/Range.h>
 #include <Magnum/Math/Matrix4.h>
 #include "Camera.h"
+#include "ThreadWorker.h"
 
 class World;
 
+// Нужен класс который будет уметь рисовать сектор.
+// 
+
 struct SectorRenderData
 {
+  bool valide = false;
+
   Magnum::Buffer vertex_buffer;
   Magnum::Buffer index_buffer;
   Magnum::Mesh mesh;
@@ -34,6 +40,30 @@ struct SectorRenderData
 
   void Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader);
 };
+
+
+class TaskCompile
+{
+public:
+  TaskCompile(std::weak_ptr<Sector> sector, std::weak_ptr<SectorRenderData> drawable);
+
+  bool Begin(SectorCompiler &compiler);
+
+  void End(const SectorCompiler &compiler);
+
+private:
+  std::weak_ptr<Sector> mSector;
+  std::weak_ptr<SectorRenderData> mDrawable;
+  SPos mPos;
+};
+
+// Список на обновление.
+// Проверяем есть ли воркер.
+// Если нету - ищем подходящий воркер. ??
+// Если есть проверяем завершил ли воркер работу.
+// Если завершил - вызываем обвновление данных, удаляем элемент, удаляем воркер.
+// Если нету но нашли - вызываем загрузку данных в воркер.
+// Если не смогли загрузить - удаляем элемент, удаляем воркер.
 
 // Рисуем сектора в указанной области.
 // Данный класс не загружает сектора в память при их отсутствии!
@@ -53,19 +83,22 @@ private:
   World &mWorld;
   SPos mPos;
   
-  // 0 - Относительные координаты секторов вокруг центра. Изменяются при изменении радиуса.
-  // 1 - Глобальные координаты секторов в мире. Изменяются при изменении позиции.
-  // 2 - Сектора.
-  // 3 - Компилятор для сектора.
-  // 4 - Рендер данные сектора.
-  std::vector<std::tuple<SPos, SPos, std::weak_ptr<Sector>, std::shared_ptr<SectorCompiler>, std::unique_ptr<SectorRenderData>>> mSectors;
+  struct Data
+  {
+    SPos local_pos;
+    SPos world_pos;
+    std::weak_ptr<Sector> sector;
+    std::shared_ptr<SectorRenderData> drawable;
+  };
+
+  std::vector<Data> mData;
   Timer mTimer;
 
-  std::shared_ptr<SectorCompiler> mSectorCompiler;
 private:
   void UpdateRadius(unsigned int radius);
   void UpdatePos(const SPos &pos);
 
+  ThreadWorker<TaskCompile, SectorCompiler> mCompilerWorker;
 };
 
 

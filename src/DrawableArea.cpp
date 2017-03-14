@@ -10,9 +10,8 @@
 using namespace Magnum;
 
 DrawableArea::DrawableArea(World &world, const SPos &pos, unsigned int radius)
-  : mWorld(world), mPos(pos)
+  : mWorld(world), mPos(pos), mCompilerWorker(world.GetBlocksDataBase())
 {
-  mSectorCompiler = std::make_shared<SectorCompiler>(world.GetBlocksDataBase());
   UpdateRadius(radius);
   UpdatePos(mPos);
 }
@@ -51,60 +50,37 @@ void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
   loading = true;
 
   const auto &frustum = camera.Frustum(); 
+  const auto &matrix = camera.Project() * camera.View();
 
-  for (auto &site : mSectors)
+  for (auto &data : mData)
   {
-    auto sector = std::get<2>(site).lock();
-    auto &sector_compiler = std::get<3>(site);
-    auto &sector_render_data = std::get<4>(site);
-
-    if (loading && !sector)
+    if (loading && data.sector.expired())
     {
-      std::get<2>(site) = mWorld.GetSector(std::get<1>(site));
-      sector = std::get<2>(site).lock();
+      data.sector = mWorld.GetSector(data.world_pos);
     }
 
-    if (sector)
+    if (!data.sector.expired())
     {
-      // Если для этого сектора включен компилятор
-      // Если он завершил работу обновляем меш
-      if (sector_compiler)
+      auto sector = data.sector.lock();
+      if (sector->NeedCompile())
       {
-        if (sector_compiler->IsDone())
-        {
-          if (!sector_render_data) sector_render_data = std::make_unique<SectorRenderData>();
-          sector_render_data->SetPos(std::get<1>(site));
-          sector_render_data->vertex_buffer.setData(sector_compiler->GetVertexData(), BufferUsage::StaticDraw);
-          sector_render_data->index_buffer.setData(sector_compiler->GetIndexData(), BufferUsage::StaticDraw);
-          sector_render_data->mesh.setCount(sector_compiler->GetIndexData().size());
-          sector_compiler.reset();
-        }
+        sector->NeedCompile(false);
+        mCompilerWorker.Add({ data.sector, data.drawable });
       }
-      // Если компилятора нет, проверяем нужно ли скомпилировать сектор.
-      else
-      {
-        if ((sector->NeedCompile() || !sector_render_data) && mSectorCompiler.use_count() == 1)
-        {
-          sector->NeedCompile(false);
-          sector_compiler = mSectorCompiler;
-          sector->SetCompilerData(*sector_compiler);
-          sector_compiler->Run();
-        }
-      }
-
-      if (sector_render_data) sector_render_data->Draw(frustum, camera.Project() * camera.View(), shader);
     }
-    else if (sector_render_data)
+
+    if (data.drawable->valide)
     {
-      sector_render_data.reset();
+      data.drawable->Draw(frustum, matrix, shader);
     }
   }
 
+  mCompilerWorker.Update();
 }
 
 void DrawableArea::UpdateRadius(unsigned int radius)
 {
-  mSectors.clear();
+  mData.clear();
 
   int begin = -static_cast<int>(radius);
   int end = static_cast<int>(radius);
@@ -113,20 +89,22 @@ void DrawableArea::UpdateRadius(unsigned int radius)
     for (pos.y() = 0; pos.y() < SECTOR_COUNT_HEIGHT; ++pos.y())
       for (pos.x() = begin; pos.x() <= end; ++pos.x())
       {
-        mSectors.emplace_back(pos, SPos{}, std::weak_ptr<Sector>{}, nullptr, nullptr);
+        mData.push_back({pos, SPos{}, std::weak_ptr<Sector>{}, std::make_shared<SectorRenderData>()});
       }
 }
 
 void DrawableArea::UpdatePos(const SPos &pos)
 {
-  for (auto &site : mSectors)
+  for (auto &data : mData)
   {
-    std::get<1>(site) = std::get<0>(site) + pos;
-    if (std::get<4>(site)) std::get<4>(site)->SetPos(std::get<1>(site));
-    std::get<2>(site).reset();
+    data.world_pos = data.local_pos + pos;
+    data.drawable->valide = false;
+    data.sector.reset();
   }
 }
 
+
+//=============== SectorRenderData ===============
 SectorRenderData::SectorRenderData()
 {
   mesh.setPrimitive(MeshPrimitive::Triangles);
@@ -152,5 +130,40 @@ void SectorRenderData::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix
   {
     static_cast<StandartShader &>(shader).setProjection(matrix * model);
     mesh.draw(shader);
+  }
+}
+
+
+//================== TaskCompile ==================
+TaskCompile::TaskCompile(std::weak_ptr<Sector> sector, std::weak_ptr<SectorRenderData> drawable)
+{
+  mSector = sector;
+  mDrawable = drawable;
+  if (!mSector.expired())
+  {
+    mPos = mSector.lock()->GetPos();
+  }
+}
+
+bool TaskCompile::Begin(SectorCompiler &compiler)
+{
+  if (!mSector.expired())
+  {
+    mSector.lock()->SetCompilerData(compiler);
+    return true;
+  }
+  return false;
+}
+
+void TaskCompile::End(const SectorCompiler &compiler)
+{
+  if (!mDrawable.expired())
+  {
+    auto drawable = mDrawable.lock();
+    drawable->SetPos(mPos);
+    drawable->vertex_buffer.setData(compiler.GetVertexData(), BufferUsage::StaticDraw);
+    drawable->index_buffer.setData(compiler.GetIndexData(), BufferUsage::StaticDraw);
+    drawable->mesh.setCount(compiler.GetIndexData().size());
+    drawable->valide = true;
   }
 }
