@@ -1,17 +1,18 @@
 #include "UpdatableArea.h"
 #include "UpdatableSectors.h"
+#include "World.h"
 
 
 
-UpdatableArea::UpdatableArea(UpdatableSectors &updatable, const SPos &pos, unsigned int radius)
-  : mUpdatable(updatable), mPos(pos)
+UpdatableArea::UpdatableArea(World &world, const SPos &pos, unsigned int radius)
+  : mWorld(world), mPos(pos)
 {
   UpdateRadius(radius);
   UpdatePos(mPos);
 
   for (const auto &site : mPositions)
   {
-    mUpdatable.Add(std::get<1>(site));
+    mWorld.GetUpdatableSectors().Add(std::get<1>(site));
   }
 }
 
@@ -20,7 +21,7 @@ UpdatableArea::~UpdatableArea()
 {
   for (const auto &site : mPositions)
   {
-    mUpdatable.Remove(std::get<1>(site));
+    mWorld.GetUpdatableSectors().Remove(std::get<1>(site));
   }
 }
 
@@ -32,14 +33,14 @@ void UpdatableArea::SetPos(const SPos &pos)
 
     for (const auto &site : mPositions)
     {
-      mUpdatable.Remove(std::get<1>(site));
+      mWorld.GetUpdatableSectors().Remove(std::get<1>(site));
     }
 
     UpdatePos(mPos);
 
     for (const auto &site : mPositions)
     {
-      mUpdatable.Add(std::get<1>(site));
+      mWorld.GetUpdatableSectors().Add(std::get<1>(site));
     }
   }
 }
@@ -48,7 +49,7 @@ void UpdatableArea::SetRadius(unsigned int radius)
 {
   for (const auto &site : mPositions)
   {
-    mUpdatable.Remove(std::get<1>(site));
+    mWorld.GetUpdatableSectors().Remove(std::get<1>(site));
   }
 
   UpdateRadius(radius);
@@ -56,7 +57,7 @@ void UpdatableArea::SetRadius(unsigned int radius)
 
   for (const auto &site : mPositions)
   {
-    mUpdatable.Add(std::get<1>(site));
+    mWorld.GetUpdatableSectors().Add(std::get<1>(site));
   }
 }
 

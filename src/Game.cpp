@@ -51,7 +51,7 @@ Game::Game(const Arguments & arguments)
   mWorld->SetLoader(std::move(mapgen));
 
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{});
-  mUpdatableArea = std::make_unique<UpdatableArea>(mWorld->GetUpdatableSectors(), SPos{}, 0);
+  mUpdatableArea = std::make_unique<UpdatableArea>(*mWorld, SPos{}, 0);
 
   setSwapInterval(0);
   setMouseLocked(true);

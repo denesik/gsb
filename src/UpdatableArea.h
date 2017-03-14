@@ -8,11 +8,14 @@
 #include <tuple>
 
 class UpdatableSectors;
+class World;
 
+/// Зона обновления секторов.
+/// Указывает миру, какие сектора нужно обновлять.
 class UpdatableArea
 {
 public:
-  UpdatableArea(UpdatableSectors &updatable, const SPos &pos, unsigned int radius = 5);
+  UpdatableArea(World &world, const SPos &pos, unsigned int radius = 5);
   ~UpdatableArea();
 
   void SetPos(const SPos &pos);
@@ -20,7 +23,7 @@ public:
   void SetRadius(unsigned int radius);
 
 private:
-  UpdatableSectors &mUpdatable;
+  World &mWorld;
   SPos mPos;
 
   std::vector<std::tuple<SPos, SPos>> mPositions;

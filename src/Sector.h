@@ -16,6 +16,7 @@
 class IMapGenerator;
 class World;
 
+/// ѕо умолчанию создаетс€ пустой сектор.
 class Sector
 {
 public:
