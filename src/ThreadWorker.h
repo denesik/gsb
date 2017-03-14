@@ -33,9 +33,10 @@ template<class Task, class Worker>
 class ThreadWorker
 {
 public:
-  ThreadWorker(const DataBase &dataBase)
+  template<class ...Args>
+  ThreadWorker(Args &&...args)
   {
-    mWorker = std::make_shared<Worker>(dataBase);
+    mWorker = std::make_shared<Worker>(std::forward<Args>(args)...);
   }
 
   // Добавить задачу на исполнение.
