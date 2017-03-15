@@ -51,31 +51,11 @@ Block::Block(const DataBase &db, const rapidjson::Value &val, Sector &parent, Bl
           {
             continue;
           }
-          AddAgent(std::move(accessor));
+          mAgents.push_back(std::move(accessor));
         }
       }
     }
   }
-}
-
-std::unique_ptr<Block> Block::Clone(Sector &parent)
-{
-  return std::make_unique<Block>(*this, parent);
-}
-
-void Block::DrawGui(const Magnum::Timeline &dt)
-{
-  for (const auto & ag : mAgents)
-  {
-    ag->DrawGui(dt);
-  }
-    
-}
-
-bool Block::AddAgent(std::unique_ptr<Accessor> accessor)
-{
-  mAgents.push_back(std::move(accessor));
-  return true;
 }
 
 const std::unique_ptr<StaticBlock> & Block::GetStaticPart() const

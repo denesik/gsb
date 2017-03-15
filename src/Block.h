@@ -43,14 +43,9 @@ public:
   /// Создаем элемент через фабрику.
   Block(const DataBase &db, const rapidjson::Value &val, Sector &parent, BlockId id);
 
-  virtual std::unique_ptr<Block> Clone(Sector &parent);
+  virtual std::unique_ptr<Block> Clone(Sector &parent) = 0;
 
-  virtual void Update(const Magnum::Timeline &dt) {};
-
-  void DrawGui(const Magnum::Timeline &dt) override;
-
-  // TODO: Сделать JsonLoad и убрать туда это.
-  bool AddAgent(std::unique_ptr<Accessor> accessor);
+  virtual void Update(const Magnum::Timeline &dt) = 0;
 
   // Вероятно этот метод protected.
   const std::unique_ptr<StaticBlock> &GetStaticPart() const;
@@ -64,15 +59,11 @@ public:
 
   void SetPos(IndexType pos);
 
-public:
+protected:
   Sector &m_sector;
   const DataBase &mDb;
   BlockId mBlockId;
-
-protected:
   IndexType mPos;
-
-protected:
   //boost::container::flat_multimap<AgentId, std::unique_ptr<Agent>> mAgents;
   std::vector<std::unique_ptr<Accessor>> mAgents;
 };
