@@ -1,13 +1,15 @@
 #include "DataBase.h"
 #include "TesselatorSolidBlock.h"
 #include "TesselatorMicroBlock.h"
+#include "World.h"
+#include "Sector.h"
 
 using namespace Magnum;
 
 DataBase::DataBase(const TextureAtlas &atlas, const TextureAtlas &atlas_items)
   : mAtlas(atlas), mAtlasItems(atlas_items)
 {
-
+  mFakeData = std::make_unique<FakeData>(*this);
   
 }
 
@@ -26,7 +28,7 @@ void DataBase::ApplyLoader(std::unique_ptr<IDataBaseLoader> loader)
   loader->Load(mAtlas, *this);
 }
 
-std::optional<BlockId> DataBase::BlockIdFromName(const std::string &name) const
+boost::optional<BlockId> DataBase::BlockIdFromName(const std::string &name) const
 {
   auto it = mBlockNames.find(name);
   if (it != mBlockNames.end())
@@ -68,9 +70,15 @@ void DataBase::AddItem(const std::string &name, ItemId id, std::unique_ptr<IItem
   mItemNames.emplace(name, id);
 }
 
-ItemId DataBase::ItemIdFromName(const std::string& name)
+boost::optional<ItemId> DataBase::ItemIdFromName(const std::string& name) const
 {
-  return mItemNames[name];
+  auto it = mItemNames.find(name);
+  if (it != mItemNames.end())
+  {
+    return{ it->second };
+  }
+
+  return{};
 }
 
 const std::unique_ptr<IItem> & DataBase::GetItem(ItemId id) const
@@ -146,3 +154,14 @@ const std::vector<std::unique_ptr<IRecipe>> & DataBase::GetSameRecipes(const IRe
   auto same = mRecipes.find(as_this.Id());
   return same == mRecipes.end() ? null : same->second;
 }
+
+struct DataBase::FakeData
+{
+  FakeData(const DataBase &db)
+    : world(db), sector(world, SPos{})
+  {
+
+  }
+  World world;
+  Sector sector;
+};

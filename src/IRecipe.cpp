@@ -3,11 +3,12 @@
 #include "Serialize.h"
 
 
+// TODO: запилить проверку на несуществующий рецепт
 
 void RecipeIn::JsonLoad(DataBase& db, const rapidjson::Value& val)
 {
   std::string name = val.Begin()->GetString();
-  id = db.ItemIdFromName(name);
+  id = *db.ItemIdFromName(name);
 
   if (val.Capacity() >= 2)
     count = val[1].GetInt();
@@ -23,7 +24,7 @@ bool RecipeIn::operator==(const RecipeIn& other) const
 void RecipeOut::JsonLoad(DataBase& db, const rapidjson::Value& val)
 {
   std::string name = val.Begin()->GetString();
-  id = db.ItemIdFromName(name);
+  id = *db.ItemIdFromName(name);
 
   if (val.Capacity() >= 2)
     count = val[1].GetInt();
