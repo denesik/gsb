@@ -4,21 +4,13 @@
 #include "..\imgui\imgui.h"
 
 BlockAutoCrafter::BlockAutoCrafter(const BlockAutoCrafter &other)
-  : Block(other),
-  mCrafterInput(*GetAccessorByName(other.mCrafterInput.Name())), mCrafterOutput(*GetAccessorByName(other.mCrafterOutput.Name())),
-  mGeneratorInput(*GetAccessorByName(other.mGeneratorInput.Name())), mGeneratorOutput(*GetAccessorByName(other.mGeneratorOutput.Name())),
-  mCrafter(other.mCrafter, mCrafterInput, mCrafterOutput),
-  mGenerator(other.mGenerator, mGeneratorInput, mGeneratorOutput)
+  : BlockAutoCrafter(other, other.m_sector)
 {
 
 }
 
 BlockAutoCrafter::BlockAutoCrafter(BlockAutoCrafter &&other)
-  : Block(std::move(other)),
-  mCrafterInput(*GetAccessorByName(other.mCrafterInput.Name())), mCrafterOutput(*GetAccessorByName(other.mCrafterOutput.Name())),
-  mGeneratorInput(*GetAccessorByName(other.mGeneratorInput.Name())), mGeneratorOutput(*GetAccessorByName(other.mGeneratorOutput.Name())),
-  mCrafter(std::move(other.mCrafter), mCrafterInput, mCrafterOutput),
-  mGenerator(std::move(other.mGenerator), mGeneratorInput, mGeneratorOutput)
+  : BlockAutoCrafter(std::move(other), other.m_sector)
 {
 
 }
@@ -63,17 +55,14 @@ void BlockAutoCrafter::DrawGui(const Magnum::Timeline &dt)
 {
   ImGui::PushID(0);
   {
-    auto &input = *mAgents[0];
-    auto &output = *mAgents[1];
-
     ImGui::PushID(0);
-    input.DrawGui(dt);
+    mCrafterInput.DrawGui(dt);
     ImGui::PopID();
 
     ImGui::SameLine();
 
     ImGui::PushID(1);
-    output.DrawGui(dt);
+    mCrafterOutput.DrawGui(dt);
     ImGui::PopID();
 
     ImGui::ProgressBar(mCrafter.Progress(), ImVec2(0.0f, 0.0f), " ");
@@ -81,11 +70,8 @@ void BlockAutoCrafter::DrawGui(const Magnum::Timeline &dt)
   ImGui::PopID();
   ImGui::PushID(1);
   {
-    auto &input = *mAgents[2];
-    //auto &output = *mAgents[3];
-
     ImGui::PushID(0);
-    input.DrawGui(dt);
+    mGeneratorInput.DrawGui(dt);
     ImGui::PopID();
 
     //     ImGui::SameLine();

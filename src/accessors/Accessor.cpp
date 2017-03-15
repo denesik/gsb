@@ -6,12 +6,12 @@
 #include "../tools/Crc32.h"
 
 Accessor::Accessor(const Accessor &other)
-  : mParent(other.mParent), mSides(other.mSides), m_name(other.m_name)
+  : Accessor(other, other.mParent)
 {
 }
 
 Accessor::Accessor(Accessor &&other)
-  : mParent(other.mParent), mSides(std::move(other.mSides)), m_name(other.m_name)
+  : Accessor(std::move(other), other.mParent)
 {
 }
 

@@ -5,15 +5,13 @@
 #include "Sector.h"
 
 Block::Block(const Block &other)
-  : mBlockId(other.mBlockId), mDb(other.mDb), m_sector(other.m_sector)
+  : Block(other, other.m_sector)
 {
-  for (const auto & ag : other.mAgents)
-    mAgents.push_back(ag->Clone(*this));
 }
 
 
 Block::Block(Block &&other)
-  : mBlockId(other.mBlockId), mDb(other.mDb), m_sector(other.m_sector), mAgents(std::move(other.mAgents))
+  : Block(std::move(other), other.m_sector)
 {
 
 }
