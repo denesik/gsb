@@ -61,6 +61,11 @@ void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
       data.sector = mWorld.GetSector(data.world_pos);
     }
 
+    if (data.drawable->valide)
+    {
+      data.drawable->Draw(frustum, matrix, shader);
+    }
+
     if (!data.sector.expired())
     {
       auto sector = data.sector.lock();
@@ -71,11 +76,6 @@ void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
       }
 
       sector->Draw(matrix, shader);
-    }
-
-    if (data.drawable->valide)
-    {
-      data.drawable->Draw(frustum, matrix, shader);
     }
   }
 

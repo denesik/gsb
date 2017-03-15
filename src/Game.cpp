@@ -22,7 +22,7 @@
 #include <IMapLoader.h>
 
 Game::Game(const Arguments & arguments)
-  : Platform::Application{ arguments, Configuration{}.setTitle("Magnum Textured Triangle Example").setWindowFlags(Configuration::WindowFlag::Resizable) }
+  : Platform::Application{ arguments, Configuration{}.setTitle("sge").setWindowFlags(Configuration::WindowFlag::Resizable) }
 {
   auto t = std::uncaught_exceptions();
 
@@ -33,9 +33,9 @@ Game::Game(const Arguments & arguments)
 
   // Перед использованием setSubImage нужно залить текстуру данными с помощью setImage
   {
-    std::vector<UnsignedByte> zero_data(atlas.Size().x() * atlas.Size().y() * 3);
-    mTexture.setImage(0, TextureFormat::RGB8,
-      ImageView2D(PixelFormat::RGB, PixelType::UnsignedByte, atlas.Size(), { zero_data.data(), zero_data.size() }));
+    std::vector<UnsignedByte> zero_data(atlas.Size().x() * atlas.Size().y() * 4);
+    mTexture.setImage(0, TextureFormat::RGBA,
+      ImageView2D(PixelFormat::RGBA, PixelType::UnsignedByte, atlas.Size(), { zero_data.data(), zero_data.size() }));
   }
   atlas.Fill(mTexture);
 
@@ -111,8 +111,7 @@ void Game::drawEvent()
       mDrawModal = {};
   }
 
-  mShader.setColor({ 1.0f, 0.7f, 0.7f })
-    .setTexture(mTexture);
+  mShader.setTexture(mTexture);
 
   mDrawableArea->Draw(*mCamera, mShader);
   mWorld->Update();

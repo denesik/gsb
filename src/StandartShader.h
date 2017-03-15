@@ -16,11 +16,6 @@ public:
 
 	explicit StandartShader();
 
-	StandartShader& setColor(const Color3& color) {
-		setUniform(_colorUniform, color);
-		return *this;
-	}
-
   StandartShader& setProjection(const Matrix4& mat) {
     setUniform(mUniformProjection, mat);
     return *this;
@@ -33,8 +28,6 @@ public:
 
 private:
 	enum : Int { TextureLayer = 0 };
-
-	Int _colorUniform;
 
   Int mUniformProjection;
 };
