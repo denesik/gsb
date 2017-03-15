@@ -14,6 +14,8 @@
 #include <array>
 #include <vector>
 #include <rapidjson/rapidjson.h>
+#include <Magnum/Magnum.h>
+#include <Magnum/AbstractShaderProgram.h>
 
 // TODO: clone std::unique_ptr --> move semantic
 
@@ -46,6 +48,8 @@ public:
   virtual std::unique_ptr<Block> Clone(Sector &parent) = 0;
 
   virtual void Update(const Magnum::Timeline &dt) = 0;
+
+  virtual void Draw(const Magnum::Matrix4 &vp, Magnum::AbstractShaderProgram& shader) = 0;
 
   // Вероятно этот метод protected.
   const std::unique_ptr<StaticBlock> &GetStaticPart() const;

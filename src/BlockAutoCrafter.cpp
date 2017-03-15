@@ -112,6 +112,11 @@ void BlockAutoCrafter::Update(const Magnum::Timeline &dt)
   mGenerator.Update(dt, mDb);
 }
 
+void BlockAutoCrafter::Draw(const Magnum::Matrix4 &vp, Magnum::AbstractShaderProgram& shader)
+{
+
+}
+
 // TODO: проверка существования рецепта.
 IRecipe::Tag BlockAutoCrafter::CrafterType(const char *type, const DataBase & db, const rapidjson::Value &val) const
 {

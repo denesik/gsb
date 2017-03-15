@@ -15,7 +15,7 @@
 class BlockAutoCrafter;
 namespace
 {
-  static auto item_loaded = Block::factory::Register<BlockAutoCrafter>::add("BlockAutoCrafter");
+  static auto BlockAutoCrafterLoaded = Block::factory::Register<BlockAutoCrafter>::add("BlockAutoCrafter");
 }
 
 // Блок автокрафта.
@@ -44,6 +44,8 @@ public:
   void DrawGui(const Magnum::Timeline &dt) override;
 
   void Update(const Magnum::Timeline &dt) override;
+
+  void Draw(const Magnum::Matrix4 &vp, Magnum::AbstractShaderProgram& shader) override;
 
 private:
   Accessor &mCrafterInput;

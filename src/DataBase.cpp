@@ -119,6 +119,11 @@ const TextureAtlas & DataBase::GetAtlasItems() const
   return mAtlasItems;
 }
 
+const TextureAtlas & DataBase::GetAtlas() const
+{
+  return mAtlas;
+}
+
 std::vector<std::reference_wrapper<const IRecipe>> DataBase::GetRecipes(IRecipe::Tag tag, const std::vector<std::tuple<ItemId, size_t>> &items) const
 {
   std::vector<std::reference_wrapper<const IRecipe>> result;

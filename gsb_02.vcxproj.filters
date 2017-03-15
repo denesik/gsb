@@ -147,6 +147,12 @@
     <ClCompile Include="src\accessors\AccessorItem.cpp">
       <Filter>Файлы исходного кода\Accessors</Filter>
     </ClCompile>
+    <ClCompile Include="src\Model.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BlockSpriteAnimated.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -297,6 +303,12 @@
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\ThreadWorker.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Model.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BlockSpriteAnimated.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>

@@ -113,8 +113,8 @@
 	{
 		"Recipe":"RecipeHand",
 		"fast":false,
-		"Input":"0",
-		"Output":"1"
+		"Input":"1",
+		"Output":"0"
 	},
 	"Crafter2":
 	{
@@ -123,6 +123,13 @@
 		"Input":"2",
 		"Output":"2"
 	}
+  },
+  {
+    "section": "block",
+    "name": "number",
+    "id": 8,
+    "model": "",
+	"type":"BlockSpriteAnimated"
   },
   {
     "section": "item",

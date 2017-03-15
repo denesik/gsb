@@ -26,7 +26,9 @@
     <ClCompile Include="src\accessors\AccessorItem.cpp" />
     <ClCompile Include="src\BlockAutoCrafter.cpp" />
     <ClCompile Include="src\Block.cpp" />
+    <ClCompile Include="src\BlockSpriteAnimated.cpp" />
     <ClCompile Include="src\DataBase.cpp" />
+    <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\StaticBlock.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Crafter.cpp" />
@@ -68,8 +70,10 @@
     <ClInclude Include="src\accessors\AccessorItem.h" />
     <ClInclude Include="src\BlockAutoCrafter.h" />
     <ClInclude Include="src\Block.h" />
+    <ClInclude Include="src\BlockSpriteAnimated.h" />
     <ClInclude Include="src\DataBase.h" />
     <ClInclude Include="src\DataBaseFakeData.h" />
+    <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\StaticBlock.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\configure.h" />

@@ -47,6 +47,11 @@ bool LoadBlock(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &
   auto static_part = std::make_unique<StaticBlock>();
   std::unique_ptr<Block> dynamic_part = nullptr;
 
+  if (val.HasMember("model"))
+  {
+    static_part->TestAddModel(db);
+  }
+
   if (val.HasMember("type"))
   {
     std::string type = val["type"].GetString();

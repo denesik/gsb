@@ -12,6 +12,7 @@
 #include "Block.h"
 #include <MagnumExternal/Optional/optional.hpp>
 #include "Tesselator.h"
+#include <Magnum/AbstractShaderProgram.h>
 
 class IMapGenerator;
 class World;
@@ -30,6 +31,8 @@ public:
   void SetCompilerData(SectorCompiler &sectorCompiler);
 
   void Update();
+
+  void Draw(const Magnum::Matrix4 &vp, Magnum::AbstractShaderProgram& shader);
 
   SPos GetPos() const;
 

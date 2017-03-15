@@ -52,6 +52,7 @@ public:
   const std::unique_ptr<IItem> &GetItem(ItemId id) const;
 
   const TextureAtlas &GetAtlasItems() const;
+  const TextureAtlas &GetAtlas() const;
 
   /// Получить список рецептов для указанного списка итемов.
   std::vector<std::reference_wrapper<const IRecipe>> GetRecipes(IRecipe::Tag tag, const std::vector<std::tuple<ItemId, size_t>> &items) const;

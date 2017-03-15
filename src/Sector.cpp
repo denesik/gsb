@@ -56,6 +56,17 @@ void Sector::Update()
 
 }
 
+void Sector::Draw(const Magnum::Matrix4 &vp, Magnum::AbstractShaderProgram& shader)
+{
+  for (auto &block : mDinamicBlocks)
+  {
+    if (block)
+    {
+      block->Draw(vp, shader);
+    }
+  }
+}
+
 SPos Sector::GetPos() const
 {
   return mPos;

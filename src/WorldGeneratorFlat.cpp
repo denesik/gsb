@@ -21,6 +21,7 @@ void WorldGeneratorFlat::Generate(Sector &sector) const
   BlockId dirt = m_Db.BlockIdFromName("dirt").value_or(0);
   BlockId grass = m_Db.BlockIdFromName("grass").value_or(0);
   BlockId furnance = m_Db.BlockIdFromName("furnance").value_or(0);
+  BlockId number = m_Db.BlockIdFromName("number").value_or(0);
 
   const auto &sec_pos = sector.GetPos();
 
@@ -39,10 +40,13 @@ void WorldGeneratorFlat::Generate(Sector &sector) const
     }
     else
     {
-      if(wb_pos.y() == dirt_level + 1 && (rand() % 100 == 1 || rand() % 100 == 2))
-        sector.CreateBlock(sb_pos, furnance);
-      else
-        sector.CreateBlock(sb_pos, air);
+      if (wb_pos.y() == dirt_level + 1)
+        if ((rand() % 100 == 1 || rand() % 100 == 2))
+          sector.CreateBlock(sb_pos, furnance);
+        else if (rand() % 100 == 1)
+          sector.CreateBlock(sb_pos, number);
+        else
+          sector.CreateBlock(sb_pos, air);
     }
   }
 }

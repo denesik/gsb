@@ -47,7 +47,7 @@ static const Magnum::Vector2 gTextureSide[] =
   { 0.0f, 1.0f },
 };
 
-static Magnum::UnsignedInt gIndexSide[] =
+static const Magnum::UnsignedInt gIndexSide[] =
 {
   0, 1, 2, 2, 3, 0
 };
