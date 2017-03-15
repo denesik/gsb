@@ -7,11 +7,11 @@ public:
   PrimitivaMountains(const DataBase &db, float power);
 
 private:
-  float flatness(float tx, float ty);
-  float dens(float tx, float ty, float tz);
-  bool is_cluster(float tx, float ty, float tz, float type, float prob);
-  bool solid(float tx, float ty, float tz);
-  void Generate(Sector &sector) override;
+  float flatness(float tx, float ty) const;
+  float dens(float tx, float ty, float tz) const;
+  bool is_cluster(float tx, float ty, float tz, float type, float prob) const;
+  bool solid(float tx, float ty, float tz) const;
+  void Generate(Sector &sector) const override;
 
   float mPower;
 

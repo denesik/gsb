@@ -44,11 +44,11 @@ Game::Game(const Arguments & arguments)
 
   mWorld = std::make_unique<World>(*mBlocksDataBase);
 
-  auto mapgen = std::make_unique<MapLoader>(std::make_unique<PrimitivaMountains>(*mBlocksDataBase, 1.f));
+  //auto mapgen = std::make_unique<MapLoader>(std::make_unique<PrimitivaMountains>(*mBlocksDataBase, 1.f));
   //auto mapgen = std::make_unique<MapLoader>(std::make_unique<WorldGeneratorFlat>(*mBlocksDataBase));
-  mapgen->SetWorld(mWorld.get());
+  //mapgen->SetWorld(mWorld.get());
 
-  mWorld->SetLoader(std::move(mapgen));
+  //mWorld->SetLoader(std::move(mapgen));
 
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{});
   mUpdatableArea = std::make_unique<UpdatableArea>(*mWorld, SPos{}, 0);
@@ -115,7 +115,7 @@ void Game::drawEvent()
     .setTexture(mTexture);
 
   mDrawableArea->Draw(*mCamera, mShader);
-  mWorld->GetUpdatableSectors().Update();
+  mWorld->Update();
 
   debugLines.draw(mCamera->Project() * mCamera->View());
   debugLines.reset();
@@ -172,7 +172,7 @@ void Game::drawEvent()
       ImGui::End();
     }
 
-	mWorld->GetMaploader().GetGenerator().DrawGui(mTimeline);
+	mWorld->GetWorldGenerator().DrawGui(mTimeline);
 
 	if (ImGui::Button("wipe all"))
 		mWorld->Wipe();

@@ -10,6 +10,8 @@
 #include "IMapGenerator.h"
 #include "IMapLoader.h"
 #include "Creature.h"
+#include "ThreadWorker.h"
+#include <unordered_set>
 
 
 // Загрузка сектора с диска: 
@@ -36,6 +38,24 @@
 // Отложенная выгрузка секторов.
 // Если сектор существует,он сразу же выгружается.
 // Если не существует, дожидаемся загрузчи сектора и выгружаем сектор.
+
+class MapLoader;
+
+class TaskGenerate
+{
+public:
+  TaskGenerate(World &morld, const SPos &pos);
+
+  bool Begin(MapLoader &loader);
+
+  void End(const MapLoader &loader);
+
+private:
+  std::shared_ptr<Sector> mSector;
+};
+
+
+
 class World
 {
 public:
@@ -57,20 +77,26 @@ public:
   void CreateBlock(const WBPos &pos, BlockId id);
 
   UpdatableSectors &GetUpdatableSectors();
-
-  void SetLoader(std::unique_ptr<IMapLoader> loader);
-  IMapLoader & GetMaploader();
+  
+  IMapGenerator &GetWorldGenerator();
 
   void Wipe();
 
   Creature mPlayer;
 
+  void Update();
+
 private:
-  std::unordered_map<SPos, std::shared_ptr<Sector>> mSectors;
   const DataBase &mBlocksDataBase;
 
+  friend class TaskGenerate;
+  std::unique_ptr<IMapGenerator> mWorldGenerator;
+  ThreadWorker<TaskGenerate, MapLoader> mLoaderWorker;
+
   UpdatableSectors mUpdatableSectors;
-  std::unique_ptr<IMapLoader> mLoader;
+
+  std::unordered_map<SPos, std::shared_ptr<Sector>> mSectors;
+  std::unordered_set<SPos> mLoadedSectors;
 };
 
 

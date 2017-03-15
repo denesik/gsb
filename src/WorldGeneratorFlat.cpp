@@ -14,7 +14,7 @@ WorldGeneratorFlat::~WorldGeneratorFlat()
 {
 }
 
-void WorldGeneratorFlat::Generate(Sector &sector)
+void WorldGeneratorFlat::Generate(Sector &sector) const
 {
   const int dirt_level = 64;
   BlockId air = 0;

@@ -1,9 +1,11 @@
 #include "World.h"
 #include "MapGenerator.h"
+#include "MapLoader.h"
+#include "WorldGeneratorFlat.h"
 
 
 World::World(const DataBase &blocksDataBase)
-  : mBlocksDataBase(blocksDataBase), mUpdatableSectors(*this), mPlayer(*this)
+  : mBlocksDataBase(blocksDataBase), mUpdatableSectors(*this), mPlayer(*this), mWorldGenerator(std::make_unique<WorldGeneratorFlat>(blocksDataBase)), mLoaderWorker(*mWorldGenerator)
 {
 }
 
@@ -14,12 +16,16 @@ World::~World()
 
 void World::LoadSector(const SPos &pos)
 {
-  assert(mLoader != nullptr);
-  auto res = mLoader->GetSector(pos);
-  //auto res = std::make_shared<Sector>(*this, pos);
-  if(res)
+  // Если сектора нет на карте и сектор не загружается, поставим его на загрузку.
+  auto sector = GetSector(pos);
+  if (sector.expired())
   {
-    mSectors.emplace(std::make_pair(pos, res));
+    auto it = mLoadedSectors.find(pos);
+    if (it == mLoadedSectors.end())
+    {
+      mLoadedSectors.emplace(pos);
+      mLoaderWorker.Add({ *this, pos });
+    }
   }
 }
 
@@ -98,15 +104,9 @@ UpdatableSectors & World::GetUpdatableSectors()
   return mUpdatableSectors;
 }
 
-void World::SetLoader(std::unique_ptr<IMapLoader> loader)
+IMapGenerator & World::GetWorldGenerator()
 {
-  mLoader = std::move(loader);
-}
-
-IMapLoader & World::GetMaploader()
-{
-	if(mLoader)
-		return *mLoader;
+  return *mWorldGenerator;
 }
 
 void World::Wipe()
@@ -114,3 +114,26 @@ void World::Wipe()
 	mSectors.clear();
 }
 
+void World::Update()
+{
+  mLoaderWorker.Update();
+  mUpdatableSectors.Update();
+}
+
+TaskGenerate::TaskGenerate(World &morld, const SPos &pos)
+{
+  mSector = std::make_shared<Sector>(morld, pos);
+}
+
+bool TaskGenerate::Begin(MapLoader &loader)
+{
+  loader.SetSector(mSector);
+  return true;
+}
+
+void TaskGenerate::End(const MapLoader &loader)
+{
+  auto &world = mSector->GetWorld();
+  world.mSectors.emplace(std::make_pair(mSector->GetPos(), mSector));
+  world.mLoadedSectors.erase(mSector->GetPos());
+}

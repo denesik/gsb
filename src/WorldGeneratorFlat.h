@@ -11,7 +11,7 @@ public:
   WorldGeneratorFlat(const DataBase &db);
   ~WorldGeneratorFlat();
 
-  void Generate(Sector &sector) override;
+  void Generate(Sector &sector) const override;
 };
 
 

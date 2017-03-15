@@ -33,6 +33,8 @@ public:
 
   SPos GetPos() const;
 
+  World &GetWorld();
+
   void ApplyGenerator(IMapGenerator &generator);
 
   BlockId GetBlockId(SBPos pos) const;

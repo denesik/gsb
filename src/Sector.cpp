@@ -61,6 +61,11 @@ SPos Sector::GetPos() const
   return mPos;
 }
 
+World & Sector::GetWorld()
+{
+  return mWorld;
+}
+
 void Sector::ApplyGenerator(IMapGenerator &generator)
 {
   generator.Generate(*this);

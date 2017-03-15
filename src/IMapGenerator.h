@@ -16,7 +16,7 @@ class GSB_NOVTABLE IMapGenerator : public IGui
 public:
   IMapGenerator(const DataBase &db) : m_Db(db) { }
   virtual ~IMapGenerator() = default;
-  virtual void Generate(Sector &sector) = 0;
+  virtual void Generate(Sector &sector) const = 0;
   
   void DrawGui(const Magnum::Timeline &);
   void AddCustomParameter(GuiFunction gui_update);

@@ -6,32 +6,31 @@
 #include <set>
 #include <atomic>
 #include <unordered_set>
+#include <memory>
 
-class World;
-
-class MapLoader : public IMapLoader
+class MapLoader
 {
 public:
-  MapLoader(std::unique_ptr<IMapGenerator> generator);
+  MapLoader(const IMapGenerator &generator);
   ~MapLoader();
 
-  std::shared_ptr<Sector> GetSector(SPos pos) override;
+  void SetSector(std::weak_ptr<Sector> sector);
 
   void Run();
 
+  bool IsDone() const;
+
+private:
+  std::thread mThread;
+  std::atomic<bool> mRunned = false;
+  std::atomic<bool> mClose = false;
+  std::condition_variable mCv;
+  std::mutex mMutex;
+
+  std::weak_ptr<Sector> mSector;
+  const IMapGenerator &mGenerator;
+
 private:
   void Process();
-
-  std::unordered_map<SPos, std::shared_ptr<Sector>> mSectors;
-  std::mutex mSectorLock;
-
-  std::unordered_set<SPos> mQueue;
-  std::mutex mQueueLock;
-
-  std::thread mThread;
-  std::atomic<bool> mThreadStop = false;  
-
-  std::mutex mMutex;
-  std::condition_variable mCv;
-  std::atomic<bool> mRunned = false;
 };
+

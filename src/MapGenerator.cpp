@@ -12,11 +12,11 @@ PrimitivaMountains::PrimitivaMountains(const DataBase &db, float power) : IMapGe
 }
 
 #define GEN_OCT 5
-float PrimitivaMountains::flatness(float tx, float ty)
+float PrimitivaMountains::flatness(float tx, float ty) const
 {
   return (static_cast<float>(PerlinNoise2D(tx, ty, 2, 2, GEN_OCT)) + 1.0f) / 2.f;
 }
-float PrimitivaMountains::dens(float tx, float ty, float tz)
+float PrimitivaMountains::dens(float tx, float ty, float tz) const
 {
   auto flat = 1.f / 5.f;// flatness(tx / 1000.f, ty / 1000.f);
   if (ty < -SECTOR_SIZE)
@@ -37,17 +37,17 @@ float cluster(float tx, float ty, float tz)
 // 0.31 = coal
 // 0.4 = almost everything
 // 1 = everything
-bool PrimitivaMountains::is_cluster(float tx, float ty, float tz, float type, float prob)
+bool PrimitivaMountains::is_cluster(float tx, float ty, float tz, float type, float prob) const
 {
   return cluster(tx + type * 3571, ty + type * 3557, tz + type * 3559) + 1 < prob * 2.f;
 }
-bool PrimitivaMountains::solid(float tx, float ty, float tz)
+bool PrimitivaMountains::solid(float tx, float ty, float tz) const
 {
   return dens(tx, ty, tz + 16) > 0.1;
 }
 #undef GEN_OCT
 
-void PrimitivaMountains::Generate(Sector &sector)
+void PrimitivaMountains::Generate(Sector &sector) const
 {
   BlockId air = 0;
   BlockId dirt = m_Db.BlockIdFromName("dirt").value_or(0);
