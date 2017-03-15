@@ -112,12 +112,16 @@
 	"Crafter1":
 	{
 		"Recipe":"RecipeHand",
-		"fast":false
+		"fast":false,
+		"Input":"0",
+		"Output":"1"
 	},
 	"Crafter2":
 	{
 		"Recipe":"RecipeBurn",
-		"fast":true
+		"fast":true,
+		"Input":"2",
+		"Output":"2"
 	}
   },
   {

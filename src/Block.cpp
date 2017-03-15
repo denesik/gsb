@@ -106,3 +106,8 @@ boost::optional<Accessor &> Block::GetAccessorByName(AccessorId name) const
   return{};
 }
 
+boost::optional<Accessor &> Block::GetAccessorByName(const std::string &name) const
+{
+  return GetAccessorByName(Accessor::NameFromString(name));
+}
+

@@ -57,6 +57,7 @@ private:
 private:
   IRecipe::Tag CrafterType(const char *type, const DataBase & db, const rapidjson::Value &json) const;
   bool CrafterFast(const char *type, const DataBase & db, const rapidjson::Value &json) const;
+  boost::optional<Accessor &> GetAccessor(const char *type, const char *dir, const rapidjson::Value &json) const;
 };
 
 #endif // BlockAutoCrafter_h__

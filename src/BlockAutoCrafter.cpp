@@ -37,8 +37,8 @@ BlockAutoCrafter::BlockAutoCrafter(BlockAutoCrafter &&other, Sector &parent)
 
 BlockAutoCrafter::BlockAutoCrafter(const DataBase &db, const rapidjson::Value &val, Sector &parent, BlockId id)
   : Block(db, val, parent, id),
-  mCrafterInput(*mAgents[0]), mCrafterOutput(*mAgents[1]),
-  mGeneratorInput(*mAgents[2]), mGeneratorOutput(*mAgents[2]),
+  mCrafterInput(*GetAccessor("Crafter1", "Input", val)), mCrafterOutput(*GetAccessor("Crafter1", "Output", val)),
+  mGeneratorInput(*GetAccessor("Crafter2", "Input", val)), mGeneratorOutput(*GetAccessor("Crafter2", "Output", val)),
   mCrafter(CrafterType("Crafter1", db, val), CrafterFast("Crafter1", db, val), mCrafterInput, mCrafterOutput),
   mGenerator(CrafterType("Crafter2", db, val), CrafterFast("Crafter2", db, val), mGeneratorInput, mGeneratorOutput)
 {
@@ -140,5 +140,20 @@ bool BlockAutoCrafter::CrafterFast(const char *type, const DataBase & db, const 
   }
 
   return false;
+}
+
+boost::optional<Accessor &> BlockAutoCrafter::GetAccessor(const char *type, const char *dir, const rapidjson::Value &val) const
+{
+  if (val.HasMember(type))
+  {
+    const rapidjson::Value &crafter = val[type];
+    if (crafter.HasMember(dir))
+    {
+      std::string type = crafter[dir].GetString();
+      return GetAccessorByName(type);
+    }
+    return{};
+  }
+  return{};
 }
 

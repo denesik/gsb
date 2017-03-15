@@ -61,6 +61,8 @@ public:
 
   AccessorId Name() const;
 
+  static AccessorId NameFromString(const std::string &name);
+
 protected:
   Block &mParent;
   const AccessorId m_name;

@@ -61,6 +61,7 @@ public:
 
   /// Получить ссылку на акцессор по его имени.
   boost::optional<Accessor &> GetAccessorByName(AccessorId name) const;
+  boost::optional<Accessor &> GetAccessorByName(const std::string &name) const;
 
 protected:
   Sector &m_sector;

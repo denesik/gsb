@@ -77,11 +77,16 @@ AccessorId Accessor::Name() const
   return m_name;
 }
 
+AccessorId Accessor::NameFromString(const std::string &name)
+{
+  return gsb::crc32<std::string>()(name);
+}
+
 AccessorId Accessor::LoadName(const rapidjson::Value &val)
 {
   if (val.HasMember("name") && val["name"].IsString())
   {
-    return gsb::crc32<std::string>()(val["name"].GetString());
+    return NameFromString(val["name"].GetString());
   }
   return 0;
 }
