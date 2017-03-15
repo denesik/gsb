@@ -30,7 +30,8 @@ void Movable::Move(const Magnum::Vector3 &dist)
 
 void Movable::LookAt(const Magnum::Vector3 &target)
 {
-  mQuat = Quaternion::fromMatrix(Matrix4::lookAt(mPos, target, mModel.up()).rotation());
+  //mQuat = Quaternion::fromMatrix(Matrix4::lookAt(mPos, target, mModel.up()).rotation());
+  mQuat = Quaternion::fromMatrix(Matrix4::lookAt(mPos, target, Vector3(0.0f, 1.0f, 0.0f)).rotation());
 }
 
 void Movable::SetPos(const Magnum::Vector3 &pos)

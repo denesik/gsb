@@ -48,8 +48,9 @@ void BlockSpriteAnimated::Draw(const Magnum::Matrix4 &vp, Magnum::AbstractShader
   auto &world = m_sector.GetWorld();
   const auto &player_pos = world.mPlayer.Pos();
 
-  mMovable.SetPos(WPos(cs::SBtoWB(cs::BItoSB(mPos), m_sector.GetPos())));
+  mMovable.SetPos(WPos(cs::SBtoWB(cs::BItoSB(mPos), m_sector.GetPos())) + WPos(0.5f));
   mMovable.LookAt(player_pos);
+  mMovable.Update();
 
   GetStaticPart()->GetModel()->Draw(vp * mMovable.Model(), shader, frame);
 }

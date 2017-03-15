@@ -7,10 +7,10 @@
 
 static const Magnum::Vector3 gVertexData[] =
 {
-  { 1.0f, 0.0f, 0.0f }, //FLB
-  { 0.0f, 0.0f, 0.0f }, //FRB
-  { 0.0f, 1.0f, 0.0f }, //FRT
-  { 1.0f, 1.0f, 0.0f }, //FLT
+  {  0.5f, -0.5f, 0.0f }, //FLB
+  { -0.5f, -0.5f, 0.0f }, //FRB
+  { -0.5f,  0.5f, 0.0f }, //FRT
+  {  0.5f,  0.5f, 0.0f }, //FLT
 };
 
 static const Magnum::Vector2 gTextureSide[] =
