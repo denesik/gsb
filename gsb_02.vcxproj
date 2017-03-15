@@ -100,6 +100,7 @@
     <ClInclude Include="src\TesselatorSolidBlock.h" />
     <ClInclude Include="src\TextureAtlas.h" />
     <ClInclude Include="src\StandartShader.h" />
+    <ClInclude Include="src\ThreadProcess.h" />
     <ClInclude Include="src\ThreadWorker.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\tools\Brezenham3D.h" />

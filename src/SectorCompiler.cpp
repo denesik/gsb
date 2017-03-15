@@ -13,27 +13,11 @@ SectorCompiler::SectorCompiler(const DataBase &dataBase)
   GenerateIndex();
 
   mTesselators.fill(0);
-
-  mThread = std::thread([this]()
-  {
-    while (!mClose)
-    {
-      std::unique_lock<std::mutex> lock(mMutex);
-      if (mRunned)
-      {
-        Process();
-        mRunned = false;
-      }
-      mCv.wait(lock);
-    }
-  });
 }
 
 SectorCompiler::~SectorCompiler()
 {
-  mClose = true;
-  mCv.notify_one();
-  mThread.join();
+  Release();
 }
 
 void SectorCompiler::SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<TesselatorData>, SECTOR_CAPACITY> &tess_data)
@@ -55,17 +39,6 @@ void SectorCompiler::SetSide(const std::array<BlockId, SECTOR_CAPACITY> &data, c
     if (tess_data[mIndexBlocks[index][i]])
       mTesselatorsData[mIndexTess[index][i]] = *tess_data[mIndexBlocks[index][i]];
   }
-}
-
-void SectorCompiler::Run()
-{
-  mRunned = true;
-  mCv.notify_one();
-}
-
-bool SectorCompiler::IsDone() const
-{
-  return mRunned == false;
 }
 
 const std::vector<TesselatorVertex> & SectorCompiler::GetVertexData() const

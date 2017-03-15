@@ -9,14 +9,11 @@
 #include "Tesselator.h"
 #include <Magnum/Magnum.h>
 #include "DataBase.h"
-#include <thread>
-#include <atomic>
-#include <condition_variable>
-#include <mutex>  
 #include "Block.h"
 #include <memory>
+#include "ThreadProcess.h"
 
-class SectorCompiler
+class SectorCompiler : public ThreadProcess<SectorCompiler>
 {
 public:
   SectorCompiler(const DataBase &dataBase);
@@ -26,12 +23,10 @@ public:
 
   void SetSide(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<TesselatorData>, SECTOR_CAPACITY> &tess_data, SideFlags side);
 
-  void Run();
-
-  bool IsDone() const;
-
   const std::vector<TesselatorVertex> &GetVertexData() const;
   const std::vector<Magnum::UnsignedInt> &GetIndexData() const;
+
+  void Process();
 
 private:
   std::array<BlockId, TESSELATOR_CAPACITY> mTesselators;
@@ -45,18 +40,10 @@ private:
   Magnum::UnsignedInt mIndexOffset;
 
   const DataBase &mDataBase;
-
-  std::thread mThread;
-  std::atomic<bool> mRunned = false;
-  std::atomic<bool> mClose = false;
-  std::condition_variable mCv;
-  std::mutex mMutex;
 private:
   void ProcessSolidBlock(IndexType index, const STPos &pos);
 
   void ProcessMicroBlock(IndexType index, const STPos &pos);
-
-  void Process();
 
   void GenerateIndex();
 };
