@@ -15,6 +15,7 @@
 #include "IItem.h"
 #include <map>
 #include <boost\optional\optional.hpp>
+#include <type_traits>
 
 struct FakeData;
 
@@ -53,13 +54,11 @@ public:
   const TextureAtlas &GetAtlasItems() const;
 
   /// Получить список рецептов для указанного списка итемов.
-  /// TODO: Переделать что б не было сырого указателя.
-  /// Вероятно ид рецептов нужны.
-  std::vector<const IRecipe *> GetRecipes(IRecipe::Tag tag, const std::vector<std::tuple<ItemId, size_t>> &items) const;
+  std::vector<std::reference_wrapper<const IRecipe>> GetRecipes(IRecipe::Tag tag, const std::vector<std::tuple<ItemId, size_t>> &items) const;
 
   boost::optional<IRecipe::Tag> RecipeTagFromName(const std::string &name) const;
 
-  const std::vector<std::unique_ptr<IRecipe>> & GetSameRecipes(IRecipe::Tag tag) const;
+  //const std::vector<std::unique_ptr<IRecipe>> & GetSameRecipes(IRecipe::Tag tag) const;
 
   FakeData &GetFakeData();
 

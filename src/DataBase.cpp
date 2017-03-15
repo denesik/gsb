@@ -119,14 +119,18 @@ const TextureAtlas & DataBase::GetAtlasItems() const
   return mAtlasItems;
 }
 
-std::vector<const IRecipe *> DataBase::GetRecipes(IRecipe::Tag tag, const std::vector<std::tuple<ItemId, size_t>> &items) const
+std::vector<std::reference_wrapper<const IRecipe>> DataBase::GetRecipes(IRecipe::Tag tag, const std::vector<std::tuple<ItemId, size_t>> &items) const
 {
-  std::vector<const IRecipe *> result;
+  std::vector<std::reference_wrapper<const IRecipe>> result;
 
   // 1. Пробегаем по рецептам.
   // 2. Каждую компоненту рецепта ищем в списке итемов.
   // 3. Если компоненты нет -- рецепт не сработает.
-  for (const auto &rec : GetSameRecipes(tag))
+  auto it = mRecipes.find(tag);
+  if (it == mRecipes.end())
+    return result;
+
+  for (const auto &rec : it->second)
   {
     const auto &components = rec->Components();
     bool rec_found = true;
@@ -150,7 +154,7 @@ std::vector<const IRecipe *> DataBase::GetRecipes(IRecipe::Tag tag, const std::v
 
     if (rec_found)
     {
-      result.emplace_back(rec.get());
+      result.emplace_back(std::cref(*rec));
     }
   }
 
@@ -168,13 +172,13 @@ boost::optional<IRecipe::Tag> DataBase::RecipeTagFromName(const std::string &nam
   return{};
 }
 
-const std::vector<std::unique_ptr<IRecipe>> & DataBase::GetSameRecipes(IRecipe::Tag tag) const
-{
-  static const std::vector<std::unique_ptr<IRecipe>> null;
-
-  auto same = mRecipes.find(tag);
-  return same == mRecipes.end() ? null : same->second;
-}
+// const std::vector<std::unique_ptr<IRecipe>> & DataBase::GetSameRecipes(IRecipe::Tag tag) const
+// {
+//   static const std::vector<std::unique_ptr<IRecipe>> null;
+// 
+//   auto same = mRecipes.find(tag);
+//   return same == mRecipes.end() ? null : same->second;
+// }
 
 FakeData & DataBase::GetFakeData()
 {

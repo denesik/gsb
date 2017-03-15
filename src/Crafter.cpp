@@ -36,7 +36,7 @@ void Crafter::Update(const Magnum::Timeline &dt, const DataBase &db)
       // Если требуется больше итемов чем есть в сундуке не крафтим.
       if (c.count > mInput->ItemCount(c.id))
       {
-        m_current_recipe = nullptr;
+        m_current_recipe.reset();
         m_runned = false;
         m_time = 0.0f;
         enable = false;
@@ -62,7 +62,7 @@ void Crafter::Update(const Magnum::Timeline &dt, const DataBase &db)
         {
           mOutput->AddItem(r.id, r.count);
         }
-        m_current_recipe = nullptr;
+        m_current_recipe.reset();
         m_runned = false;
         m_time = 0.0f;
       }
@@ -128,5 +128,5 @@ bool Crafter::Runned() const
 
 bool Crafter::Ready() const
 {
-  return m_current_recipe != nullptr;
+  return m_current_recipe.is_initialized();
 }

@@ -52,7 +52,7 @@ private:
 
   IRecipe::Tag m_recipe_tag;
 
-  const IRecipe *m_current_recipe = nullptr;
+  boost::optional<const IRecipe &> m_current_recipe;
   bool m_runned = false;
 
   float m_time = 0.0f;
