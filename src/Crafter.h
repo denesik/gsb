@@ -19,18 +19,21 @@ class Crafter
 {
 public:
   Crafter() = delete;
+  virtual ~Crafter() = default;
 
-  Crafter(IRecipe::Tag tag, bool fast, AccessorItem * a = nullptr, AccessorItem * b = nullptr);
+  Crafter(const Crafter &other) = delete;
+  Crafter(Crafter &&other) = delete;
+  /// Не используем операторы копирования и перемещения.
+  const Crafter &operator=(const Crafter &other) = delete;
+  Crafter &operator=(Crafter &&other) = delete;
 
+  Crafter(const Crafter &other, Accessor &input, Accessor &output);
+  Crafter(Crafter &&other, Accessor &input, Accessor &output);
 
-  Crafter(bool fast, AccessorItem * input = nullptr, AccessorItem * output = nullptr)
-    : m_fast_components(fast), mInput(input), mOutput(output) {};
-
-  Crafter(const Crafter &other);
+  /// Создаем элемент через фабрику.
+  Crafter(IRecipe::Tag tag, bool fast, Accessor &input, Accessor &output);
 
   void Update(const Magnum::Timeline &dt, const DataBase &db);
-  void SetInput(Accessor &accessor);
-  void SetOutput(Accessor &accessor);
 
   float Progress() const; // TODO int?
 
@@ -47,8 +50,8 @@ public:
   bool Ready() const;
 
 private:
-  AccessorItem *mInput = nullptr;
-  AccessorItem *mOutput = nullptr;
+  AccessorItem &mInput;
+  AccessorItem &mOutput;
 
   IRecipe::Tag m_recipe_tag;
 

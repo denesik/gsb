@@ -5,40 +5,50 @@
 
 BlockAutoCrafter::BlockAutoCrafter(const BlockAutoCrafter &other)
   : Block(other),
-  mCrafter(other.mCrafter),
-  mGenerator(other.mGenerator)
+  mCrafterInput(*GetAccessorByName(other.mCrafterInput.Name())), mCrafterOutput(*GetAccessorByName(other.mCrafterOutput.Name())),
+  mGeneratorInput(*GetAccessorByName(other.mGeneratorInput.Name())), mGeneratorOutput(*GetAccessorByName(other.mGeneratorOutput.Name())),
+  mCrafter(other.mCrafter, mCrafterInput, mCrafterOutput),
+  mGenerator(other.mGenerator, mGeneratorInput, mGeneratorOutput)
 {
 
 }
 
 BlockAutoCrafter::BlockAutoCrafter(BlockAutoCrafter &&other)
   : Block(std::move(other)),
-  mCrafter(std::move(other.mCrafter)),
-  mGenerator(std::move(other.mGenerator))
+  mCrafterInput(*GetAccessorByName(other.mCrafterInput.Name())), mCrafterOutput(*GetAccessorByName(other.mCrafterOutput.Name())),
+  mGeneratorInput(*GetAccessorByName(other.mGeneratorInput.Name())), mGeneratorOutput(*GetAccessorByName(other.mGeneratorOutput.Name())),
+  mCrafter(std::move(other.mCrafter), mCrafterInput, mCrafterOutput),
+  mGenerator(std::move(other.mGenerator), mGeneratorInput, mGeneratorOutput)
 {
 
 }
 
 BlockAutoCrafter::BlockAutoCrafter(const BlockAutoCrafter &other, Sector &parent)
   : Block(other, parent),
-  mCrafter(other.mCrafter),
-  mGenerator(other.mGenerator)
+  mCrafterInput(*GetAccessorByName(other.mCrafterInput.Name())), mCrafterOutput(*GetAccessorByName(other.mCrafterOutput.Name())),
+  mGeneratorInput(*GetAccessorByName(other.mGeneratorInput.Name())), mGeneratorOutput(*GetAccessorByName(other.mGeneratorOutput.Name())),
+  mCrafter(other.mCrafter, mCrafterInput, mCrafterOutput),
+  mGenerator(other.mGenerator, mGeneratorInput, mGeneratorOutput)
 {
 
 }
 
 BlockAutoCrafter::BlockAutoCrafter(BlockAutoCrafter &&other, Sector &parent)
   : Block(std::move(other), parent),
-  mCrafter(std::move(other.mCrafter)),
-  mGenerator(std::move(other.mGenerator))
+  mCrafterInput(*GetAccessorByName(other.mCrafterInput.Name())), mCrafterOutput(*GetAccessorByName(other.mCrafterOutput.Name())),
+  mGeneratorInput(*GetAccessorByName(other.mGeneratorInput.Name())), mGeneratorOutput(*GetAccessorByName(other.mGeneratorOutput.Name())),
+  mCrafter(std::move(other.mCrafter), mCrafterInput, mCrafterOutput),
+  mGenerator(std::move(other.mGenerator), mGeneratorInput, mGeneratorOutput)
 {
 
 }
 
 BlockAutoCrafter::BlockAutoCrafter(const DataBase &db, const rapidjson::Value &val, Sector &parent, BlockId id)
   : Block(db, val, parent, id),
-  mCrafter(CrafterType("Crafter1", db, val), CrafterFast("Crafter1", db, val)),
-  mGenerator(CrafterType("Crafter2", db, val), CrafterFast("Crafter2", db, val))
+  mCrafterInput(*mAgents[0]), mCrafterOutput(*mAgents[1]),
+  mGeneratorInput(*mAgents[2]), mGeneratorOutput(*mAgents[2]),
+  mCrafter(CrafterType("Crafter1", db, val), CrafterFast("Crafter1", db, val), mCrafterInput, mCrafterOutput),
+  mGenerator(CrafterType("Crafter2", db, val), CrafterFast("Crafter2", db, val), mGeneratorInput, mGeneratorOutput)
 {
 
 }
@@ -55,8 +65,6 @@ void BlockAutoCrafter::DrawGui(const Magnum::Timeline &dt)
   {
     auto &input = *mAgents[0];
     auto &output = *mAgents[1];
-    mCrafter.SetInput(input);
-    mCrafter.SetOutput(output);
 
     ImGui::PushID(0);
     input.DrawGui(dt);
@@ -75,18 +83,16 @@ void BlockAutoCrafter::DrawGui(const Magnum::Timeline &dt)
   {
     auto &input = *mAgents[2];
     //auto &output = *mAgents[3];
-    mGenerator.SetInput(input);
-    mGenerator.SetOutput(input);
 
     ImGui::PushID(0);
     input.DrawGui(dt);
     ImGui::PopID();
 
-//     ImGui::SameLine();
-// 
-//     ImGui::PushID(1);
-//     output.DrawGui(dt);
-//     ImGui::PopID();
+    //     ImGui::SameLine();
+    // 
+    //     ImGui::PushID(1);
+    //     output.DrawGui(dt);
+    //     ImGui::PopID();
 
     ImGui::ProgressBar(mGenerator.Progress(), ImVec2(0.0f, 0.0f), " ");
   }

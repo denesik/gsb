@@ -46,6 +46,11 @@ public:
   void Update(const Magnum::Timeline &dt) override;
 
 private:
+  Accessor &mCrafterInput;
+  Accessor &mCrafterOutput;
+  Accessor &mGeneratorInput;
+  Accessor &mGeneratorOutput;
+
   Crafter mCrafter;
   Crafter mGenerator;
 

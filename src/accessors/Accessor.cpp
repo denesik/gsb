@@ -3,31 +3,32 @@
 #include "../../imgui/imgui.h"
 #include "../Block.h"
 #include <rapidjson/document.h>
+#include "../tools/Crc32.h"
 
 Accessor::Accessor(const Accessor &other)
-  : mParent(other.mParent), mSides(other.mSides)
+  : mParent(other.mParent), mSides(other.mSides), m_name(other.m_name)
 {
 }
 
 Accessor::Accessor(Accessor &&other)
-  : mParent(other.mParent), mSides(std::move(other.mSides))
+  : mParent(other.mParent), mSides(std::move(other.mSides)), m_name(other.m_name)
 {
 }
 
 Accessor::Accessor(const Accessor &other, Block &parent)
-  : mParent(parent), mSides(other.mSides)
+  : mParent(parent), mSides(other.mSides), m_name(other.m_name)
 {
 
 }
 
 Accessor::Accessor(Accessor &&other, Block &parent)
-  : mParent(parent), mSides(std::move(other.mSides))
+  : mParent(parent), mSides(std::move(other.mSides)), m_name(other.m_name)
 {
 
 }
 
 Accessor::Accessor(const DataBase &db, const rapidjson::Value &val, Block &parent)
-  : mParent(parent)
+  : mParent(parent), m_name(LoadName(val))
 {
   if (val.HasMember("bindings") && val["bindings"].IsArray())
   {
@@ -69,5 +70,19 @@ Block &Accessor::Parent() const
 AccessorDirection Accessor::GetDirection(SideIndex side)
 {
   return mSides[side];
+}
+
+AccessorId Accessor::Name() const
+{
+  return m_name;
+}
+
+AccessorId Accessor::LoadName(const rapidjson::Value &val)
+{
+  if (val.HasMember("name") && val["name"].IsString())
+  {
+    return gsb::crc32<std::string>()(val["name"].GetString());
+  }
+  return 0;
 }
 

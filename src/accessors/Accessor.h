@@ -26,6 +26,7 @@ enum /*class*/ AccessorDirection
 };
 
 // Акцессор. Любое влияние на другой блок, которое изменяет состояние блока, происходит через наследников данного класса.
+// Каждый экземпляр акцессора имеет имя. Имя должно быть уникально внутри блока.
 class GSB_NOVTABLE Accessor : public IGui
 {
 public:
@@ -58,9 +59,16 @@ public:
   // Получить направление на указанной стороне.
   AccessorDirection GetDirection(SideIndex side);
 
+  AccessorId Name() const;
+
 protected:
   Block &mParent;
+  const AccessorId m_name;
   std::array<AccessorDirection, 6> mSides;
+
+private:
+  AccessorId LoadName(const rapidjson::Value &val);
+
 };
 
 //TODO: сделать модную инстанциацию строкой

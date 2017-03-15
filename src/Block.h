@@ -59,12 +59,14 @@ public:
 
   void SetPos(IndexType pos);
 
+  /// Получить ссылку на акцессор по его имени.
+  boost::optional<Accessor &> GetAccessorByName(AccessorId name) const;
+
 protected:
   Sector &m_sector;
   const DataBase &mDb;
   BlockId mBlockId;
   IndexType mPos;
-  //boost::container::flat_multimap<AgentId, std::unique_ptr<Agent>> mAgents;
   std::vector<std::unique_ptr<Accessor>> mAgents;
 };
 

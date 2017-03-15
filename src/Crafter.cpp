@@ -3,18 +3,28 @@
 #include <Magnum\Timeline.h>
 
 
-Crafter::Crafter(const Crafter &other)
-  : m_recipe_tag(other.m_recipe_tag), m_fast_components(other.m_fast_components)
+
+
+Crafter::Crafter(const Crafter &other, Accessor &input, Accessor &output)
+  : m_recipe_tag(other.m_recipe_tag), 
+    mInput(static_cast<AccessorItem &>(input)), mOutput(static_cast<AccessorItem &>(output))
 {
 
 }
 
-Crafter::Crafter(IRecipe::Tag tag, bool fast, AccessorItem *input, AccessorItem *output)
-  : m_recipe_tag(tag), m_fast_components(fast), mInput(input), mOutput(output)
+Crafter::Crafter(Crafter &&other, Accessor &input, Accessor &output)
+  : m_recipe_tag(std::move(other.m_recipe_tag)), 
+    mInput(static_cast<AccessorItem &>(input)), mOutput(static_cast<AccessorItem &>(output))
 {
 
 }
 
+Crafter::Crafter(IRecipe::Tag tag, bool fast, Accessor &input, Accessor &output)
+  : m_recipe_tag(tag), 
+    mInput(static_cast<AccessorItem &>(input)), mOutput(static_cast<AccessorItem &>(output))
+{
+
+}
 
 void Crafter::Update(const Magnum::Timeline &dt, const DataBase &db)
 {
@@ -34,7 +44,7 @@ void Crafter::Update(const Magnum::Timeline &dt, const DataBase &db)
     for (const auto &c : components)
     {
       // Если требуется больше итемов чем есть в сундуке не крафтим.
-      if (c.count > mInput->ItemCount(c.id))
+      if (c.count > mInput.ItemCount(c.id))
       {
         m_current_recipe.reset();
         m_runned = false;
@@ -54,13 +64,13 @@ void Crafter::Update(const Magnum::Timeline &dt, const DataBase &db)
         if (!m_fast_components)
         for (const auto &c : components)
         {
-          mInput->RemoveItem(c.id, c.count);
+          mInput.RemoveItem(c.id, c.count);
         }
 
         const auto &results = m_current_recipe->Results();
         for (const auto &r : results)
         {
-          mOutput->AddItem(r.id, r.count);
+          mOutput.AddItem(r.id, r.count);
         }
         m_current_recipe.reset();
         m_runned = false;
@@ -72,24 +82,12 @@ void Crafter::Update(const Magnum::Timeline &dt, const DataBase &db)
   // Узнаем, можем ли мы что то скрафтить.
   if (!m_current_recipe)
   {
-    const auto &recipes = db.GetRecipes(m_recipe_tag, mInput->Items());
+    const auto &recipes = db.GetRecipes(m_recipe_tag, mInput.Items());
     if (!recipes.empty())
     {
       m_current_recipe = recipes.front();
     }
   }
-}
-
-
-
-void Crafter::SetInput(Accessor &accessor)
-{
-  mInput = &static_cast<AccessorItem &>(accessor);
-}
-
-void Crafter::SetOutput(Accessor &accessor)
-{
-  mOutput = &static_cast<AccessorItem &>(accessor);
 }
 
 float Crafter::Progress() const
@@ -110,7 +108,7 @@ void Crafter::Run()
     const auto &components = m_current_recipe->Components();
     for (const auto &c : components)
     {
-      mInput->RemoveItem(c.id, c.count);
+      mInput.RemoveItem(c.id, c.count);
     }
   }
   m_runned = true;

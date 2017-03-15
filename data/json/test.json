@@ -93,16 +93,20 @@
 	"type":"BlockAutoCrafter",
     "agents":[
       {
-        "type":"AccessorItem"
+        "type":"AccessorItem",
+		"name":"0"
       },
 	  {
-        "type":"AccessorItem"
+        "type":"AccessorItem",
+		"name":"1"
       },
 	  {
-        "type":"AccessorItem"
+        "type":"AccessorItem",
+		"name":"2"
       },
 	  {
-        "type":"AccessorItem"
+        "type":"AccessorItem",
+		"name":"3"
       }
     ],
 	"Crafter1":

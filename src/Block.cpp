@@ -93,3 +93,18 @@ void Block::SetPos(IndexType pos)
   mPos = pos;
 }
 
+boost::optional<Accessor &> Block::GetAccessorByName(AccessorId name) const
+{
+  auto it = std::find_if(mAgents.begin(), mAgents.end(), [name](const decltype(mAgents)::value_type &val)
+  {
+    return val->Name() == name;
+  });
+
+  if (it != mAgents.end())
+  {
+    return{ **it };
+  }
+
+  return{};
+}
+
