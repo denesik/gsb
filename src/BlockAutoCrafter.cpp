@@ -2,8 +2,6 @@
 #include "accessors\AccessorItem.h"
 #include "DataBase.h"
 #include "..\imgui\imgui.h"
-#include "RecipeBurn.h"
-#include "RecipeHand.h"
 
 BlockAutoCrafter::BlockAutoCrafter(const BlockAutoCrafter &other)
   : Block(other),
@@ -122,7 +120,8 @@ void BlockAutoCrafter::Update(const Magnum::Timeline &dt)
   mGenerator.Update(dt, mDb);
 }
 
-std::unique_ptr<IRecipe> BlockAutoCrafter::CrafterType(const char *type, const DataBase & db, const rapidjson::Value &val) const
+// TODO: проверка существования рецепта.
+IRecipe::Tag BlockAutoCrafter::CrafterType(const char *type, const DataBase & db, const rapidjson::Value &val) const
 {
   if (val.HasMember(type))
   {
@@ -130,7 +129,7 @@ std::unique_ptr<IRecipe> BlockAutoCrafter::CrafterType(const char *type, const D
     if (crafter.HasMember("Recipe"))
     {
       std::string type = crafter["Recipe"].GetString();
-      return IRecipe::factory::create(type);
+      return *db.RecipeTagFromName(type);
     }
     return{};
   }

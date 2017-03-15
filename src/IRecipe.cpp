@@ -3,6 +3,11 @@
 #include "Serialize.h"
 
 
+namespace
+{
+  static auto IRecipeLoaded = IRecipe::factory::Register<IRecipe>::add("IRecipe");
+}
+
 // TODO: запилить проверку на несуществующий рецепт
 
 void RecipeIn::JsonLoad(DataBase& db, const rapidjson::Value& val)
@@ -38,12 +43,6 @@ bool RecipeOut::operator==(const RecipeOut& other) const
     return true;
   return id == other.id && count == other.count && chance == other.chance;
 }
-
-// RecipeFactory::FactoryType& RecipeFactory::Get()
-// {
-//   static FactoryType factory;
-//   return factory;
-// }
 
 void IRecipe::JsonLoad(DataBase & db, const rapidjson::Value& val)
 {

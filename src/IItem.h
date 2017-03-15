@@ -4,6 +4,7 @@
 #include "TemplateFactory.h"
 #include "IJsonSerializable.h"
 
+// TODO: переименовать в элемент
 class GSB_NOVTABLE IItem : public IJsonSerializable
 {
 public:

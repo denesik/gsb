@@ -51,9 +51,18 @@ bool DataBase::AddBlock(const std::string &name, BlockId id, std::unique_ptr<Sta
   return true;
 }
 
-void DataBase::AddRecipe(std::unique_ptr<IRecipe> move)
+void DataBase::AddRecipe(const std::string &tag_name, std::unique_ptr<IRecipe> move)
 {
-  auto& specified_recipes = mRecipes[move->Id()];
+  auto tag = RecipeTagFromName(tag_name);
+
+  if (!tag)
+  {
+    tag = mLastRecipeTag++;
+    mRecipes.emplace(*tag, decltype(mRecipes)::mapped_type());
+    mRecipeTags.emplace(tag_name, *tag);
+  }
+
+  auto& specified_recipes = mRecipes[*tag];
 
   specified_recipes.emplace_back(std::move(move));
   const IRecipe* recipe = specified_recipes[specified_recipes.size() - 1].get();
@@ -110,14 +119,14 @@ const TextureAtlas & DataBase::GetAtlasItems() const
   return mAtlasItems;
 }
 
-std::vector<const IRecipe *> DataBase::GetRecipes(const IRecipe & as_this, const std::vector<std::tuple<ItemId, size_t>> &items) const
+std::vector<const IRecipe *> DataBase::GetRecipes(IRecipe::Tag tag, const std::vector<std::tuple<ItemId, size_t>> &items) const
 {
   std::vector<const IRecipe *> result;
 
   // 1. Пробегаем по рецептам.
   // 2. Каждую компоненту рецепта ищем в списке итемов.
   // 3. Если компоненты нет -- рецепт не сработает.
-  for (const auto &rec : GetSameRecipes(as_this))
+  for (const auto &rec : GetSameRecipes(tag))
   {
     const auto &components = rec->Components();
     bool rec_found = true;
@@ -148,11 +157,22 @@ std::vector<const IRecipe *> DataBase::GetRecipes(const IRecipe & as_this, const
   return result;
 }
 
-const std::vector<std::unique_ptr<IRecipe>> & DataBase::GetSameRecipes(const IRecipe& as_this) const
+boost::optional<IRecipe::Tag> DataBase::RecipeTagFromName(const std::string &name) const
+{
+  auto it = mRecipeTags.find(name);
+  if (it != mRecipeTags.end())
+  {
+    return{ it->second };
+  }
+
+  return{};
+}
+
+const std::vector<std::unique_ptr<IRecipe>> & DataBase::GetSameRecipes(IRecipe::Tag tag) const
 {
   static const std::vector<std::unique_ptr<IRecipe>> null;
 
-  auto same = mRecipes.find(as_this.Id());
+  auto same = mRecipes.find(tag);
   return same == mRecipes.end() ? null : same->second;
 }
 

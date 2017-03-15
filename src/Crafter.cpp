@@ -1,20 +1,16 @@
 #include "Crafter.h"
 #include "DataBase.h"
-#include "RecipeHand.h"
 #include <Magnum\Timeline.h>
 
 
-
-//TODO_Recipe 
-// Теги избавят от этой гадости ввиде клонирования.
 Crafter::Crafter(const Crafter &other)
-  : m_recipe_type(other.m_recipe_type->Clone()), m_fast_components(other.m_fast_components)
+  : m_recipe_tag(other.m_recipe_tag), m_fast_components(other.m_fast_components)
 {
 
 }
 
-Crafter::Crafter(const std::unique_ptr<IRecipe> &recipe, bool fast, AccessorItem *input, AccessorItem *output)
-  : m_recipe_type(recipe->Clone()), m_fast_components(fast), mInput(input), mOutput(output)
+Crafter::Crafter(IRecipe::Tag tag, bool fast, AccessorItem *input, AccessorItem *output)
+  : m_recipe_tag(tag), m_fast_components(fast), mInput(input), mOutput(output)
 {
 
 }
@@ -76,7 +72,7 @@ void Crafter::Update(const Magnum::Timeline &dt, const DataBase &db)
   // Узнаем, можем ли мы что то скрафтить.
   if (!m_current_recipe)
   {
-    const auto &recipes = db.GetRecipes(*m_recipe_type, mInput->Items());
+    const auto &recipes = db.GetRecipes(m_recipe_tag, mInput->Items());
     if (!recipes.empty())
     {
       m_current_recipe = recipes.front();

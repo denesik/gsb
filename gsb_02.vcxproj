@@ -91,8 +91,6 @@
     <ClInclude Include="src\MapGenerator.h" />
     <ClInclude Include="src\MapLoader.h" />
     <ClInclude Include="src\PerlinNoise.h" />
-    <ClInclude Include="src\RecipeHand.h" />
-    <ClInclude Include="src\RecipeBurn.h" />
     <ClInclude Include="src\Sector.h" />
     <ClInclude Include="src\SectorCompiler.h" />
     <ClInclude Include="src\Serialize.h" />

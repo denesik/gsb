@@ -78,7 +78,7 @@ bool LoadRecipe(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value 
   if (val.HasMember("type"))
     type = val["type"].GetString();
 
-  auto recipe = IRecipe::factory::create(type);
+  auto recipe = IRecipe::factory::create("IRecipe");
   if (!recipe)
   {
     LOG(error) << "recipe has unknown type = " << type << ". SKIP.";
@@ -93,7 +93,7 @@ bool LoadRecipe(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value 
     return false;
   }
 
-  db.AddRecipe(std::move(recipe));
+  db.AddRecipe(type, std::move(recipe));
   return true;
 }
 
@@ -160,12 +160,9 @@ void JsonDataBase::Load(const TextureAtlas &atlas, DataBase &db) const
   }
 
   // сортируем секции
-  for (auto & sec : sections)
-  {
-    if (sec.first != "recipe")
-      ordered_section.emplace_back(sec.first, sec.second);
-  }
+  ordered_section.emplace_back("item", sections["item"]);
   ordered_section.emplace_back("recipe", sections["recipe"]);
+  ordered_section.emplace_back("block", sections["block"]);
 
   // десериализуем
   for (const auto section : ordered_section)

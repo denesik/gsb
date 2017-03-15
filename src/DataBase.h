@@ -30,11 +30,12 @@ public:
   /// Если блок с указанным ид существует, он не добавляется и возвращается false.
   bool AddBlock(const std::string &name, BlockId id, std::unique_ptr<StaticBlock> static_part, std::unique_ptr<Block> dynamic_part);
 
-  void AddRecipe(std::unique_ptr<IRecipe> move);
-
   void AddItem(const std::string &name, ItemId id, std::unique_ptr<IItem> move);
 
   void ApplyLoader(std::unique_ptr<IDataBaseLoader> loader);
+
+  void AddRecipe(const std::string &tag, std::unique_ptr<IRecipe> move);
+
 
 
   const std::unique_ptr<StaticBlock> &GetBlockStaticPart(BlockId id) const;
@@ -54,8 +55,11 @@ public:
   /// Получить список рецептов для указанного списка итемов.
   /// TODO: Переделать что б не было сырого указателя.
   /// Вероятно ид рецептов нужны.
-  std::vector<const IRecipe *> GetRecipes(const IRecipe & as_this, const std::vector<std::tuple<ItemId, size_t>> &items) const;
-  const std::vector<std::unique_ptr<IRecipe>> & GetSameRecipes(const IRecipe & as_this) const;
+  std::vector<const IRecipe *> GetRecipes(IRecipe::Tag tag, const std::vector<std::tuple<ItemId, size_t>> &items) const;
+
+  boost::optional<IRecipe::Tag> RecipeTagFromName(const std::string &name) const;
+
+  const std::vector<std::unique_ptr<IRecipe>> & GetSameRecipes(IRecipe::Tag tag) const;
 
   FakeData &GetFakeData();
 
@@ -66,13 +70,16 @@ private:
   std::array<std::unique_ptr<IItem>, 0xFFFF> mItems;
   std::unordered_map<std::string, ItemId> mItemNames;
 
-  std::map<RecipeId, std::vector<std::unique_ptr<IRecipe>>> mRecipes;
+  std::map<IRecipe::Tag, std::vector<std::unique_ptr<IRecipe>>> mRecipes;
+  std::unordered_map<std::string, IRecipe::Tag> mRecipeTags;
 
   std::unordered_map<ItemId, std::vector<const IRecipe *>> mItemUsing;
   std::unordered_map<ItemId, std::vector<const IRecipe *>> mItemRecipe;
 
   const TextureAtlas &mAtlas;
   const TextureAtlas &mAtlasItems;
+
+  IRecipe::Tag mLastRecipeTag = 0;
 
 private:
   std::unique_ptr<FakeData> mFakeData;

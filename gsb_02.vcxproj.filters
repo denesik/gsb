@@ -281,29 +281,23 @@
     <ClInclude Include="src\Crafter.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\RecipeBurn.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
     <ClInclude Include="src\accessors\Accessor.h">
       <Filter>Файлы исходного кода\Accessors</Filter>
     </ClInclude>
     <ClInclude Include="src\accessors\AccessorItem.h">
       <Filter>Файлы исходного кода\Accessors</Filter>
     </ClInclude>
-    <ClInclude Include="src\RecipeHand.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
     <ClInclude Include="fwd.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\ThreadWorker.h">
-      <Filter>Заголовочные файлы</Filter>
+    <ClInclude Include="src\DataBaseFakeData.h">
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\ThreadProcess.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataBaseFakeData.h">
-      <Filter>Заголовочные файлы</Filter>
+    <ClInclude Include="src\ThreadWorker.h">
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

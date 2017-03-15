@@ -20,7 +20,7 @@ class Crafter
 public:
   Crafter() = delete;
 
-  Crafter(const std::unique_ptr<IRecipe> &recipe, bool fast, AccessorItem * a = nullptr, AccessorItem * b = nullptr);
+  Crafter(IRecipe::Tag tag, bool fast, AccessorItem * a = nullptr, AccessorItem * b = nullptr);
 
 
   Crafter(bool fast, AccessorItem * input = nullptr, AccessorItem * output = nullptr)
@@ -50,9 +50,7 @@ private:
   AccessorItem *mInput = nullptr;
   AccessorItem *mOutput = nullptr;
 
-  // TODO_Recipe 
-  // Теги избавят от этой гадости.
-  std::unique_ptr<IRecipe> m_recipe_type;
+  IRecipe::Tag m_recipe_tag;
 
   const IRecipe *m_current_recipe = nullptr;
   bool m_runned = false;
