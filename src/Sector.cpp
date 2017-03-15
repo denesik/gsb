@@ -83,7 +83,7 @@ Block* Sector::GetBlockDynamic(const WBPos& pos) const
 
 void Sector::CreateBlock(SBPos pos, BlockId id)
 {
-  auto block = mWorld.GetBlocksDataBase().CreateBlock(id);
+  auto block = mWorld.GetBlocksDataBase().CreateBlock(*this, id);
   mStaticBlocks[cs::SBtoBI(pos)] = std::get<0>(block);
   mTesselatorData[cs::SBtoBI(pos)] = std::move(std::get<1>(block));
   mDinamicBlocks[cs::SBtoBI(pos)] = std::move(std::get<2>(block));
@@ -91,8 +91,7 @@ void Sector::CreateBlock(SBPos pos, BlockId id)
 
   if (mDinamicBlocks[cs::SBtoBI(pos)])
   {
-    mDinamicBlocks[cs::SBtoBI(pos)]->m_sector = this;
-    mDinamicBlocks[cs::SBtoBI(pos)]->pos = cs::SBtoBI(pos);
+    mDinamicBlocks[cs::SBtoBI(pos)]->SetPos(cs::SBtoBI(pos));
   }
 }
 

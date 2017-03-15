@@ -5,30 +5,50 @@
 #include "RecipeBurn.h"
 #include "RecipeHand.h"
 
+BlockAutoCrafter::BlockAutoCrafter(const BlockAutoCrafter &other)
+  : Block(other),
+  mCrafter(other.mCrafter),
+  mGenerator(other.mGenerator)
+{
 
-BlockAutoCrafter::BlockAutoCrafter(const DataBase & db, const rapidjson::Value &val)
-  : Block(db, val),
+}
+
+BlockAutoCrafter::BlockAutoCrafter(BlockAutoCrafter &&other)
+  : Block(std::move(other)),
+  mCrafter(std::move(other.mCrafter)),
+  mGenerator(std::move(other.mGenerator))
+{
+
+}
+
+BlockAutoCrafter::BlockAutoCrafter(const BlockAutoCrafter &other, Sector &parent)
+  : Block(other, parent),
+  mCrafter(other.mCrafter),
+  mGenerator(other.mGenerator)
+{
+
+}
+
+BlockAutoCrafter::BlockAutoCrafter(BlockAutoCrafter &&other, Sector &parent)
+  : Block(std::move(other), parent),
+  mCrafter(std::move(other.mCrafter)),
+  mGenerator(std::move(other.mGenerator))
+{
+
+}
+
+BlockAutoCrafter::BlockAutoCrafter(const DataBase &db, const rapidjson::Value &val, Sector &parent, BlockId id)
+  : Block(db, val, parent, id),
   mCrafter(CrafterType("Crafter1", db, val), CrafterFast("Crafter1", db, val)),
   mGenerator(CrafterType("Crafter2", db, val), CrafterFast("Crafter2", db, val))
 {
 
 }
 
-BlockAutoCrafter::~BlockAutoCrafter()
-{
-}
 
-BlockAutoCrafter::BlockAutoCrafter(const BlockAutoCrafter &other)
-  : Block(other), 
-    mCrafter(other.mCrafter),
-    mGenerator(other.mGenerator)
+std::unique_ptr<Block> BlockAutoCrafter::Clone(Sector &parent)
 {
-  
-}
-
-std::unique_ptr<Block> BlockAutoCrafter::Clone()
-{
-  return std::unique_ptr<Block>(new BlockAutoCrafter(*this));
+  return std::make_unique<BlockAutoCrafter>(*this, parent);
 }
 
 void BlockAutoCrafter::DrawGui(const Magnum::Timeline &dt)
@@ -98,8 +118,8 @@ void BlockAutoCrafter::Update(const Magnum::Timeline &dt)
     }
   }
 
-  mCrafter.Update(dt, *mDb);
-  mGenerator.Update(dt, *mDb);
+  mCrafter.Update(dt, mDb);
+  mGenerator.Update(dt, mDb);
 }
 
 std::unique_ptr<IRecipe> BlockAutoCrafter::CrafterType(const char *type, const DataBase & db, const rapidjson::Value &val) const

@@ -4,20 +4,36 @@
 #include <algorithm>
 #include "Sector.h"
 
-Block::Block()
-{
-}
-
-
 Block::Block(const Block &other)
-  : mBlockId(other.mBlockId), mDb(other.mDb)
+  : mBlockId(other.mBlockId), mDb(other.mDb), m_sector(other.m_sector)
 {
   for (const auto & ag : other.mAgents)
     mAgents.push_back(ag->Clone(*this));
 }
 
+
+Block::Block(Block &&other)
+  : mBlockId(other.mBlockId), mDb(other.mDb), m_sector(other.m_sector), mAgents(std::move(other.mAgents))
+{
+
+}
+
+Block::Block(const Block &other, Sector &parent)
+  : mBlockId(other.mBlockId), mDb(other.mDb), m_sector(parent)
+{
+  for (const auto & ag : other.mAgents)
+    mAgents.push_back(ag->Clone(*this));
+}
+
+Block::Block(Block &&other, Sector &parent)
+  : mBlockId(other.mBlockId), mDb(other.mDb), m_sector(parent), mAgents(std::move(other.mAgents))
+{
+
+}
+
 // TODO: проверить исключения.
-Block::Block(const DataBase & db, const rapidjson::Value &val)
+Block::Block(const DataBase &db, const rapidjson::Value &val, Sector &parent, BlockId id)
+  : mBlockId(id), mDb(db), m_sector(parent)
 {
   if (val.HasMember("agents"))
   {
@@ -42,13 +58,9 @@ Block::Block(const DataBase & db, const rapidjson::Value &val)
   }
 }
 
-Block::~Block()
+std::unique_ptr<Block> Block::Clone(Sector &parent)
 {
-}
-
-std::unique_ptr<Block> Block::Clone()
-{
-  return std::make_unique<Block>(*this);
+  return std::make_unique<Block>(*this, parent);
 }
 
 void Block::DrawGui(const Magnum::Timeline &dt)
@@ -68,12 +80,12 @@ bool Block::AddAgent(std::unique_ptr<Accessor> accessor)
 
 const std::unique_ptr<StaticBlock> & Block::GetStaticPart() const
 {
-  return mDb->GetBlockStaticPart(mBlockId);
+  return mDb.GetBlockStaticPart(mBlockId);
 }
 
 const DataBase &Block::GetDataBase() const
 {
-  return *mDb;
+  return mDb;
 }
 
 boost::optional<Accessor &> Block::GetAgent(AccessorId type, SideIndex side, AccessorDirection dir)
@@ -93,6 +105,11 @@ boost::optional<Accessor &> Block::GetAgent(AccessorId type, SideIndex side, Acc
 
 Block *Block::GetNeighbour(SideIndex side)
 {
-  return m_sector->GetBlockDynamic(cs::Side(cs::BItoSB(pos), side));
+  return m_sector.GetBlockDynamic(cs::Side(cs::BItoSB(mPos), side));
+}
+
+void Block::SetPos(IndexType pos)
+{
+  mPos = pos;
 }
 

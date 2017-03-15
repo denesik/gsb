@@ -16,6 +16,8 @@
 #include <map>
 #include <boost\optional\optional.hpp>
 
+struct FakeData;
+
 // TODO: Заменить const std::unique_ptr<***> & 
 // на std::optional<const *** &>  ???
 class DataBase
@@ -41,7 +43,7 @@ public:
 
   /// Создает блок.
   /// Если невозможно создать блоксданным ид вернет блок воздуха.
-  std::tuple<BlockId, std::unique_ptr<TesselatorData>,  std::unique_ptr<Block>> CreateBlock(BlockId id) const;
+  std::tuple<BlockId, std::unique_ptr<TesselatorData>,  std::unique_ptr<Block>> CreateBlock(Sector &parent, BlockId id) const;
   
   boost::optional<ItemId> ItemIdFromName(const std::string& name) const;
 
@@ -54,6 +56,8 @@ public:
   /// Вероятно ид рецептов нужны.
   std::vector<const IRecipe *> GetRecipes(const IRecipe & as_this, const std::vector<std::tuple<ItemId, size_t>> &items) const;
   const std::vector<std::unique_ptr<IRecipe>> & GetSameRecipes(const IRecipe & as_this) const;
+
+  FakeData &GetFakeData();
 
 private:
   std::array<std::tuple<std::unique_ptr<StaticBlock>, std::unique_ptr<Block>>, 0xFFFF> mBlocks;
@@ -71,7 +75,6 @@ private:
   const TextureAtlas &mAtlasItems;
 
 private:
-  struct FakeData;
   std::unique_ptr<FakeData> mFakeData;
 
 };

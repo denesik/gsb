@@ -25,15 +25,25 @@ class Sector;
 class Block : public IGui
 {
 public:
-  using factory = TemplateFactory<std::string, Block, void(const DataBase &, const rapidjson::Value &)>;
+  using factory = TemplateFactory<std::string, Block, void(const DataBase &, const rapidjson::Value &, Sector &, BlockId)>;
 
-  // TODO: Скорей всего надо передавать сектор вместо бд.
-  Block();
-  Block(const DataBase & db, const rapidjson::Value &json);
+  Block() = delete;
+  virtual ~Block() = default;
+
   Block(const Block &other);
-  ~Block();
+  Block(Block &&other);
+  /// Не используем операторы копирования и перемещения.
+  const Block &operator=(const Block &other) = delete;
+  Block &operator=(Block &&other) = delete;
 
-  virtual std::unique_ptr<Block> Clone();
+  /// Конструкторы для клонирования.
+  Block(const Block &other, Sector &parent);
+  Block(Block &&other, Sector &parent);
+
+  /// Создаем элемент через фабрику.
+  Block(const DataBase &db, const rapidjson::Value &val, Sector &parent, BlockId id);
+
+  virtual std::unique_ptr<Block> Clone(Sector &parent);
 
   virtual void Update(const Magnum::Timeline &dt) {};
 
@@ -52,13 +62,16 @@ public:
 
   Block *GetNeighbour(SideIndex side);
 
-public:
-  IndexType pos;
-  Sector *m_sector;
+  void SetPos(IndexType pos);
 
 public:
-  DataBase *mDb;
+  Sector &m_sector;
+  const DataBase &mDb;
   BlockId mBlockId;
+
+protected:
+  IndexType mPos;
+
 protected:
   //boost::container::flat_multimap<AgentId, std::unique_ptr<Agent>> mAgents;
   std::vector<std::unique_ptr<Accessor>> mAgents;

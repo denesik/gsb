@@ -302,5 +302,8 @@
     <ClInclude Include="src\ThreadProcess.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="src\DataBaseFakeData.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

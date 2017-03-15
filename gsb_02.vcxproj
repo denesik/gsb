@@ -69,6 +69,7 @@
     <ClInclude Include="src\BlockAutoCrafter.h" />
     <ClInclude Include="src\Block.h" />
     <ClInclude Include="src\DataBase.h" />
+    <ClInclude Include="src\DataBaseFakeData.h" />
     <ClInclude Include="src\StaticBlock.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\configure.h" />

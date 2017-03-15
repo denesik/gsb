@@ -24,11 +24,22 @@ class BlockAutoCrafter : public Block
 {
 public:
   BlockAutoCrafter() = delete;
-  ~BlockAutoCrafter();
-  BlockAutoCrafter(const DataBase & db, const rapidjson::Value &json);
-  BlockAutoCrafter(const BlockAutoCrafter &other);
+  virtual ~BlockAutoCrafter() = default;
 
-  std::unique_ptr<Block> Clone() override;
+  BlockAutoCrafter(const BlockAutoCrafter &other);
+  BlockAutoCrafter(BlockAutoCrafter &&other);
+  /// Не используем операторы копирования и перемещения.
+  const BlockAutoCrafter &operator=(const BlockAutoCrafter &other) = delete;
+  BlockAutoCrafter &operator=(BlockAutoCrafter &&other) = delete;
+
+  /// Конструкторы для клонирования.
+  BlockAutoCrafter(const BlockAutoCrafter &other, Sector &parent);
+  BlockAutoCrafter(BlockAutoCrafter &&other, Sector &parent);
+
+  /// Создаем элемент через фабрику.
+  BlockAutoCrafter(const DataBase &db, const rapidjson::Value &val, Sector &parent, BlockId id);
+
+  std::unique_ptr<Block> Clone(Sector &parent) override;
 
   void DrawGui(const Magnum::Timeline &dt) override;
 

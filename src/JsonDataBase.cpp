@@ -6,6 +6,7 @@
 #include "DataBase.h"
 #include <boost/exception/diagnostic_information.hpp>
 #include "Item.h"
+#include "DataBaseFakeData.h"
 
 JsonDataBase::JsonDataBase(const std::string path) : mPath(path)
 {
@@ -41,7 +42,7 @@ bool LoadItem(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &v
   return true;
 }
 
-bool LoadBlock(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &val, const std::string & name, int id)
+bool LoadBlock(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &val, const std::string & name, BlockId id)
 {
   auto static_part = std::make_unique<StaticBlock>();
   std::unique_ptr<Block> dynamic_part = nullptr;
@@ -50,7 +51,7 @@ bool LoadBlock(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &
   {
     std::string type = val["type"].GetString();
     if (!dynamic_part)
-      dynamic_part = Block::factory::create(type, db, val);
+      dynamic_part = Block::factory::create(type, db, val, db.GetFakeData().sector, id);
   }
 
   if (val.HasMember("tesselator"))
@@ -64,12 +65,6 @@ bool LoadBlock(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &
 
       static_part->SetTesselator(std::move(tess));
     }
-  }
-
-  if (dynamic_part)
-  {
-    dynamic_part->mBlockId = id;
-    dynamic_part->mDb = &db;
   }
 
   db.AddBlock(name, id, std::move(static_part), std::move(dynamic_part));

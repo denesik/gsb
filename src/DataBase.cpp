@@ -3,6 +3,7 @@
 #include "TesselatorMicroBlock.h"
 #include "World.h"
 #include "Sector.h"
+#include "DataBaseFakeData.h"
 
 using namespace Magnum;
 
@@ -86,7 +87,7 @@ const std::unique_ptr<IItem> & DataBase::GetItem(ItemId id) const
   return mItems[id];
 }
 
-std::tuple<BlockId, std::unique_ptr<TesselatorData>, std::unique_ptr<Block>> DataBase::CreateBlock(BlockId id) const
+std::tuple<BlockId, std::unique_ptr<TesselatorData>, std::unique_ptr<Block>> DataBase::CreateBlock(Sector &parent, BlockId id) const
 {
   std::unique_ptr<TesselatorData> tess_data;
   std::unique_ptr<Block> block;
@@ -98,7 +99,7 @@ std::tuple<BlockId, std::unique_ptr<TesselatorData>, std::unique_ptr<Block>> Dat
     const auto &tesselator = static_block->GetTesselator();
 
     tess_data = (tesselator && tesselator->UseTesselatorData()) ? std::make_unique<TesselatorData>() : nullptr;
-    block = dyn ? dyn->Clone() : nullptr;
+    block = dyn ? dyn->Clone(parent) : nullptr;
   }
 
   return{ id , std::move(tess_data), std::move(block) };
@@ -155,13 +156,8 @@ const std::vector<std::unique_ptr<IRecipe>> & DataBase::GetSameRecipes(const IRe
   return same == mRecipes.end() ? null : same->second;
 }
 
-struct DataBase::FakeData
+FakeData & DataBase::GetFakeData()
 {
-  FakeData(const DataBase &db)
-    : world(db), sector(world, SPos{})
-  {
+  return *mFakeData;
+}
 
-  }
-  World world;
-  Sector sector;
-};

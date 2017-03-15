@@ -31,15 +31,16 @@ class TemplateFactory<ID, Base, void(Args...)>
 private:
   using Id = ID;
   using ElementType = std::unique_ptr<Base>;
-  using Creator = std::function<ElementType(Args &&...)>;
+  using Creator = std::function<ElementType(Args...)>;
   using Container = std::map<Id, Creator>;
   using FactoryType = TemplateFactory<Id, Base, void(Args...)>;
 public:
 
-  static ElementType create(const Id &id, Args &&...args)
+  template<class ...CArgs>
+  static ElementType create(const Id &id, CArgs &&...args)
   {
     const auto &it = GetContainer().find(id);
-    return (it != GetContainer().end()) ? (it->second)(std::forward<Args>(args)...) : nullptr;
+    return (it != GetContainer().end()) ? (it->second)(std::forward<CArgs>(args)...) : nullptr;
   }
 
 private:
