@@ -153,6 +153,9 @@
     <ClCompile Include="src\BlockSpriteAnimated.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="src\ChunkHelper.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -310,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="src\BlockSpriteAnimated.h">
       <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ChunkHelper.h">
+      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

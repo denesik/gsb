@@ -38,6 +38,7 @@ void DrawableArea::SetPos(const SPos &pos)
   }
 }
 
+//TODO: Не компилировать сектор, если он компилируется в данный момент.
 void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
 {
   // Обновляем список видимых секторов N раз в сек.
