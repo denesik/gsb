@@ -6,30 +6,38 @@
 #include <array>
 #include "tools\CoordSystem.h"
 
+// —ектор состоит из чанков.
+// „анки нужны дл€ обновлени€ света (сервер) и геометрии (клиент).
+// ѕробегаем по чанкам в секторе. ƒл€ каждого чанка перестраиваем геометрию, если нужно.
+
 enum
 {
+  T_SECTOR_SIZE = 16,
+  T_SECTOR_HEIGHT = 256,
+
   CHUNK_SIZE = 8,
   CHUNK_CAPACITY = CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE,
-  CHUNK_TABLE_SIZE = SECTOR_SIZE / CHUNK_SIZE,
-  CHUNK_TABLE_HEIGHT = SECTOR_HEIGHT / CHUNK_SIZE,
+
+  CHUNK_TABLE_SIZE = T_SECTOR_SIZE / CHUNK_SIZE,
+  CHUNK_TABLE_HEIGHT = T_SECTOR_HEIGHT / CHUNK_SIZE,
   CHUNK_TABLE_CAPACITY = CHUNK_TABLE_SIZE * CHUNK_TABLE_SIZE * CHUNK_TABLE_HEIGHT,
 
-  CHUNK_INFO_MIDDLE = 1,
-  CHUNK_INFO_NEIGHBOR_1 = 6,
-  CHUNK_INFO_NEIGHBOR_2 = 12,
-  CHUNK_INFO_NEIGHBOR_3 = 8,
-  CHUNK_INFO_CAPACITY = CHUNK_INFO_MIDDLE + CHUNK_INFO_NEIGHBOR_1 + CHUNK_INFO_NEIGHBOR_2 + CHUNK_INFO_NEIGHBOR_3,
+  AROUND_MIDDLE = 1,
+  AROUND_NEIGHBOR_1 = 6,
+  AROUND_NEIGHBOR_2 = 12,
+  AROUND_NEIGHBOR_3 = 8,
+  AROUND_CAPACITY = AROUND_MIDDLE + AROUND_NEIGHBOR_1 + AROUND_NEIGHBOR_2 + AROUND_NEIGHBOR_3,
 
-  CHUNK_INFO_MIDDLE_CAPACITY = CHUNK_CAPACITY,
-  CHUNK_INFO_NEIGHBOR_1_CAPACITY = CHUNK_SIZE * CHUNK_SIZE,
-  CHUNK_INFO_NEIGHBOR_2_CAPACITY = CHUNK_SIZE,
-  CHUNK_INFO_NEIGHBOR_3_CAPACITY = 1,
+  CHUNK_MIDDLE_CAPACITY = CHUNK_CAPACITY,
+  CHUNK_NEIGHBOR_1_CAPACITY = CHUNK_SIZE * CHUNK_SIZE,
+  CHUNK_NEIGHBOR_2_CAPACITY = CHUNK_SIZE,
+  CHUNK_NEIGHBOR_3_CAPACITY = 1,
 
   T_CAPACITY =
-  CHUNK_INFO_MIDDLE_CAPACITY * CHUNK_INFO_MIDDLE +
-  CHUNK_INFO_NEIGHBOR_1_CAPACITY * CHUNK_INFO_NEIGHBOR_1 +
-  CHUNK_INFO_NEIGHBOR_2_CAPACITY * CHUNK_INFO_NEIGHBOR_2 +
-  CHUNK_INFO_NEIGHBOR_3_CAPACITY * CHUNK_INFO_NEIGHBOR_3,
+  CHUNK_MIDDLE_CAPACITY * AROUND_MIDDLE +
+  CHUNK_NEIGHBOR_1_CAPACITY * AROUND_NEIGHBOR_1 +
+  CHUNK_NEIGHBOR_2_CAPACITY * AROUND_NEIGHBOR_2 +
+  CHUNK_NEIGHBOR_3_CAPACITY * AROUND_NEIGHBOR_3,
 
 };
 
@@ -41,40 +49,46 @@ struct SectorAround
   {
 
   };
-  std::weak_ptr<Sector> area[CHUNK_INFO_CAPACITY];
+  std::weak_ptr<Sector> around[AROUND_CAPACITY];
 };
 
-struct ChunkAround
+// »ндекс соседей вокруг источника в таблице соседей.
+struct Around
 {
-  std::array<IndexType, CHUNK_INFO_MIDDLE> index_middle;
-  std::array<IndexType, CHUNK_INFO_NEIGHBOR_1> index_neighboar_1;
-  std::array<IndexType, CHUNK_INFO_NEIGHBOR_2> index_neighboar_2;
-  std::array<IndexType, CHUNK_INFO_NEIGHBOR_3> index_neighboar_3;
+  std::array<IndexType, AROUND_MIDDLE> middle;
+  std::array<IndexType, AROUND_NEIGHBOR_1> neighbor_1;
+  std::array<IndexType, AROUND_NEIGHBOR_2> neighbor_2;
+  std::array<IndexType, AROUND_NEIGHBOR_3> neighbor_3;
 };
 
+// Ѕлоки внутри сектора и слой блоков толщиной 1 в соседних секторах.
 struct BlockAround
 {
   // »ндексы блоков в секторе дл€ текущего чанка.
-  std::array<std::array<IndexType, CHUNK_INFO_MIDDLE_CAPACITY>, CHUNK_INFO_MIDDLE> middle;
+  std::array<std::array<IndexType, CHUNK_MIDDLE_CAPACITY>, AROUND_MIDDLE> middle;
 
   // »ндексы блоков в секторе дл€ 1-го соседнего чанка.
-  std::array<std::array<IndexType, CHUNK_INFO_NEIGHBOR_1_CAPACITY>, CHUNK_INFO_NEIGHBOR_1> neighbor_1;
+  std::array<std::array<IndexType, CHUNK_NEIGHBOR_1_CAPACITY>, AROUND_NEIGHBOR_1> neighbor_1;
 
   // »ндексы блоков в секторе дл€ 2-х соседних чанков.
-  std::array<std::array<IndexType, CHUNK_INFO_NEIGHBOR_2_CAPACITY>, CHUNK_INFO_NEIGHBOR_2> neighbor_2;
+  std::array<std::array<IndexType, CHUNK_NEIGHBOR_2_CAPACITY>, AROUND_NEIGHBOR_2> neighbor_2;
 
   // »ндексы блоков в секторе дл€ 3-х соседних чанков.
-  std::array<std::array<IndexType, CHUNK_INFO_NEIGHBOR_3_CAPACITY>, CHUNK_INFO_NEIGHBOR_3> neighbor_3;
+  std::array<std::array<IndexType, CHUNK_NEIGHBOR_3_CAPACITY>, AROUND_NEIGHBOR_3> neighbor_3;
+};
+
+// »ндекс чанка и индекс сектора вокруг текущего чанка.
+// ≈сли чанк в соседнем секторе, индекс определен дл€ чанка в соседнем секторе. 
+struct ChunkAround
+{
+  IndexType sector;
+  IndexType chunk;
 };
 
 struct ChunkInfo
 {
   // “аблица индексов на сектора вокруг текущего чанка.
-  std::array<IndexType, CHUNK_INFO_CAPACITY> index_sector_around;
-
-  // »ндексы чанков вокруг текущего чанка.
-  // ≈сли чанк в соседнем секторе, индекс определен дл€ чанка в соседнем секторе. 
-  std::array<IndexType, CHUNK_INFO_CAPACITY> index_chunk_around;
+  std::array<ChunkAround, AROUND_CAPACITY> around;
 
   // »ндексы блоков дл€ зоны в центре которой текущий чанк.
   BlockAround blocks;
@@ -96,5 +110,7 @@ struct ChunkHelper
 
   std::array<ChunkInfo, CHUNK_TABLE_CAPACITY> chunk_info;
 };
+
+void test();
 
 #endif // ChunkHelper_h__

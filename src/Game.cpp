@@ -20,10 +20,13 @@
 #include <boost/optional.hpp>
 #include <exception>
 #include <IMapLoader.h>
+#include "ChunkHelper.h"
 
 Game::Game(const Arguments & arguments)
   : Platform::Application{ arguments, Configuration{}.setTitle("sge").setWindowFlags(Configuration::WindowFlag::Resizable) }
 {
+  test();
+
   auto t = std::uncaught_exceptions();
 
   atlas.LoadDirectory("data");
