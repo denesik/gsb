@@ -85,7 +85,7 @@ void Crafter::Update(const Magnum::Timeline &dt, const DataBase &db)
     const auto &recipes = db.GetRecipes(m_recipe_tag, mInput.Items());
     if (!recipes.empty())
     {
-      m_current_recipe = recipes.front();
+      m_current_recipe = static_cast<const IRecipe &>(recipes.front());
     }
   }
 }
