@@ -96,17 +96,17 @@
         "type":"AccessorItem",
 		"name":"0"
       },
-	  {
+	    {
         "type":"AccessorItem",
-		"name":"1"
+		    "name":"1"
       },
-	  {
+	    {
         "type":"AccessorItem",
-		"name":"2"
+		    "name":"2"
       },
-	  {
+	    {
         "type":"AccessorItem",
-		"name":"3"
+		    "name":"3"
       }
     ],
 	"Crafter1":
@@ -129,33 +129,34 @@
     "name": "number",
     "id": 8,
     "model": "",
-	"type":"BlockSpriteAnimated"
+	  "type":"BlockSpriteAnimated"
   },
   {
     "section": "item",
     "type": "Item",
     "id": 1,
     "name": "coal",
-	"tex": "data/items/dirt.tga"
+	  "tex": "data/items/coal_lump.tga"
   },
   {
     "section": "item",
     "type": "Item",
     "id": 2,
     "name": "iron_ingot",
-	"tex": "data/items/grass_top.tga"
+	  "tex": "data/items/iron_ingot.tga"
   },
   {
     "section": "item",
     "type": "Item",
     "id": 3,
-    "name": "iron_ore"
+    "name": "iron_ore",
+	  "tex": "data/items/iron_ore.tga"
   },
   {
     "section": "recipe",
     "type": "RecipeHand",
     "id": 1,
-	"time": 5.0,
+	  "time": 5.0,
     "input": [["coal", 1], ["iron_ore", 1]],
     "output": [["iron_ingot", 1]]
   },
