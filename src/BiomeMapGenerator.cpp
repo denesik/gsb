@@ -6,8 +6,8 @@
 BiomeMapGenerator::BiomeMapGenerator(const DataBase &db, int seed) : IMapGenerator(db)
 {
 	noise.SetSeed(seed);
-	noise.SetNoiseType(FastNoise::Perlin);
-	noise.SetFrequency(0.5f);
+	noise.SetNoiseType(FastNoise::Cellular);
+	noise.SetFrequency(0.2f);
 
 	mBiomes[static_cast<size_t>(ClassicalBiome::Tundra)]         = std::make_unique<ConfiguratableMapGenerator>(db, MapGenConfiguration{ "dirt", "snow" });
 	mBiomes[static_cast<size_t>(ClassicalBiome::Savanna)]        = std::make_unique<ConfiguratableMapGenerator>(db, MapGenConfiguration{ "dirt", "grass" });

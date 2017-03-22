@@ -11,7 +11,7 @@ struct MapGenConfiguration
 	int water_level = 80;
 	int land_level = 47;
 	float hill_multiplier = 33.f;
-	float freq = 0.05f;
+	float freq = 0.01f;
 	std::string dirt_analog = "dirt";
 	std::string grass_analog = "grass";
 };

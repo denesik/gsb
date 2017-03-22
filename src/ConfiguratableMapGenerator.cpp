@@ -4,7 +4,7 @@
 ConfiguratableMapGenerator::ConfiguratableMapGenerator(const DataBase & db, MapGenConfiguration c, int seed) : IMapGenerator(db), conf(c)
 {
   noise.SetSeed(seed);
-  noise.SetNoiseType(FastNoise::Perlin);
+  noise.SetNoiseType(FastNoise::SimplexFractal);
   //noise.SetCellularDistanceFunction(FastNoise::Natural);
   //noise.SetCellularReturnType(FastNoise::NoiseLookup);
 
@@ -29,6 +29,12 @@ void ConfiguratableMapGenerator::Generate(Sector & sector) const
     {
       const auto &wb_pos = cs::SBtoWB({ i, 0, k }, sec_pos);
       auto value = static_cast<float>(noise.GetNoise(static_cast<float>(wb_pos.x()), static_cast<float>(wb_pos.z()))) / 2.f + 1.f;
+
+	  auto sq = static_cast<float>(noise.GetNoise(static_cast<float>(-wb_pos.x()), static_cast<float>(-wb_pos.z()))) + 1.f;
+	  sq = std::pow(sq, 20);
+	  sq = std::max(std::logf(sq) / std::logf(10), 1.f);
+
+	  value = (value + value + sq) / 3.f;
 
 	  int hill_level = static_cast<int>(value * conf.hill_multiplier + conf.land_level);
 
@@ -61,12 +67,6 @@ void ConfiguratableMapGenerator::Generate(Sector & sector) const
 	  {
 		  auto sbpos = SBPos(i, j, k);
 		  sector.CreateBlock(sbpos, air);
-	  }
-
-	  if (rand() % 50 == 0)
-	  {
-		  auto sbpos = SBPos(i, hill_level + 1, k);
-		  sector.CreateBlock(sbpos, furnance);
 	  }
     }
 }
