@@ -21,6 +21,7 @@ void ConfiguratableMapGenerator::Generate(Sector & sector) const
   BlockId grass = m_Db.BlockIdFromName(conf.grass_analog).value_or(0);
   BlockId water = m_Db.BlockIdFromName("water").value_or(0);
   BlockId furnance = m_Db.BlockIdFromName("furnance").value_or(0);
+  BlockId stone = m_Db.BlockIdFromName("stone").value_or(0);
 
   const auto &sec_pos = sector.GetPos();
   for (auto i = 0; i < SECTOR_SIZE; ++i)
@@ -31,7 +32,14 @@ void ConfiguratableMapGenerator::Generate(Sector & sector) const
 
 	  int hill_level = static_cast<int>(value * conf.hill_multiplier + conf.land_level);
 
-	  for (auto j = 0; j < std::min(hill_level, int(SECTOR_HEIGHT)); ++j)
+	  
+	  for (auto j = 0; j < std::min(conf.land_level, int(SECTOR_HEIGHT)); ++j)
+	  {
+	    auto sbpos = SBPos(i, j, k);
+	    sector.CreateBlock(sbpos, stone);
+	  }
+
+	  for (auto j = conf.land_level; j < std::min(hill_level, int(SECTOR_HEIGHT)); ++j)
 	  {
 		  auto sbpos = SBPos(i, j, k);
 		  sector.CreateBlock(sbpos, dirt);

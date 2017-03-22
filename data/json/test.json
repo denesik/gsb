@@ -224,5 +224,69 @@
         "data/sand.png"
       ]
     }
+  },
+  {
+    "section": "block",
+    "name": "rainforest_grass",
+    "id": 10,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_top_w.png",
+        "data/dirt.png"
+      ]
+    }
+  },
+  {
+    "section": "block",
+    "name": "taiga_grass",
+    "id": 10,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_top_t.png",
+        "data/dirt.png"
+      ]
+    }
+  },
+  {
+    "section": "block",
+    "name": "seasonforest_grass",
+    "id": 10,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_top_f.png",
+        "data/dirt.png"
+      ]
+    }
+  },
+  {
+    "section": "block",
+    "name": "snow",
+    "id": 10,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/grass_top_s.png",
+        "data/grass_top_s.png",
+        "data/grass_top_s.png",
+        "data/grass_top_s.png",
+        "data/grass_top_s.png",
+        "data/grass_top_s.png"
+      ]
+    }
   }
 ]

@@ -9,16 +9,16 @@ BiomeMapGenerator::BiomeMapGenerator(const DataBase &db, int seed) : IMapGenerat
 	noise.SetNoiseType(FastNoise::Perlin);
 	noise.SetFrequency(0.5f);
 
-	mBiomes[static_cast<size_t>(ClassicalBiome::Tundra)]         = std::make_unique<ConfiguratableMapGenerator>(db, MapGenConfiguration{ "dirt", "dirt" });
+	mBiomes[static_cast<size_t>(ClassicalBiome::Tundra)]         = std::make_unique<ConfiguratableMapGenerator>(db, MapGenConfiguration{ "dirt", "snow" });
 	mBiomes[static_cast<size_t>(ClassicalBiome::Savanna)]        = std::make_unique<ConfiguratableMapGenerator>(db, MapGenConfiguration{ "dirt", "grass" });
 	mBiomes[static_cast<size_t>(ClassicalBiome::Desert)]         = std::make_unique<ConfiguratableMapGenerator>(db, MapGenConfiguration{ "sand", "sand" });
 	mBiomes[static_cast<size_t>(ClassicalBiome::Swampland)]      = std::make_unique<ConfiguratableMapGenerator>(db, MapGenConfiguration{ "dirt", "grass" });
-	mBiomes[static_cast<size_t>(ClassicalBiome::Taiga)]          = std::make_unique<ConfiguratableMapGenerator>(db, MapGenConfiguration{ "dirt", "dirt" });
+	mBiomes[static_cast<size_t>(ClassicalBiome::Taiga)]          = std::make_unique<ConfiguratableMapGenerator>(db, MapGenConfiguration{ "dirt", "taiga_grass" });
 	mBiomes[static_cast<size_t>(ClassicalBiome::Shrubland)]      = std::make_unique<ConfiguratableMapGenerator>(db, MapGenConfiguration{ "dirt", "dirt" });
 	mBiomes[static_cast<size_t>(ClassicalBiome::Forest)]         = std::make_unique<ConfiguratableMapGenerator>(db, MapGenConfiguration{ "dirt", "grass" });
 	mBiomes[static_cast<size_t>(ClassicalBiome::Plains)]         = std::make_unique<ConfiguratableMapGenerator>(db, MapGenConfiguration{ "dirt", "grass" });
-	mBiomes[static_cast<size_t>(ClassicalBiome::SeasonalForest)] = std::make_unique<ConfiguratableMapGenerator>(db, MapGenConfiguration{ "dirt", "grass" });
-	mBiomes[static_cast<size_t>(ClassicalBiome::Rainforest)]     = std::make_unique<ConfiguratableMapGenerator>(db, MapGenConfiguration{ "dirt", "grass" });
+	mBiomes[static_cast<size_t>(ClassicalBiome::SeasonalForest)] = std::make_unique<ConfiguratableMapGenerator>(db, MapGenConfiguration{ "dirt", "seasonforest_grass" });
+	mBiomes[static_cast<size_t>(ClassicalBiome::Rainforest)]     = std::make_unique<ConfiguratableMapGenerator>(db, MapGenConfiguration{ "dirt", "rainforest_grass" });
 }
 
 void BiomeMapGenerator::Generate(Sector & sector) const
