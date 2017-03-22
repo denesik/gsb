@@ -56,11 +56,13 @@ void AccessorItem::DrawGui(const Magnum::Timeline &dt)
     if (i < mItems.size())
     {
       const auto &coord = static_cast<const Item &>(*(db.GetItem(std::get<0>(mItems[i])))).TextureCoord();
-      ImGui::Image(ImTextureID(1), std::to_string(std::get<1>(mItems[i])).c_str(), ImVec2(32, 32), ImVec2(coord.left(), coord.bottom()), ImVec2(coord.right(), coord.top()));
-    }
+      ImGui::Image(ImTextureID(1), std::to_string(std::get<1>(mItems[i])).c_str(), ImVec2(32, 32), ImVec2(coord.left(), coord.top()), ImVec2(coord.right(), coord.bottom()));
+	  if(ImGui::IsItemHovered())
+		  ImGui::SetTooltip("%s x%d\n%s", std::to_string(std::get<0>(mItems[i])).c_str(), std::get<1>(mItems[i]), "description");
+	}
     else
     {
-      ImGui::Dummy(ImVec2(32, 32));
+	  ImGui::Dummy(ImVec2(32, 32));
     }
     draw_list->AddRect(base_pos, ImVec2(base_pos.x + 32, base_pos.y + 32), IM_COL32(255, 255, 255, 100));
     if ((i % 2) < 1) ImGui::SameLine();

@@ -157,6 +157,15 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\TesselatorTexturedBlock.cpp">
+          <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BiomeMapGenerator.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConfiguratableMapGenerator.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="FastNoise\FastNoise.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
@@ -322,6 +331,12 @@
     </ClInclude>
     <ClInclude Include="src\TesselatorTexturedBlock.h">
       <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BiomeMapGenerator.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ConfiguratableMapGenerator.h">
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
