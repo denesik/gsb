@@ -46,8 +46,8 @@ void Sector::SetCompilerData(SectorCompiler &sectorCompiler)
   if (auto sector = mWorld.GetSector(cs::Back(mPos)).lock())
     sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::BACK);
 
-  if (auto sector = mWorld.GetSector(cs::Bottom(mPos)).lock())
-    sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::BOTTOM);
+  if (auto sector = mWorld.GetSector(cs::Down(mPos)).lock())
+    sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::DOWN);
 }
 
 void Sector::Update()

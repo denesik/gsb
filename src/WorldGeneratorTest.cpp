@@ -39,7 +39,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 
@@ -55,7 +55,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 2);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 
@@ -71,7 +71,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 3);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 
@@ -87,7 +87,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 
@@ -103,7 +103,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 4);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 
@@ -119,7 +119,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 5);
+      data.set_texture(IDOWN, 5);
       continue;
     }
 
@@ -133,7 +133,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 5);
+      data.set_texture(IDOWN, 5);
       continue;
     }
 
@@ -147,7 +147,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 3);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 5);
+      data.set_texture(IDOWN, 5);
       continue;
     }
 
@@ -161,7 +161,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 2);
       data.set_texture(ILEFT, 3);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 5);
+      data.set_texture(IDOWN, 5);
       continue;
     }
 
@@ -175,7 +175,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 2);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 5);
+      data.set_texture(IDOWN, 5);
       continue;
     }
 
@@ -189,7 +189,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 2);
       data.set_texture(ILEFT, 3);
       data.set_texture(ITOP, 4);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 
@@ -203,7 +203,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 3);
       data.set_texture(ITOP, 4);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 
@@ -217,7 +217,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 2);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 4);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 
@@ -231,7 +231,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 4);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 

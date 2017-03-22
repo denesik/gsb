@@ -10,7 +10,6 @@
 #include <Magnum/Magnum.h>
 #include <assert.h>
 
-// TODO BOTTOM --> DOWN
 enum SideIndex : int
 {
   IFRONT = 0,
@@ -18,7 +17,7 @@ enum SideIndex : int
   IBACK = 2,
   ILEFT = 3,
   ITOP = 4,
-  IBOTTOM = 5,
+  IDOWN = 5,
 };
 
 enum SideFlags : int
@@ -30,7 +29,7 @@ enum SideFlags : int
   BACK = 1 << IBACK,
   LEFT = 1 << ILEFT,
   TOP = 1 << ITOP,
-  BOTTOM = 1 << IBOTTOM,
+  DOWN = 1 << IDOWN,
 
   ALL = 0x3F,
 };
@@ -211,7 +210,7 @@ namespace cs
     return{ pos.x(), pos.y() + 1, pos.z() };
   }
 
-  inline SBPos Bottom(const SBPos &pos)
+  inline SBPos Down(const SBPos &pos)
   {
     return{ pos.x(), pos.y() - 1, pos.z() };
   }
@@ -234,7 +233,7 @@ namespace cs
     funcs[IBACK] = &Back;
     funcs[ILEFT] = &Left;
     funcs[ITOP] = &Top;
-    funcs[IBOTTOM] = &Bottom;
+    funcs[IDOWN] = &Down;
 
     return funcs[side](pos);
   }

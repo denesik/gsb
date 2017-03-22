@@ -22,6 +22,8 @@
 #include "ChunkHelper.h"
 #include <Magnum/Version.h>
 
+static const int tmp_area_size = 1;
+
 Game::Game(const Arguments & arguments)
   : Platform::Application{ arguments, Configuration{}.setTitle("sge").setWindowFlags(Configuration::WindowFlag::Resizable).setVersion(Magnum::Version::GL330) }
 {
@@ -53,8 +55,8 @@ Game::Game(const Arguments & arguments)
 
   //mWorld->SetLoader(std::move(mapgen));
 
-  mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{});
-  mUpdatableArea = std::make_unique<UpdatableArea>(*mWorld, SPos{}, 0);
+  mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{}, tmp_area_size);
+  mUpdatableArea = std::make_unique<UpdatableArea>(*mWorld, SPos{}, tmp_area_size);
 
   setSwapInterval(0);
   setMouseLocked(true);
@@ -136,13 +138,13 @@ void Game::drawEvent()
       ImGui::Text("fps: %i; max: %i; min: %i; long frame: %i%%",
         mFpsCounter.GetCount(), mFpsCounter.GetMaxFps(), mFpsCounter.GetMinFps(), mFpsCounter.GetPercentLongFrame());
 
-      static int drawable_area_size = 5;
+      static int drawable_area_size = tmp_area_size;
       int das = drawable_area_size;
       ImGui::SliderInt("Drawable area size", &drawable_area_size, 0, 10);
       if (das != drawable_area_size)
         mDrawableArea->SetRadius(drawable_area_size);
 
-      static int updatable_area_size = 5;
+      static int updatable_area_size = tmp_area_size;
       int uas = updatable_area_size;
       ImGui::SliderInt("Updatable area size", &updatable_area_size, 0, 10);
       if (uas != updatable_area_size)

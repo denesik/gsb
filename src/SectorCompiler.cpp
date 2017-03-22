@@ -72,9 +72,9 @@ void SectorCompiler::ProcessSolidBlock(IndexType index, const STPos &tpos)
       side |= SideFlags::TOP;
   }
   {
-    const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Bottom(tpos))]);
+    const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Down(tpos))]);
     if (!block || !block->GetTesselator() || block->GetTesselator()->Type() != Tesselator::TesselatorType::SOLID_BLOCK)
-      side |= SideFlags::BOTTOM;
+      side |= SideFlags::DOWN;
   }
   {
     const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Back(tpos))]);
@@ -229,7 +229,7 @@ void SectorCompiler::GenerateIndex()
   }
   // bottom
   {
-    auto side = SideFlagIndex(SideFlags::BOTTOM);
+    auto side = SideFlagIndex(SideFlags::DOWN);
     i = 0;
     for (SBPosType z = 0; z < gSectorSize.z(); ++z)
       for (SBPosType x = 0; x < gSectorSize.x(); ++x)
