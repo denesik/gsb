@@ -19,7 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FastNoise\FastNoise.cpp" />
+    <ClCompile Include="FastNoise\FastNoise.cpp">
+      <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</TreatWarningAsError>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -48,7 +51,6 @@
     <ClCompile Include="src\Item.cpp" />
     <ClCompile Include="src\JsonDataBase.cpp" />
     <ClCompile Include="src\Log.cpp" />
-    <ClCompile Include="src\MapGenerator.cpp" />
     <ClCompile Include="src\MapLoader.cpp" />
     <ClCompile Include="src\PerlinNoise.cpp" />
     <ClCompile Include="src\Sector.cpp" />
@@ -102,7 +104,6 @@
     <ClInclude Include="src\Item.h" />
     <ClInclude Include="src\JsonDataBase.h" />
     <ClInclude Include="src\Log.h" />
-    <ClInclude Include="src\MapGenerator.h" />
     <ClInclude Include="src\MapLoader.h" />
     <ClInclude Include="src\PerlinNoise.h" />
     <ClInclude Include="src\Sector.h" />
@@ -218,6 +219,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4251;4267;4351;4373;4510;4610;4512;4661;4702;4706;4800;4910</DisableSpecificWarnings>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

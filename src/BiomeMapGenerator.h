@@ -3,6 +3,22 @@
 #include <IGui.h>
 #include "../FastNoise/FastNoise.h"
 #include <memory>
+#include <array>
+
+enum class ClassicalBiome
+{
+	Tundra,
+	Savanna,
+	Desert,
+	Swampland,
+	Taiga,
+	Shrubland,
+	Forest,
+	Plains,
+	SeasonalForest,
+	Rainforest,
+	BiomeCount
+};
 
 class BiomeMapGenerator : public IMapGenerator
 {
@@ -12,14 +28,15 @@ public:
 	// Inherited via IMapGenerator
 	void Generate(Sector & sector) const override;
 
-	void AddBiome(std::unique_ptr<IMapGenerator> && generator, float size = 1.f, const std::string & name = "");
+	void AddBiome(std::unique_ptr<IMapGenerator> && generator, ClassicalBiome biom);
 
 protected:
-	std::vector<std::tuple<std::unique_ptr<IMapGenerator>, float, std::string>> mBiomes;
+	std::array<std::unique_ptr<IMapGenerator>, static_cast<size_t>(ClassicalBiome::BiomeCount)> mBiomes;
 	int seed;
 private:
 	mutable FastNoise noise;
 
 	// Inherited via IGui
 	virtual void DrawGui(const Magnum::Timeline & dt) override;
+	ClassicalBiome BiomeSelector(float temperature, float precipitation) const;
 };

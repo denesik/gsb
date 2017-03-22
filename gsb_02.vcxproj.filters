@@ -81,9 +81,6 @@
     <ClCompile Include="src\TemplateFactory.h">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="src\MapGenerator.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="src\PerlinNoise.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
@@ -94,9 +91,6 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\TesselatorMicroBlock.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tools\Brezenham3D.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\tools\DebugLines.cpp">
@@ -174,6 +168,9 @@
     <ClCompile Include="src\IItem.cpp">
       <Filter>Файлы исходного кода\interfaces</Filter>
     </ClCompile>
+    <ClCompile Include="src\tools\Brezenham3D.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -233,16 +230,10 @@
     <ClInclude Include="src\Log.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\MapGenerator.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
     <ClInclude Include="src\PerlinNoise.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\MapLoader.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
-    <ClInclude Include="src\tools\Brezenham3D.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\Camera.h">

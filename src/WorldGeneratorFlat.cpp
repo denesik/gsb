@@ -9,6 +9,11 @@ WorldGeneratorFlat::WorldGeneratorFlat(const DataBase &db)
 {
 }
 
+WorldGeneratorFlat::WorldGeneratorFlat(const DataBase &db, const std::string & id)
+	: IMapGenerator(db), top_layer(id)
+{
+}
+
 
 WorldGeneratorFlat::~WorldGeneratorFlat()
 {
@@ -19,7 +24,7 @@ void WorldGeneratorFlat::Generate(Sector &sector) const
   const int dirt_level = 64;
   BlockId air = 0;
   BlockId dirt = m_Db.BlockIdFromName("dirt").value_or(0);
-  BlockId grass = m_Db.BlockIdFromName("grass").value_or(0);
+  BlockId grass = m_Db.BlockIdFromName(top_layer).value_or(0);
   BlockId furnance = m_Db.BlockIdFromName("furnance").value_or(0);
   BlockId number = m_Db.BlockIdFromName("number").value_or(0);
 

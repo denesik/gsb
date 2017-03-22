@@ -12,10 +12,9 @@
 #include "Sector.h"
 #include "World.h"
 #include "JsonDataBase.h"
-#include "MapGenerator.h"
 #include "IMapGenerator.h"
 #include "MapLoader.h"
-#include "tools/Brezenham3D.h"
+#include "tools\Brezenham3D.h"
 #include "WorldGeneratorFlat.h"
 #include <boost/optional.hpp>
 #include <exception>

@@ -1,8 +1,6 @@
 #include "World.h"
-#include "MapGenerator.h"
 #include "MapLoader.h"
 #include "BiomeMapGenerator.h"
-#include "ConfiguratableMapGenerator.h"
 #include "WorldGeneratorTest.h"
 #include "WorldGeneratorFlat.h"
 
