@@ -27,7 +27,7 @@ TextureAtlas::~TextureAtlas()
 void TextureAtlas::LoadDirectory(const std::string &directory)
 {
   PluginManager::Manager<Trade::AbstractImporter> manager{ MAGNUM_PLUGINS_IMPORTER_DIR };
-  std::unique_ptr<Trade::AbstractImporter> importer = manager.loadAndInstantiate("TgaImporter");
+  std::unique_ptr<Trade::AbstractImporter> importer = manager.loadAndInstantiate("PngImporter");
   if (!importer) std::exit(1);
 
   auto files = Directory::list(directory, Directory::Flag::SkipDirectories);
