@@ -171,6 +171,9 @@
     <ClCompile Include="src\WorldGeneratorTest.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="src\IItem.cpp">
+      <Filter>Файлы исходного кода\interfaces</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">

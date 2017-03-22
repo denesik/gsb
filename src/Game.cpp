@@ -32,7 +32,7 @@ Game::Game(const Arguments & arguments)
 
   atlas.LoadDirectory("data");
   mTexture.setWrapping(Sampler::Wrapping::ClampToEdge)
-    .setMagnificationFilter(Sampler::Filter::Linear)
+    .setMagnificationFilter(Sampler::Filter::Nearest)
     .setMinificationFilter(Sampler::Filter::Linear);
 
   // Перед использованием setSubImage нужно залить текстуру данными с помощью setImage
@@ -74,6 +74,7 @@ void Game::drawEvent()
 
   Renderer::enable(Renderer::Feature::DepthTest);
   Renderer::enable(Renderer::Feature::FaceCulling);
+  Renderer::setClearColor({ clear_color.x, clear_color.y, clear_color.z, clear_color.w });
 
   defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
 
