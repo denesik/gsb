@@ -32,8 +32,8 @@ private:
   std::array<BlockId, TESSELATOR_CAPACITY> mTesselators;
   std::array<TesselatorData, TESSELATOR_CAPACITY> mTesselatorsData;
   std::array<IndexType, SECTOR_CAPACITY> mIndexMiddle;
-  std::array<IndexType, SECTOR_SIZE * SECTOR_SIZE> mIndexBlocks[6];
-  std::array<IndexType, SECTOR_SIZE * SECTOR_SIZE> mIndexTess[6];
+  std::array<IndexType, SECTOR_SIZE * SECTOR_HEIGHT> mIndexBlocks[6];
+  std::array<IndexType, SECTOR_SIZE * SECTOR_HEIGHT> mIndexTess[6];
 
   std::vector<TesselatorVertex> mVertexData;
   std::vector<Magnum::UnsignedInt> mIndexData;

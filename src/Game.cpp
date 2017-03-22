@@ -21,9 +21,10 @@
 #include <exception>
 #include <IMapLoader.h>
 #include "ChunkHelper.h"
+#include <Magnum/Version.h>
 
 Game::Game(const Arguments & arguments)
-  : Platform::Application{ arguments, Configuration{}.setTitle("sge").setWindowFlags(Configuration::WindowFlag::Resizable) }
+  : Platform::Application{ arguments, Configuration{}.setTitle("sge").setWindowFlags(Configuration::WindowFlag::Resizable).setVersion(Magnum::Version::GL330) }
 {
   test();
 

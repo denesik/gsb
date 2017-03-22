@@ -126,7 +126,7 @@ void SectorRenderData::SetPos(const SPos &pos)
   model = model * Math::Matrix4<Float>::translation(Vector3::zAxis(wpos.z()));
 
   aabb.min() = wpos;
-  aabb.max() = wpos + WPos(static_cast<WPosType>(SECTOR_SIZE));
+  aabb.max() = wpos + WPos(static_cast<WPosType>(SECTOR_SIZE), static_cast<WPosType>(SECTOR_HEIGHT), static_cast<WPosType>(SECTOR_SIZE));
 }
 
 void SectorRenderData::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader)

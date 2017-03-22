@@ -58,7 +58,7 @@ void PrimitivaMountains::Generate(Sector &sector) const
   auto sw = cs::StoW(sector.GetPos());
   for (auto k = 0; k < SECTOR_SIZE; ++k)
   {
-    for (auto j = 0; j < SECTOR_SIZE; ++j)
+    for (auto j = 0; j < SECTOR_HEIGHT; ++j)
     {
       for (auto i = 0; i < SECTOR_SIZE; ++i)
       {
