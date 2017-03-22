@@ -57,9 +57,14 @@ void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
 
   for (auto &data : mData)
   {
-    if (loading && data.sector.expired())
+    if (data.sector.expired())
     {
-      data.sector = mWorld.GetSector(data.world_pos);
+      if (loading)
+      {
+        data.sector = mWorld.GetSector(data.world_pos);
+      }
+      data.drawable->valide = false;
+      data.drawable->compile = false;
     }
 
     if (data.drawable->valide)
@@ -70,8 +75,9 @@ void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
     if (!data.sector.expired())
     {
       auto sector = data.sector.lock();
-      if (sector->NeedCompile())
+      if (sector->NeedCompile() || !data.drawable->compile)
       {
+        data.drawable->compile = true;
         sector->NeedCompile(false);
         mCompilerWorker.Add({ data.sector, data.drawable });
       }
