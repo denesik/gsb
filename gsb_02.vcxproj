@@ -32,6 +32,7 @@
     <ClCompile Include="src\ChunkHelper.cpp" />
     <ClCompile Include="src\ConfiguratableMapGenerator.cpp" />
     <ClCompile Include="src\DataBase.cpp" />
+    <ClCompile Include="src\IItem.cpp" />
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\StaticBlock.cpp" />
     <ClCompile Include="src\Camera.cpp" />

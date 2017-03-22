@@ -56,9 +56,10 @@ void AccessorItem::DrawGui(const Magnum::Timeline &dt)
     if (i < mItems.size())
     {
       const auto &coord = static_cast<const Item &>(*(db.GetItem(std::get<0>(mItems[i])))).TextureCoord();
+	  const auto &db_item = db.GetItem(std::get<0>(mItems[i]));
       ImGui::Image(ImTextureID(1), std::to_string(std::get<1>(mItems[i])).c_str(), ImVec2(32, 32), ImVec2(coord.left(), coord.top()), ImVec2(coord.right(), coord.bottom()));
 	  if(ImGui::IsItemHovered())
-		  ImGui::SetTooltip("%s x%d\n%s", std::to_string(std::get<0>(mItems[i])).c_str(), std::get<1>(mItems[i]), "description");
+		  ImGui::SetTooltip("%s x%d\n%s", db_item->GetName().c_str(), std::get<1>(mItems[i]), db_item->GetDescription().c_str());
 	}
     else
     {

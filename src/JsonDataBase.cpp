@@ -7,6 +7,7 @@
 #include <boost/exception/diagnostic_information.hpp>
 #include "Item.h"
 #include "DataBaseFakeData.h"
+#include <string>
 
 JsonDataBase::JsonDataBase(const std::string path) : mPath(path)
 {
@@ -23,14 +24,14 @@ bool LoadItem(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &v
   if (val.HasMember("type"))
     type = val["type"].GetString();
 
-  auto recipe = IItem::factory::create(type);
-  if (!recipe)
+  auto item = IItem::factory::create(type);
+  if (!item)
   {
     LOG(error) << "item #" << 0 << " has unknown type = " << type << ". SKIP.";
     return false;
   }
   try {
-    recipe->JsonLoad(db, val);
+	  item->JsonLoad(db, val);
   }
   catch (...) {
     LOG(error) << boost::current_exception_diagnostic_information(true);
@@ -38,7 +39,15 @@ bool LoadItem(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &v
     return false;
   }
 
-  db.AddItem(name, id, std::move(recipe));
+  if(!name.empty())
+	item->SetName(name);
+  else
+	item->SetName(std::string("id") + std::to_string(id));
+
+  if (val.HasMember("description"))
+	  item->SetDescription(val["description"].GetString());
+
+  db.AddItem(name, id, std::move(item));
   return true;
 }
 

@@ -13,6 +13,14 @@ static const Magnum::Vector3 gVertexData[] =
   {  0.3f,  0.3f, 0.0f }, //FLT
 };
 
+static const Magnum::Vector3 gVertexNormal[] =
+{
+	{ 0.3f, -0.3f, 0.0f }, //FLB
+	{ -0.3f, -0.3f, 0.0f }, //FRB
+	{ -0.3f,  0.3f, 0.0f }, //FRT
+	{ 0.3f,  0.3f, 0.0f }, //FLT
+};
+
 static const Magnum::Vector2 gTextureSide[] =
 {
   { 0.0f + 0.1f, 0.0f + 0.1f },
@@ -40,7 +48,7 @@ Model::Model(const DataBase &db)
       vertex.emplace_back(gVertexData[j], Magnum::Vector2{
         gTextureSide[j].x() * (coord.right() - coord.left()) + coord.left(),
         gTextureSide[j].y() * (coord.top() - coord.bottom()) + coord.bottom()
-      });
+      }, gVertexNormal[j]);
     }
 
     data[i].mesh.setPrimitive(MeshPrimitive::Triangles);

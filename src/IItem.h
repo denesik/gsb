@@ -11,5 +11,13 @@ public:
   using factory = TemplateFactory<std::string, IItem, void()>;
 
   virtual ~IItem() = default;
+
+  const std::string & GetName() const;
+  const std::string & GetDescription() const;
+  void SetName(const std::string & name);
+  void SetDescription(const std::string & descriprion);
+
+private:
+  std::string mName, mDescription;
 };
 

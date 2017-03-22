@@ -39,6 +39,16 @@ static const Magnum::Vector3 gVertexData[] =
   gVertexCube[BLB],gVertexCube[BRB],gVertexCube[FRB],gVertexCube[FLB], // bot
 };
 
+static const Magnum::Vector3 gVertexNormal[] = //TODO: написал на рандом
+{
+	gVertexCube[FLB], // front
+	gVertexCube[FRB], // right +
+	gVertexCube[BRB], // back +
+	gVertexCube[BLB], // left
+	gVertexCube[FLT], // top
+	gVertexCube[BLB], // bot
+};
+
 static const Magnum::Vector2 gTextureSide[] =
 {
   { 0.0f, 0.0f },
@@ -88,7 +98,7 @@ void TesselatorSolidBlock::PushBack(std::vector<TesselatorVertex> &vertex,
         vertex.emplace_back(mVertexData[i * 4 + j] + pos, Vector2{
           gTextureSide[j].x() * (mTextureCoord[i].right() - mTextureCoord[i].left()) + mTextureCoord[i].left(),
           gTextureSide[j].y() * (mTextureCoord[i].top() - mTextureCoord[i].bottom()) + mTextureCoord[i].bottom()
-        });
+        }, gVertexNormal[i]);
       }
 
       for (size_t j = 0; j < 6; ++j)
