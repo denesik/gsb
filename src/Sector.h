@@ -51,9 +51,9 @@ public:
   std::optional<TesselatorData &> GetTesselatorData(SBPos pos);
 
 private:
-  std::array<BlockId, SECTOR_CAPACITY> mStaticBlocks;
-  std::array<std::unique_ptr<Block>, SECTOR_CAPACITY> mDinamicBlocks;
-  std::array<std::unique_ptr<TesselatorData>, SECTOR_CAPACITY> mTesselatorData;
+  std::array<BlockId, gSectorCapacity> mStaticBlocks;
+  std::array<std::unique_ptr<Block>, gSectorCapacity> mDinamicBlocks;
+  std::array<std::unique_ptr<TesselatorData>, gSectorCapacity> mTesselatorData;
   
   const SPos mPos;
 

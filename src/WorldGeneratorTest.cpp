@@ -21,9 +21,9 @@ void WorldGeneratorTest::Generate(Sector &sector) const
 
   const auto &sec_pos = sector.GetPos();
   const SBPos min = { 0, 0, 0 };
-  const SBPos max = { SECTOR_SIZE - 1, SECTOR_HEIGHT - 1, SECTOR_SIZE - 1 };
+  const SBPos max = { gSectorSize.x() - 1, gSectorSize.y() - 1, gSectorSize.z() - 1 };
 
-  for (auto i = 0; i < SECTOR_CAPACITY; ++i)
+  for (auto i = 0; i < gSectorCapacity; ++i)
   {
     const auto &sb_pos = cs::BItoSB(i);
     

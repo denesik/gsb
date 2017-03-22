@@ -30,7 +30,7 @@ void WorldGeneratorFlat::Generate(Sector &sector) const
 
   const auto &sec_pos = sector.GetPos();
 
-  for (auto i = 0; i < SECTOR_CAPACITY; ++i)
+  for (auto i = 0; i < gSectorCapacity; ++i)
   {
     const auto &sb_pos = cs::BItoSB(i);
     const auto &wb_pos = cs::SBtoWB(sb_pos, sec_pos);

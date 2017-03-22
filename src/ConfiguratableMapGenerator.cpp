@@ -24,8 +24,8 @@ void ConfiguratableMapGenerator::Generate(Sector & sector) const
   BlockId stone = m_Db.BlockIdFromName("stone").value_or(0);
 
   const auto &sec_pos = sector.GetPos();
-  for (auto i = 0; i < SECTOR_SIZE; ++i)
-    for (auto k = 0; k < SECTOR_SIZE; ++k)
+  for (auto i = 0; i < gSectorSize.x(); ++i)
+    for (auto k = 0; k < gSectorSize.z(); ++k)
     {
       const auto &wb_pos = cs::SBtoWB({ i, 0, k }, sec_pos);
       auto value = static_cast<float>(noise.GetNoise(static_cast<float>(wb_pos.x()), static_cast<float>(wb_pos.z()))) / 2.f + 1.f;
@@ -33,31 +33,31 @@ void ConfiguratableMapGenerator::Generate(Sector & sector) const
 	  int hill_level = static_cast<int>(value * conf.hill_multiplier + conf.land_level);
 
 	  
-	  for (auto j = 0; j < std::min(conf.land_level, int(SECTOR_HEIGHT)); ++j)
+	  for (auto j = 0; j < std::min(conf.land_level, int(gSectorSize.y())); ++j)
 	  {
 	    auto sbpos = SBPos(i, j, k);
 	    sector.CreateBlock(sbpos, stone);
 	  }
 
-	  for (auto j = conf.land_level; j < std::min(hill_level, int(SECTOR_HEIGHT)); ++j)
+	  for (auto j = conf.land_level; j < std::min(hill_level, int(gSectorSize.y())); ++j)
 	  {
 		  auto sbpos = SBPos(i, j, k);
 		  sector.CreateBlock(sbpos, dirt);
 	  }
 
-	  for (auto j = std::min(hill_level, int(SECTOR_HEIGHT)); j < std::min(hill_level + 1, int(SECTOR_HEIGHT)); ++j)
+	  for (auto j = std::min(hill_level, int(gSectorSize.y())); j < std::min(hill_level + 1, int(gSectorSize.y())); ++j)
 	  {
 		  auto sbpos = SBPos(i, j, k);
 		  sector.CreateBlock(sbpos, grass);
 	  }
 
-	  for (auto j = std::min(hill_level + 1, int(SECTOR_HEIGHT)); j < std::min(conf.water_level, int(SECTOR_HEIGHT)); ++j)
+	  for (auto j = std::min(hill_level + 1, int(gSectorSize.y())); j < std::min(conf.water_level, int(gSectorSize.y())); ++j)
 	  {
 		  auto sbpos = SBPos(i, j, k);
 		  sector.CreateBlock(sbpos, water);
 	  }
 
-	  for (auto j = std::min(std::max(hill_level + 1, conf.water_level), int(SECTOR_HEIGHT)); j < SECTOR_HEIGHT; ++j)
+	  for (auto j = std::min(std::max(hill_level + 1, conf.water_level), int(gSectorSize.y())); j < gSectorSize.y(); ++j)
 	  {
 		  auto sbpos = SBPos(i, j, k);
 		  sector.CreateBlock(sbpos, air);

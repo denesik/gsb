@@ -10,17 +10,6 @@
 #include <Magnum/Magnum.h>
 #include <assert.h>
 
-enum
-{
-  SECTOR_SIZE = 16,
-  SECTOR_HEIGHT = 256,
-  SECTOR_CAPACITY = SECTOR_SIZE * SECTOR_SIZE * SECTOR_HEIGHT,
-
-  TESSELATOR_SIZE = SECTOR_SIZE + 2,
-  TESSELATOR_HEIGHT = SECTOR_HEIGHT + 2,
-  TESSELATOR_CAPACITY = TESSELATOR_SIZE * TESSELATOR_SIZE * TESSELATOR_HEIGHT,
-};
-
 // TODO BOTTOM --> DOWN
 enum SideIndex : int
 {
@@ -73,10 +62,10 @@ using STPosType = Magnum::Int;
 using IndexType = Magnum::UnsignedInt;
 
 
-static const SPos gSectorSize = { SECTOR_SIZE , SECTOR_HEIGHT , SECTOR_SIZE };
-static const SPos gTesselatorSize = gSectorSize + SPos(2);
-static const Magnum::Int gSectorCapacity = gSectorSize.x() * gSectorSize.y() * gSectorSize.z();
-static const Magnum::Int gTesselatorCapacity = gTesselatorSize.x() * gTesselatorSize.y() * gTesselatorSize.z();
+constexpr SPos gSectorSize(16, 256, 16);
+constexpr SPos gTesselatorSize(gSectorSize.x() + 2, gSectorSize.y() + 2, gSectorSize.z() + 2);
+constexpr Magnum::Int gSectorCapacity = gSectorSize.x() * gSectorSize.y() * gSectorSize.z();
+constexpr Magnum::Int gTesselatorCapacity = gTesselatorSize.x() * gTesselatorSize.y() * gTesselatorSize.z();
 
 /// Система координат.
 namespace cs
