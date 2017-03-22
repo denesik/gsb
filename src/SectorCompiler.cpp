@@ -1,6 +1,7 @@
 #include "SectorCompiler.h"
 #include "TesselatorSolidBlock.h"
 #include "TesselatorMicroBlock.h"
+#include "TesselatorTexturedBlock.h"
 
 
 
@@ -96,6 +97,12 @@ void SectorCompiler::ProcessMicroBlock(IndexType index, const STPos &tpos)
   tesselator->PushBack(mTesselatorsData[index], mVertexData, mIndexData, mIndexOffset, WPos(cs::TItoSB(index)));
 }
 
+void SectorCompiler::ProcessTexturedBlock(IndexType index, const STPos &tpos)
+{
+  const auto *tesselator = static_cast<const TesselatorTexturedBlock *>(mDataBase.GetBlockStaticPart(mTesselators[index])->GetTesselator().get());
+  tesselator->PushBack(mTesselatorsData[index], mVertexData, mIndexData, mIndexOffset, WPos(cs::TItoSB(index)));
+}
+
 void SectorCompiler::Process()
 {
   mVertexData.clear();
@@ -118,6 +125,10 @@ void SectorCompiler::Process()
           if (block->GetTesselator()->Type() == Tesselator::TesselatorType::MICRO_BLOCK)
           {
             ProcessMicroBlock(index, pos);
+          }
+          if (block->GetTesselator()->Type() == Tesselator::TesselatorType::TEXTURED_BLOCK)
+          {
+            ProcessTexturedBlock(index, pos);
           }
         }
       }

@@ -44,6 +44,7 @@ private:
   void ProcessSolidBlock(IndexType index, const STPos &pos);
 
   void ProcessMicroBlock(IndexType index, const STPos &pos);
+  void ProcessTexturedBlock(IndexType index, const STPos &pos);
 
   void GenerateIndex();
 };
