@@ -12,12 +12,13 @@
 
 enum
 {
-  SECTOR_SIZE = 32,
+  SECTOR_SIZE = 16,
   SECTOR_HEIGHT = 256,
-  SECTOR_CAPACITY = SECTOR_SIZE * SECTOR_SIZE * SECTOR_SIZE,
+  SECTOR_CAPACITY = SECTOR_SIZE * SECTOR_SIZE * SECTOR_HEIGHT,
 
   TESSELATOR_SIZE = SECTOR_SIZE + 2,
-  TESSELATOR_CAPACITY = TESSELATOR_SIZE * TESSELATOR_SIZE * TESSELATOR_SIZE,
+  TESSELATOR_HEIGHT = SECTOR_HEIGHT + 2,
+  TESSELATOR_CAPACITY = TESSELATOR_SIZE * TESSELATOR_SIZE * TESSELATOR_HEIGHT,
 
   SECTOR_COUNT_HEIGHT = 1,
 };
@@ -73,6 +74,10 @@ using SBPosType = Magnum::Int;
 using STPosType = Magnum::Int;
 using IndexType = Magnum::UnsignedInt;
 
+
+static const SPos SectorSize = { SECTOR_SIZE , SECTOR_HEIGHT , SECTOR_SIZE };
+static const SPos TesselatorSize = { TESSELATOR_SIZE , TESSELATOR_HEIGHT , TESSELATOR_SIZE };
+
 /// —истема координат.
 namespace cs
 {
@@ -101,11 +106,10 @@ namespace cs
   inline SPos WBtoS(const WBPos &pos)
   {
     SPos spos;
-    const SPosType size = static_cast<SPosType>(SECTOR_SIZE);
 
-    spos.x() = (pos.x() >= 0) ? static_cast<SPosType>(pos.x()) / size : (static_cast<SPosType>(pos.x()) - size + SPosType(1)) / size;
-    spos.y() = (pos.y() >= 0) ? static_cast<SPosType>(pos.y()) / size : (static_cast<SPosType>(pos.y()) - size + SPosType(1)) / size;
-    spos.z() = (pos.z() >= 0) ? static_cast<SPosType>(pos.z()) / size : (static_cast<SPosType>(pos.z()) - size + SPosType(1)) / size;
+    spos.x() = (pos.x() >= 0) ? static_cast<SPosType>(pos.x()) / SectorSize.x() : (static_cast<SPosType>(pos.x()) - SectorSize.x() + SPosType(1)) / SectorSize.x();
+    spos.y() = (pos.y() >= 0) ? static_cast<SPosType>(pos.y()) / SectorSize.y() : (static_cast<SPosType>(pos.y()) - SectorSize.y() + SPosType(1)) / SectorSize.y();
+    spos.z() = (pos.z() >= 0) ? static_cast<SPosType>(pos.z()) / SectorSize.z() : (static_cast<SPosType>(pos.z()) - SectorSize.z() + SPosType(1)) / SectorSize.z();
 
     return spos;
   }
@@ -121,103 +125,86 @@ namespace cs
   {
     auto wbpos = WtoWB(pos);
     auto spos = WBtoS(wbpos);
-    const SPosType size = static_cast<SPosType>(SECTOR_SIZE);
-
-    return wbpos - spos * size;
+    return wbpos - spos * SectorSize;
   }
 
   /// ћировые координаты в координаты блока в секторе.
   inline SBPos WtoSB(const WPos &pos, const SPos &spos)
   {
-    const SBPosType size = static_cast<SBPosType>(SECTOR_SIZE);
-
-    return WtoWB(pos) - spos * size;
+    return WtoWB(pos) - spos * SectorSize;
   }
 
   ///  оординаты блока в мире в координаты блока в секторе.
   inline SBPos WBtoSB(const WBPos &pos)
   {
     auto spos = WBtoS(pos);
-    const SPosType size = static_cast<SPosType>(SECTOR_SIZE);
-
-    return pos - spos * size;
+    return pos - spos * SectorSize;
   }
 
   ///  оординаты блока в мире в координаты блока в секторе.
   inline SBPos WBtoSB(const WBPos &pos, const SPos &spos)
   {
-    const SBPosType size = static_cast<SBPosType>(SECTOR_SIZE);
-
-    return pos - spos * size;
+    return pos - spos * SectorSize;
   }
 
   ///  оординаты блока в секторе в координаты блока в мире.
   inline WBPos SBtoWB(const SBPos &pos, const SPos &spos)
   {
-    const WBPosType size = static_cast<WBPosType>(SECTOR_SIZE);
-
-    return spos * size + pos;
+    return spos * SectorSize + pos;
   }
 
   ///  оординаты сектора в мировые координаты.
   /// ¬озвращаютс€ координаты нулевого блока в секторе.
   inline WPos StoW(const SPos &pos)
   {
-    WPos wpos(pos);
-    const WPosType size = static_cast<WPosType>(SECTOR_SIZE);
-
-    return wpos * size;
+    WPos wpos(pos * SectorSize);
+    return wpos;
   }
 
   /// »ндекс блока в секторе в позицию блока в секторе.
   inline SBPos BItoSB(IndexType i)
   {
-    const IndexType size = static_cast<IndexType>(SECTOR_SIZE);
     return SBPos{ 
-      static_cast<SBPosType>(i % size), 
-      static_cast<SBPosType>((i / size) % size), 
-      static_cast<SBPosType>(i / (size * size)) };
+      static_cast<SBPosType>(i % SectorSize.x()),
+      static_cast<SBPosType>((i / SectorSize.x()) % SectorSize.y()),
+      static_cast<SBPosType>(i / (SectorSize.x() * SectorSize.y())) };
   }
 
   /// ѕозици€ блока в секторе в индекс блока в секторе.
   inline IndexType SBtoBI(const SBPos &pos)
   {
-    const IndexType size = static_cast<IndexType>(SECTOR_SIZE);
-    return static_cast<IndexType>(pos.z()) * size * size +
-           static_cast<IndexType>(pos.y()) * size +
+    return static_cast<IndexType>(pos.z()) * SectorSize.x() * SectorSize.y() +
+           static_cast<IndexType>(pos.y()) * SectorSize.x() +
            static_cast<IndexType>(pos.x());
   }
 
   /// »ндекс тессел€тора в секторе в позицию тессел€тора в секторе.
   inline STPos TItoST(IndexType i)
   {
-    const IndexType size = static_cast<IndexType>(SECTOR_SIZE);
-    return STPos{
-      static_cast<STPosType>(i % size),
-      static_cast<STPosType>((i / size) % size),
-      static_cast<STPosType>(i / (size * size)) };
+    return SBPos{ 
+      static_cast<SBPosType>(i % SectorSize.x()),
+      static_cast<SBPosType>((i / SectorSize.x()) % SectorSize.y()),
+      static_cast<SBPosType>(i / (SectorSize.x() * SectorSize.y())) };
   }
 
   /// ѕозици€ тессел€тора в секторе в индекс тессел€тора в секторе.
   inline IndexType STtoTI(const STPos &pos)
   {
-    const IndexType size = static_cast<IndexType>(TESSELATOR_SIZE);
-    return static_cast<IndexType>(pos.z()) * size * size +
-           static_cast<IndexType>(pos.y()) * size +
-           static_cast<IndexType>(pos.x());
+    return static_cast<IndexType>(pos.z()) * TesselatorSize.x() * TesselatorSize.y() +
+      static_cast<IndexType>(pos.y()) * TesselatorSize.x() +
+      static_cast<IndexType>(pos.x());
   }
 
   /// »ндекс тессел€тора в секторе в позицию блока в секторе.
   inline SBPos TItoSB(IndexType i)
   {
-    const IndexType size = static_cast<IndexType>(TESSELATOR_SIZE);
-    assert(i % size > 0 &&
-      (i / size) % size > 0 &&
-      i / (size * size) > 0);
+    assert(i % TesselatorSize.x() > 0 &&
+      (i / TesselatorSize.x()) % TesselatorSize.y() > 0 &&
+      i / (TesselatorSize.x() * TesselatorSize.y()) > 0);
     return SBPos{
-      static_cast<SBPosType>(i % size - 1),
-      static_cast<SBPosType>((i / size) % size - 1),
-      static_cast<SBPosType>(i / (size * size) - 1) };
+      static_cast<SBPosType>(i % TesselatorSize.x() - 1),
+      static_cast<SBPosType>((i / TesselatorSize.x()) % TesselatorSize.y() - 1),
+      static_cast<SBPosType>(i / (TesselatorSize.x() * TesselatorSize.y()) - 1) };
   }
 
   inline SBPos Left(const SBPos &pos)
