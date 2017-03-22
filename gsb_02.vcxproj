@@ -53,6 +53,7 @@
     <ClCompile Include="src\Tesselator.cpp" />
     <ClCompile Include="src\TesselatorMicroBlock.cpp" />
     <ClCompile Include="src\TesselatorSolidBlock.cpp" />
+    <ClCompile Include="src\TesselatorTexturedBlock.cpp" />
     <ClCompile Include="src\TextureAtlas.cpp" />
     <ClCompile Include="src\StandartShader.cpp" />
     <ClCompile Include="src\Timer.cpp" />
@@ -103,6 +104,7 @@
     <ClInclude Include="src\Tesselator.h" />
     <ClInclude Include="src\TesselatorMicroBlock.h" />
     <ClInclude Include="src\TesselatorSolidBlock.h" />
+    <ClInclude Include="src\TesselatorTexturedBlock.h" />
     <ClInclude Include="src\TextureAtlas.h" />
     <ClInclude Include="src\StandartShader.h" />
     <ClInclude Include="src\ThreadProcess.h" />

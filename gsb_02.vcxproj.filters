@@ -156,6 +156,9 @@
     <ClCompile Include="src\ChunkHelper.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="src\TesselatorTexturedBlock.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -315,6 +318,9 @@
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\ChunkHelper.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TesselatorTexturedBlock.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
