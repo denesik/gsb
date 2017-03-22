@@ -27,9 +27,9 @@ void ConfiguratableMapGenerator::Generate(Sector & sector) const
     for (auto k = 0; k < SECTOR_SIZE; ++k)
     {
       const auto &wb_pos = cs::SBtoWB({ i, 0, k }, sec_pos);
-      auto value = noise.GetNoise(wb_pos.x(), wb_pos.z()) / 2.f + 1.f;
+      auto value = static_cast<float>(noise.GetNoise(static_cast<float>(wb_pos.x()), static_cast<float>(wb_pos.z()))) / 2.f + 1.f;
 
-	  int hill_level = value * hill_multiplier + land_level;
+	  int hill_level = static_cast<int>(value * hill_multiplier + land_level);
 
 	  for (auto j = 0; j < std::min(hill_level, int(SECTOR_HEIGHT)); ++j)
 	  {

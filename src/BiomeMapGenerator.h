@@ -1,10 +1,10 @@
-#pragma one
+#pragma once
 #include <IMapGenerator.h>
 #include <IGui.h>
 #include "../FastNoise/FastNoise.h"
 #include <memory>
 
-class BiomeMapGenerator : public IMapGenerator, public IGui
+class BiomeMapGenerator : public IMapGenerator
 {
 public:
 	BiomeMapGenerator(const DataBase & db, int seed = 0);

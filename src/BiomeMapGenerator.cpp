@@ -29,7 +29,7 @@ void BiomeMapGenerator::DrawGui(const Magnum::Timeline & dt)
 	{
 		ImGui::BeginGroup();
 		ImGui::Text(std::get<2>(biome).c_str());
-		ImGui::BeginChild(ImGui::GetID(reinterpret_cast<void *>(i)), ImVec2{400, 0}, 100.f, true);
+		ImGui::BeginChild(ImGui::GetID(reinterpret_cast<void *>(i)), ImVec2{400, 0}, true);
 		std::get<0>(biome)->DrawGui(dt);
 		ImGui::EndChild();
 		ImGui::EndGroup();

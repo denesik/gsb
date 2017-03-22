@@ -124,24 +124,24 @@ std::vector<Magnum::Vector3i> voxel_traversal(const Magnum::Vector3 &ray_start, 
   // This id of the first/current voxel hit by the ray.
   // Using floor (round down) is actually very important,
   // the implicit int-casting will round up for negative numbers.
-  Magnum::Vector3i current_voxel(std::floor(ray_start[0] / _bin_size),
-    std::floor(ray_start[1] / _bin_size),
-    std::floor(ray_start[2] / _bin_size));
+  Magnum::Vector3i current_voxel(static_cast<int>(std::floor(ray_start[0] / _bin_size)),
+    static_cast<int>(std::floor(ray_start[1] / _bin_size)),
+    static_cast<int>(std::floor(ray_start[2] / _bin_size)));
 
   // The id of the last voxel hit by the ray.
   // TODO: what happens if the end point is on a border?
-  Magnum::Vector3i last_voxel(std::floor(ray_end[0] / _bin_size),
-    std::floor(ray_end[1] / _bin_size),
-    std::floor(ray_end[2] / _bin_size));
+  Magnum::Vector3i last_voxel(static_cast<int>(std::floor(ray_end[0] / _bin_size)),
+    static_cast<int>(std::floor(ray_end[1] / _bin_size)),
+    static_cast<int>(std::floor(ray_end[2] / _bin_size)));
 
   // Compute normalized ray direction.
   Magnum::Vector3 ray = ray_end - ray_start;
   //ray.normalize();
 
   // In which direction the voxel ids are incremented.
-  float stepX = (ray[0] >= 0) ? 1 : -1; // correct
-  float stepY = (ray[1] >= 0) ? 1 : -1; // correct
-  float stepZ = (ray[2] >= 0) ? 1 : -1; // correct
+  float stepX = (ray[0] >= 0) ? 1.f : -1.f; // correct
+  float stepY = (ray[1] >= 0) ? 1.f : -1.f; // correct
+  float stepZ = (ray[2] >= 0) ? 1.f : -1.f; // correct
 
                                          // Distance along the ray to the next voxel border from the current position (tMaxX, tMaxY, tMaxZ).
   float next_voxel_boundary_x = (current_voxel[0] + stepX)*_bin_size; // correct
@@ -176,21 +176,21 @@ std::vector<Magnum::Vector3i> voxel_traversal(const Magnum::Vector3 &ray_start, 
   while (last_voxel != current_voxel) {
     if (tMaxX < tMaxY) {
       if (tMaxX < tMaxZ) {
-        current_voxel[0] += stepX;
+        current_voxel[0] += static_cast<Magnum::Int>(stepX);
         tMaxX += tDeltaX;
       }
       else {
-        current_voxel[2] += stepZ;
+        current_voxel[2] += static_cast<Magnum::Int>(stepZ);
         tMaxZ += tDeltaZ;
       }
     }
     else {
       if (tMaxY < tMaxZ) {
-        current_voxel[1] += stepY;
+        current_voxel[1] += static_cast<Magnum::Int>(stepY);
         tMaxY += tDeltaY;
       }
       else {
-        current_voxel[2] += stepZ;
+        current_voxel[2] += static_cast<Magnum::Int>(stepZ);
         tMaxZ += tDeltaZ;
       }
     }

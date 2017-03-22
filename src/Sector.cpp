@@ -1,6 +1,5 @@
 #include "Sector.h"
 #include "World.h"
-#include "MapGenerator.h"
 #include "TesselatorMicroBlock.h"
 #include <Magnum/Timeline.h>
 
