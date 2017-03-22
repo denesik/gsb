@@ -4,18 +4,27 @@
 #include "../FastNoise/FastNoise.h"
 #include <memory>
 
+struct MapGenConfiguration
+{
+	MapGenConfiguration(const std::string &d, const std::string &g);
+
+	int water_level = 80;
+	int land_level = 47;
+	float hill_multiplier = 33.f;
+	float freq = 0.05f;
+	std::string dirt_analog = "dirt";
+	std::string grass_analog = "grass";
+};
+
 class ConfiguratableMapGenerator : public IMapGenerator
 {
 public:
-  ConfiguratableMapGenerator(const DataBase & db, int seed = 0);
+  ConfiguratableMapGenerator(const DataBase & db, MapGenConfiguration c, int seed = 0);
 
   // Inherited via IMapGenerator
   void Generate(Sector & sector) const override;
 
-  int water_level = 80;
-  int land_level = 47;
-  float hill_multiplier = 33.f;
-  float freq = 0.05f;
+  MapGenConfiguration conf;
 
 protected:
   int seed;

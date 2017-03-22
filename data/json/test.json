@@ -6,12 +6,12 @@
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [
-        "data/grass_side.tga",
-        "data/grass_side.tga",
-        "data/grass_side.tga",
-        "data/grass_side.tga",
-        "data/grass_top.tga",
-        "data/dirt.tga"
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_top.png",
+        "data/dirt.png"
       ]
     }
   },
@@ -23,12 +23,12 @@
       "type": "TesselatorMicroBlock",
 	  "size": 4,
       "tex": [
-        "data/grass_side.tga",
-        "data/grass_side.tga",
-        "data/grass_side.tga",
-        "data/grass_side.tga",
-        "data/grass_top.tga",
-        "data/dirt.tga"
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_top.png",
+        "data/dirt.png"
       ]
     }
   },
@@ -39,12 +39,12 @@
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [
-        "data/stone.tga",
-        "data/stone.tga",
-        "data/stone.tga",
-        "data/stone.tga",
-        "data/stone.tga",
-        "data/stone.tga"
+        "data/stone.png",
+        "data/stone.png",
+        "data/stone.png",
+        "data/stone.png",
+        "data/stone.png",
+        "data/stone.png"
       ]
     }
   },
@@ -55,7 +55,7 @@
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [
-        "data/test_white.tga","data/test_white.tga","data/test_white.tga","data/test_white.tga","data/test_white.tga","data/test_white.tga"
+        "data/test_white.png","data/test_white.png","data/test_white.png","data/test_white.png","data/test_white.png","data/test_white.png"
       ]
     }
   },
@@ -66,12 +66,12 @@
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [
-        "data/dirt.tga",
-        "data/dirt.tga",
-        "data/dirt.tga",
-        "data/dirt.tga",
-        "data/dirt.tga",
-        "data/dirt.tga"
+        "data/dirt.png",
+        "data/dirt.png",
+        "data/dirt.png",
+        "data/dirt.png",
+        "data/dirt.png",
+        "data/dirt.png"
       ]
     }
   },
@@ -82,12 +82,12 @@
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [
-        "data/furnance_front.tga",
-        "data/furnance_side.tga",
-        "data/furnance_side.tga",
-        "data/furnance_side.tga",
-        "data/furnance_top_bottom.tga",
-        "data/furnance_top_bottom.tga"
+        "data/furnance_front.png",
+        "data/furnance_side.png",
+        "data/furnance_side.png",
+        "data/furnance_side.png",
+        "data/furnance_top_bottom.png",
+        "data/furnance_top_bottom.png"
       ]
     },
 	"type":"BlockAutoCrafter",
@@ -138,13 +138,13 @@
     "tesselator": {
       "type": "TesselatorTexturedBlock",
       "tex": [
-        "data/test_front.tga",
-        "data/test_right.tga",
-        "data/test_back.tga",
-        "data/test_left.tga",
-        "data/test_top.tga",
-        "data/test_bottom.tga",
-        "data/test_none.tga"
+        "data/test_front.png",
+        "data/test_right.png",
+        "data/test_back.png",
+        "data/test_left.png",
+        "data/test_top.png",
+        "data/test_bottom.png",
+        "data/test_none.png"
       ]
     }
   },
@@ -153,21 +153,21 @@
     "type": "Item",
     "id": 1,
     "name": "coal",
-	  "tex": "data/items/coal_lump.tga"
+	  "tex": "data/items/coal_lump.png"
   },
   {
     "section": "item",
     "type": "Item",
     "id": 2,
     "name": "iron_ingot",
-	  "tex": "data/items/iron_ingot.tga"
+	  "tex": "data/items/iron_ingot.png"
   },
   {
     "section": "item",
     "type": "Item",
     "id": 3,
     "name": "iron_ore",
-	  "tex": "data/items/iron_ore.tga"
+	  "tex": "data/items/iron_ore.png"
   },
   {
     "section": "recipe",
@@ -200,12 +200,28 @@
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [
-        "data/furnance_front.tga",
-        "data/furnance_front.tga",
-        "data/furnance_front.tga",
-        "data/furnance_front.tga",
-        "data/furnance_front.tga",
-        "data/furnance_front.tga"
+        "data/furnance_front.png",
+        "data/furnance_front.png",
+        "data/furnance_front.png",
+        "data/furnance_front.png",
+        "data/furnance_front.png",
+        "data/furnance_front.png"
+      ]
+    }
+  },
+  {
+    "section": "block",
+    "name": "sand",
+    "id": 10,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/sand.png",
+        "data/sand.png",
+        "data/sand.png",
+        "data/sand.png",
+        "data/sand.png",
+        "data/sand.png"
       ]
     }
   }

@@ -42,7 +42,7 @@ Model::Model(const DataBase &db)
   const auto &atlas = db.GetAtlas();
   for (size_t i = 0; i < 16; ++i)
   {
-    const auto &coord = *atlas.GetTextureCoord(std::string("data/number_") + std::to_string(i) + ".tga");
+    const auto &coord = *atlas.GetTextureCoord(std::string("data/number_") + std::to_string(i) + ".png");
     for (size_t j = 0; j < 4; ++j)
     {
       vertex.emplace_back(gVertexData[j], Magnum::Vector2{

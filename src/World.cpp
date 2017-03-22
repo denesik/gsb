@@ -1,11 +1,11 @@
 #include "World.h"
 #include "MapLoader.h"
 #include "BiomeMapGenerator.h"
-#include "ConfiguratableMapGenerator.h"
 #include "WorldGeneratorTest.h"
+#include "WorldGeneratorFlat.h"
 
 World::World(const DataBase &blocksDataBase)
-  : mBlocksDataBase(blocksDataBase), mUpdatableSectors(*this), mPlayer(*this), mWorldGenerator(std::make_unique<WorldGeneratorTest>(blocksDataBase)), mLoaderWorker(*mWorldGenerator)
+  : mBlocksDataBase(blocksDataBase), mUpdatableSectors(*this), mPlayer(*this), mWorldGenerator(std::make_unique<BiomeMapGenerator>(blocksDataBase)), mLoaderWorker(*mWorldGenerator)
 {
 }
 
