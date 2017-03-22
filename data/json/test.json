@@ -132,22 +132,6 @@
 	"type":"BlockSpriteAnimated"
   },
   {
-    "section": "block",
-    "name": "water",
-    "id": 8,
-    "tesselator": {
-      "type": "TesselatorSolidBlock",
-      "tex": [
-        "data/number_1.tga",
-        "data/number_1.tga",
-        "data/number_1.tga",
-        "data/number_1.tga",
-        "data/number_1.tga",
-        "data/number_1.tga"
-      ]
-    }
-  },
-  {
     "section": "item",
     "type": "Item",
     "id": 1,
@@ -187,8 +171,24 @@
     "section": "recipe",
     "type": "RecipeBurn",
     "id": 2,
-	"time": 15.0,
-    "input": [["coal", 1]],
-    "output": []
+    "time": 15.0,
+    "input": [ [ "coal", 1 ] ],
+    "output": [ ]
+  },
+  {
+    "section": "block",
+    "name": "water",
+    "id": 9,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/furnance_front.tga",
+        "data/furnance_front.tga",
+        "data/furnance_front.tga",
+        "data/furnance_front.tga",
+        "data/furnance_front.tga",
+        "data/furnance_front.tga"
+      ]
+    }
   }
 ]

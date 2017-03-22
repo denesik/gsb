@@ -12,9 +12,9 @@ public:
   // Inherited via IMapGenerator
   void Generate(Sector & sector) const override;
 
-  int water_level = 12;
-  int land_level = 4;
-  float hill_multiplier = 20.f;
+  int water_level = 40;
+  int land_level = 7;
+  float hill_multiplier = 33.f;
   float freq = 0.05;
 
 protected:

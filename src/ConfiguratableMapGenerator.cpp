@@ -20,7 +20,7 @@ void ConfiguratableMapGenerator::Generate(Sector & sector) const
   BlockId dirt = m_Db.BlockIdFromName("dirt").value_or(0);
   BlockId grass = m_Db.BlockIdFromName("grass").value_or(0);
   BlockId water = m_Db.BlockIdFromName("water").value_or(0);
-  //BlockId furnance = m_Db.BlockIdFromName("furnance").value_or(0);
+  BlockId furnance = m_Db.BlockIdFromName("furnance").value_or(0);
 
   const auto &sec_pos = sector.GetPos();
   for (auto i = 0; i < SECTOR_SIZE; ++i)
@@ -31,28 +31,34 @@ void ConfiguratableMapGenerator::Generate(Sector & sector) const
 
 	  int hill_level = value * hill_multiplier + land_level;
 
-	  for (auto j = 0; j < std::min(hill_level, int(SECTOR_SIZE)); ++j)
+	  for (auto j = 0; j < std::min(hill_level, int(SECTOR_HEIGHT)); ++j)
 	  {
 		  auto sbpos = SBPos(i, j, k);
 		  sector.CreateBlock(sbpos, dirt);
 	  }
 
-	  for (auto j = std::min(hill_level, int(SECTOR_SIZE)); j < std::min(hill_level + 1, int(SECTOR_SIZE)); ++j)
+	  for (auto j = std::min(hill_level, int(SECTOR_HEIGHT)); j < std::min(hill_level + 1, int(SECTOR_HEIGHT)); ++j)
 	  {
 		  auto sbpos = SBPos(i, j, k);
 		  sector.CreateBlock(sbpos, grass);
 	  }
 
-	  for (auto j = std::min(hill_level + 1, int(SECTOR_SIZE)); j < std::min(water_level, int(SECTOR_SIZE)); ++j)
+	  for (auto j = std::min(hill_level + 1, int(SECTOR_HEIGHT)); j < std::min(water_level, int(SECTOR_HEIGHT)); ++j)
 	  {
 		  auto sbpos = SBPos(i, j, k);
 		  sector.CreateBlock(sbpos, water);
 	  }
 
-	  for (auto j = std::min(water_level, int(SECTOR_SIZE)); j < SECTOR_SIZE; ++j)
+	  for (auto j = std::min(std::max(hill_level + 1, water_level), int(SECTOR_HEIGHT)); j < SECTOR_HEIGHT; ++j)
 	  {
 		  auto sbpos = SBPos(i, j, k);
 		  sector.CreateBlock(sbpos, air);
+	  }
+
+	  if (rand() % 50 == 0)
+	  {
+		  auto sbpos = SBPos(i, hill_level + 1, k);
+		  sector.CreateBlock(sbpos, furnance);
 	  }
     }
 }
