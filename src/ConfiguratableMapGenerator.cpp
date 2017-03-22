@@ -71,6 +71,6 @@ void ConfiguratableMapGenerator::Generate(Sector & sector) const
     }
 }
 
-MapGenConfiguration::MapGenConfiguration(const std::string & d, const std::string & g) : dirt_analog(d), grass_analog(g)
+MapGenConfiguration::MapGenConfiguration(const std::string & d, const std::string & g, float m) : dirt_analog(d), grass_analog(g), hill_multiplier(m)
 {
 }
