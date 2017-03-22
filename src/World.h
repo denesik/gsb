@@ -71,7 +71,7 @@ public:
   const DataBase &GetBlocksDataBase() const;
 
   std::weak_ptr<Sector> GetSector(const SPos &pos) const;
-  std::vector<std::weak_ptr<Sector>> GetColumn(const CSPos &pos) const;
+
   BlockId GetBlockId(const WBPos &pos) const;
   Block* GetBlockDynamic(const WBPos &pos) const;
   void CreateBlock(const WBPos &pos, BlockId id);

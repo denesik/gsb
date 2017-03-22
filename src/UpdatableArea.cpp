@@ -70,11 +70,10 @@ void UpdatableArea::UpdateRadius(unsigned int radius)
   SPos pos(begin);
   pos.y() = 0;
   for (pos.z() = begin; pos.z() <= end; ++pos.z())
-    for (pos.y() = 0; pos.y() < SECTOR_COUNT_HEIGHT; ++pos.y())
-      for (pos.x() = begin; pos.x() <= end; ++pos.x())
-      {
-        mPositions.emplace_back(pos, SPos{});
-      }
+    for (pos.x() = begin; pos.x() <= end; ++pos.x())
+    {
+      mPositions.emplace_back(pos, SPos{});
+    }
 }
 
 void UpdatableArea::UpdatePos(const SPos &pos)

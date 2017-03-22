@@ -90,12 +90,12 @@ void DrawableArea::UpdateRadius(unsigned int radius)
   int begin = -static_cast<int>(radius);
   int end = static_cast<int>(radius);
   SPos pos(begin);
+  pos.y() = 0;
   for (pos.z() = begin; pos.z() <= end; ++pos.z())
-    for (pos.y() = 0; pos.y() < SECTOR_COUNT_HEIGHT; ++pos.y())
-      for (pos.x() = begin; pos.x() <= end; ++pos.x())
-      {
-        mData.push_back({pos, SPos{}, std::weak_ptr<Sector>{}, std::make_shared<SectorRenderData>()});
-      }
+    for (pos.x() = begin; pos.x() <= end; ++pos.x())
+    {
+      mData.push_back({ pos, SPos{}, std::weak_ptr<Sector>{}, std::make_shared<SectorRenderData>() });
+    }
 }
 
 void DrawableArea::UpdatePos(const SPos &pos)

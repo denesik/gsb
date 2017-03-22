@@ -4,9 +4,10 @@
 #include "BiomeMapGenerator.h"
 #include "ConfiguratableMapGenerator.h"
 #include "WorldGeneratorTest.h"
+#include "WorldGeneratorFlat.h"
 
 World::World(const DataBase &blocksDataBase)
-  : mBlocksDataBase(blocksDataBase), mUpdatableSectors(*this), mPlayer(*this), mWorldGenerator(std::make_unique<WorldGeneratorTest>(blocksDataBase)), mLoaderWorker(*mWorldGenerator)
+  : mBlocksDataBase(blocksDataBase), mUpdatableSectors(*this), mPlayer(*this), mWorldGenerator(std::make_unique<WorldGeneratorFlat>(blocksDataBase)), mLoaderWorker(*mWorldGenerator)
 {
 }
 
@@ -48,19 +49,6 @@ std::weak_ptr<Sector> World::GetSector(const SPos &pos) const
     return {it->second};
   }
   return {};
-}
-
-std::vector<std::weak_ptr<Sector>> World::GetColumn(const CSPos& pos) const
-{
-  std::vector<std::weak_ptr<Sector>> column;
-  column.reserve(SECTOR_COUNT_HEIGHT);
-
-  for (Magnum::Int c = 0; c < SECTOR_COUNT_HEIGHT; ++c)
-  {
-    column.emplace_back(GetSector({ pos, c }));
-  }
-
-  return  column;
 }
 
 BlockId World::GetBlockId(const WBPos& pos) const
