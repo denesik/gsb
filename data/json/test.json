@@ -132,6 +132,22 @@
 	"type":"BlockSpriteAnimated"
   },
   {
+    "section": "block",
+    "name": "water",
+    "id": 8,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/number_1.tga",
+        "data/number_1.tga",
+        "data/number_1.tga",
+        "data/number_1.tga",
+        "data/number_1.tga",
+        "data/number_1.tga"
+      ]
+    }
+  },
+  {
     "section": "item",
     "type": "Item",
     "id": 1,
