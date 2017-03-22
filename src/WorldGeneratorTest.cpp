@@ -21,9 +21,9 @@ void WorldGeneratorTest::Generate(Sector &sector) const
 
   const auto &sec_pos = sector.GetPos();
   const SBPos min = { 0, 0, 0 };
-  const SBPos max = { SECTOR_SIZE - 1, SECTOR_HEIGHT - 1, SECTOR_SIZE - 1 };
+  const SBPos max = { gSectorSize.x() - 1, gSectorSize.y() - 1, gSectorSize.z() - 1 };
 
-  for (auto i = 0; i < SECTOR_CAPACITY; ++i)
+  for (auto i = 0; i < gSectorCapacity; ++i)
   {
     const auto &sb_pos = cs::BItoSB(i);
     
@@ -39,7 +39,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 
@@ -55,7 +55,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 2);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 
@@ -71,7 +71,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 3);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 
@@ -87,7 +87,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 
@@ -103,7 +103,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 4);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 
@@ -119,7 +119,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 5);
+      data.set_texture(IDOWN, 5);
       continue;
     }
 
@@ -133,7 +133,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 5);
+      data.set_texture(IDOWN, 5);
       continue;
     }
 
@@ -147,7 +147,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 3);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 5);
+      data.set_texture(IDOWN, 5);
       continue;
     }
 
@@ -161,7 +161,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 2);
       data.set_texture(ILEFT, 3);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 5);
+      data.set_texture(IDOWN, 5);
       continue;
     }
 
@@ -175,7 +175,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 2);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 6);
-      data.set_texture(IBOTTOM, 5);
+      data.set_texture(IDOWN, 5);
       continue;
     }
 
@@ -189,7 +189,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 2);
       data.set_texture(ILEFT, 3);
       data.set_texture(ITOP, 4);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 
@@ -203,7 +203,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 3);
       data.set_texture(ITOP, 4);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 
@@ -217,7 +217,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 2);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 4);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 
@@ -231,7 +231,7 @@ void WorldGeneratorTest::Generate(Sector &sector) const
       data.set_texture(IBACK, 6);
       data.set_texture(ILEFT, 6);
       data.set_texture(ITOP, 4);
-      data.set_texture(IBOTTOM, 6);
+      data.set_texture(IDOWN, 6);
       continue;
     }
 

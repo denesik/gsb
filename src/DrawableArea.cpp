@@ -57,9 +57,14 @@ void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
 
   for (auto &data : mData)
   {
-    if (loading && data.sector.expired())
+    if (data.sector.expired())
     {
-      data.sector = mWorld.GetSector(data.world_pos);
+      if (loading)
+      {
+        data.sector = mWorld.GetSector(data.world_pos);
+      }
+      data.drawable->valide = false;
+      data.drawable->compile = false;
     }
 
     if (data.drawable->valide)
@@ -70,8 +75,9 @@ void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
     if (!data.sector.expired())
     {
       auto sector = data.sector.lock();
-      if (sector->NeedCompile())
+      if (sector->NeedCompile() || !data.drawable->compile)
       {
+        data.drawable->compile = true;
         sector->NeedCompile(false);
         mCompilerWorker.Add({ data.sector, data.drawable });
       }
@@ -126,7 +132,7 @@ void SectorRenderData::SetPos(const SPos &pos)
   model = model * Math::Matrix4<Float>::translation(Vector3::zAxis(wpos.z()));
 
   aabb.min() = wpos;
-  aabb.max() = wpos + WPos(static_cast<WPosType>(SECTOR_SIZE), static_cast<WPosType>(SECTOR_HEIGHT), static_cast<WPosType>(SECTOR_SIZE));
+  aabb.max() = wpos + WPos(static_cast<WPosType>(gSectorSize.x()), static_cast<WPosType>(gSectorSize.y()), static_cast<WPosType>(gSectorSize.z()));
 }
 
 void SectorRenderData::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader)

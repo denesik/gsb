@@ -338,5 +338,8 @@
     <ClInclude Include="src\WorldGeneratorTest.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
+    <ClInclude Include="src\tools\Brezenham3D.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

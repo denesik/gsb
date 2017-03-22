@@ -41,7 +41,7 @@ TesselatorMicroBlock &TesselatorMicroBlock::Build()
         mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ mSize - z - 1, y }), mTextureCoord[SideFlagIndex(SideFlags::LEFT)]), SideFlags::LEFT);
         mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ z, y }), mTextureCoord[SideFlagIndex(SideFlags::RIGHT)]), SideFlags::RIGHT);
         mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ mSize - x - 1, z }), mTextureCoord[SideFlagIndex(SideFlags::TOP)]), SideFlags::TOP);
-        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ mSize - x - 1, mSize - z - 1 }), mTextureCoord[SideFlagIndex(SideFlags::BOTTOM)]), SideFlags::BOTTOM);
+        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ mSize - x - 1, mSize - z - 1 }), mTextureCoord[SideFlagIndex(SideFlags::DOWN)]), SideFlags::DOWN);
       }
   return *this;
 }
@@ -103,7 +103,7 @@ void TesselatorMicroBlock::JsonLoad(const rapidjson::Value & val, const TextureA
     SetTexture(atlas.GetTextureCoord(arr[2].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), RIGHT);
     SetTexture(atlas.GetTextureCoord(arr[3].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), LEFT);
     SetTexture(atlas.GetTextureCoord(arr[4].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), TOP);
-    SetTexture(atlas.GetTextureCoord(arr[5].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), BOTTOM);
+    SetTexture(atlas.GetTextureCoord(arr[5].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), DOWN);
   }
   if (val.HasMember("size") && val["size"].IsUint())
   {

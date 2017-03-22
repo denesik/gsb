@@ -19,9 +19,9 @@ public:
   SectorCompiler(const DataBase &dataBase);
   ~SectorCompiler();
 
-  void SetMiddle(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<TesselatorData>, SECTOR_CAPACITY> &tess_data);
+  void SetMiddle(const std::array<BlockId, gSectorCapacity> &data, const std::array<std::unique_ptr<TesselatorData>, gSectorCapacity> &tess_data);
 
-  void SetSide(const std::array<BlockId, SECTOR_CAPACITY> &data, const std::array<std::unique_ptr<TesselatorData>, SECTOR_CAPACITY> &tess_data, SideFlags side);
+  void SetSide(const std::array<BlockId, gSectorCapacity> &data, const std::array<std::unique_ptr<TesselatorData>, gSectorCapacity> &tess_data, SideFlags side);
 
   const std::vector<TesselatorVertex> &GetVertexData() const;
   const std::vector<Magnum::UnsignedInt> &GetIndexData() const;
@@ -29,11 +29,11 @@ public:
   void Process();
 
 private:
-  std::array<BlockId, TESSELATOR_CAPACITY> mTesselators;
-  std::array<TesselatorData, TESSELATOR_CAPACITY> mTesselatorsData;
-  std::array<IndexType, SECTOR_CAPACITY> mIndexMiddle;
-  std::array<IndexType, SECTOR_SIZE * SECTOR_HEIGHT> mIndexBlocks[6];
-  std::array<IndexType, SECTOR_SIZE * SECTOR_HEIGHT> mIndexTess[6];
+  std::array<BlockId, gTesselatorCapacity> mTesselators;
+  std::array<TesselatorData, gTesselatorCapacity> mTesselatorsData;
+  std::array<IndexType, gSectorCapacity> mIndexMiddle;
+  std::array<IndexType, gSectorSize.x() * gSectorSize.y()> mIndexBlocks[6];
+  std::array<IndexType, gSectorSize.x() * gSectorSize.y()> mIndexTess[6];
 
   std::vector<TesselatorVertex> mVertexData;
   std::vector<Magnum::UnsignedInt> mIndexData;

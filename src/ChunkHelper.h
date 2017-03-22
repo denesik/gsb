@@ -106,7 +106,7 @@ struct ChunkInfo
 struct ChunkHelper
 {
   // Для каждого блока в секторе определяется индекс чанка, в котором находится блок.
-  std::array<IndexType, SECTOR_CAPACITY> index_chunk_in_sector;
+  std::array<IndexType, gSectorCapacity> index_chunk_in_sector;
 
   std::array<ChunkInfo, CHUNK_TABLE_CAPACITY> chunk_info;
 };

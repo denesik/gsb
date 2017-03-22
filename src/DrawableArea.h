@@ -27,6 +27,7 @@ class World;
 struct SectorRenderData
 {
   bool valide = false;
+  bool compile = false;
 
   Magnum::Buffer vertex_buffer;
   Magnum::Buffer index_buffer;
