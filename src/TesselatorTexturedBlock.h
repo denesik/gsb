@@ -57,7 +57,7 @@ public:
 
   static const TessTexturedBlockData &ToTexturedBlockData(const TesselatorData &data);
 
-  void JsonLoad(const rapidjson::Value& val, const TextureAtlas& atlas) override {};
+  void JsonLoad(const rapidjson::Value& val, const TextureAtlas& atlas) override;
 
 private:
   std::vector<Magnum::Range2D> mTextures;

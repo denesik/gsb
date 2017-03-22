@@ -162,6 +162,9 @@
     <ClCompile Include="FastNoise\FastNoise.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="src\WorldGeneratorTest.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
     <ClCompile Include="src\IItem.cpp">
       <Filter>Файлы исходного кода\interfaces</Filter>
     </ClCompile>
@@ -323,16 +326,16 @@
     <ClInclude Include="src\ChunkHelper.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\TesselatorTexturedBlock.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="src\BiomeMapGenerator.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\ConfiguratableMapGenerator.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\tools\Brezenham3D.h">
+    <ClInclude Include="src\TesselatorTexturedBlock.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\WorldGeneratorTest.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>

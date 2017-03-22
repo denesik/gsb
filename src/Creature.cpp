@@ -41,5 +41,7 @@ void Creature::Update()
       old_pos.z() += delta.z();
     }
   }
-  Movable::SetPos(old_pos);
+
+  if (false) // Выключили коллизии.
+    Movable::SetPos(old_pos);
 }
