@@ -149,6 +149,102 @@
     }
   },
   {
+    "section": "block",
+    "name": "sand",
+    "id": 10,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/sand.png",
+        "data/sand.png",
+        "data/sand.png",
+        "data/sand.png",
+        "data/sand.png",
+        "data/sand.png"
+      ]
+    }
+  },
+  {
+    "section": "block",
+    "name": "rainforest_grass",
+    "id": 11,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_top_w.png",
+        "data/dirt.png"
+      ]
+    }
+  },
+  {
+    "section": "block",
+    "name": "taiga_grass",
+    "id": 12,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_top_t.png",
+        "data/dirt.png"
+      ]
+    }
+  },
+  {
+    "section": "block",
+    "name": "seasonforest_grass",
+    "id": 13,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_top_f.png",
+        "data/dirt.png"
+      ]
+    }
+  },
+  {
+    "section": "block",
+    "name": "snow",
+    "id": 14,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/grass_top_s.png",
+        "data/grass_top_s.png",
+        "data/grass_top_s.png",
+        "data/grass_top_s.png",
+        "data/grass_top_s.png",
+        "data/grass_top_s.png"
+      ]
+    }
+  },
+  {
+    "section": "block",
+    "name": "water",
+    "id": 15,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/water.png",
+        "data/water.png",
+        "data/water.png",
+        "data/water.png",
+        "data/water.png",
+        "data/water.png"
+      ]
+    }
+  },
+  {
     "section": "item",
     "type": "Item",
     "id": 1,
@@ -192,101 +288,5 @@
     "time": 15.0,
     "input": [ [ "coal", 1 ] ],
     "output": [ ]
-  },
-  {
-    "section": "block",
-    "name": "water",
-    "id": 9,
-    "tesselator": {
-      "type": "TesselatorSolidBlock",
-      "tex": [
-        "data/furnance_front.png",
-        "data/furnance_front.png",
-        "data/furnance_front.png",
-        "data/furnance_front.png",
-        "data/furnance_front.png",
-        "data/furnance_front.png"
-      ]
-    }
-  },
-  {
-    "section": "block",
-    "name": "sand",
-    "id": 10,
-    "tesselator": {
-      "type": "TesselatorSolidBlock",
-      "tex": [
-        "data/sand.png",
-        "data/sand.png",
-        "data/sand.png",
-        "data/sand.png",
-        "data/sand.png",
-        "data/sand.png"
-      ]
-    }
-  },
-  {
-    "section": "block",
-    "name": "rainforest_grass",
-    "id": 10,
-    "tesselator": {
-      "type": "TesselatorSolidBlock",
-      "tex": [
-        "data/grass_side.png",
-        "data/grass_side.png",
-        "data/grass_side.png",
-        "data/grass_side.png",
-        "data/grass_top_w.png",
-        "data/dirt.png"
-      ]
-    }
-  },
-  {
-    "section": "block",
-    "name": "taiga_grass",
-    "id": 10,
-    "tesselator": {
-      "type": "TesselatorSolidBlock",
-      "tex": [
-        "data/grass_side.png",
-        "data/grass_side.png",
-        "data/grass_side.png",
-        "data/grass_side.png",
-        "data/grass_top_t.png",
-        "data/dirt.png"
-      ]
-    }
-  },
-  {
-    "section": "block",
-    "name": "seasonforest_grass",
-    "id": 10,
-    "tesselator": {
-      "type": "TesselatorSolidBlock",
-      "tex": [
-        "data/grass_side.png",
-        "data/grass_side.png",
-        "data/grass_side.png",
-        "data/grass_side.png",
-        "data/grass_top_f.png",
-        "data/dirt.png"
-      ]
-    }
-  },
-  {
-    "section": "block",
-    "name": "snow",
-    "id": 10,
-    "tesselator": {
-      "type": "TesselatorSolidBlock",
-      "tex": [
-        "data/grass_top_s.png",
-        "data/grass_top_s.png",
-        "data/grass_top_s.png",
-        "data/grass_top_s.png",
-        "data/grass_top_s.png",
-        "data/grass_top_s.png"
-      ]
-    }
   }
 ]

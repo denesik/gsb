@@ -6,7 +6,7 @@
 
 struct MapGenConfiguration
 {
-	MapGenConfiguration(const std::string &d, const std::string &g);
+	MapGenConfiguration(const std::string &d, const std::string &g, float mult = 33.f);
 
 	int water_level = 80;
 	int land_level = 47;

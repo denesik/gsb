@@ -23,8 +23,8 @@ BiomeMapGenerator::BiomeMapGenerator(const DataBase &db, int seed) : IMapGenerat
 
 void BiomeMapGenerator::Generate(Sector & sector) const
 {
-  float value = noise.GetNoise(sector.GetPos().x() * 100.f, sector.GetPos().z() * 100.f) / 2.f + 1.f;
-  float value2 = noise.GetNoise(sector.GetPos().x() * 123.f, sector.GetPos().z() * 123.f) / 2.f + 1.f;
+  float value = noise.GetNoise(sector.GetPos().x() * 1.f, sector.GetPos().z() * 1.f) / 2.f + 1.f;
+  float value2 = noise.GetNoise(sector.GetPos().x() * 1.f, sector.GetPos().z() * 1.f) / 2.f + 1.f;
   
   mBiomes[static_cast<size_t>(BiomeSelector(value, value2))]->Generate(sector);
 }
