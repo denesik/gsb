@@ -68,6 +68,7 @@
     <ClCompile Include="src\UpdatableSectors.cpp" />
     <ClCompile Include="src\World.cpp" />
     <ClCompile Include="src\WorldGeneratorFlat.cpp" />
+    <ClCompile Include="src\WorldGeneratorTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fwd.h" />
@@ -126,6 +127,7 @@
     <ClInclude Include="src\UpdatableSectors.h" />
     <ClInclude Include="src\World.h" />
     <ClInclude Include="src\WorldGeneratorFlat.h" />
+    <ClInclude Include="src\WorldGeneratorTest.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DAD5E604-35AB-4716-B43E-119A61C427FC}</ProjectGuid>

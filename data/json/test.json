@@ -132,6 +132,23 @@
 	  "type":"BlockSpriteAnimated"
   },
   {
+    "section": "block",
+    "name": "textured_block",
+    "id": 9,
+    "tesselator": {
+      "type": "TesselatorTexturedBlock",
+      "tex": [
+        "data/test_front.tga",
+        "data/test_right.tga",
+        "data/test_back.tga",
+        "data/test_left.tga",
+        "data/test_top.tga",
+        "data/test_bottom.tga",
+        "data/test_none.tga"
+      ]
+    }
+  },
+  {
     "section": "item",
     "type": "Item",
     "id": 1,

@@ -1,4 +1,4 @@
-#pragma one
+#pragma once
 #include <IMapGenerator.h>
 #include <IGui.h>
 #include "../FastNoise/FastNoise.h"

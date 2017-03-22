@@ -1,6 +1,7 @@
 #include "TesselatorTexturedBlock.h"
 
-
+#include <Magnum/Math/Vector2.h>
+using namespace Magnum;
 
 TesselatorTexturedBlock::TesselatorTexturedBlock()
   : Tesselator(Tesselator::TesselatorType::TEXTURED_BLOCK)
@@ -43,4 +44,16 @@ TessTexturedBlockData & TesselatorTexturedBlock::ToTexturedBlockData(TesselatorD
 const TessTexturedBlockData & TesselatorTexturedBlock::ToTexturedBlockData(const TesselatorData &data)
 {
   return reinterpret_cast<const TessTexturedBlockData &>(data);
+}
+
+void TesselatorTexturedBlock::JsonLoad(const rapidjson::Value& val, const TextureAtlas& atlas)
+{
+  if (val.HasMember("tex") && val["tex"].IsArray())
+  {
+    const rapidjson::Value &arr = val["tex"];
+    for (size_t i = 0; i < arr.Size(); ++i)
+    {
+      AddTexture(atlas.GetTextureCoord(arr[i].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }));
+    }
+  }
 }
