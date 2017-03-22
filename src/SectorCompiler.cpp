@@ -34,7 +34,7 @@ void SectorCompiler::SetMiddle(const std::array<BlockId, gSectorCapacity> &data,
 void SectorCompiler::SetSide(const std::array<BlockId, gSectorCapacity> &data, const std::array<std::unique_ptr<TesselatorData>, gSectorCapacity> &tess_data, SideFlags side)
 {
   auto index = SideFlagIndex(side);
-  for (size_t i = 0; i < gSectorSize.x() * gSectorSize.y(); ++i)
+  for (SPosType i = 0; i < gSectorSize.x() * gSectorSize.y(); ++i)
   {
     mTesselators[mIndexTess[index][i]] = data[mIndexBlocks[index][i]];
     if (tess_data[mIndexBlocks[index][i]])
