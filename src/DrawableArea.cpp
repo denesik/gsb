@@ -76,7 +76,7 @@ void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
         mCompilerWorker.Add({ data.sector, data.drawable });
       }
 
-      sector->Draw(matrix, shader);
+      //sector->Draw(matrix, shader);
     }
   }
 
