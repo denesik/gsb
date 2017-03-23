@@ -84,9 +84,9 @@ void SectorCompiler::Process()
   mIndexData.clear();
   mIndexOffset = 0;
 
-  for (SBPosType z = 1; z < gTesselatorSize.z() - 1; ++z)
-    for (SBPosType y = 1; y < gTesselatorSize.y() - 1; ++y)
-      for (SBPosType x = 1; x < gTesselatorSize.x() - 1; ++x)
+  for (SBPosType z = 1; z < gBlockBatcherSize.z() - 1; ++z)
+    for (SBPosType y = 1; y < gBlockBatcherSize.y() - 1; ++y)
+      for (SBPosType x = 1; x < gBlockBatcherSize.x() - 1; ++x)
       {
         STPos pos{ x, y, z };
         auto index = cs::STtoTI(pos);

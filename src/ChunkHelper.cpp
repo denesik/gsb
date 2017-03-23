@@ -182,9 +182,9 @@ Chunk::Data::Data()
       }
 
   i = 0;
-  for (SBPosType z = 1; z < gTesselatorSize.z() - 1; ++z)
-    for (SBPosType y = 1; y < gTesselatorSize.y() - 1; ++y)
-      for (SBPosType x = 1; x < gTesselatorSize.x() - 1; ++x)
+  for (SBPosType z = 1; z < gBlockBatcherSize.z() - 1; ++z)
+    for (SBPosType y = 1; y < gBlockBatcherSize.y() - 1; ++y)
+      for (SBPosType x = 1; x < gBlockBatcherSize.x() - 1; ++x)
       {
         compilator_middle[i++] = cs::STtoTI({ x, y, z });
       }
@@ -197,8 +197,8 @@ Chunk::Data::Data()
       chunk_east[i++] = cs::SBtoBI({ gChunkSize.x() - 1, y, z });
     }
   i = 0;
-  for (SBPosType z = 1; z < gTesselatorSize.z() - 1; ++z)
-    for (SBPosType y = 1; y < gTesselatorSize.y() - 1; ++y)
+  for (SBPosType z = 1; z < gBlockBatcherSize.z() - 1; ++z)
+    for (SBPosType y = 1; y < gBlockBatcherSize.y() - 1; ++y)
     {
       compilator_east[i++] = cs::STtoTI({ 0, y, z });
     }
@@ -211,10 +211,10 @@ Chunk::Data::Data()
       chunk_west[i++] = cs::SBtoBI({ 0, y, z });
     }
   i = 0;
-  for (SBPosType z = 1; z < gTesselatorSize.z() - 1; ++z)
-    for (SBPosType y = 1; y < gTesselatorSize.y() - 1; ++y)
+  for (SBPosType z = 1; z < gBlockBatcherSize.z() - 1; ++z)
+    for (SBPosType y = 1; y < gBlockBatcherSize.y() - 1; ++y)
     {
-      compilator_west[i++] = cs::STtoTI({ gTesselatorSize.x() - 1, y, z });
+      compilator_west[i++] = cs::STtoTI({ gBlockBatcherSize.x() - 1, y, z });
     }
 
   // South
@@ -225,8 +225,8 @@ Chunk::Data::Data()
       chunk_south[i++] = cs::SBtoBI({ x, y, gChunkSize.z() - 1 });
     }
   i = 0;
-  for (SBPosType y = 1; y < gTesselatorSize.y() - 1; ++y)
-    for (SBPosType x = 1; x < gTesselatorSize.x() - 1; ++x)
+  for (SBPosType y = 1; y < gBlockBatcherSize.y() - 1; ++y)
+    for (SBPosType x = 1; x < gBlockBatcherSize.x() - 1; ++x)
     {
       compilator_south[i++] = cs::STtoTI({ x, y, 0 });
     }
@@ -239,10 +239,10 @@ Chunk::Data::Data()
       chunk_north[i++] = cs::SBtoBI({ x, y, 0 });
     }
   i = 0;
-  for (SBPosType y = 1; y < gTesselatorSize.y() - 1; ++y)
-    for (SBPosType x = 1; x < gTesselatorSize.x() - 1; ++x)
+  for (SBPosType y = 1; y < gBlockBatcherSize.y() - 1; ++y)
+    for (SBPosType x = 1; x < gBlockBatcherSize.x() - 1; ++x)
     {
-      compilator_north[i++] = cs::STtoTI({ x, y, gTesselatorSize.z() - 1 });
+      compilator_north[i++] = cs::STtoTI({ x, y, gBlockBatcherSize.z() - 1 });
     }
 
   // Down
@@ -253,8 +253,8 @@ Chunk::Data::Data()
       chunk_down[i++] = cs::SBtoBI({ x, gChunkSize.y() - 1, z });
     }
   i = 0;
-  for (SBPosType z = 1; z < gTesselatorSize.z() - 1; ++z)
-    for (SBPosType x = 1; x < gTesselatorSize.x() - 1; ++x)
+  for (SBPosType z = 1; z < gBlockBatcherSize.z() - 1; ++z)
+    for (SBPosType x = 1; x < gBlockBatcherSize.x() - 1; ++x)
     {
       compilator_down[i++] = cs::STtoTI({ x, 0, z });
     }
@@ -267,9 +267,9 @@ Chunk::Data::Data()
       chunk_top[i++] = cs::SBtoBI({ x, 0, z });
     }
   i = 0;
-  for (SBPosType z = 1; z < gTesselatorSize.z() - 1; ++z)
-    for (SBPosType x = 1; x < gTesselatorSize.x() - 1; ++x)
+  for (SBPosType z = 1; z < gBlockBatcherSize.z() - 1; ++z)
+    for (SBPosType x = 1; x < gBlockBatcherSize.x() - 1; ++x)
     {
-      compilator_top[i++] = cs::STtoTI({ x, gTesselatorSize.y() - 1, z });
+      compilator_top[i++] = cs::STtoTI({ x, gBlockBatcherSize.y() - 1, z });
     }
 }

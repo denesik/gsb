@@ -28,19 +28,19 @@ public:
 
   void Process();
 
-  inline std::array<BlockId, gTesselatorCapacity> &Tesselators()
+  inline std::array<BlockId, gBlockBatcherCapacity> &Tesselators()
   {
     return mTesselators;
   }
 
-  inline std::array<TesselatorData, gTesselatorCapacity> &TesselatorsData()
+  inline std::array<TesselatorData, gBlockBatcherCapacity> &TesselatorsData()
   {
     return mTesselatorsData;
   }
 
 private:
-  std::array<BlockId, gTesselatorCapacity> mTesselators;
-  std::array<TesselatorData, gTesselatorCapacity> mTesselatorsData;
+  std::array<BlockId, gBlockBatcherCapacity> mTesselators;
+  std::array<TesselatorData, gBlockBatcherCapacity> mTesselatorsData;
 
   std::vector<TesselatorVertex> mVertexData;
   std::vector<Magnum::UnsignedInt> mIndexData;

@@ -61,14 +61,14 @@ using STPosType = Magnum::Int;
 using IndexType = Magnum::UnsignedInt;
 
 
-constexpr SPos gSectorSize(3, 13, 23);
+constexpr SPos gSectorSize(16, 256, 16);
 constexpr Magnum::Int gSectorCapacity = gSectorSize.x() * gSectorSize.y() * gSectorSize.z();
 
 constexpr SPos gChunkSize(gSectorSize.x(), gSectorSize.y(), gSectorSize.z());
 constexpr Magnum::Int gChunkCapacity = gChunkSize.x() * gChunkSize.y() * gChunkSize.z();
 
-constexpr SPos gTesselatorSize(gChunkSize.x() + 2, gChunkSize.y() + 2, gChunkSize.z() + 2);
-constexpr Magnum::Int gTesselatorCapacity = gTesselatorSize.x() * gTesselatorSize.y() * gTesselatorSize.z();
+constexpr SPos gBlockBatcherSize(gChunkSize.x() + 2, gChunkSize.y() + 2, gChunkSize.z() + 2);
+constexpr Magnum::Int gBlockBatcherCapacity = gBlockBatcherSize.x() * gBlockBatcherSize.y() * gBlockBatcherSize.z();
 
 /// —истема координат.
 namespace cs
@@ -182,21 +182,21 @@ namespace cs
   /// ѕозици€ тессел€тора в секторе в индекс тессел€тора в секторе.
   inline IndexType STtoTI(const STPos &pos)
   {
-    return static_cast<IndexType>(pos.z()) * gTesselatorSize.x() * gTesselatorSize.y() +
-      static_cast<IndexType>(pos.y()) * gTesselatorSize.x() +
+    return static_cast<IndexType>(pos.z()) * gBlockBatcherSize.x() * gBlockBatcherSize.y() +
+      static_cast<IndexType>(pos.y()) * gBlockBatcherSize.x() +
       static_cast<IndexType>(pos.x());
   }
 
   /// »ндекс тессел€тора в секторе в позицию блока в секторе.
   inline SBPos TItoSB(IndexType i)
   {
-    assert(i % gTesselatorSize.x() > 0 &&
-      (i / gTesselatorSize.x()) % gTesselatorSize.y() > 0 &&
-      i / (gTesselatorSize.x() * gTesselatorSize.y()) > 0);
+    assert(i % gBlockBatcherSize.x() > 0 &&
+      (i / gBlockBatcherSize.x()) % gBlockBatcherSize.y() > 0 &&
+      i / (gBlockBatcherSize.x() * gBlockBatcherSize.y()) > 0);
     return SBPos{
-      static_cast<SBPosType>(i % gTesselatorSize.x() - 1),
-      static_cast<SBPosType>((i / gTesselatorSize.x()) % gTesselatorSize.y() - 1),
-      static_cast<SBPosType>(i / (gTesselatorSize.x() * gTesselatorSize.y()) - 1) };
+      static_cast<SBPosType>(i % gBlockBatcherSize.x() - 1),
+      static_cast<SBPosType>((i / gBlockBatcherSize.x()) % gBlockBatcherSize.y() - 1),
+      static_cast<SBPosType>(i / (gBlockBatcherSize.x() * gBlockBatcherSize.y()) - 1) };
   }
 
   inline SBPos West(const SBPos &pos, SBPosType dist = SBPosType(1))
