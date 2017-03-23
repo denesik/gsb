@@ -28,12 +28,19 @@ public:
 
   void Process();
 
+  inline std::array<BlockId, gTesselatorCapacity> &Tesselators()
+  {
+    return mTesselators;
+  }
+
+  inline std::array<TesselatorData, gTesselatorCapacity> &TesselatorsData()
+  {
+    return mTesselatorsData;
+  }
+
 private:
   std::array<BlockId, gTesselatorCapacity> mTesselators;
   std::array<TesselatorData, gTesselatorCapacity> mTesselatorsData;
-  std::array<IndexType, gSectorCapacity> mIndexMiddle;
-  std::array<IndexType, gSectorSize.x() * gSectorSize.y()> mIndexBlocks[6];
-  std::array<IndexType, gSectorSize.x() * gSectorSize.y()> mIndexTess[6];
 
   std::vector<TesselatorVertex> mVertexData;
   std::vector<Magnum::UnsignedInt> mIndexData;
@@ -45,8 +52,6 @@ private:
 
   void ProcessMicroBlock(IndexType index, const STPos &pos);
   void ProcessTexturedBlock(IndexType index, const STPos &pos);
-
-  void GenerateIndex();
 };
 
 

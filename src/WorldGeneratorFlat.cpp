@@ -49,7 +49,7 @@ void WorldGeneratorFlat::Generate(Sector &sector) const
         if ((rand() % 100 == 1 || rand() % 100 == 2))
           sector.CreateBlock(sb_pos, furnance);
         else if (rand() % 100 == 1)
-          sector.CreateBlock(sb_pos, number);
+          ;//sector.CreateBlock(sb_pos, number);
         else
           sector.CreateBlock(sb_pos, air);
     }

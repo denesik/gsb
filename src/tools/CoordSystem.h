@@ -12,11 +12,11 @@
 
 enum SideIndex : int
 {
-  ISOUTH = 0,
-  IWEST = 1,
-  INORTH = 2,
-  IEAST = 3,
-  ITOP = 4,
+  ISOUTH = 0,   // юг
+  IEAST = 1,    // восток
+  INORTH = 2,   // север
+  IWEST = 3,    // запад
+  ITOP = 4,     
   IDOWN = 5,
 };
 
@@ -24,10 +24,10 @@ enum SideFlags : int
 {
   NONE = 0,
 
-  SOUTH = 1 << ISOUTH,
-  WEST = 1 << IWEST,
+  SOUTH = 1 << ISOUTH, 
+  EAST = 1 << IEAST, 
   NORTH = 1 << INORTH,
-  EAST = 1 << IEAST,
+  WEST = 1 << IWEST,
   TOP = 1 << ITOP,
   DOWN = 1 << IDOWN,
 
@@ -61,9 +61,13 @@ using STPosType = Magnum::Int;
 using IndexType = Magnum::UnsignedInt;
 
 
-constexpr SPos gSectorSize(16, 256, 16);
-constexpr SPos gTesselatorSize(gSectorSize.x() + 2, gSectorSize.y() + 2, gSectorSize.z() + 2);
+constexpr SPos gSectorSize(3, 13, 23);
 constexpr Magnum::Int gSectorCapacity = gSectorSize.x() * gSectorSize.y() * gSectorSize.z();
+
+constexpr SPos gChunkSize(gSectorSize.x(), gSectorSize.y(), gSectorSize.z());
+constexpr Magnum::Int gChunkCapacity = gChunkSize.x() * gChunkSize.y() * gChunkSize.z();
+
+constexpr SPos gTesselatorSize(gChunkSize.x() + 2, gChunkSize.y() + 2, gChunkSize.z() + 2);
 constexpr Magnum::Int gTesselatorCapacity = gTesselatorSize.x() * gTesselatorSize.y() * gTesselatorSize.z();
 
 /// Система координат.
@@ -195,12 +199,12 @@ namespace cs
       static_cast<SBPosType>(i / (gTesselatorSize.x() * gTesselatorSize.y()) - 1) };
   }
 
-  inline SBPos East(const SBPos &pos, SBPosType dist = SBPosType(1))
+  inline SBPos West(const SBPos &pos, SBPosType dist = SBPosType(1))
   {
     return{ pos.x() + dist, pos.y(), pos.z() };
   }
 
-  inline SBPos West(const SBPos &pos, SBPosType dist = SBPosType(1))
+  inline SBPos East(const SBPos &pos, SBPosType dist = SBPosType(1)) 
   {
     return{ pos.x() - dist, pos.y(), pos.z() };
   }
@@ -229,9 +233,9 @@ namespace cs
     using func_ptr = SBPos (*)(const SBPos &, SBPosType);
     static func_ptr funcs[6];
     funcs[ISOUTH] = &South;
-    funcs[IWEST] = &West;
-    funcs[INORTH] = &North;
     funcs[IEAST] = &East;
+    funcs[INORTH] = &North;
+    funcs[IWEST] = &West;
     funcs[ITOP] = &Top;
     funcs[IDOWN] = &Down;
 

@@ -6,7 +6,7 @@
 using namespace Magnum;
 
 Sector::Sector(World &world, const SPos &pos)
-  : mWorld(world), mPos(pos)
+  : mWorld(world), mPos(pos), mChunk(*this)
 {
   // generate sector
   mStaticBlocks.fill(0);
@@ -19,7 +19,14 @@ Sector::~Sector()
 
 bool Sector::NeedCompile() const
 {
-  return mNeedCompile;
+  return mNeedCompile && 
+    !mSectorAround.sectors[SectorAround::Middle].expired() &&
+    !mSectorAround.sectors[SectorAround::South].expired() &&
+    //!mSectorAround.sectors[SectorAround::Down].expired() &&
+    !mSectorAround.sectors[SectorAround::East].expired() &&
+    !mSectorAround.sectors[SectorAround::West].expired() &&
+    //!mSectorAround.sectors[SectorAround::Top].expired() &&
+    !mSectorAround.sectors[SectorAround::North].expired();
 }
 
 void Sector::NeedCompile(bool value)
@@ -29,30 +36,19 @@ void Sector::NeedCompile(bool value)
 
 void Sector::SetCompilerData(SectorCompiler &sectorCompiler)
 {
-  sectorCompiler.SetMiddle(mStaticBlocks, mTesselatorData);
-
-  if (auto sector = mWorld.GetSector(cs::East(mPos)).lock())
-    sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::EAST);
-
-  if (auto sector = mWorld.GetSector(cs::South(mPos)).lock())
-    sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::SOUTH);
-
-  if (auto sector = mWorld.GetSector(cs::Top(mPos)).lock())
-    sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::TOP);
-
-  if (auto sector = mWorld.GetSector(cs::West(mPos)).lock())
-    sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::WEST);
-
-  if (auto sector = mWorld.GetSector(cs::North(mPos)).lock())
-    sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::NORTH);
-
-  if (auto sector = mWorld.GetSector(cs::Down(mPos)).lock())
-    sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::DOWN);
+  mChunk.SetCompilerData(sectorCompiler);
 }
 
 void Sector::Update()
 {
-
+  // Кешируем соседние сектора.
+  for (size_t i = 0; i < mSectorAround.sectors.size(); ++i)
+  {
+    if (mSectorAround.sectors[i].expired())
+    {
+      mSectorAround.sectors[i] = mWorld.GetSector(mPos + SectorAround::pos[i]);
+    }
+  }
 }
 
 void Sector::Draw(const Magnum::Matrix4 &vp, Magnum::AbstractShaderProgram& shader)

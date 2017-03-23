@@ -32,9 +32,9 @@ static const Magnum::Vector3 gVertexCube[] =
 static const Magnum::Vector3 gVertexData[] =
 {
   gVertexCube[FLB],gVertexCube[FRB],gVertexCube[FRT],gVertexCube[FLT], // front
-  gVertexCube[FRB],gVertexCube[BRB],gVertexCube[BRT],gVertexCube[FRT], // right +
-  gVertexCube[BRB],gVertexCube[BLB],gVertexCube[BLT],gVertexCube[BRT], // back +
   gVertexCube[BLB],gVertexCube[FLB],gVertexCube[FLT],gVertexCube[BLT], // left
+  gVertexCube[BRB],gVertexCube[BLB],gVertexCube[BLT],gVertexCube[BRT], // back +
+  gVertexCube[FRB],gVertexCube[BRB],gVertexCube[BRT],gVertexCube[FRT], // right +
   gVertexCube[FLT],gVertexCube[FRT],gVertexCube[BRT],gVertexCube[BLT], // top
   gVertexCube[BLB],gVertexCube[BRB],gVertexCube[FRB],gVertexCube[FLB], // bot
 };
@@ -42,9 +42,9 @@ static const Magnum::Vector3 gVertexData[] =
 static const Magnum::Vector3 gVertexNormal[] = //TODO: написал на рандом
 {
 	gVertexCube[FLB], // front
-	gVertexCube[FRB], // right +
+  gVertexCube[BLB], // left
 	gVertexCube[BRB], // back +
-	gVertexCube[BLB], // left
+	gVertexCube[FRB], // right +
 	gVertexCube[FLT], // top
 	gVertexCube[BLB], // bot
 };
@@ -117,8 +117,8 @@ void TesselatorSolidBlock::JsonLoad(const rapidjson::Value& val, const TextureAt
     const rapidjson::Value &arr = val["tex"];
     SetTexture(atlas.GetTextureCoord(arr[0].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), NORTH);
     SetTexture(atlas.GetTextureCoord(arr[1].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), SOUTH);
-    SetTexture(atlas.GetTextureCoord(arr[2].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), WEST);
-    SetTexture(atlas.GetTextureCoord(arr[3].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), EAST);
+    SetTexture(atlas.GetTextureCoord(arr[2].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), EAST);
+    SetTexture(atlas.GetTextureCoord(arr[3].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), WEST);
     SetTexture(atlas.GetTextureCoord(arr[4].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), TOP);
     SetTexture(atlas.GetTextureCoord(arr[5].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), DOWN);
   }

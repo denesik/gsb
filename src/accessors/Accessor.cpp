@@ -39,8 +39,8 @@ Accessor::Accessor(const DataBase &db, const rapidjson::Value &val, Block &paren
       SideIndex side;
       switch (directions[0])
       {
-      case 'r': side = IWEST; break;
-      case 'l': side = IEAST; break;
+      case 'r': side = IEAST; break;
+      case 'l': side = IWEST; break;
       case 't': side = ITOP; break;
       case 'd': side = IDOWN; break;
       case 'f': side = ISOUTH; break;
@@ -55,8 +55,8 @@ Accessor::Accessor(const DataBase &db, const rapidjson::Value &val, Block &paren
   {
     mSides[INORTH] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
     mSides[ISOUTH] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
-    mSides[IEAST] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
     mSides[IWEST] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
+    mSides[IEAST] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
     mSides[ITOP] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
     mSides[IDOWN] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
   }
