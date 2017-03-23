@@ -199,14 +199,24 @@ namespace cs
       static_cast<SBPosType>(i / (gBlockBatcherSize.x() * gBlockBatcherSize.y()) - 1) };
   }
 
+  inline SBPos South(const SBPos &pos, SBPosType dist = SBPosType(1))
+  {
+    return{ pos.x(), pos.y(), pos.z() - dist };
+  }
+
+  inline SBPos East(const SBPos &pos, SBPosType dist = SBPosType(1))
+  {
+    return{ pos.x() - dist, pos.y(), pos.z() };
+  }
+
+  inline SBPos North(const SBPos &pos, SBPosType dist = SBPosType(1))
+  {
+    return{ pos.x(), pos.y(), pos.z() + dist };
+  }
+
   inline SBPos West(const SBPos &pos, SBPosType dist = SBPosType(1))
   {
     return{ pos.x() + dist, pos.y(), pos.z() };
-  }
-
-  inline SBPos East(const SBPos &pos, SBPosType dist = SBPosType(1)) 
-  {
-    return{ pos.x() - dist, pos.y(), pos.z() };
   }
 
   inline SBPos Top(const SBPos &pos, SBPosType dist = SBPosType(1))
@@ -217,15 +227,6 @@ namespace cs
   inline SBPos Down(const SBPos &pos, SBPosType dist = SBPosType(1))
   {
     return{ pos.x(), pos.y() - dist, pos.z() };
-  }
-  inline SBPos North(const SBPos &pos, SBPosType dist = SBPosType(1))
-  {
-    return{ pos.x(), pos.y(), pos.z() + dist };
-  }
-
-  inline SBPos South(const SBPos &pos, SBPosType dist = SBPosType(1))
-  {
-    return{ pos.x(), pos.y(), pos.z() - dist };
   }
 
   inline SBPos Side(const SBPos &pos, SideIndex side, SBPosType dist = SBPosType(1))

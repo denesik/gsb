@@ -19,10 +19,6 @@ public:
   SectorCompiler(const DataBase &dataBase);
   ~SectorCompiler();
 
-  void SetMiddle(const std::array<BlockId, gSectorCapacity> &data, const std::array<std::unique_ptr<TesselatorData>, gSectorCapacity> &tess_data);
-
-  void SetSide(const std::array<BlockId, gSectorCapacity> &data, const std::array<std::unique_ptr<TesselatorData>, gSectorCapacity> &tess_data, SideFlags side);
-
   const std::vector<TesselatorVertex> &GetVertexData() const;
   const std::vector<Magnum::UnsignedInt> &GetIndexData() const;
 
