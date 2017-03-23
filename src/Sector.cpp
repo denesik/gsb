@@ -31,20 +31,20 @@ void Sector::SetCompilerData(SectorCompiler &sectorCompiler)
 {
   sectorCompiler.SetMiddle(mStaticBlocks, mTesselatorData);
 
-  if (auto sector = mWorld.GetSector(cs::Left(mPos)).lock())
-    sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::LEFT);
+  if (auto sector = mWorld.GetSector(cs::East(mPos)).lock())
+    sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::EAST);
 
-  if (auto sector = mWorld.GetSector(cs::Front(mPos)).lock())
-    sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::FRONT);
+  if (auto sector = mWorld.GetSector(cs::South(mPos)).lock())
+    sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::SOUTH);
 
   if (auto sector = mWorld.GetSector(cs::Top(mPos)).lock())
     sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::TOP);
 
-  if (auto sector = mWorld.GetSector(cs::Right(mPos)).lock())
-    sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::RIGHT);
+  if (auto sector = mWorld.GetSector(cs::West(mPos)).lock())
+    sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::WEST);
 
-  if (auto sector = mWorld.GetSector(cs::Back(mPos)).lock())
-    sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::BACK);
+  if (auto sector = mWorld.GetSector(cs::North(mPos)).lock())
+    sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::NORTH);
 
   if (auto sector = mWorld.GetSector(cs::Down(mPos)).lock())
     sectorCompiler.SetSide(sector->mStaticBlocks, sector->mTesselatorData, SideFlags::DOWN);

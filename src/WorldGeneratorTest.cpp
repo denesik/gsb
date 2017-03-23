@@ -34,10 +34,10 @@ void WorldGeneratorTest::Generate(Sector &sector) const
     {
       sector.CreateBlock(sb_pos, textured_block);
       auto &data = TesselatorTexturedBlock::ToTexturedBlockData(*sector.GetTesselatorData(sb_pos));
-      data.set_texture(IFRONT, 0);
-      data.set_texture(IRIGHT, 6);
-      data.set_texture(IBACK, 6);
-      data.set_texture(ILEFT, 6);
+      data.set_texture(ISOUTH, 0);
+      data.set_texture(IWEST, 6);
+      data.set_texture(INORTH, 6);
+      data.set_texture(IEAST, 6);
       data.set_texture(ITOP, 6);
       data.set_texture(IDOWN, 6);
       continue;
@@ -50,10 +50,10 @@ void WorldGeneratorTest::Generate(Sector &sector) const
     {
       sector.CreateBlock(sb_pos, textured_block);
       auto &data = TesselatorTexturedBlock::ToTexturedBlockData(*sector.GetTesselatorData(sb_pos));
-      data.set_texture(IFRONT, 6);
-      data.set_texture(IRIGHT, 6);
-      data.set_texture(IBACK, 2);
-      data.set_texture(ILEFT, 6);
+      data.set_texture(ISOUTH, 6);
+      data.set_texture(IWEST, 6);
+      data.set_texture(INORTH, 2);
+      data.set_texture(IEAST, 6);
       data.set_texture(ITOP, 6);
       data.set_texture(IDOWN, 6);
       continue;
@@ -66,10 +66,10 @@ void WorldGeneratorTest::Generate(Sector &sector) const
     {
       sector.CreateBlock(sb_pos, textured_block);
       auto &data = TesselatorTexturedBlock::ToTexturedBlockData(*sector.GetTesselatorData(sb_pos));
-      data.set_texture(IFRONT, 6);
-      data.set_texture(IRIGHT, 6);
-      data.set_texture(IBACK, 6);
-      data.set_texture(ILEFT, 3);
+      data.set_texture(ISOUTH, 6);
+      data.set_texture(IWEST, 6);
+      data.set_texture(INORTH, 6);
+      data.set_texture(IEAST, 3);
       data.set_texture(ITOP, 6);
       data.set_texture(IDOWN, 6);
       continue;
@@ -82,10 +82,10 @@ void WorldGeneratorTest::Generate(Sector &sector) const
     {
       sector.CreateBlock(sb_pos, textured_block);
       auto &data = TesselatorTexturedBlock::ToTexturedBlockData(*sector.GetTesselatorData(sb_pos));
-      data.set_texture(IFRONT, 6);
-      data.set_texture(IRIGHT, 1);
-      data.set_texture(IBACK, 6);
-      data.set_texture(ILEFT, 6);
+      data.set_texture(ISOUTH, 6);
+      data.set_texture(IWEST, 1);
+      data.set_texture(INORTH, 6);
+      data.set_texture(IEAST, 6);
       data.set_texture(ITOP, 6);
       data.set_texture(IDOWN, 6);
       continue;
@@ -98,10 +98,10 @@ void WorldGeneratorTest::Generate(Sector &sector) const
     {
       sector.CreateBlock(sb_pos, textured_block);
       auto &data = TesselatorTexturedBlock::ToTexturedBlockData(*sector.GetTesselatorData(sb_pos));
-      data.set_texture(IFRONT, 6);
-      data.set_texture(IRIGHT, 6);
-      data.set_texture(IBACK, 6);
-      data.set_texture(ILEFT, 6);
+      data.set_texture(ISOUTH, 6);
+      data.set_texture(IWEST, 6);
+      data.set_texture(INORTH, 6);
+      data.set_texture(IEAST, 6);
       data.set_texture(ITOP, 4);
       data.set_texture(IDOWN, 6);
       continue;
@@ -114,10 +114,10 @@ void WorldGeneratorTest::Generate(Sector &sector) const
     {
       sector.CreateBlock(sb_pos, textured_block);
       auto &data = TesselatorTexturedBlock::ToTexturedBlockData(*sector.GetTesselatorData(sb_pos));
-      data.set_texture(IFRONT, 6);
-      data.set_texture(IRIGHT, 6);
-      data.set_texture(IBACK, 6);
-      data.set_texture(ILEFT, 6);
+      data.set_texture(ISOUTH, 6);
+      data.set_texture(IWEST, 6);
+      data.set_texture(INORTH, 6);
+      data.set_texture(IEAST, 6);
       data.set_texture(ITOP, 6);
       data.set_texture(IDOWN, 5);
       continue;
@@ -128,10 +128,10 @@ void WorldGeneratorTest::Generate(Sector &sector) const
     {
       sector.CreateBlock(sb_pos, textured_block);
       auto &data = TesselatorTexturedBlock::ToTexturedBlockData(*sector.GetTesselatorData(sb_pos));
-      data.set_texture(IFRONT, 0);
-      data.set_texture(IRIGHT, 1);
-      data.set_texture(IBACK, 6);
-      data.set_texture(ILEFT, 6);
+      data.set_texture(ISOUTH, 0);
+      data.set_texture(IWEST, 1);
+      data.set_texture(INORTH, 6);
+      data.set_texture(IEAST, 6);
       data.set_texture(ITOP, 6);
       data.set_texture(IDOWN, 5);
       continue;
@@ -142,10 +142,10 @@ void WorldGeneratorTest::Generate(Sector &sector) const
     {
       sector.CreateBlock(sb_pos, textured_block);
       auto &data = TesselatorTexturedBlock::ToTexturedBlockData(*sector.GetTesselatorData(sb_pos));
-      data.set_texture(IFRONT, 0);
-      data.set_texture(IRIGHT, 6);
-      data.set_texture(IBACK, 6);
-      data.set_texture(ILEFT, 3);
+      data.set_texture(ISOUTH, 0);
+      data.set_texture(IWEST, 6);
+      data.set_texture(INORTH, 6);
+      data.set_texture(IEAST, 3);
       data.set_texture(ITOP, 6);
       data.set_texture(IDOWN, 5);
       continue;
@@ -156,10 +156,10 @@ void WorldGeneratorTest::Generate(Sector &sector) const
     {
       sector.CreateBlock(sb_pos, textured_block);
       auto &data = TesselatorTexturedBlock::ToTexturedBlockData(*sector.GetTesselatorData(sb_pos));
-      data.set_texture(IFRONT, 6);
-      data.set_texture(IRIGHT, 6);
-      data.set_texture(IBACK, 2);
-      data.set_texture(ILEFT, 3);
+      data.set_texture(ISOUTH, 6);
+      data.set_texture(IWEST, 6);
+      data.set_texture(INORTH, 2);
+      data.set_texture(IEAST, 3);
       data.set_texture(ITOP, 6);
       data.set_texture(IDOWN, 5);
       continue;
@@ -170,10 +170,10 @@ void WorldGeneratorTest::Generate(Sector &sector) const
     {
       sector.CreateBlock(sb_pos, textured_block);
       auto &data = TesselatorTexturedBlock::ToTexturedBlockData(*sector.GetTesselatorData(sb_pos));
-      data.set_texture(IFRONT, 6);
-      data.set_texture(IRIGHT, 1);
-      data.set_texture(IBACK, 2);
-      data.set_texture(ILEFT, 6);
+      data.set_texture(ISOUTH, 6);
+      data.set_texture(IWEST, 1);
+      data.set_texture(INORTH, 2);
+      data.set_texture(IEAST, 6);
       data.set_texture(ITOP, 6);
       data.set_texture(IDOWN, 5);
       continue;
@@ -184,10 +184,10 @@ void WorldGeneratorTest::Generate(Sector &sector) const
     {
       sector.CreateBlock(sb_pos, textured_block);
       auto &data = TesselatorTexturedBlock::ToTexturedBlockData(*sector.GetTesselatorData(sb_pos));
-      data.set_texture(IFRONT, 6);
-      data.set_texture(IRIGHT, 6);
-      data.set_texture(IBACK, 2);
-      data.set_texture(ILEFT, 3);
+      data.set_texture(ISOUTH, 6);
+      data.set_texture(IWEST, 6);
+      data.set_texture(INORTH, 2);
+      data.set_texture(IEAST, 3);
       data.set_texture(ITOP, 4);
       data.set_texture(IDOWN, 6);
       continue;
@@ -198,10 +198,10 @@ void WorldGeneratorTest::Generate(Sector &sector) const
     {
       sector.CreateBlock(sb_pos, textured_block);
       auto &data = TesselatorTexturedBlock::ToTexturedBlockData(*sector.GetTesselatorData(sb_pos));
-      data.set_texture(IFRONT, 0);
-      data.set_texture(IRIGHT, 6);
-      data.set_texture(IBACK, 6);
-      data.set_texture(ILEFT, 3);
+      data.set_texture(ISOUTH, 0);
+      data.set_texture(IWEST, 6);
+      data.set_texture(INORTH, 6);
+      data.set_texture(IEAST, 3);
       data.set_texture(ITOP, 4);
       data.set_texture(IDOWN, 6);
       continue;
@@ -212,10 +212,10 @@ void WorldGeneratorTest::Generate(Sector &sector) const
     {
       sector.CreateBlock(sb_pos, textured_block);
       auto &data = TesselatorTexturedBlock::ToTexturedBlockData(*sector.GetTesselatorData(sb_pos));
-      data.set_texture(IFRONT, 6);
-      data.set_texture(IRIGHT, 1);
-      data.set_texture(IBACK, 2);
-      data.set_texture(ILEFT, 6);
+      data.set_texture(ISOUTH, 6);
+      data.set_texture(IWEST, 1);
+      data.set_texture(INORTH, 2);
+      data.set_texture(IEAST, 6);
       data.set_texture(ITOP, 4);
       data.set_texture(IDOWN, 6);
       continue;
@@ -226,10 +226,10 @@ void WorldGeneratorTest::Generate(Sector &sector) const
     {
       sector.CreateBlock(sb_pos, textured_block);
       auto &data = TesselatorTexturedBlock::ToTexturedBlockData(*sector.GetTesselatorData(sb_pos));
-      data.set_texture(IFRONT, 0);
-      data.set_texture(IRIGHT, 1);
-      data.set_texture(IBACK, 6);
-      data.set_texture(ILEFT, 6);
+      data.set_texture(ISOUTH, 0);
+      data.set_texture(IWEST, 1);
+      data.set_texture(INORTH, 6);
+      data.set_texture(IEAST, 6);
       data.set_texture(ITOP, 4);
       data.set_texture(IDOWN, 6);
       continue;

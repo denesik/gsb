@@ -12,10 +12,10 @@
 
 enum SideIndex : int
 {
-  IFRONT = 0,
-  IRIGHT = 1,
-  IBACK = 2,
-  ILEFT = 3,
+  ISOUTH = 0,
+  IWEST = 1,
+  INORTH = 2,
+  IEAST = 3,
   ITOP = 4,
   IDOWN = 5,
 };
@@ -24,10 +24,10 @@ enum SideFlags : int
 {
   NONE = 0,
 
-  FRONT = 1 << IFRONT,
-  RIGHT = 1 << IRIGHT,
-  BACK = 1 << IBACK,
-  LEFT = 1 << ILEFT,
+  SOUTH = 1 << ISOUTH,
+  WEST = 1 << IWEST,
+  NORTH = 1 << INORTH,
+  EAST = 1 << IEAST,
   TOP = 1 << ITOP,
   DOWN = 1 << IDOWN,
 
@@ -195,47 +195,47 @@ namespace cs
       static_cast<SBPosType>(i / (gTesselatorSize.x() * gTesselatorSize.y()) - 1) };
   }
 
-  inline SBPos Left(const SBPos &pos)
+  inline SBPos East(const SBPos &pos, SBPosType dist = SBPosType(1))
   {
-    return{ pos.x() + 1, pos.y(), pos.z() };
+    return{ pos.x() + dist, pos.y(), pos.z() };
   }
 
-  inline SBPos Right(const SBPos &pos)
+  inline SBPos West(const SBPos &pos, SBPosType dist = SBPosType(1))
   {
-    return{ pos.x() - 1, pos.y(), pos.z() };
+    return{ pos.x() - dist, pos.y(), pos.z() };
   }
 
-  inline SBPos Top(const SBPos &pos)
+  inline SBPos Top(const SBPos &pos, SBPosType dist = SBPosType(1))
   {
-    return{ pos.x(), pos.y() + 1, pos.z() };
+    return{ pos.x(), pos.y() + dist, pos.z() };
   }
 
-  inline SBPos Down(const SBPos &pos)
+  inline SBPos Down(const SBPos &pos, SBPosType dist = SBPosType(1))
   {
-    return{ pos.x(), pos.y() - 1, pos.z() };
+    return{ pos.x(), pos.y() - dist, pos.z() };
   }
-  inline SBPos Back(const SBPos &pos)
+  inline SBPos North(const SBPos &pos, SBPosType dist = SBPosType(1))
   {
-    return{ pos.x(), pos.y(), pos.z() + 1 };
-  }
-
-  inline SBPos Front(const SBPos &pos)
-  {
-    return{ pos.x(), pos.y(), pos.z() - 1 };
+    return{ pos.x(), pos.y(), pos.z() + dist };
   }
 
-  inline SBPos Side(const SBPos &pos, SideIndex side)
+  inline SBPos South(const SBPos &pos, SBPosType dist = SBPosType(1))
   {
-    using func_ptr = SBPos (*)(const SBPos &);
+    return{ pos.x(), pos.y(), pos.z() - dist };
+  }
+
+  inline SBPos Side(const SBPos &pos, SideIndex side, SBPosType dist = SBPosType(1))
+  {
+    using func_ptr = SBPos (*)(const SBPos &, SBPosType);
     static func_ptr funcs[6];
-    funcs[IFRONT] = &Front;
-    funcs[IRIGHT] = &Right;
-    funcs[IBACK] = &Back;
-    funcs[ILEFT] = &Left;
+    funcs[ISOUTH] = &South;
+    funcs[IWEST] = &West;
+    funcs[INORTH] = &North;
+    funcs[IEAST] = &East;
     funcs[ITOP] = &Top;
     funcs[IDOWN] = &Down;
 
-    return funcs[side](pos);
+    return funcs[side](pos, dist);
   }
 }
 
