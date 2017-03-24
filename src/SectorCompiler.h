@@ -13,7 +13,7 @@
 #include <memory>
 #include "ThreadProcess.h"
 
-class SectorCompiler : public ThreadProcess<SectorCompiler>
+class SectorCompiler /*: public ThreadProcess<SectorCompiler>*/
 {
 public:
   SectorCompiler(const DataBase &dataBase);
@@ -34,6 +34,16 @@ public:
     return mTesselatorsData;
   }
 
+  inline void SetPos(const SPos &pos)
+  {
+    mPos = pos;
+  }
+
+  inline SPos GetPos() const
+  {
+    return mPos;
+  }
+
 private:
   std::array<BlockId, gBlockBatcherCapacity> mTesselators;
   std::array<TesselatorData, gBlockBatcherCapacity> mTesselatorsData;
@@ -43,6 +53,8 @@ private:
   Magnum::UnsignedInt mIndexOffset;
 
   const DataBase &mDataBase;
+
+  SPos mPos;
 private:
   void ProcessSolidBlock(IndexType index, const STPos &pos);
 

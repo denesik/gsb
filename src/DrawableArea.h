@@ -99,7 +99,8 @@ private:
   void UpdateRadius(unsigned int radius);
   void UpdatePos(const SPos &pos);
 
-  ThreadWorker<TaskCompile, SectorCompiler> mCompilerWorker;
+  //ThreadWorker<TaskCompile, SectorCompiler> mCompilerWorker;
+  ThreadTask<SectorCompiler> mThreadTask;
 };
 
 

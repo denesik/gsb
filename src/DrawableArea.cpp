@@ -10,7 +10,7 @@
 using namespace Magnum;
 
 DrawableArea::DrawableArea(World &world, const SPos &pos, unsigned int radius)
-  : mWorld(world), mPos(pos), mCompilerWorker(world.GetBlocksDataBase())
+  : mWorld(world), mPos(pos), /*mCompilerWorker(world.GetBlocksDataBase())*/ mThreadTask(world.GetBlocksDataBase())
 {
   UpdateRadius(radius);
   UpdatePos(mPos);
@@ -41,6 +41,18 @@ void DrawableArea::SetPos(const SPos &pos)
 //TODO: Не компилировать сектор, если он компилируется в данный момент.
 void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
 {
+  // Пробегаем по списку задач.
+  // Если склейка завершена обновляем меш.
+  auto &batchers = mThreadTask.tasks();
+  for (size_t i = 0; i < batchers.size(); ++i)
+  {
+    if (batchers[i].status == ThreadTask<SectorCompiler>::DONE)
+    {
+
+      batchers[i].status == ThreadTask<SectorCompiler>::FREE;
+    }
+  }
+
   // Обновляем список видимых секторов N раз в сек.
 
   const double N = 10.0;
@@ -79,14 +91,14 @@ void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
       {
         data.drawable->compile = true;
         sector->NeedCompile(false);
-        mCompilerWorker.Add({ data.sector, data.drawable });
+        //mCompilerWorker.Add({ data.sector, data.drawable });
       }
 
       //sector->Draw(matrix, shader);
     }
   }
 
-  mCompilerWorker.Update();
+  //mCompilerWorker.Update();
 }
 
 void DrawableArea::UpdateRadius(unsigned int radius)
