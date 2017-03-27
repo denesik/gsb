@@ -75,7 +75,7 @@ void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
     if (!data.sector.expired())
     {
       auto sector = data.sector.lock();
-      if (sector->NeedCompile() || !data.drawable->compile)
+      if (sector->NeedCompile() /*|| !data.drawable->compile*/)
       {
         data.drawable->compile = true;
         sector->NeedCompile(false);

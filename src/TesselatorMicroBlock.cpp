@@ -36,10 +36,10 @@ TesselatorMicroBlock &TesselatorMicroBlock::Build()
       for (MBPosType x = 0; x < mSize; x++)
       {
         mData[ToIndex(MBPos{ x, y, z })].SetScale(1.0f / Float(mSize));
-        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ mSize - x - 1, y }), mTextureCoord[SideFlagIndex(SideFlags::FRONT)]), SideFlags::FRONT);
-        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ x, y }), mTextureCoord[SideFlagIndex(SideFlags::BACK)]), SideFlags::BACK);
-        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ mSize - z - 1, y }), mTextureCoord[SideFlagIndex(SideFlags::LEFT)]), SideFlags::LEFT);
-        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ z, y }), mTextureCoord[SideFlagIndex(SideFlags::RIGHT)]), SideFlags::RIGHT);
+        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ mSize - x - 1, y }), mTextureCoord[SideFlagIndex(SideFlags::SOUTH)]), SideFlags::SOUTH);
+        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ x, y }), mTextureCoord[SideFlagIndex(SideFlags::NORTH)]), SideFlags::NORTH);
+        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ mSize - z - 1, y }), mTextureCoord[SideFlagIndex(SideFlags::WEST)]), SideFlags::WEST);
+        mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ z, y }), mTextureCoord[SideFlagIndex(SideFlags::EAST)]), SideFlags::EAST);
         mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ mSize - x - 1, z }), mTextureCoord[SideFlagIndex(SideFlags::TOP)]), SideFlags::TOP);
         mData[ToIndex(MBPos{ x, y, z })].SetTexture(TextureCoordTo(TextureCoord({ mSize - x - 1, mSize - z - 1 }), mTextureCoord[SideFlagIndex(SideFlags::DOWN)]), SideFlags::DOWN);
       }
@@ -98,10 +98,10 @@ void TesselatorMicroBlock::JsonLoad(const rapidjson::Value & val, const TextureA
   if (val.HasMember("tex") && val["tex"].IsArray() && val["tex"].Size() == 6)
   {
     const rapidjson::Value &arr = val["tex"];
-    SetTexture(atlas.GetTextureCoord(arr[0].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), BACK);
-    SetTexture(atlas.GetTextureCoord(arr[1].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), FRONT);
-    SetTexture(atlas.GetTextureCoord(arr[2].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), RIGHT);
-    SetTexture(atlas.GetTextureCoord(arr[3].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), LEFT);
+    SetTexture(atlas.GetTextureCoord(arr[0].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), NORTH);
+    SetTexture(atlas.GetTextureCoord(arr[1].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), SOUTH);
+    SetTexture(atlas.GetTextureCoord(arr[2].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), EAST);
+    SetTexture(atlas.GetTextureCoord(arr[3].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), WEST);
     SetTexture(atlas.GetTextureCoord(arr[4].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), TOP);
     SetTexture(atlas.GetTextureCoord(arr[5].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }), DOWN);
   }

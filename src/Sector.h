@@ -13,9 +13,11 @@
 #include <MagnumExternal/Optional/optional.hpp>
 #include "Tesselator.h"
 #include <Magnum/AbstractShaderProgram.h>
+#include "ChunkHelper.h"
 
 class IMapGenerator;
 class World;
+
 
 /// ѕо умолчанию создаетс€ пустой сектор.
 class Sector
@@ -50,6 +52,21 @@ public:
 
   std::optional<TesselatorData &> GetTesselatorData(SBPos pos);
 
+  inline BlockId GetBlockId(IndexType pos) const
+  {
+    return mStaticBlocks[pos];
+  }
+
+  inline const std::unique_ptr<TesselatorData> &GetTesselatorData(IndexType pos) const
+  {
+    return mTesselatorData[pos];
+  }
+
+  inline const SectorAround &GetSectorAround() const
+  {
+    return mSectorAround;
+  }
+
 private:
   std::array<BlockId, gSectorCapacity> mStaticBlocks;
   std::array<std::unique_ptr<Block>, gSectorCapacity> mDinamicBlocks;
@@ -60,6 +77,9 @@ private:
   World &mWorld;
 
   bool mNeedCompile = true;
+
+  SectorAround mSectorAround;
+  Chunk mChunk;
 };
 
 

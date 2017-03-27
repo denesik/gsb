@@ -22,7 +22,7 @@
 #include "ChunkHelper.h"
 #include <Magnum/Version.h>
 
-static const int tmp_area_size = 1;
+static const int tmp_area_size = 0;
 
 Game::Game(const Arguments & arguments)
   : Platform::Application{ arguments, Configuration{}.setTitle("sge").setWindowFlags(Configuration::WindowFlag::Resizable).setVersion(Magnum::Version::GL330) }

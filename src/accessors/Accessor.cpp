@@ -39,12 +39,12 @@ Accessor::Accessor(const DataBase &db, const rapidjson::Value &val, Block &paren
       SideIndex side;
       switch (directions[0])
       {
-      case 'r': side = IRIGHT; break;
-      case 'l': side = ILEFT; break;
+      case 'r': side = IEAST; break;
+      case 'l': side = IWEST; break;
       case 't': side = ITOP; break;
       case 'd': side = IDOWN; break;
-      case 'f': side = IFRONT; break;
-      case 'b': side = IBACK; break;
+      case 'f': side = ISOUTH; break;
+      case 'b': side = INORTH; break;
       default: continue; //TODO: материться
       }
       if (directions[1] != '_') mSides[side] = static_cast<AccessorDirection>(mSides[side] | AccessorDirection::in);
@@ -53,10 +53,10 @@ Accessor::Accessor(const DataBase &db, const rapidjson::Value &val, Block &paren
   }
   else
   {
-    mSides[IBACK] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
-    mSides[IFRONT] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
-    mSides[ILEFT] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
-    mSides[IRIGHT] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
+    mSides[INORTH] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
+    mSides[ISOUTH] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
+    mSides[IWEST] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
+    mSides[IEAST] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
     mSides[ITOP] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
     mSides[IDOWN] = static_cast<AccessorDirection>(AccessorDirection::in | AccessorDirection::out);
   }

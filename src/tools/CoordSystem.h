@@ -12,11 +12,11 @@
 
 enum SideIndex : int
 {
-  IFRONT = 0,
-  IRIGHT = 1,
-  IBACK = 2,
-  ILEFT = 3,
-  ITOP = 4,
+  ISOUTH = 0,   // юг
+  IEAST = 1,    // восток
+  INORTH = 2,   // север
+  IWEST = 3,    // запад
+  ITOP = 4,     
   IDOWN = 5,
 };
 
@@ -24,10 +24,10 @@ enum SideFlags : int
 {
   NONE = 0,
 
-  FRONT = 1 << IFRONT,
-  RIGHT = 1 << IRIGHT,
-  BACK = 1 << IBACK,
-  LEFT = 1 << ILEFT,
+  SOUTH = 1 << ISOUTH, 
+  EAST = 1 << IEAST, 
+  NORTH = 1 << INORTH,
+  WEST = 1 << IWEST,
   TOP = 1 << ITOP,
   DOWN = 1 << IDOWN,
 
@@ -62,9 +62,13 @@ using IndexType = Magnum::UnsignedInt;
 
 
 constexpr SPos gSectorSize(16, 256, 16);
-constexpr SPos gTesselatorSize(gSectorSize.x() + 2, gSectorSize.y() + 2, gSectorSize.z() + 2);
 constexpr Magnum::Int gSectorCapacity = gSectorSize.x() * gSectorSize.y() * gSectorSize.z();
-constexpr Magnum::Int gTesselatorCapacity = gTesselatorSize.x() * gTesselatorSize.y() * gTesselatorSize.z();
+
+constexpr SPos gChunkSize(gSectorSize.x(), gSectorSize.y(), gSectorSize.z());
+constexpr Magnum::Int gChunkCapacity = gChunkSize.x() * gChunkSize.y() * gChunkSize.z();
+
+constexpr SPos gBlockBatcherSize(gChunkSize.x() + 2, gChunkSize.y() + 2, gChunkSize.z() + 2);
+constexpr Magnum::Int gBlockBatcherCapacity = gBlockBatcherSize.x() * gBlockBatcherSize.y() * gBlockBatcherSize.z();
 
 /// —истема координат.
 namespace cs
@@ -178,64 +182,65 @@ namespace cs
   /// ѕозици€ тессел€тора в секторе в индекс тессел€тора в секторе.
   inline IndexType STtoTI(const STPos &pos)
   {
-    return static_cast<IndexType>(pos.z()) * gTesselatorSize.x() * gTesselatorSize.y() +
-      static_cast<IndexType>(pos.y()) * gTesselatorSize.x() +
+    return static_cast<IndexType>(pos.z()) * gBlockBatcherSize.x() * gBlockBatcherSize.y() +
+      static_cast<IndexType>(pos.y()) * gBlockBatcherSize.x() +
       static_cast<IndexType>(pos.x());
   }
 
   /// »ндекс тессел€тора в секторе в позицию блока в секторе.
   inline SBPos TItoSB(IndexType i)
   {
-    assert(i % gTesselatorSize.x() > 0 &&
-      (i / gTesselatorSize.x()) % gTesselatorSize.y() > 0 &&
-      i / (gTesselatorSize.x() * gTesselatorSize.y()) > 0);
+    assert(i % gBlockBatcherSize.x() > 0 &&
+      (i / gBlockBatcherSize.x()) % gBlockBatcherSize.y() > 0 &&
+      i / (gBlockBatcherSize.x() * gBlockBatcherSize.y()) > 0);
     return SBPos{
-      static_cast<SBPosType>(i % gTesselatorSize.x() - 1),
-      static_cast<SBPosType>((i / gTesselatorSize.x()) % gTesselatorSize.y() - 1),
-      static_cast<SBPosType>(i / (gTesselatorSize.x() * gTesselatorSize.y()) - 1) };
+      static_cast<SBPosType>(i % gBlockBatcherSize.x() - 1),
+      static_cast<SBPosType>((i / gBlockBatcherSize.x()) % gBlockBatcherSize.y() - 1),
+      static_cast<SBPosType>(i / (gBlockBatcherSize.x() * gBlockBatcherSize.y()) - 1) };
   }
 
-  inline SBPos Left(const SBPos &pos)
+  inline SBPos South(const SBPos &pos, SBPosType dist = SBPosType(1))
   {
-    return{ pos.x() + 1, pos.y(), pos.z() };
+    return{ pos.x(), pos.y(), pos.z() - dist };
   }
 
-  inline SBPos Right(const SBPos &pos)
+  inline SBPos East(const SBPos &pos, SBPosType dist = SBPosType(1))
   {
-    return{ pos.x() - 1, pos.y(), pos.z() };
+    return{ pos.x() - dist, pos.y(), pos.z() };
   }
 
-  inline SBPos Top(const SBPos &pos)
+  inline SBPos North(const SBPos &pos, SBPosType dist = SBPosType(1))
   {
-    return{ pos.x(), pos.y() + 1, pos.z() };
+    return{ pos.x(), pos.y(), pos.z() + dist };
   }
 
-  inline SBPos Down(const SBPos &pos)
+  inline SBPos West(const SBPos &pos, SBPosType dist = SBPosType(1))
   {
-    return{ pos.x(), pos.y() - 1, pos.z() };
-  }
-  inline SBPos Back(const SBPos &pos)
-  {
-    return{ pos.x(), pos.y(), pos.z() + 1 };
+    return{ pos.x() + dist, pos.y(), pos.z() };
   }
 
-  inline SBPos Front(const SBPos &pos)
+  inline SBPos Top(const SBPos &pos, SBPosType dist = SBPosType(1))
   {
-    return{ pos.x(), pos.y(), pos.z() - 1 };
+    return{ pos.x(), pos.y() + dist, pos.z() };
   }
 
-  inline SBPos Side(const SBPos &pos, SideIndex side)
+  inline SBPos Down(const SBPos &pos, SBPosType dist = SBPosType(1))
   {
-    using func_ptr = SBPos (*)(const SBPos &);
+    return{ pos.x(), pos.y() - dist, pos.z() };
+  }
+
+  inline SBPos Side(const SBPos &pos, SideIndex side, SBPosType dist = SBPosType(1))
+  {
+    using func_ptr = SBPos (*)(const SBPos &, SBPosType);
     static func_ptr funcs[6];
-    funcs[IFRONT] = &Front;
-    funcs[IRIGHT] = &Right;
-    funcs[IBACK] = &Back;
-    funcs[ILEFT] = &Left;
+    funcs[ISOUTH] = &South;
+    funcs[IEAST] = &East;
+    funcs[INORTH] = &North;
+    funcs[IWEST] = &West;
     funcs[ITOP] = &Top;
     funcs[IDOWN] = &Down;
 
-    return funcs[side](pos);
+    return funcs[side](pos, dist);
   }
 }
 
