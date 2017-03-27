@@ -39,14 +39,14 @@ static const Magnum::Vector3 gVertexData[] =
   gVertexCube[BLB],gVertexCube[BRB],gVertexCube[FRB],gVertexCube[FLB], // bot
 };
 
-static const Magnum::Vector3 gVertexNormal[] = //TODO: написал на рандом
+static const Magnum::Vector3 gVertexNormal[] =
 {
-	gVertexCube[FLB], // front
-	gVertexCube[FRB], // right +
-	gVertexCube[BRB], // back +
-	gVertexCube[BLB], // left
-	gVertexCube[FLT], // top
-	gVertexCube[BLB], // bot
+	{  0.f,  0.f,  1.f }, // front z+
+	{  1.f,  0.f,  0.f }, // right x+
+	{  0.f,  0.f, -1.f }, // back z-
+	{ -1.f,  0.f,  0.f }, // left x-
+	{  0.f,  1.f,  0.f }, // top y+
+	{  0.f, -1.f,  0.f }, // bot y-
 };
 
 static const Magnum::Vector2 gTextureSide[] =

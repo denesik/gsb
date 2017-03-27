@@ -22,15 +22,32 @@ public:
     return *this;
   }
 
+  StandartShader& setShadowMatrix(const Matrix4& mat) {
+	  setUniform(mShadowProjection, mat);
+	  return *this;
+  }
+
+  StandartShader& setLightVector(const Vector3& light) {
+	  setUniform(mLightVector, light);
+	  return *this;
+  }
+
 	StandartShader& setTexture(Texture2D& texture) {
 		texture.bind(TextureLayer);
 		return *this;
 	}
 
+	StandartShader& setShadowDepthTexture(Texture2D& shadowDepth) {
+		shadowDepth.bind(ShadowDepth);
+		return *this;
+	}
+
 private:
-	enum : Int { TextureLayer = 0 };
+	enum : Int { TextureLayer = 0, ShadowDepth = 1 };
 
   Int mUniformProjection;
+  Int mShadowProjection;
+  Int mLightVector;
 };
 
 

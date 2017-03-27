@@ -22,16 +22,17 @@ public:
 
   const Magnum::Matrix4 &Model() const;
   const Magnum::Vector3 &Pos() const;
+  const Magnum::Vector3 Direction() const;
 
   void Update();
 
 protected:
   Magnum::Quaternion mQuat;
   Magnum::Vector3 mPos;
-  Magnum::Vector3 mDeltaPos;
-  Magnum::Vector3 mDir;
+  Magnum::Vector3 mNextMove;
+  Magnum::Vector3 mNextRotation;
   Magnum::Matrix4 mModel;
-
+  Magnum::Vector3 mEye;
 };
 
 

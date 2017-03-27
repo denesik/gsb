@@ -23,7 +23,10 @@ StandartShader::StandartShader()
     CORRADE_INTERNAL_ASSERT_OUTPUT(link());
 
     mUniformProjection = uniformLocation("projectionMatrix");
+	mShadowProjection = uniformLocation("shadowMatrix");
+	mLightVector = uniformLocation("lightVector");
 
     setUniform(uniformLocation("textureData"), TextureLayer);
+	setUniform(uniformLocation("shadowDepth"), ShadowDepth);
 }
 

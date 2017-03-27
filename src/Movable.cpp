@@ -18,27 +18,28 @@ Movable::~Movable()
 {
 }
 
-void Movable::Rotate(const Magnum::Vector3 &dir)
+void Movable::Rotate(const Magnum::Vector3 &euler)
 {
-  mDir += dir;
+  mNextRotation += euler;
 }
 
 void Movable::Move(const Magnum::Vector3 &dist)
 {
-  mDeltaPos += mQuat.transformVector(dist);
+  mNextMove += mQuat.transformVector(dist);
 }
 
 void Movable::LookAt(const Magnum::Vector3 &target)
 {
   //mQuat = Quaternion::fromMatrix(Matrix4::lookAt(mPos, target, mModel.up()).rotation());
-  mQuat = Quaternion::fromMatrix(Matrix4::lookAt(mPos, target, Vector3(0.0f, 1.0f, 0.0f)).rotation());
+	mEye = target;
+    mQuat = Quaternion::fromMatrix(Matrix4::lookAt(mPos, target, Vector3(0.0f, 1.0f, 0.0f)).rotation());
 }
 
 void Movable::SetPos(const Magnum::Vector3 &pos)
 {
   mPos = pos;
   mModel = Matrix4::from(mQuat.toMatrix(), mPos); // ???
-  mDeltaPos = {};
+  mNextMove = {};
 }
 
 const Magnum::Matrix4 & Movable::Model() const
@@ -53,16 +54,21 @@ const Magnum::Vector3 & Movable::Pos() const
 
 void Movable::Update()
 {
-  auto pitch = Quaternion::rotation(Rad(mDir.y()), Vector3::xAxis());
-  auto yaw = Quaternion::rotation(Rad(mDir.x()), Vector3::yAxis());
-  auto roll = Quaternion::rotation(Rad(mDir.z()), Vector3::zAxis());
-  mDir = {};
+  auto pitch = Quaternion::rotation(Rad(mNextRotation.y()), Vector3::xAxis());
+  auto yaw = Quaternion::rotation(Rad(mNextRotation.x()), Vector3::yAxis());
+  auto roll = Quaternion::rotation(Rad(mNextRotation.z()), Vector3::zAxis());
+  mNextRotation = {};
 
   mQuat = yaw* mQuat *pitch;
   mQuat = mQuat.normalized();
-  mPos += mDeltaPos;
-  mDeltaPos = {};
+  mPos += mNextMove;
+  mNextMove = {};
 
   mModel = Matrix4::from(mQuat.toMatrix(), mPos);
+}
+
+const Magnum::Vector3 Movable::Direction() const
+{
+	return (mEye - mPos).normalized();
 }
 

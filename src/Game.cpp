@@ -26,6 +26,7 @@ static const int tmp_area_size = 1;
 
 Game::Game(const Arguments & arguments)
   : Platform::Application{ arguments, Configuration{}.setTitle("sge").setWindowFlags(Configuration::WindowFlag::Resizable).setVersion(Magnum::Version::GL330) }
+  , mShadowFramebuffer{ Range2Di{{}, {512, 512}} }
 {
   test();
 
@@ -63,8 +64,24 @@ Game::Game(const Arguments & arguments)
 
   mCamera = std::make_unique<Camera>(mWorld->mPlayer);
   mCamera->SetViewport(defaultFramebuffer.viewport());
+  mSunCamera = std::make_unique<Camera>(mSun);
+  mSunCamera->SetViewport({ {}, {512,512} });
+
   mWorld->mPlayer.SetPos({ 0, 70, 0 });
 
+  (mShadowTexture = Texture2D{})
+	  .setImage(0, TextureFormat::DepthComponent, ImageView2D{ PixelFormat::DepthComponent, PixelType::Float,{ 512, 512 }, nullptr })
+	  .setMaxLevel(0)
+	  .setCompareFunction(Sampler::CompareFunction::LessOrEqual)
+	  .setCompareMode(Sampler::CompareMode::CompareRefToTexture)
+	  .setMinificationFilter(Sampler::Filter::Linear, Sampler::Mipmap::Base)
+	  .setMagnificationFilter(Sampler::Filter::Linear);
+
+  mShadowFramebuffer.attachTexture(Framebuffer::BufferAttachment::Depth, mShadowTexture, 0)
+	  .mapForDraw(Framebuffer::DrawAttachment::None)
+	  .bind();
+
+  CORRADE_INTERNAL_ASSERT(mShadowFramebuffer.checkStatus(FramebufferTarget::Draw) == Framebuffer::Status::Complete);
 
   mTimeline.start();
 }
@@ -77,11 +94,12 @@ void Game::drawEvent()
   Renderer::enable(Renderer::Feature::FaceCulling);
   Renderer::setClearColor({ clear_color.x, clear_color.y, clear_color.z, clear_color.w });
 
-  defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth);
-
   mWorld->mPlayer.Move(mCameraVelocity * 0.006f);
   mWorld->mPlayer.Rotate(mCameraAngle * 0.003f);
   mWorld->mPlayer.Update();
+
+  mSun.SetPos({ std::sin(mTimeline.previousFrameTime()) * 100, 100, std::cos(mTimeline.previousFrameTime()) * 100 });
+  mSun.LookAt(mWorld->mPlayer.Pos());
 
   auto ray = mCamera->Ray({ static_cast<Float>(defaultFramebuffer.viewport().centerX()) ,
     static_cast<Float>(defaultFramebuffer.viewport().centerY()) });
@@ -98,9 +116,9 @@ void Game::drawEvent()
     }
   }
 
-  debugLines.addLine(picked, picked + Vector3i{ 1,0,0 }, { 1,1,1 });
-  debugLines.addLine(picked, picked + Vector3i{ 0,1,0 }, { 1,1,1 });
-  debugLines.addLine(picked, picked + Vector3i{ 0,0,1 }, { 1,1,1 });
+  debugLines.addLine(picked, picked + Vector3i{ 1,0,0 }, { 1,0,0 });
+  debugLines.addLine(picked, picked + Vector3i{ 0,1,0 }, { 0,1,0 });
+  debugLines.addLine(picked, picked + Vector3i{ 0,0,1 }, { 0,0,1 });
 
   debugLines.addLine(picked + Vector3i{ 1,1,1 }, picked + Vector3i{ 0,1,1 }, { 1,1,1 });
   debugLines.addLine(picked + Vector3i{ 1,1,1 }, picked + Vector3i{ 1,0,1 }, { 1,1,1 });
@@ -117,9 +135,22 @@ void Game::drawEvent()
       mDrawModal = {};
   }
 
-  mShader.setTexture(mTexture);
+  //shadow pass
+  mShadowFramebuffer.clear(FramebufferClear::Depth).bind();
+  Renderer::setColorMask(false, false, false, false);
+  Renderer::setFaceCullingMode(Magnum::Renderer::PolygonFacing::Front);
+  mDrawableArea->Draw(*mSunCamera, mShadowPass);
 
+  //forward pass
+  Renderer::setColorMask(true, true, true, true);
+  defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth).bind();
+  Renderer::setFaceCullingMode(Magnum::Renderer::PolygonFacing::Back);
+  mShader.setTexture(mTexture);
+  mShader.setShadowDepthTexture(mShadowTexture);
+  mShader.setLightVector(mSun.Direction());
+  mShader.setShadowMatrix(mSunCamera->Project() * mSunCamera->View());
   mDrawableArea->Draw(*mCamera, mShader);
+
   mWorld->Update();
 
   debugLines.draw(mCamera->Project() * mCamera->View());

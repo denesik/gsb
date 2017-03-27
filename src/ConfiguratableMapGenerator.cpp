@@ -68,6 +68,12 @@ void ConfiguratableMapGenerator::Generate(Sector & sector) const
 		  auto sbpos = SBPos(i, j, k);
 		  sector.CreateBlock(sbpos, air);
 	  }
+
+	  if(rand()%100 == 1)
+	  {
+		  auto sbpos = SBPos(i, hill_level + 1, k);
+		  sector.CreateBlock(sbpos, furnance);
+	  }
     }
 }
 

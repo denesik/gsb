@@ -5,6 +5,8 @@
 #include <Corrade/PluginManager/Manager.h>
 #include <Magnum/Buffer.h>
 #include <Magnum/DefaultFramebuffer.h>
+#include <Magnum/Framebuffer.h>
+#include <Magnum/TextureArray.h>
 #include <Magnum/Mesh.h>
 #include <Magnum/Texture.h>
 #include <Magnum/TextureFormat.h>
@@ -71,6 +73,7 @@ private:
 
 
   StandartShader mShader;
+  StandartShader mShadowPass;
 
   Vector3 mCameraVelocity;
   Vector3 mCameraAngle;
@@ -89,5 +92,9 @@ private:
   bool centering = true;
 
   std::unique_ptr<Camera> mCamera;
+  std::unique_ptr<Camera> mSunCamera;
+  Movable mSun;
+  Framebuffer mShadowFramebuffer;
+  Texture2D mShadowTexture;
 };
 
