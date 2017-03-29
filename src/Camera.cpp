@@ -20,7 +20,7 @@ void Camera::SetViewport(const Magnum::Range2Di &viewport)
   mViewport = static_cast<Magnum::Range2D>(viewport);
 }
 
-Magnum::Vector3 Camera::Unproject(Magnum::Vector2 pixel, float depth)
+Magnum::Vector3 Camera::Unproject(Magnum::Vector2 pixel, float depth) const
 {
   auto Inverse = (Project() * View()).inverted();
   pixel.y() = -pixel.y() + mViewport.size().y();
@@ -36,24 +36,24 @@ Magnum::Vector3 Camera::Unproject(Magnum::Vector2 pixel, float depth)
   return obj.xyz();
 }
 
-Magnum::Vector3 Camera::Ray(Magnum::Vector2 pixel)
+Magnum::Vector3 Camera::Ray(Magnum::Vector2 pixel) const
 {
   auto near = Unproject(pixel, 0.1f);
   auto far = Unproject(pixel, 1.f);
   return far - near;
 }
 
-Magnum::Matrix4 Camera::Project()
+Magnum::Matrix4 Camera::Project() const
 {
   return Matrix4::perspectiveProjection(Deg(mFov.x()), mViewport.size().aspectRatio(), 0.01f, 1000.0f);
 }
 
-Magnum::Matrix4 Camera::View()
+Magnum::Matrix4 Camera::View() const
 {
   return mMovable.Model().inverted();
 }
 
-Magnum::Frustum Camera::Frustum()
+Magnum::Frustum Camera::Frustum() const
 {
   return Math::Frustum<Float>::fromMatrix(Project() * View());
 }

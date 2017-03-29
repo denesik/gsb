@@ -19,13 +19,13 @@ public:
 
   void SetViewport(const Magnum::Range2Di &viewport);
 
-  Magnum::Vector3 Unproject(Magnum::Vector2 pixel, float depth);
-  Magnum::Vector3 Ray(Magnum::Vector2 pixel);
+  Magnum::Vector3 Unproject(Magnum::Vector2 pixel, float depth) const;
+  Magnum::Vector3 Ray(Magnum::Vector2 pixel) const;
 
-  Magnum::Matrix4 Project();
-  Magnum::Matrix4 View();
+  Magnum::Matrix4 Project() const;
+  Magnum::Matrix4 View() const;
 
-  Magnum::Frustum Frustum();
+  Magnum::Frustum Frustum() const;
 
 private:
   Movable &mMovable;

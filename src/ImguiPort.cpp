@@ -241,6 +241,7 @@ void ImguiPort::Draw()
   {
     const ImDrawList* cmd_list = draw_data->CmdLists[n];
     ImDrawIdx idx_buffer_offset = 0;
+	const ImDrawIdx* idx_buffer = cmd_list->IdxBuffer.Data;
 
     mVertexBuffer.setData({ cmd_list->VtxBuffer.Data, std::size_t(cmd_list->VtxBuffer.Size) }, BufferUsage::StreamDraw);
     mIndexBuffer.setData({ cmd_list->IdxBuffer.Data, std::size_t(cmd_list->IdxBuffer.Size) }, BufferUsage::StreamDraw);
@@ -249,7 +250,15 @@ void ImguiPort::Draw()
     {
       const ImDrawCmd* pcmd = &cmd_list->CmdBuffer[cmd_i];
 
-      mShader.setTexture(mTexture[(size_t)(intptr_t)pcmd->TextureId]);
+	  if((size_t)(intptr_t)pcmd->TextureId < 2)
+		  mShader.setTexture(mTexture[(size_t)(intptr_t)pcmd->TextureId]);
+	  /*else
+	  {
+		  glUseProgram(mShader.id());
+		  glActiveTexture(GL_TEXTURE0);
+		  glBindTexture(GL_TEXTURE_2D, (GLuint)(intptr_t)pcmd->TextureId);
+		  glEnable(GL_BLEND);
+	  }*/
       Renderer::setScissor({ {(int)pcmd->ClipRect.x, fb_height - (int)(pcmd->ClipRect.w)}, {(int)(pcmd->ClipRect.z), fb_height - (int)(pcmd->ClipRect.y)} });
 
       mesh.setCount(pcmd->ElemCount);
@@ -257,7 +266,7 @@ void ImguiPort::Draw()
 
       idx_buffer_offset += pcmd->ElemCount;
 
-      mesh.draw(mShader);
+	  mesh.draw(mShader);
     }
   }
 

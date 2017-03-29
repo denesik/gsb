@@ -43,12 +43,41 @@ public:
 	}
 
 private:
-	enum : Int { TextureLayer = 0, ShadowDepth = 1 };
+	enum : Int { TextureLayer = 0, ShadowDepth = 2 };
 
   Int mUniformProjection;
   Int mShadowProjection;
   Int mLightVector;
 };
 
+class ShadowShader : public AbstractShaderProgram {
+public:
+	typedef Attribute<0, Vector3> Position;
+
+	explicit ShadowShader();
+
+	ShadowShader& setProjection(const Matrix4& mat) {
+		setUniform(mUniformProjection, mat);
+		return *this;
+	}
+
+private:
+	Int mUniformProjection;
+};
+
+class TexGenShader : public AbstractShaderProgram {
+public:
+	typedef Attribute<0, Vector3> Position;
+
+	explicit TexGenShader();
+
+	TexGenShader& setTexture(Texture2D& texture) {
+		texture.bind(TextureLayer);
+		return *this;
+	}
+
+private:
+	enum : Int { TextureLayer = 0 };
+};
 
 #endif

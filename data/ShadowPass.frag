@@ -1,5 +1,5 @@
-out vec4 frag_out;
+layout(location = 0) out float fragmentdepth;
 
 void main() {
-	frag_out = vec4(1,0,0,1);
+	fragmentdepth = gl_FragCoord.z;
 }

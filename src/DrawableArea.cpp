@@ -39,7 +39,7 @@ void DrawableArea::SetPos(const SPos &pos)
 }
 
 //TODO: Не компилировать сектор, если он компилируется в данный момент.
-void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
+void DrawableArea::Draw(const Camera &camera, const Camera &sun, Magnum::AbstractShaderProgram& shader)
 {
   // Обновляем список видимых секторов N раз в сек.
 
@@ -54,6 +54,7 @@ void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
 
   const auto &frustum = camera.Frustum(); 
   const auto &matrix = camera.Project() * camera.View();
+  const auto &sun_matrix = sun.Project() * sun.View();
 
   for (auto &data : mData)
   {
@@ -69,7 +70,7 @@ void DrawableArea::Draw(Camera &camera, Magnum::AbstractShaderProgram& shader)
 
     if (data.drawable->valide)
     {
-      data.drawable->Draw(frustum, matrix, shader);
+      data.drawable->Draw(frustum, matrix, sun_matrix, shader);
     }
 
     if (!data.sector.expired())
@@ -135,11 +136,20 @@ void SectorRenderData::SetPos(const SPos &pos)
   aabb.max() = wpos + WPos(static_cast<WPosType>(gSectorSize.x()), static_cast<WPosType>(gSectorSize.y()), static_cast<WPosType>(gSectorSize.z()));
 }
 
-void SectorRenderData::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader)
+void SectorRenderData::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, const Magnum::Matrix4 &sun_matrix, Magnum::AbstractShaderProgram& shader)
 {
+  constexpr const Matrix4 bias
+  { { 0.5f, 0.0f, 0.0f, 0.0f },
+  { 0.0f, 0.5f, 0.0f, 0.0f },
+  { 0.0f, 0.0f, 0.5f, 0.0f },
+  { 0.5f, 0.5f, 0.5f, 1.0f } };
+
   if (Math::Geometry::Intersection::boxFrustum(aabb, frustum))
   {
-    static_cast<StandartShader &>(shader).setProjection(matrix * model);
+    auto &std_shader = static_cast<StandartShader &>(shader);
+    std_shader.setProjection(matrix * model);
+    std_shader.setLightVector(-sun_matrix.backward());
+    std_shader.setShadowMatrix(bias * sun_matrix * model);
     mesh.draw(shader);
   }
 }

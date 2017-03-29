@@ -39,7 +39,7 @@ struct SectorRenderData
 
   void SetPos(const SPos &pos);
 
-  void Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, Magnum::AbstractShaderProgram& shader);
+  void Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, const Magnum::Matrix4 &sun_matrix, Magnum::AbstractShaderProgram& shader);
 };
 
 
@@ -78,7 +78,7 @@ public:
 
   void SetPos(const SPos &pos);
 
-  void Draw(Camera &camera, Magnum::AbstractShaderProgram& shader);
+  void Draw(const Camera &camera, const Camera &sun, Magnum::AbstractShaderProgram& shader);
 
 private:
   World &mWorld;

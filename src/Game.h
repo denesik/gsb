@@ -32,6 +32,7 @@
 #include "tools/DebugLines.h"
 
 #include <Magnum/Timeline.h>
+#include "../TextureGenerator.h"
 
 using namespace Magnum;
 
@@ -73,7 +74,7 @@ private:
 
 
   StandartShader mShader;
-  StandartShader mShadowPass;
+  ShadowShader mShadowPass;
 
   Vector3 mCameraVelocity;
   Vector3 mCameraAngle;
@@ -96,5 +97,7 @@ private:
   Movable mSun;
   Framebuffer mShadowFramebuffer;
   Texture2D mShadowTexture;
+  TextureGenerator test_texgen;
+  TexGenShader test_texgenshader;
 };
 

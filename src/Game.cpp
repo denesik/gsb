@@ -27,6 +27,7 @@ static const int tmp_area_size = 0;
 Game::Game(const Arguments & arguments)
   : Platform::Application{ arguments, Configuration{}.setTitle("sge").setWindowFlags(Configuration::WindowFlag::Resizable).setVersion(Magnum::Version::GL330) }
   , mShadowFramebuffer{ Range2Di{{}, {512, 512}} }
+  , test_texgen{ test_texgenshader, {200, 200} }
 {
   test();
 
@@ -69,13 +70,13 @@ Game::Game(const Arguments & arguments)
 
   mWorld->mPlayer.SetPos({ 0, 70, 0 });
 
-  (mShadowTexture = Texture2D{})
-	  .setImage(0, TextureFormat::DepthComponent, ImageView2D{ PixelFormat::DepthComponent, PixelType::Float,{ 512, 512 }, nullptr })
+  mShadowTexture.setImage(0, TextureFormat::DepthComponent, ImageView2D{ PixelFormat::DepthComponent, PixelType::Float,{ 512, 512 }, nullptr })
 	  .setMaxLevel(0)
 	  .setCompareFunction(Sampler::CompareFunction::LessOrEqual)
 	  .setCompareMode(Sampler::CompareMode::CompareRefToTexture)
-	  .setMinificationFilter(Sampler::Filter::Linear, Sampler::Mipmap::Base)
-	  .setMagnificationFilter(Sampler::Filter::Linear);
+	  .setMinificationFilter(Sampler::Filter::Nearest)
+	  .setMagnificationFilter(Sampler::Filter::Nearest)
+	  .setWrapping({ Sampler::Wrapping::ClampToEdge, Sampler::Wrapping::ClampToEdge });
 
   mShadowFramebuffer.attachTexture(Framebuffer::BufferAttachment::Depth, mShadowTexture, 0)
 	  .mapForDraw(Framebuffer::DrawAttachment::None)
@@ -137,19 +138,19 @@ void Game::drawEvent()
 
   //shadow pass
   mShadowFramebuffer.clear(FramebufferClear::Depth).bind();
-  Renderer::setColorMask(false, false, false, false);
+  //Renderer::setColorMask(false, false, false, false);
   Renderer::setFaceCullingMode(Magnum::Renderer::PolygonFacing::Front);
-  mDrawableArea->Draw(*mSunCamera, mShadowPass);
+  mDrawableArea->Draw(*mSunCamera, *mSunCamera, mShadowPass);
+
+  //auto & test_t = test_texgen.Generate(mShadowTexture);
 
   //forward pass
-  Renderer::setColorMask(true, true, true, true);
+  //Renderer::setColorMask(true, true, true, true);
   defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth).bind();
   Renderer::setFaceCullingMode(Magnum::Renderer::PolygonFacing::Back);
   mShader.setTexture(mTexture);
   mShader.setShadowDepthTexture(mShadowTexture);
-  mShader.setLightVector(mSun.Direction());
-  mShader.setShadowMatrix(mSunCamera->Project() * mSunCamera->View());
-  mDrawableArea->Draw(*mCamera, mShader);
+  mDrawableArea->Draw(*mSunCamera, *mSunCamera, mShader);
 
   mWorld->Update();
 
@@ -163,6 +164,8 @@ void Game::drawEvent()
     // 1. Show a simple window
     // Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets appears in a window automatically called "Debug"
     {
+	  //ImGui::Image(ImTextureID(mShadowTexture.id()), {200,200});
+
       ImGui::ColorEdit3("clear color", (float*)&clear_color);
       if (ImGui::Button("Test Window")) show_test_window ^= 1;
       if (ImGui::Button("Another Window")) show_another_window ^= 1;

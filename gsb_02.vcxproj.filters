@@ -171,6 +171,9 @@
     <ClCompile Include="src\tools\Brezenham3D.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="TextureGenerator.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -339,6 +342,9 @@
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\tools\Brezenham3D.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureGenerator.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>
