@@ -5,7 +5,7 @@
 #include "WorldGeneratorFlat.h"
 
 World::World(const DataBase &blocksDataBase)
-  : mBlocksDataBase(blocksDataBase), mUpdatableSectors(*this), mPlayer(*this), mWorldGenerator(std::make_unique<BiomeMapGenerator>(blocksDataBase)), mLoaderWorker(*mWorldGenerator)
+  : mBlocksDataBase(blocksDataBase), mUpdatableSectors(*this), mPlayer(*this), mWorldGenerator(std::make_unique<WorldGeneratorFlat>(blocksDataBase)), mLoaderWorker(*mWorldGenerator)
 {
 }
 

@@ -2,52 +2,52 @@
 #include <Magnum/Math/Vector3.h>
 #include <Magnum/Math/Vector2.h>
 #include "TextureAtlas.h"
+#include "tools/CoordSystem.h"
 
 using namespace Magnum;
 
 enum VertexPos
 {
-  FLB,
-  FRB,
-  FRT,
-  FLT,
-  BLB,
-  BRB,
-  BRT,
-  BLT,
+  SWD, //FLD
+  SED, //FRD
+  SET, //FRT
+  SWT, //FLT
+  NWD, //BLD
+  NED, //BRD
+  NET, //BRT
+  NWT, //BLT
 };
 
 static const Magnum::Vector3 gVertexCube[] =
 {
-  { 1.0f, 0.0f, 0.0f },// FRONT LB
-  { 0.0f, 0.0f, 0.0f },// FRONT RB
-  { 0.0f, 1.0f, 0.0f },// FRONT RT
-  { 1.0f, 1.0f, 0.0f },// FRONT LT
-  { 1.0f, 0.0f, 1.0f },// BACK LB
-  { 0.0f, 0.0f, 1.0f },// BACK RB
-  { 0.0f, 1.0f, 1.0f },// BACK RT
-  { 1.0f, 1.0f, 1.0f },// BACK LT
+  (WPos(cs::South(cs::West(cs::Down({})))) + WPos(1)) / 2.0f,
+  (WPos(cs::South(cs::East(cs::Down({})))) + WPos(1)) / 2.0f,
+  (WPos(cs::South(cs::East(cs::Top({})))) + WPos(1)) / 2.0f,
+  (WPos(cs::South(cs::West(cs::Top({})))) + WPos(1)) / 2.0f,
+  (WPos(cs::North(cs::West(cs::Down({})))) + WPos(1)) / 2.0f,
+  (WPos(cs::North(cs::East(cs::Down({})))) + WPos(1)) / 2.0f,
+  (WPos(cs::North(cs::East(cs::Top({})))) + WPos(1)) / 2.0f,
+  (WPos(cs::North(cs::West(cs::Top({})))) + WPos(1)) / 2.0f,
 };
 
 static const Magnum::Vector3 gVertexData[] =
 {
-  gVertexCube[FLB],gVertexCube[FRB],gVertexCube[FRT],gVertexCube[FLT], // front
-  gVertexCube[BLB],gVertexCube[FLB],gVertexCube[FLT],gVertexCube[BLT], // left
-  gVertexCube[BRB],gVertexCube[BLB],gVertexCube[BLT],gVertexCube[BRT], // back +
-  gVertexCube[FRB],gVertexCube[BRB],gVertexCube[BRT],gVertexCube[FRT], // right +
-  gVertexCube[FLT],gVertexCube[FRT],gVertexCube[BRT],gVertexCube[BLT], // top
-  gVertexCube[BLB],gVertexCube[BRB],gVertexCube[FRB],gVertexCube[FLB], // bot
+  gVertexCube[SWD],gVertexCube[SED],gVertexCube[SET],gVertexCube[SWT], // South
+  gVertexCube[SED],gVertexCube[NED],gVertexCube[NET],gVertexCube[SET], // East
+  gVertexCube[NED],gVertexCube[NWD],gVertexCube[NWT],gVertexCube[NET], // North
+  gVertexCube[NWD],gVertexCube[SWD],gVertexCube[SWT],gVertexCube[NWT], // West
+  gVertexCube[SWT],gVertexCube[SET],gVertexCube[NET],gVertexCube[NWT], // top
+  gVertexCube[NWD],gVertexCube[NED],gVertexCube[SED],gVertexCube[SWD], // bot
 };
 
 static const Magnum::Vector3 gVertexNormal[] =
 {
-	{  0.f,  0.f,  1.f }, // front z+
+  { 0.f,  0.f,  1.f }, // front z+
   { -1.f,  0.f,  0.f }, // left x-
-  {  0.f,  0.f, -1.f }, // back z-
-	{  1.f,  0.f,  0.f }, // right x+
+  { 0.f,  0.f, -1.f }, // back z-
+  { 1.f,  0.f,  0.f }, // right x+
   { 0.f, -1.f,  0.f }, // top y-
-	{  0.f,  1.f,  0.f }, // bot y+
-	
+  { 0.f,  1.f,  0.f }, // bot y+
 };
 
 static const Magnum::Vector2 gTextureSide[] =
@@ -116,9 +116,9 @@ void TesselatorSolidBlock::JsonLoad(const rapidjson::Value& val, const TextureAt
   if (val.HasMember("tex") && val["tex"].IsArray() && val["tex"].Size() == 6)
   {
     const rapidjson::Value &arr = val["tex"];
-    SetTexture(atlas.GetTextureCoord(arr[0].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), NORTH);
-    SetTexture(atlas.GetTextureCoord(arr[1].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), SOUTH);
-    SetTexture(atlas.GetTextureCoord(arr[2].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), EAST);
+    SetTexture(atlas.GetTextureCoord(arr[0].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), SOUTH);
+    SetTexture(atlas.GetTextureCoord(arr[1].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), EAST);
+    SetTexture(atlas.GetTextureCoord(arr[2].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), NORTH);
     SetTexture(atlas.GetTextureCoord(arr[3].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), WEST);
     SetTexture(atlas.GetTextureCoord(arr[4].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), TOP);
     SetTexture(atlas.GetTextureCoord(arr[5].GetString()).value_or(Range2D{ Vector2{0.0f}, Vector2{1.0f} }), DOWN);

@@ -245,6 +245,22 @@
     }
   },
   {
+    "section": "block",
+    "name": "world_side",
+    "id": 16,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/test_south.png",
+        "data/test_east.png",
+        "data/test_north.png",
+        "data/test_west.png",
+        "data/test_top.png",
+        "data/test_down.png"
+      ]
+    }
+  },
+  {
     "section": "item",
     "type": "Item",
     "id": 1,
