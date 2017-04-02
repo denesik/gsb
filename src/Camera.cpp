@@ -15,7 +15,7 @@ Camera::Camera(Movable &movable, const Magnum::Range2Di &viewport, Camera::Type 
     mProject = Matrix4::perspectiveProjection(Deg(mFov.x()), mViewport.size().aspectRatio(), 0.01f, 1000.0f);
     break;
   case Camera::Type::Ortho:
-    mProject = Matrix4::orthographicProjection(Vector2(viewport.size()), -500, 500);
+    mProject = Matrix4::orthographicProjection(Vector2({350, 350}), -500, 500);
     break;
   }
 }

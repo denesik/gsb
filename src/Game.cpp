@@ -138,24 +138,21 @@ void Game::drawEvent()
 
   //shadow pass
   mShadowFramebuffer.clear(FramebufferClear::Depth).bind();
-  //Renderer::setColorMask(false, false, false, false);
+  Renderer::setColorMask(false, false, false, false);
   Renderer::setFaceCullingMode(Magnum::Renderer::PolygonFacing::Front);
   mDrawableArea->DrawShadowPass(*mSunCamera, mShadowPass);
 
-  //auto & test_t = test_texgen.Generate(mShadowTexture);
-
   //forward pass
-  //Renderer::setColorMask(true, true, true, true);
+  Renderer::setColorMask(true, true, true, true);
   defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth).bind();
   Renderer::setFaceCullingMode(Magnum::Renderer::PolygonFacing::Back);
   mShader.setTexture(mTexture);
   mShader.setShadowDepthTexture(mShadowTexture);
   mDrawableArea->Draw(*mCurrentCamera, *mSunCamera, mSun.Direction(), mShader);
-  //debugLines.addLine(mSun.Pos(), mSun.Pos() + mSun.Direction()*100, { 1,1,0 });
 
   mWorld->Update();
 
-  debugLines.draw(mCamera->Project() * mCamera->View());
+  debugLines.draw(mCurrentCamera->Project() * mCurrentCamera->View());
   debugLines.reset();
 
   //if (false)
