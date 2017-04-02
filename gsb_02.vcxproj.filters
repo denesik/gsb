@@ -19,6 +19,9 @@
     <Filter Include="Файлы исходного кода\Accessors">
       <UniqueIdentifier>{a500637d-3ceb-4ef4-8ae1-e715a1a692d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы исходного кода\gui">
+      <UniqueIdentifier>{fb83a368-9c09-4f44-9fe6-2651c7d98e2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Game.cpp">

@@ -34,7 +34,10 @@ public:
   Magnum::Frustum Frustum() const;
 
 private:
+  void Reinit();
+
   Movable &mMovable;
+  Type mType;
 
   Magnum::Range2D mViewport;
   Magnum::Vector2 mFov;

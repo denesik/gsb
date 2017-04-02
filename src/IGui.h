@@ -1,5 +1,6 @@
 #pragma once
 #include <tools/Common.h>
+#include <functional>
 
 namespace Magnum {
   class Timeline;
