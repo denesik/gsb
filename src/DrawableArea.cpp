@@ -39,7 +39,7 @@ void DrawableArea::SetPos(const SPos &pos)
 }
 
 //TODO: Не компилировать сектор, если он компилируется в данный момент.
-void DrawableArea::Draw(const Camera &camera, const Camera &sun, Magnum::AbstractShaderProgram& shader)
+void DrawableArea::DrawShadowPass(const Camera & sun, ShadowShader & shader)
 {
   // Обновляем список видимых секторов N раз в сек.
 
@@ -52,7 +52,57 @@ void DrawableArea::Draw(const Camera &camera, const Camera &sun, Magnum::Abstrac
   }
   loading = true;
 
-  const auto &frustum = camera.Frustum(); 
+  const auto &frustum = sun.Frustum();
+  const auto &sun_matrix = sun.Project() * sun.View();
+
+  for (auto &data : mData)
+  {
+    if (data.sector.expired())
+    {
+      if (loading)
+      {
+        data.sector = mWorld.GetSector(data.world_pos);
+      }
+      data.drawable->valide = false;
+      data.drawable->compile = false;
+    }
+
+    if (data.drawable->valide)
+    {
+      data.drawable->DrawShadowPass(frustum, sun_matrix, shader);
+    }
+
+    if (!data.sector.expired())
+    {
+      auto sector = data.sector.lock();
+      if (sector->NeedCompile() /*|| !data.drawable->compile*/)
+      {
+        data.drawable->compile = true;
+        sector->NeedCompile(false);
+        mCompilerWorker.Add({ data.sector, data.drawable });
+      }
+
+      //sector->Draw(matrix, shader);
+    }
+  }
+
+  mCompilerWorker.Update();
+}
+
+void DrawableArea::Draw(const Camera & camera, const Camera & sun, const Vector3 &lightdir, StandartShader & shader)
+{
+  // Обновляем список видимых секторов N раз в сек.
+
+  const double N = 10.0;
+  bool loading = false;
+  if (mTimer.Elapsed() > 1.0 / N)
+  {
+    mTimer.Start();
+    loading = true;
+  }
+  loading = true;
+
+  const auto &frustum = camera.Frustum();
   const auto &matrix = camera.Project() * camera.View();
   const auto &sun_matrix = sun.Project() * sun.View();
 
@@ -70,7 +120,7 @@ void DrawableArea::Draw(const Camera &camera, const Camera &sun, Magnum::Abstrac
 
     if (data.drawable->valide)
     {
-      data.drawable->Draw(frustum, matrix, sun_matrix, shader);
+      data.drawable->Draw(frustum, matrix, sun_matrix, lightdir, shader);
     }
 
     if (!data.sector.expired())
@@ -115,7 +165,6 @@ void DrawableArea::UpdatePos(const SPos &pos)
   }
 }
 
-
 //=============== SectorRenderData ===============
 SectorRenderData::SectorRenderData()
 {
@@ -136,7 +185,7 @@ void SectorRenderData::SetPos(const SPos &pos)
   aabb.max() = wpos + WPos(static_cast<WPosType>(gSectorSize.x()), static_cast<WPosType>(gSectorSize.y()), static_cast<WPosType>(gSectorSize.z()));
 }
 
-void SectorRenderData::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, const Magnum::Matrix4 &sun_matrix, Magnum::AbstractShaderProgram& shader)
+void SectorRenderData::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, const Magnum::Matrix4 &sun_matrix, const Magnum::Vector3 &lightdir, StandartShader& shader)
 {
   constexpr const Matrix4 bias
   { { 0.5f, 0.0f, 0.0f, 0.0f },
@@ -146,10 +195,18 @@ void SectorRenderData::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix
 
   if (Math::Geometry::Intersection::boxFrustum(aabb, frustum))
   {
-    auto &std_shader = static_cast<StandartShader &>(shader);
-    std_shader.setProjection(matrix * model);
-    std_shader.setLightVector(-sun_matrix.backward());
-    std_shader.setShadowMatrix(bias * sun_matrix * model);
+    shader.setProjection(matrix * model);
+    shader.setLightVector(lightdir);
+    shader.setShadowMatrix(bias * sun_matrix * model);
+    mesh.draw(shader);
+  }
+}
+
+void SectorRenderData::DrawShadowPass(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, ShadowShader& shader)
+{
+  if (Math::Geometry::Intersection::boxFrustum(aabb, frustum))
+  {
+    shader.setProjection(matrix * model);
     mesh.draw(shader);
   }
 }

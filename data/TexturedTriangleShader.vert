@@ -8,7 +8,7 @@ uniform highp vec3 lightVector;
 
 out vec2 frag_uv;
 out vec3 frag_lightvector;
-out vec3 frag_normal;
+out mediump vec3 frag_normal;
 out vec3 frag_shadow;
 
 void main() {

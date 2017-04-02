@@ -94,6 +94,7 @@ private:
 
   std::unique_ptr<Camera> mCamera;
   std::unique_ptr<Camera> mSunCamera;
+  Camera * mCurrentCamera;
   Movable mSun;
   Framebuffer mShadowFramebuffer;
   Texture2D mShadowTexture;

@@ -3,19 +3,29 @@ uniform sampler2DShadow shadowDepth;
 
 in vec2 frag_uv;
 in vec3 frag_lightvector;
-in vec3 frag_normal;
+in mediump vec3 frag_normal;
 in vec3 frag_shadow;
 
 out vec4 frag_out;
 
 void main() {
-    vec4 tcol = texture(textureData, frag_uv);
+    vec4 albedo = texture(textureData, frag_uv);
+    vec3 ambient = vec3(0.2,0.2,0.2);
 
-	float coef = min(1, max(0, dot(frag_normal, frag_lightvector)) + 0.4);
+    lowp float intensity = dot(frag_normal, frag_lightvector);
 
-	float visibility = 1.0;
-    float inv = texture( shadowDepth, vec3(frag_shadow.xy, frag_shadow.z));
-    visibility = visibility * inv;
+    float inverseShadow = 1.0;
 
-	frag_out = vec4(frag_shadow.z/100, 0, 0, 1);
+    if(intensity <= 0)
+    {
+        inverseShadow = 0.0f;
+        intensity = 0.0f;
+    }
+    else
+    {
+        inverseShadow = texture( shadowDepth, vec3(frag_shadow.xy, frag_shadow.z - 0.005));
+    }
+
+    frag_out.rgb = ((ambient + vec3(intensity * inverseShadow))*albedo.rgb);
+    frag_out.a = 1.0;
 }

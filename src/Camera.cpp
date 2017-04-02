@@ -4,10 +4,20 @@
 
 using namespace Magnum;
 
-Camera::Camera(Movable &movable)
-  : mMovable(movable)
+Camera::Camera(Movable &movable, const Magnum::Range2Di &viewport, Camera::Type type) 
+  : mViewport(viewport)
+  , mMovable(movable)
 {
   mFov.x() = 60.0;
+  switch (type)
+  {
+  case Camera::Type::Perspective:
+    mProject = Matrix4::perspectiveProjection(Deg(mFov.x()), mViewport.size().aspectRatio(), 0.01f, 1000.0f);
+    break;
+  case Camera::Type::Ortho:
+    mProject = Matrix4::orthographicProjection(Vector2(viewport.size()), -500, 500);
+    break;
+  }
 }
 
 
@@ -45,7 +55,7 @@ Magnum::Vector3 Camera::Ray(Magnum::Vector2 pixel) const
 
 Magnum::Matrix4 Camera::Project() const
 {
-  return Matrix4::perspectiveProjection(Deg(mFov.x()), mViewport.size().aspectRatio(), 0.01f, 1000.0f);
+  return mProject;
 }
 
 Magnum::Matrix4 Camera::View() const

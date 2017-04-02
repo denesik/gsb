@@ -14,7 +14,13 @@
 class Camera/* : public Movable*/
 {
 public:
-  Camera(Movable &movable);
+  enum class Type
+  {
+    Perspective,
+    Ortho
+  };
+
+  Camera(Movable &movable, const Magnum::Range2Di &viewport, Type type = Type::Perspective);
   ~Camera();
 
   void SetViewport(const Magnum::Range2Di &viewport);
@@ -34,6 +40,7 @@ private:
   Magnum::Vector2 mFov;
 
   Magnum::Frustum mFrustum;
+  Magnum::Matrix4 mProject;
 };
 
 

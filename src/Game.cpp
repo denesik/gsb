@@ -63,20 +63,18 @@ Game::Game(const Arguments & arguments)
   setSwapInterval(0);
   setMouseLocked(true);
 
-  mCamera = std::make_unique<Camera>(mWorld->mPlayer);
-  mCamera->SetViewport(defaultFramebuffer.viewport());
-  mSunCamera = std::make_unique<Camera>(mSun);
-  mSunCamera->SetViewport({ {}, {512,512} });
+  mCamera = std::make_unique<Camera>(mWorld->mPlayer, defaultFramebuffer.viewport());
+  mSunCamera = std::make_unique<Camera>(mSun, Range2Di{ {},{ 512, 512 } }, Camera::Type::Ortho);
+  mCurrentCamera = mCamera.get();
 
   mWorld->mPlayer.SetPos({ 0, 70, 0 });
 
   mShadowTexture.setImage(0, TextureFormat::DepthComponent, ImageView2D{ PixelFormat::DepthComponent, PixelType::Float,{ 512, 512 }, nullptr })
 	  .setMaxLevel(0)
 	  .setCompareFunction(Sampler::CompareFunction::LessOrEqual)
-	  .setCompareMode(Sampler::CompareMode::CompareRefToTexture)
-	  .setMinificationFilter(Sampler::Filter::Nearest)
-	  .setMagnificationFilter(Sampler::Filter::Nearest)
-	  .setWrapping({ Sampler::Wrapping::ClampToEdge, Sampler::Wrapping::ClampToEdge });
+    .setCompareMode(Sampler::CompareMode::CompareRefToTexture)
+    .setMinificationFilter(Sampler::Filter::Linear, Sampler::Mipmap::Base)
+    .setMagnificationFilter(Sampler::Filter::Linear);
 
   mShadowFramebuffer.attachTexture(Framebuffer::BufferAttachment::Depth, mShadowTexture, 0)
 	  .mapForDraw(Framebuffer::DrawAttachment::None)
@@ -99,8 +97,10 @@ void Game::drawEvent()
   mWorld->mPlayer.Rotate(mCameraAngle * 0.003f);
   mWorld->mPlayer.Update();
 
-  mSun.SetPos({ std::sin(mTimeline.previousFrameTime()) * 100, 100, std::cos(mTimeline.previousFrameTime()) * 100 });
-  mSun.LookAt(mWorld->mPlayer.Pos());
+  auto spos = Vector3{ std::sin(mTimeline.previousFrameTime()) * 100, 111, std::cos(mTimeline.previousFrameTime()) * 100 };
+  mSun.SetPos(spos);
+  mSun.LookAt({});
+  mSun.Update();
 
   auto ray = mCamera->Ray({ static_cast<Float>(defaultFramebuffer.viewport().centerX()) ,
     static_cast<Float>(defaultFramebuffer.viewport().centerY()) });
@@ -140,7 +140,7 @@ void Game::drawEvent()
   mShadowFramebuffer.clear(FramebufferClear::Depth).bind();
   //Renderer::setColorMask(false, false, false, false);
   Renderer::setFaceCullingMode(Magnum::Renderer::PolygonFacing::Front);
-  mDrawableArea->Draw(*mSunCamera, *mSunCamera, mShadowPass);
+  mDrawableArea->DrawShadowPass(*mSunCamera, mShadowPass);
 
   //auto & test_t = test_texgen.Generate(mShadowTexture);
 
@@ -150,7 +150,8 @@ void Game::drawEvent()
   Renderer::setFaceCullingMode(Magnum::Renderer::PolygonFacing::Back);
   mShader.setTexture(mTexture);
   mShader.setShadowDepthTexture(mShadowTexture);
-  mDrawableArea->Draw(*mSunCamera, *mSunCamera, mShader);
+  mDrawableArea->Draw(*mCurrentCamera, *mSunCamera, mSun.Direction(), mShader);
+  //debugLines.addLine(mSun.Pos(), mSun.Pos() + mSun.Direction()*100, { 1,1,0 });
 
   mWorld->Update();
 
@@ -244,6 +245,9 @@ void Game::keyPressEvent(KeyEvent& event)
 
   if (event.key() == KeyEvent::Key::S)
     mCameraVelocity.z() = 1000.0f * mTimeline.previousFrameDuration();
+
+  if (event.key() == KeyEvent::Key::F5)
+    mCurrentCamera = (mCurrentCamera == mCamera.get()) ? mSunCamera.get() : mCamera.get();
 
   event.setAccepted();
 }

@@ -42,11 +42,12 @@ static const Magnum::Vector3 gVertexData[] =
 static const Magnum::Vector3 gVertexNormal[] =
 {
 	{  0.f,  0.f,  1.f }, // front z+
+  { -1.f,  0.f,  0.f }, // left x-
+  {  0.f,  0.f, -1.f }, // back z-
 	{  1.f,  0.f,  0.f }, // right x+
-	{  0.f,  0.f, -1.f }, // back z-
-	{ -1.f,  0.f,  0.f }, // left x-
-	{  0.f,  1.f,  0.f }, // top y+
-	{  0.f, -1.f,  0.f }, // bot y-
+  { 0.f, -1.f,  0.f }, // top y-
+	{  0.f,  1.f,  0.f }, // bot y+
+	
 };
 
 static const Magnum::Vector2 gTextureSide[] =
