@@ -18,7 +18,7 @@ void Camera::Reinit()
   }
 }
 
-Camera::Camera(Movable &movable, const Magnum::Range2Di &viewport, Camera::Type type) 
+Camera::Camera(Movable &movable, const Magnum::Range2Di &viewport, Camera::Type type)
   : mViewport(viewport)
   , mMovable(movable)
   , mType(type)
@@ -45,7 +45,7 @@ Magnum::Vector3 Camera::Unproject(Magnum::Vector2 pixel, float depth) const
   auto tmp = Vector4(pixel.x(), pixel.y(), depth, 1.f);
   tmp.x() = (tmp.x() - mViewport.min().x()) / mViewport.max().x();
   tmp.y() = (tmp.y() - mViewport.min().y()) / mViewport.max().y();
-  tmp = tmp * 2.f - Vector4{1.f};
+  tmp = tmp * 2.f - Vector4{ 1.f };
 
   auto obj = Inverse * tmp;
   obj /= obj.w();

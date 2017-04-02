@@ -28,7 +28,7 @@ void FpsCounter::Update()
   fpsTime += frameTime;
   fpsStack.push_back(frameTime);
 
-  while(fpsTime > 1)
+  while (fpsTime > 1)
   {
     fpsTime -= fpsStack.front();
     fpsStack.pop_front();

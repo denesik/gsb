@@ -11,7 +11,6 @@ DataBase::DataBase(const TextureAtlas &atlas, const TextureAtlas &atlas_items)
   : mAtlas(atlas), mAtlasItems(atlas_items)
 {
   mFakeData = std::make_unique<FakeData>(*this);
-  
 }
 
 

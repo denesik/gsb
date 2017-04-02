@@ -64,12 +64,12 @@ namespace gsb
 
   template<> struct crc32<std::string>
   {
-    std::size_t constexpr operator()(char const *input) const 
+    std::size_t constexpr operator()(char const *input) const
     {
       return *input ? (*this)(input + 1) >> 8 ^ crc_table[((*this)(input + 1) ^ *input) & 0x000000FF] : 0;
     }
 
-    std::size_t operator()(const std::string& str) const 
+    std::size_t operator()(const std::string& str) const
     {
       return (*this)(str.c_str());
     }
