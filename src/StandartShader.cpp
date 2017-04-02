@@ -15,8 +15,8 @@ StandartShader::StandartShader()
 
   const char *preambula = 
     ""
-    //"#define GSB_SHADOWMAP_LGHT\n" 
-    //"#define GSB_NORMAL_LGHT\n"
+    "#define GSB_SHADOWMAP_LGHT\n" 
+    "#define GSB_NORMAL_LGHT\n"
     ;
 
   vert.addSource(preambula);
