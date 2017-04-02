@@ -18,6 +18,9 @@ void main() {
   vec4 albedo = texture(textureData, frag_uv);
   vec3 ambient = vec3(0.2, 0.2, 0.2);
   
+  vec3 sc = frag_shadow;
+  //sc.x = sc.x / (abs(sc.x) + 0.05);
+  //sc.y = sc.y / (abs(sc.y) + 0.05);
 
   lowp float intensity;
   #ifdef GSB_NORMAL_LGHT
@@ -35,7 +38,7 @@ void main() {
   }
   else
   {
-    inverseShadow = texture( shadowDepth, vec3(frag_shadow.xy, frag_shadow.z - 0.005));
+    inverseShadow = texture( shadowDepth, vec3(sc.xy, sc.z - 0.0005));
   }
   #else
   inverseShadow = 1.0;
