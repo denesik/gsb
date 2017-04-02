@@ -30,50 +30,50 @@ void ConfiguratableMapGenerator::Generate(Sector & sector) const
       const auto &wb_pos = cs::SBtoWB({ i, 0, k }, sec_pos);
       auto value = static_cast<float>(noise.GetNoise(static_cast<float>(wb_pos.x()), static_cast<float>(wb_pos.z()))) / 2.f + 1.f;
 
-	  auto sq = static_cast<float>(noise.GetNoise(static_cast<float>(-wb_pos.x()), static_cast<float>(-wb_pos.z()))) + 1.f;
-	  sq = std::pow(sq, 20);
-	  sq = std::max(std::logf(sq) / std::logf(10), 1.f);
+      auto sq = static_cast<float>(noise.GetNoise(static_cast<float>(-wb_pos.x()), static_cast<float>(-wb_pos.z()))) + 1.f;
+      sq = std::pow(sq, 20);
+      sq = std::max(std::logf(sq) / std::logf(10), 1.f);
 
-	  value = (value + value + sq) / 3.f;
+      value = (value + value + sq) / 3.f;
 
-	  int hill_level = static_cast<int>(value * conf.hill_multiplier + conf.land_level);
+      int hill_level = static_cast<int>(value * conf.hill_multiplier + conf.land_level);
 
-	  
-	  for (auto j = 0; j < std::min(conf.land_level, int(gSectorSize.y())); ++j)
-	  {
-	    auto sbpos = SBPos(i, j, k);
-	    sector.CreateBlock(sbpos, stone);
-	  }
 
-	  for (auto j = conf.land_level; j < std::min(hill_level, int(gSectorSize.y())); ++j)
-	  {
-		  auto sbpos = SBPos(i, j, k);
-		  sector.CreateBlock(sbpos, dirt);
-	  }
+      for (auto j = 0; j < std::min(conf.land_level, int(gSectorSize.y())); ++j)
+      {
+        auto sbpos = SBPos(i, j, k);
+        sector.CreateBlock(sbpos, stone);
+      }
 
-	  for (auto j = std::min(hill_level, int(gSectorSize.y())); j < std::min(hill_level + 1, int(gSectorSize.y())); ++j)
-	  {
-		  auto sbpos = SBPos(i, j, k);
-		  sector.CreateBlock(sbpos, grass);
-	  }
+      for (auto j = conf.land_level; j < std::min(hill_level, int(gSectorSize.y())); ++j)
+      {
+        auto sbpos = SBPos(i, j, k);
+        sector.CreateBlock(sbpos, dirt);
+      }
 
-	  for (auto j = std::min(hill_level + 1, int(gSectorSize.y())); j < std::min(conf.water_level, int(gSectorSize.y())); ++j)
-	  {
-		  auto sbpos = SBPos(i, j, k);
-		  sector.CreateBlock(sbpos, water);
-	  }
+      for (auto j = std::min(hill_level, int(gSectorSize.y())); j < std::min(hill_level + 1, int(gSectorSize.y())); ++j)
+      {
+        auto sbpos = SBPos(i, j, k);
+        sector.CreateBlock(sbpos, grass);
+      }
 
-	  for (auto j = std::min(std::max(hill_level + 1, conf.water_level), int(gSectorSize.y())); j < gSectorSize.y(); ++j)
-	  {
-		  auto sbpos = SBPos(i, j, k);
-		  sector.CreateBlock(sbpos, air);
-	  }
+      for (auto j = std::min(hill_level + 1, int(gSectorSize.y())); j < std::min(conf.water_level, int(gSectorSize.y())); ++j)
+      {
+        auto sbpos = SBPos(i, j, k);
+        sector.CreateBlock(sbpos, water);
+      }
 
-	  if(rand()%100 == 1)
-	  {
-		  auto sbpos = SBPos(i, hill_level + 1, k);
-		  sector.CreateBlock(sbpos, furnance);
-	  }
+      for (auto j = std::min(std::max(hill_level + 1, conf.water_level), int(gSectorSize.y())); j < gSectorSize.y(); ++j)
+      {
+        auto sbpos = SBPos(i, j, k);
+        sector.CreateBlock(sbpos, air);
+      }
+
+      if (rand() % 100 == 1)
+      {
+        auto sbpos = SBPos(i, hill_level + 1, k);
+        sector.CreateBlock(sbpos, furnance);
+      }
     }
 }
 

@@ -4,20 +4,26 @@
 
 using namespace Magnum;
 
-Camera::Camera(Movable &movable, const Magnum::Range2Di &viewport, Camera::Type type) 
-  : mViewport(viewport)
-  , mMovable(movable)
+void Camera::Reinit()
 {
   mFov.x() = 60.0;
-  switch (type)
+  switch (mType)
   {
   case Camera::Type::Perspective:
     mProject = Matrix4::perspectiveProjection(Deg(mFov.x()), mViewport.size().aspectRatio(), 0.01f, 1000.0f);
     break;
   case Camera::Type::Ortho:
-    mProject = Matrix4::orthographicProjection(Vector2({350, 350}), -500, 500);
+    mProject = Matrix4::orthographicProjection(Vector2({ 350, 350 }), -500, 500);
     break;
   }
+}
+
+Camera::Camera(Movable &movable, const Magnum::Range2Di &viewport, Camera::Type type)
+  : mViewport(viewport)
+  , mMovable(movable)
+  , mType(type)
+{
+  Reinit();
 }
 
 
@@ -28,6 +34,7 @@ Camera::~Camera()
 void Camera::SetViewport(const Magnum::Range2Di &viewport)
 {
   mViewport = static_cast<Magnum::Range2D>(viewport);
+  Reinit();
 }
 
 Magnum::Vector3 Camera::Unproject(Magnum::Vector2 pixel, float depth) const
@@ -38,7 +45,7 @@ Magnum::Vector3 Camera::Unproject(Magnum::Vector2 pixel, float depth) const
   auto tmp = Vector4(pixel.x(), pixel.y(), depth, 1.f);
   tmp.x() = (tmp.x() - mViewport.min().x()) / mViewport.max().x();
   tmp.y() = (tmp.y() - mViewport.min().y()) / mViewport.max().y();
-  tmp = tmp * 2.f - Vector4{1.f};
+  tmp = tmp * 2.f - Vector4{ 1.f };
 
   auto obj = Inverse * tmp;
   obj /= obj.w();

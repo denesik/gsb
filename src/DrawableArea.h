@@ -87,7 +87,7 @@ public:
 private:
   World &mWorld;
   SPos mPos;
-  
+
   struct Data
   {
     SPos local_pos;

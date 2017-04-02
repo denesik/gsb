@@ -45,3 +45,7 @@ void Creature::Update()
   if (false) // Выключили коллизии.
     Movable::SetPos(old_pos);
 }
+
+void Creature::DrawGui(const Magnum::Timeline & dt)
+{
+}

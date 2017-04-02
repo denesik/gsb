@@ -7,20 +7,29 @@ uniform highp mat4 shadowMatrix;
 uniform highp vec3 lightVector;
 
 out vec2 frag_uv;
+
+#if defined(GSB_SHADOWMAP_LGHT) || defined(GSB_NORMAL_LGHT)
 out vec3 frag_lightvector;
 out mediump vec3 frag_normal;
+#endif
+
+#ifdef GSB_SHADOWMAP_LGHT
 out vec3 frag_shadow;
+#endif
 
 void main() {
+  const float bias = 0.000005;
+  
+  frag_uv = vert_uv;
+  
+  gl_Position = projectionMatrix * vec4(vert_pos, 1);
 
-	const float bias = 0.000005;
-
-    frag_uv = vert_uv;
-
-    gl_Position = projectionMatrix * vec4(vert_pos, 1);
-	frag_shadow = (shadowMatrix * vec4(vert_pos, 1)).xyz;
-
-	frag_lightvector = normalize(lightVector);
-
-	frag_normal = vert_normal;
+  #ifdef GSB_SHADOWMAP_LGHT
+  frag_shadow = (shadowMatrix * vec4(vert_pos, 1)).xyz;
+  #endif
+  
+  #if defined(GSB_SHADOWMAP_LGHT) || defined(GSB_NORMAL_LGHT)
+  frag_lightvector = normalize(lightVector);
+  frag_normal = vert_normal;
+  #endif
 }

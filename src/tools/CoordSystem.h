@@ -16,7 +16,7 @@ enum SideIndex : int
   IEAST = 1,    // восток
   INORTH = 2,   // север
   IWEST = 3,    // запад
-  ITOP = 4,     
+  ITOP = 4,
   IDOWN = 5,
 };
 
@@ -24,8 +24,8 @@ enum SideFlags : int
 {
   NONE = 0,
 
-  SOUTH = 1 << ISOUTH, 
-  EAST = 1 << IEAST, 
+  SOUTH = 1 << ISOUTH,
+  EAST = 1 << IEAST,
   NORTH = 1 << INORTH,
   WEST = 1 << IWEST,
   TOP = 1 << ITOP,
@@ -47,14 +47,14 @@ inline int SideFlagIndex(SideFlags side)
   return 0;
 }
 
-using CSPos     = Magnum::Vector2i; /// Координаты столбца секторов
-using WPos      = Magnum::Vector3;  /// Мировые координаты.
-using SPos      = Magnum::Vector3i; /// Координаты сектора.
-using WBPos     = Magnum::Vector3i; /// Координаты блока в мире.
-using SBPos     = Magnum::Vector3i; /// Координаты блока в секторе.
-using STPos     = Magnum::Vector3i; /// Координаты тесселятора в секторе.
-using WPosType  = Magnum::Float;
-using SPosType  = Magnum::Int;
+using CSPos = Magnum::Vector2i; /// Координаты столбца секторов
+using WPos = Magnum::Vector3;  /// Мировые координаты.
+using SPos = Magnum::Vector3i; /// Координаты сектора.
+using WBPos = Magnum::Vector3i; /// Координаты блока в мире.
+using SBPos = Magnum::Vector3i; /// Координаты блока в секторе.
+using STPos = Magnum::Vector3i; /// Координаты тесселятора в секторе.
+using WPosType = Magnum::Float;
+using SPosType = Magnum::Int;
 using WBPosType = Magnum::Int;
 using SBPosType = Magnum::Int;
 using STPosType = Magnum::Int;
@@ -156,7 +156,7 @@ namespace cs
   /// Индекс блока в секторе в позицию блока в секторе.
   inline SBPos BItoSB(IndexType i)
   {
-    return SBPos{ 
+    return SBPos{
       static_cast<SBPosType>(i % gSectorSize.x()),
       static_cast<SBPosType>((i / gSectorSize.x()) % gSectorSize.y()),
       static_cast<SBPosType>(i / (gSectorSize.x() * gSectorSize.y())) };
@@ -166,14 +166,14 @@ namespace cs
   inline IndexType SBtoBI(const SBPos &pos)
   {
     return static_cast<IndexType>(pos.z()) * gSectorSize.x() * gSectorSize.y() +
-           static_cast<IndexType>(pos.y()) * gSectorSize.x() +
-           static_cast<IndexType>(pos.x());
+      static_cast<IndexType>(pos.y()) * gSectorSize.x() +
+      static_cast<IndexType>(pos.x());
   }
 
   /// Индекс тесселятора в секторе в позицию тесселятора в секторе.
   inline STPos TItoST(IndexType i)
   {
-    return SBPos{ 
+    return SBPos{
       static_cast<SBPosType>(i % gSectorSize.x()),
       static_cast<SBPosType>((i / gSectorSize.x()) % gSectorSize.y()),
       static_cast<SBPosType>(i / (gSectorSize.x() * gSectorSize.y())) };
@@ -231,7 +231,7 @@ namespace cs
 
   inline SBPos Side(const SBPos &pos, SideIndex side, SBPosType dist = SBPosType(1))
   {
-    using func_ptr = SBPos (*)(const SBPos &, SBPosType);
+    using func_ptr = SBPos(*)(const SBPos &, SBPosType);
     static func_ptr funcs[6];
     funcs[ISOUTH] = &South;
     funcs[IEAST] = &East;

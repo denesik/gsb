@@ -6,22 +6,22 @@
 
 
 Crafter::Crafter(const Crafter &other, Accessor &input, Accessor &output)
-  : m_recipe_tag(other.m_recipe_tag), 
-    mInput(static_cast<AccessorItem &>(input)), mOutput(static_cast<AccessorItem &>(output))
+  : m_recipe_tag(other.m_recipe_tag)
+  , mInput(static_cast<AccessorItem &>(input)), mOutput(static_cast<AccessorItem &>(output))
 {
 
 }
 
 Crafter::Crafter(Crafter &&other, Accessor &input, Accessor &output)
-  : m_recipe_tag(std::move(other.m_recipe_tag)), 
-    mInput(static_cast<AccessorItem &>(input)), mOutput(static_cast<AccessorItem &>(output))
+  : m_recipe_tag(std::move(other.m_recipe_tag))
+  , mInput(static_cast<AccessorItem &>(input)), mOutput(static_cast<AccessorItem &>(output))
 {
 
 }
 
 Crafter::Crafter(IRecipe::Tag tag, bool fast, Accessor &input, Accessor &output)
-  : m_recipe_tag(tag), 
-    mInput(static_cast<AccessorItem &>(input)), mOutput(static_cast<AccessorItem &>(output))
+  : m_recipe_tag(tag)
+  , mInput(static_cast<AccessorItem &>(input)), mOutput(static_cast<AccessorItem &>(output))
 {
 
 }
@@ -41,18 +41,18 @@ void Crafter::Update(const Magnum::Timeline &dt, const DataBase &db)
 
     // Если нужно удалить компоненты в конце крафта, проверяем не исчезли ли компоненты.
     if (!m_fast_components)
-    for (const auto &c : components)
-    {
-      // Если требуется больше итемов чем есть в сундуке не крафтим.
-      if (c.count > mInput.ItemCount(c.id))
+      for (const auto &c : components)
       {
-        m_current_recipe.reset();
-        m_runned = false;
-        m_time = 0.0f;
-        enable = false;
-        break;
+        // Если требуется больше итемов чем есть в сундуке не крафтим.
+        if (c.count > mInput.ItemCount(c.id))
+        {
+          m_current_recipe.reset();
+          m_runned = false;
+          m_time = 0.0f;
+          enable = false;
+          break;
+        }
       }
-    }
 
     if (enable)
     {
@@ -62,10 +62,10 @@ void Crafter::Update(const Magnum::Timeline &dt, const DataBase &db)
       {
         // Закончили крафт. Если нужно, удаляем компоненты.
         if (!m_fast_components)
-        for (const auto &c : components)
-        {
-          mInput.RemoveItem(c.id, c.count);
-        }
+          for (const auto &c : components)
+          {
+            mInput.RemoveItem(c.id, c.count);
+          }
 
         const auto &results = m_current_recipe->Results();
         for (const auto &r : results)
