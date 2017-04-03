@@ -82,6 +82,18 @@ struct SectorAround
 
   std::array<std::weak_ptr<Sector>, AroundCapacity> sectors;
   static const std::array<SPos, AroundCapacity> pos;
+
+  inline bool inside(const SPos &pos)
+  {
+    return pos >= SPos(-1) && pos <= SPos(1);
+  }
+
+  inline IndexType to_index(const SPos &pos)
+  {
+    return static_cast<IndexType>(pos.z() + 1) * 3 * 3 +
+      static_cast<IndexType>(pos.y() + 1) * 3 +
+      static_cast<IndexType>(pos.x() + 1);
+  }
 };
 
 // Индекс соседей вокруг источника в таблице соседей.

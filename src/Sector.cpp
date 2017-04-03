@@ -42,13 +42,13 @@ void Sector::SetCompilerData(SectorCompiler &sectorCompiler)
 void Sector::Update()
 {
   // Кешируем соседние сектора.
-  for (size_t i = 0; i < mSectorAround.sectors.size(); ++i)
-  {
-    if (mSectorAround.sectors[i].expired())
-    {
-      mSectorAround.sectors[i] = mWorld.GetSector(mPos + SectorAround::pos[i]);
-    }
-  }
+//   for (size_t i = 0; i < mSectorAround.sectors.size(); ++i)
+//   {
+//     if (mSectorAround.sectors[i].expired())
+//     {
+//       mSectorAround.sectors[i] = mWorld.GetSector(mPos + SectorAround::pos[i]);
+//     }
+//   }
 }
 
 void Sector::Draw(const Magnum::Matrix4 &vp, Magnum::AbstractShaderProgram& shader)
@@ -104,4 +104,22 @@ void Sector::CreateBlock(SBPos pos, BlockId id)
 std::optional<TesselatorData &> Sector::GetTesselatorData(SBPos pos)
 {
   return *mTesselatorData[cs::SBtoBI(pos)];
+}
+
+void Sector::LoadSector(Sector &sector)
+{
+  auto pos = sector.GetPos() - mPos;
+  if (mSectorAround.inside(pos))
+  {
+    mSectorAround.sectors[mSectorAround.to_index(pos)] = mWorld.GetSector(sector.GetPos());
+  }
+}
+
+void Sector::UnloadSector(Sector &sector)
+{
+  auto pos = sector.GetPos() - mPos;
+  if (mSectorAround.inside(pos))
+  {
+    mSectorAround.sectors[mSectorAround.to_index(pos)].reset();
+  }
 }

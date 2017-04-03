@@ -3,6 +3,8 @@
 #include "BiomeMapGenerator.h"
 #include "WorldGeneratorTest.h"
 #include "WorldGeneratorFlat.h"
+#include "ChunkHelper.h"
+#include "Sector.h"
 
 World::World(const DataBase &blocksDataBase)
   : mBlocksDataBase(blocksDataBase), mUpdatableSectors(*this), mPlayer(*this), mWorldGenerator(std::make_unique<BiomeMapGenerator>(blocksDataBase)), mLoaderWorker(*mWorldGenerator)
@@ -31,7 +33,12 @@ void World::LoadSector(const SPos &pos)
 
 void World::UnLoadSector(const SPos &pos)
 {
-  mSectors.erase(pos);
+  auto it = mSectors.find(pos);
+  if (it != mSectors.end())
+  {
+    UnloadSectorEvent(*it->second);
+    mSectors.erase(it);
+  }
 }
 
 const DataBase & World::GetBlocksDataBase() const
@@ -107,6 +114,48 @@ void World::Update()
   mUpdatableSectors.Update();
 }
 
+void World::LoadSectorEvent(Sector &sector)
+{
+  // Сообщаем текущему сектору что он загружен.
+  // Сообщаем всем соседям текущего сектора что сектор загружен.
+  // Сообщаем текущему сектору о всех его соседях.
+  sector.LoadSector(sector);
+  for (size_t i = 0; i < SectorAround::pos.size(); ++i)
+  {
+    auto s = GetSector(sector.GetPos() + SectorAround::pos[i]);
+    if (!s.expired())
+    {
+      auto shared = s.lock();
+      if (sector.GetPos() != shared->GetPos())
+      {
+        shared->LoadSector(sector);
+        sector.LoadSector(*shared);
+      }
+    }
+  }
+}
+
+void World::UnloadSectorEvent(Sector &sector)
+{
+  // Сообщаем текущему сектору что он выгружен.
+  // Сообщаем всем соседям текущего сектора что сектор выгружен.
+  // Сообщаем текущему сектору о всех его соседях.
+  sector.UnloadSector(sector);
+  for (size_t i = 0; i < SectorAround::pos.size(); ++i)
+  {
+    auto s = GetSector(sector.GetPos() + SectorAround::pos[i]);
+    if (!s.expired())
+    {
+      auto shared = s.lock();
+      if (sector.GetPos() != shared->GetPos())
+      {
+        shared->UnloadSector(sector);
+        sector.UnloadSector(*shared);
+      }
+    }
+  }
+}
+
 TaskGenerate::TaskGenerate(World &morld, const SPos &pos)
 {
   mSector = std::make_shared<Sector>(morld, pos);
@@ -121,6 +170,11 @@ bool TaskGenerate::Begin(MapLoader &loader)
 void TaskGenerate::End(const MapLoader &loader)
 {
   auto &world = mSector->GetWorld();
-  world.mSectors.emplace(std::make_pair(mSector->GetPos(), mSector));
+  auto &res = world.mSectors.emplace(std::make_pair(mSector->GetPos(), mSector));
+  if (res.second)
+  {
+    // TODO: узнать почему может вернуться false
+    world.LoadSectorEvent(*(res.first->second));
+  }
   world.mLoadedSectors.erase(mSector->GetPos());
 }

@@ -97,6 +97,13 @@ private:
 
   std::unordered_map<SPos, std::shared_ptr<Sector>> mSectors;
   std::unordered_set<SPos> mLoadedSectors;
+
+private:
+  // Событие вызывается после добавления сектора на карту.
+  void LoadSectorEvent(Sector &sector);
+  // Событие вызывается перед удалением сектора с карты.
+  void UnloadSectorEvent(Sector &sector);
+
 };
 
 

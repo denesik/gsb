@@ -67,6 +67,12 @@ public:
     return mSectorAround;
   }
 
+  // Обработчик события загрузки сектора.
+  void LoadSector(Sector &sector);
+
+  // Обработчик события выгрузки сектора.
+  void UnloadSector(Sector &sector);
+
 private:
   std::array<BlockId, gSectorCapacity> mStaticBlocks;
   std::array<std::unique_ptr<Block>, gSectorCapacity> mDinamicBlocks;
