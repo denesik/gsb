@@ -63,11 +63,11 @@ void DrawableArea::DrawShadowPass(const Camera & sun, ShadowShader & shader)
       {
         data.sector = mWorld.GetSector(data.world_pos);
       }
-      data.drawable->valide = false;
-      data.drawable->compile = false;
+      data.drawable->isValid = false;
+      data.drawable->isCompiling = false;
     }
 
-    if (data.drawable->valide)
+    if (data.drawable->isValid)
     {
       data.drawable->DrawShadowPass(frustum, sun_matrix, shader);
     }
@@ -77,7 +77,7 @@ void DrawableArea::DrawShadowPass(const Camera & sun, ShadowShader & shader)
       auto sector = data.sector.lock();
       if (sector->NeedCompile() /*|| !data.drawable->compile*/)
       {
-        data.drawable->compile = true;
+        data.drawable->isCompiling = true;
         sector->NeedCompile(false);
         mCompilerWorker.Add({ data.sector, data.drawable });
       }
@@ -114,11 +114,11 @@ void DrawableArea::Draw(const Camera & camera, const Camera & sun, const Vector3
       {
         data.sector = mWorld.GetSector(data.world_pos);
       }
-      data.drawable->valide = false;
-      data.drawable->compile = false;
+      data.drawable->isValid = false;
+      data.drawable->isCompiling = false;
     }
 
-    if (data.drawable->valide)
+    if (data.drawable->isValid)
     {
       data.drawable->Draw(frustum, matrix, sun_matrix, lightdir, shader);
     }
@@ -128,7 +128,7 @@ void DrawableArea::Draw(const Camera & camera, const Camera & sun, const Vector3
       auto sector = data.sector.lock();
       if (sector->NeedCompile() /*|| !data.drawable->compile*/)
       {
-        data.drawable->compile = true;
+        data.drawable->isCompiling = true;
         sector->NeedCompile(false);
         mCompilerWorker.Add({ data.sector, data.drawable });
       }
@@ -160,7 +160,7 @@ void DrawableArea::UpdatePos(const SPos &pos)
   for (auto &data : mData)
   {
     data.world_pos = data.local_pos + pos;
-    data.drawable->valide = false;
+    data.drawable->isValid = false;
     data.sector.reset();
   }
 }
@@ -242,6 +242,6 @@ void TaskCompile::End(const SectorCompiler &compiler)
     drawable->vertex_buffer.setData(compiler.GetVertexData(), BufferUsage::StaticDraw);
     drawable->index_buffer.setData(compiler.GetIndexData(), BufferUsage::StaticDraw);
     drawable->mesh.setCount(compiler.GetIndexData().size());
-    drawable->valide = true;
+    drawable->isValid = true;
   }
 }
