@@ -17,7 +17,7 @@ public:
 
   RingBuffer2D<T> &SetSize(Magnum::Vector2i size)
   {
-    mSize = size;
+    mRadius = size;
     mDim = size * 2 + Magnum::Vector2i(1, 1);
     mStorage.clear();
     mStorage.resize(mDim.x() * mDim.y());
@@ -47,8 +47,8 @@ public:
     if (pos == mPos)
       return;
 
-    int deltaX = std::max(std::min(pos.x() - mPos.x(), mSize.x() * 2), -mSize.x() * 2);
-    int deltaY = std::max(std::min(pos.z() - mPos.z(), mSize.y() * 2), -mSize.y() * 2);
+    int deltaX = std::max(std::min(pos.x() - mPos.x(), mRadius.x() * 2), -mRadius.x() * 2);
+    int deltaY = std::max(std::min(pos.z() - mPos.z(), mRadius.y() * 2), -mRadius.y() * 2);
 
     //новые столбцы
     for (int i = 0; i < std::abs(deltaX); i++)
@@ -57,7 +57,7 @@ public:
         // новые столбцы будут в координатах центр(pos) + радиус(mSize.x()) + номер столбца(i)
         // для отрицательных координат центр(pos) - радиус(mSize.x()) - номер столбца(i)\
         // потому в таком случае они умножаются на -1(sgn(deltaX))
-        SPos spos = pos + SPos(mSize.x() * sgn(deltaX) + (i)* sgn(deltaX), 0, j - mSize.y());
+        SPos spos = pos + SPos(mRadius.x() * sgn(deltaX) + (i)* sgn(deltaX), 0, j - mRadius.y());
 
         // координаты очередного элемента в виртуальных секторах, размером radius*2+1
         Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
@@ -71,7 +71,8 @@ public:
     for (int j = 0; j < std::abs(deltaY); j++)
       for (int i = 0; i < mDim.x(); i++)
       {
-        SPos spos = pos + SPos(i - mSize.x(), 0, mSize.y() * sgn(deltaY) + (j)* sgn(deltaY));
+        // все аналогично, читай выше
+        SPos spos = pos + SPos(i - mRadius.x(), 0, mRadius.y() * sgn(deltaY) + (j)* sgn(deltaY));
         Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
         Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - mDim * sec_pos;
         mStorage[wpos.y() * mDim.x() + wpos.x()].reset(spos);
@@ -106,7 +107,7 @@ public:
   }
 
   std::vector<T> mStorage;
-  Magnum::Vector2i mSize = { 3, 3 };
+  Magnum::Vector2i mRadius = { 3, 3 };
   Magnum::Vector2i mDim = { 7, 7 };
   SPos mPos = { 4,0,4 };
 };
