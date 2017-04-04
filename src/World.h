@@ -12,6 +12,7 @@
 #include "Creature.h"
 #include "ThreadWorker.h"
 #include <unordered_set>
+#include "..\WorldSectorObserver.h"
 
 
 // Загрузка сектора с диска: 
@@ -86,6 +87,11 @@ public:
 
   void Update();
 
+  inline WorldSectorObserver &GetWorldSectorObserver()
+  {
+    return mWorldSectorObserver;
+  }
+
 private:
   const DataBase &mBlocksDataBase;
 
@@ -97,6 +103,8 @@ private:
 
   std::unordered_map<SPos, std::shared_ptr<Sector>> mSectors;
   std::unordered_set<SPos> mLoadedSectors;
+
+  WorldSectorObserver mWorldSectorObserver;
 
 private:
   // Событие вызывается после добавления сектора на карту.
