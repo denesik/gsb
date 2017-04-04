@@ -9,13 +9,11 @@
 
 using namespace Magnum;
 
-DrawableArea::DrawableArea(World &world, const SPos &pos, unsigned int radius)
+DrawableArea::DrawableArea(World &world, const SPos &pos, int radius)
   : mWorld(world), mPos(pos), mCompilerWorker(world.GetBlocksDataBase())
 {
-  UpdateRadius(radius);
-  UpdatePos(mPos);
-
-
+  mData.SetSize(Vector2i{ radius, radius });
+  mData.UpdatePos(pos);
 }
 
 
@@ -23,19 +21,14 @@ DrawableArea::~DrawableArea()
 {
 }
 
-void DrawableArea::SetRadius(unsigned int radius)
+void DrawableArea::SetRadius(int radius)
 {
-  UpdateRadius(radius);
-  UpdatePos(mPos);
+  mData.SetSize({ radius, radius });
 }
 
 void DrawableArea::SetPos(const SPos &pos)
 {
-  if (mPos != pos)
-  {
-    mPos = pos;
-    UpdatePos(mPos);
-  }
+  mData.UpdatePos(pos);
 }
 
 //TODO: Не компилировать сектор, если он компилируется в данный момент.
@@ -140,31 +133,6 @@ void DrawableArea::Draw(const Camera & camera, const Camera & sun, const Vector3
   mCompilerWorker.Update();
 }
 
-void DrawableArea::UpdateRadius(unsigned int radius)
-{
-  mData.clear();
-
-  int begin = -static_cast<int>(radius);
-  int end = static_cast<int>(radius);
-  SPos pos(begin);
-  pos.y() = 0;
-  for (pos.z() = begin; pos.z() <= end; ++pos.z())
-    for (pos.x() = begin; pos.x() <= end; ++pos.x())
-    {
-      mData.push_back({ pos, SPos{}, std::weak_ptr<Sector>{}, std::make_shared<SectorRenderData>() });
-    }
-}
-
-void DrawableArea::UpdatePos(const SPos &pos)
-{
-  for (auto &data : mData)
-  {
-    data.world_pos = data.local_pos + pos;
-    data.drawable->isValid = false;
-    data.sector.reset();
-  }
-}
-
 //=============== SectorRenderData ===============
 SectorRenderData::SectorRenderData()
 {
@@ -244,4 +212,16 @@ void TaskCompile::End(const SectorCompiler &compiler)
     drawable->mesh.setCount(compiler.GetIndexData().size());
     drawable->isValid = true;
   }
+}
+
+void DrawableArea::Data::init()
+{
+  drawable = std::make_shared<SectorRenderData>();
+}
+
+void DrawableArea::Data::reset(SPos pos)
+{
+  sector.reset();
+  drawable->isValid = false;
+  world_pos = pos;
 }

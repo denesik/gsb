@@ -70,7 +70,7 @@ constexpr Magnum::Int gChunkCapacity = gChunkSize.x() * gChunkSize.y() * gChunkS
 constexpr SPos gBlockBatcherSize(gChunkSize.x() + 2, gChunkSize.y() + 2, gChunkSize.z() + 2);
 constexpr Magnum::Int gBlockBatcherCapacity = gBlockBatcherSize.x() * gBlockBatcherSize.y() * gBlockBatcherSize.z();
 
-/// Система координат.
+// Система координат.
 namespace cs
 {
   namespace detail
@@ -82,7 +82,7 @@ namespace cs
     }
   }
 
-  /// Мировые координаты в координаты блока в мире.
+  // Мировые координаты в координаты блока в мире.
   inline WBPos WtoWB(const WPos &pos)
   {
     WBPos wbpos;
@@ -94,7 +94,7 @@ namespace cs
     return wbpos;
   }
 
-  /// Координаты блока в мире в координаты сектора.
+  // Координаты блока в мире в координаты сектора.
   inline SPos WBtoS(const WBPos &pos)
   {
     SPos spos;
@@ -106,13 +106,13 @@ namespace cs
     return spos;
   }
 
-  /// Мировые координаты в координаты сектора.
+  // Мировые координаты в координаты сектора.
   inline SPos WtoS(const WPos &pos)
   {
     return WBtoS(WtoWB(pos));
   }
 
-  /// Мировые координаты в координаты блока в секторе.
+  // Мировые координаты в координаты блока в секторе.
   inline SBPos WtoSB(const WPos &pos)
   {
     auto wbpos = WtoWB(pos);
@@ -120,40 +120,40 @@ namespace cs
     return wbpos - spos * gSectorSize;
   }
 
-  /// Мировые координаты в координаты блока в секторе.
+  // Мировые координаты в координаты блока в секторе.
   inline SBPos WtoSB(const WPos &pos, const SPos &spos)
   {
     return WtoWB(pos) - spos * gSectorSize;
   }
 
-  /// Координаты блока в мире в координаты блока в секторе.
+  // Координаты блока в мире в координаты блока в секторе.
   inline SBPos WBtoSB(const WBPos &pos)
   {
     auto spos = WBtoS(pos);
     return pos - spos * gSectorSize;
   }
 
-  /// Координаты блока в мире в координаты блока в секторе.
+  // Координаты блока в мире в координаты блока в секторе.
   inline SBPos WBtoSB(const WBPos &pos, const SPos &spos)
   {
     return pos - spos * gSectorSize;
   }
 
-  /// Координаты блока в секторе в координаты блока в мире.
+  // Координаты блока в секторе в координаты блока в мире.
   inline WBPos SBtoWB(const SBPos &pos, const SPos &spos)
   {
     return spos * gSectorSize + pos;
   }
 
-  /// Координаты сектора в мировые координаты.
-  /// Возвращаются координаты нулевого блока в секторе.
+  // Координаты сектора в мировые координаты.
+  // Возвращаются координаты нулевого блока в секторе.
   inline WPos StoW(const SPos &pos)
   {
     WPos wpos(pos * gSectorSize);
     return wpos;
   }
 
-  /// Индекс блока в секторе в позицию блока в секторе.
+  // Индекс блока в секторе в позицию блока в секторе.
   inline SBPos BItoSB(IndexType i)
   {
     return SBPos{
@@ -162,7 +162,7 @@ namespace cs
       static_cast<SBPosType>(i / (gSectorSize.x() * gSectorSize.y())) };
   }
 
-  /// Позиция блока в секторе в индекс блока в секторе.
+  // Позиция блока в секторе в индекс блока в секторе.
   inline IndexType SBtoBI(const SBPos &pos)
   {
     return static_cast<IndexType>(pos.z()) * gSectorSize.x() * gSectorSize.y() +
@@ -170,7 +170,7 @@ namespace cs
       static_cast<IndexType>(pos.x());
   }
 
-  /// Индекс тесселятора в секторе в позицию тесселятора в секторе.
+  // Индекс тесселятора в секторе в позицию тесселятора в секторе.
   inline STPos TItoST(IndexType i)
   {
     return SBPos{
@@ -179,7 +179,7 @@ namespace cs
       static_cast<SBPosType>(i / (gSectorSize.x() * gSectorSize.y())) };
   }
 
-  /// Позиция тесселятора в секторе в индекс тесселятора в секторе.
+  // Позиция тесселятора в секторе в индекс тесселятора в секторе.
   inline IndexType STtoTI(const STPos &pos)
   {
     return static_cast<IndexType>(pos.z()) * gBlockBatcherSize.x() * gBlockBatcherSize.y() +
@@ -187,7 +187,7 @@ namespace cs
       static_cast<IndexType>(pos.x());
   }
 
-  /// Индекс тесселятора в секторе в позицию блока в секторе.
+  // Индекс тесселятора в секторе в позицию блока в секторе.
   inline SBPos TItoSB(IndexType i)
   {
     assert(i % gBlockBatcherSize.x() > 0 &&

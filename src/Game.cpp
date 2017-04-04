@@ -150,6 +150,8 @@ void Game::drawEvent()
   mShader.setShadowDepthTexture(mShadowTexture);
   mDrawableArea->Draw(*mCurrentCamera, *mSunCamera, mSun.Direction(), mShader);
 
+  mDrawableArea->SetPos(cs::WtoS(mWorld->mPlayer.Pos()));
+
   mWorld->Update();
 
   debugLines.draw(mCurrentCamera->Project() * mCurrentCamera->View());

@@ -19,6 +19,7 @@
 #include "Camera.h"
 #include "ThreadWorker.h"
 #include <StandartShader.h>
+#include "../RingBuffer.h"
 
 class World;
 
@@ -73,10 +74,10 @@ private:
 class DrawableArea
 {
 public:
-  DrawableArea(World &world, const SPos &pos, unsigned int radius = 5);
+  DrawableArea(World &world, const SPos &pos, int radius = 5);
   ~DrawableArea();
 
-  void SetRadius(unsigned int radius);
+  void SetRadius(int radius);
 
   void SetPos(const SPos &pos);
 
@@ -90,18 +91,18 @@ private:
 
   struct Data
   {
-    SPos local_pos;
     SPos world_pos;
     std::weak_ptr<Sector> sector;
     std::shared_ptr<SectorRenderData> drawable;
+
+    void init();
+    void reset(SPos pos);
   };
 
-  std::vector<Data> mData;
+  RingBuffer2D<Data> mData;
   Timer mTimer;
 
 private:
-  void UpdateRadius(unsigned int radius);
-  void UpdatePos(const SPos &pos);
 
   ThreadWorker<TaskCompile, SectorCompiler> mCompilerWorker;
 };
