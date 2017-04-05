@@ -19,13 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DragNDrop.cpp" />
     <ClCompile Include="FastNoise\FastNoise.cpp">
       <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</TreatWarningAsError>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
     </ClCompile>
+    <ClCompile Include="GuiInventory.cpp" />
+    <ClCompile Include="GuiWindow.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="InventorySlot.cpp" />
     <ClCompile Include="src\accessors\Accessor.cpp" />
     <ClCompile Include="src\accessors\AccessorItem.cpp" />
     <ClCompile Include="src\BiomeMapGenerator.cpp" />
@@ -35,6 +39,7 @@
     <ClCompile Include="src\ChunkHelper.cpp" />
     <ClCompile Include="src\ConfiguratableMapGenerator.cpp" />
     <ClCompile Include="src\DataBase.cpp" />
+    <ClCompile Include="src\IGui.cpp" />
     <ClCompile Include="src\IItem.cpp" />
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\StaticBlock.cpp" />
@@ -76,7 +81,11 @@
     <ClCompile Include="WorldSectorObserver.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DragNDrop.h" />
     <ClInclude Include="fwd.h" />
+    <ClInclude Include="GuiInventory.h" />
+    <ClInclude Include="GuiWindow.h" />
+    <ClInclude Include="InventorySlot.h" />
     <ClInclude Include="RingBuffer.h" />
     <ClInclude Include="src\accessors\Accessor.h" />
     <ClInclude Include="src\accessors\AccessorItem.h" />

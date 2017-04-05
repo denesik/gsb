@@ -22,6 +22,8 @@
 #include "ChunkHelper.h"
 #include <Magnum/Version.h>
 
+#include "../GuiInventory.h"
+
 static const int tmp_area_size = 0;
 
 Game::Game(const Arguments & arguments)
@@ -70,15 +72,15 @@ Game::Game(const Arguments & arguments)
   mWorld->mPlayer.SetPos({ 0, 70, 0 });
 
   mShadowTexture.setImage(0, TextureFormat::DepthComponent, ImageView2D{ PixelFormat::DepthComponent, PixelType::Float,{ 512, 512 }, nullptr })
-	  .setMaxLevel(0)
-	  .setCompareFunction(Sampler::CompareFunction::LessOrEqual)
+    .setMaxLevel(0)
+    .setCompareFunction(Sampler::CompareFunction::LessOrEqual)
     .setCompareMode(Sampler::CompareMode::CompareRefToTexture)
     .setMinificationFilter(Sampler::Filter::Linear, Sampler::Mipmap::Base)
     .setMagnificationFilter(Sampler::Filter::Linear);
 
   mShadowFramebuffer.attachTexture(Framebuffer::BufferAttachment::Depth, mShadowTexture, 0)
-	  .mapForDraw(Framebuffer::DrawAttachment::None)
-	  .bind();
+    .mapForDraw(Framebuffer::DrawAttachment::None)
+    .bind();
 
   CORRADE_INTERNAL_ASSERT(mShadowFramebuffer.checkStatus(FramebufferTarget::Draw) == Framebuffer::Status::Complete);
 
@@ -127,13 +129,20 @@ void Game::drawEvent()
 
   debugLines.addLine(mWorld->mPlayer.Pos(), mWorld->mPlayer.Pos() + ray * 1, { 1,1,1 });
 
-  if (ImGui::IsMouseClicked(0))
+  if (ImGui::IsMouseClicked(0) && !ImGui::IsAnyItemHovered())
   {
     auto p = mWorld->GetBlockDynamic(picked);
     if (p)
-      mDrawModal = picked;
+    {
+      modalWindow.Open();
+      modalWindow.Reset();
+      modalWindow.AddGui(p);
+    }
     else
-      mDrawModal = {};
+    {
+      modalWindow.Reset();
+      modalWindow.Close();
+    }
   }
 
   //shadow pass
@@ -165,7 +174,7 @@ void Game::drawEvent()
     // 1. Show a simple window
     // Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets appears in a window automatically called "Debug"
     {
-	  //ImGui::Image(ImTextureID(mShadowTexture.id()), {200,200});
+      //ImGui::Image(ImTextureID(mShadowTexture.id()), {200,200});
 
       ImGui::ColorEdit3("clear color", (float*)&clear_color);
       if (ImGui::Button("Test Window")) show_test_window ^= 1;
@@ -202,20 +211,17 @@ void Game::drawEvent()
       ImGui::ShowTestWindow(&show_test_window);
     }
 
-    if (mDrawModal != WBPos{})
+    if (gui_CaracterWindow)
     {
-      ImGui::SetNextWindowSize(ImVec2(500, 100), ImGuiSetCond_FirstUseEver);
-      ImGui::Begin("Selected");
-      auto p = mWorld->GetBlockDynamic(mDrawModal);
-      if (p)
-        p->DrawGui(mTimeline);
-      ImGui::End();
+      gui::DrawCaracterWindow(gui_CaracterWindow, mWorld->mPlayer);
     }
 
-	mWorld->GetWorldGenerator().DrawGui(mTimeline);
+    modalWindow.Draw(mTimeline);
 
-	if (ImGui::Button("wipe all"))
-		mWorld->Wipe();
+    //mWorld->GetWorldGenerator().DrawGui(mTimeline);
+
+    if (ImGui::Button("wipe all"))
+      mWorld->Wipe();
 
     mImguiPort.Draw();
   }
@@ -248,6 +254,9 @@ void Game::keyPressEvent(KeyEvent& event)
 
   if (event.key() == KeyEvent::Key::F5)
     mCurrentCamera = (mCurrentCamera == mCamera.get()) ? mSunCamera.get() : mCamera.get();
+
+  if (event.key() == KeyEvent::Key::E)
+    gui_CaracterWindow = !gui_CaracterWindow;
 
   event.setAccepted();
 }

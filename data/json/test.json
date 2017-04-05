@@ -94,19 +94,23 @@
     "agents":[
       {
         "type":"AccessorItem",
-		"name":"0"
+		"name":"0",
+                "size":4
       },
 	    {
         "type":"AccessorItem",
-		    "name":"1"
+		    "name":"1",
+                    "size":4
       },
 	    {
         "type":"AccessorItem",
-		    "name":"2"
+		    "name":"2",
+                    "size":4
       },
 	    {
         "type":"AccessorItem",
-		    "name":"3"
+		    "name":"3",
+                    "size":4
       }
     ],
 	"Crafter1":

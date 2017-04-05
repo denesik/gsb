@@ -37,6 +37,6 @@ private:
 	mutable FastNoise noise;
 
 	// Inherited via IGui
-	virtual void DrawGui(const Magnum::Timeline & dt) override;
+	virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx) override;
 	ClassicalBiome BiomeSelector(float temperature, float precipitation) const;
 };

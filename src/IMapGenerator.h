@@ -18,7 +18,7 @@ public:
   virtual ~IMapGenerator() = default;
   virtual void Generate(Sector &sector) const = 0;
   
-  void DrawGui(const Magnum::Timeline &);
+  void DrawGui(const Magnum::Timeline &, GuiCtx & ctx);
   void AddCustomParameter(GuiFunction gui_update);
 protected:
   const DataBase &m_Db;

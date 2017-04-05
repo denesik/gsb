@@ -34,14 +34,14 @@ void BiomeMapGenerator::AddBiome(std::unique_ptr<IMapGenerator> && generator, Cl
 	mBiomes[static_cast<size_t>(biom)] = std::move(generator);
 }
 
-void BiomeMapGenerator::DrawGui(const Magnum::Timeline & dt)
+void BiomeMapGenerator::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx)
 {
 	int i = 0;
 	for (auto & biome : mBiomes)
 	{
 		ImGui::BeginGroup();
 		ImGui::BeginChild(ImGui::GetID(reinterpret_cast<void *>(i)), ImVec2{400, 0}, true);
-		biome->DrawGui(dt);
+		biome->DrawGui(dt, ctx);
 		ImGui::EndChild();
 		ImGui::EndGroup();
 		i++;

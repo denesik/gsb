@@ -41,7 +41,7 @@ public:
 
   std::unique_ptr<Block> Clone(Sector &parent) override;
 
-  void DrawGui(const Magnum::Timeline &dt) override;
+  void DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx) override;
 
   void Update(const Magnum::Timeline &dt) override;
 

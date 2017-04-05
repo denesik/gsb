@@ -4,6 +4,7 @@
 
 #include "Movable.h"
 #include <IGui.h>
+#include <vector>
 
 class World;
 
@@ -16,11 +17,11 @@ public:
   void Update();
 
   // Inherited via IGui
-  virtual void DrawGui(const Magnum::Timeline & dt) override;
+  virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx) override;
 
 private:
   World &mWorld;
-
+  std::vector<std::tuple<ItemId, size_t>> mInventory;
 };
 
 

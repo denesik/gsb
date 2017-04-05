@@ -1,6 +1,6 @@
 #include "IMapGenerator.h"
 
-void IMapGenerator::DrawGui(const Magnum::Timeline &tl)
+void IMapGenerator::DrawGui(const Magnum::Timeline &tl, GuiCtx & ctx)
 {
   for(const auto f : parameters)
 	f(tl);

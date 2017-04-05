@@ -33,6 +33,7 @@
 
 #include <Magnum/Timeline.h>
 #include "../TextureGenerator.h"
+#include "../GuiWindow.h"
 
 using namespace Magnum;
 
@@ -82,6 +83,7 @@ private:
   Timeline mTimeline;
 
   WBPos mDrawModal;
+  GuiWindow modalWindow = {"Selected"};
 
   std::unique_ptr<DataBase> mBlocksDataBase;
   std::unique_ptr<World> mWorld;
@@ -100,5 +102,7 @@ private:
   Texture2D mShadowTexture;
   TextureGenerator test_texgen;
   TexGenShader test_texgenshader;
+
+  bool gui_CaracterWindow = false;
 };
 

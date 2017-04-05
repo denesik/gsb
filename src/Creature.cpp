@@ -5,6 +5,7 @@
 
 Creature::Creature(World &world)
   : mWorld(world)
+  , mInventory(10)
 {
 }
 
@@ -46,6 +47,6 @@ void Creature::Update()
     Movable::SetPos(old_pos);
 }
 
-void Creature::DrawGui(const Magnum::Timeline & dt)
+void Creature::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx)
 {
 }
