@@ -133,6 +133,8 @@ void World::LoadSectorEvent(Sector &sector)
       }
     }
   }
+
+  mWorldSectorObserver.Load(sector);
 }
 
 void World::UnloadSectorEvent(Sector &sector)
@@ -154,6 +156,8 @@ void World::UnloadSectorEvent(Sector &sector)
       }
     }
   }
+
+  mWorldSectorObserver.UnLoad(sector);
 }
 
 TaskGenerate::TaskGenerate(World &morld, const SPos &pos)

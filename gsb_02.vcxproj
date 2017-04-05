@@ -73,6 +73,7 @@
     <ClCompile Include="src\WorldGeneratorFlat.cpp" />
     <ClCompile Include="src\WorldGeneratorTest.cpp" />
     <ClCompile Include="TextureGenerator.cpp" />
+    <ClCompile Include="WorldSectorObserver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fwd.h" />
@@ -88,6 +89,7 @@
     <ClInclude Include="src\DataBase.h" />
     <ClInclude Include="src\DataBaseFakeData.h" />
     <ClInclude Include="src\Model.h" />
+    <ClInclude Include="src\Observer.h" />
     <ClInclude Include="src\StaticBlock.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\configure.h" />
@@ -133,6 +135,7 @@
     <ClInclude Include="src\WorldGeneratorFlat.h" />
     <ClInclude Include="src\WorldGeneratorTest.h" />
     <ClInclude Include="TextureGenerator.h" />
+    <ClInclude Include="WorldSectorObserver.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DAD5E604-35AB-4716-B43E-119A61C427FC}</ProjectGuid>

@@ -177,6 +177,9 @@
     <ClCompile Include="TextureGenerator.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="WorldSectorObserver.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -349,6 +352,12 @@
     </ClInclude>
     <ClInclude Include="TextureGenerator.h">
       <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Observer.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldSectorObserver.h">
+      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="RingBuffer.h">
       <Filter>Файлы исходного кода</Filter>
