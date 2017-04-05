@@ -97,9 +97,9 @@ void Game::drawEvent()
   mWorld->mPlayer.Rotate(mCameraAngle * 0.003f);
   mWorld->mPlayer.Update();
 
-  auto spos = Vector3{ std::sin(mTimeline.previousFrameTime()) * 100, 111, std::cos(mTimeline.previousFrameTime()) * 100 };
+  auto spos = mWorld->mPlayer.Pos() + Vector3{ std::sin(mTimeline.previousFrameTime()) * 100, 111, std::cos(mTimeline.previousFrameTime()) * 100 };
   mSun.SetPos(spos);
-  mSun.LookAt({});
+  mSun.LookAt(mWorld->mPlayer.Pos());
   mSun.Update();
 
   auto ray = mCamera->Ray({ static_cast<Float>(defaultFramebuffer.viewport().centerX()) ,
@@ -151,6 +151,7 @@ void Game::drawEvent()
   mDrawableArea->Draw(*mCurrentCamera, *mSunCamera, mSun.Direction(), mShader);
 
   mDrawableArea->SetPos(cs::WtoS(mWorld->mPlayer.Pos()));
+  mUpdatableArea->SetPos(cs::WtoS(mWorld->mPlayer.Pos()));
 
   mWorld->Update();
 

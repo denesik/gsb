@@ -6,6 +6,7 @@
 #include "tools\CoordSystem.h"
 #include <vector>
 #include <tuple>
+#include "../RingBuffer.h"
 
 class UpdatableSectors;
 class World;
@@ -15,21 +16,29 @@ class World;
 class UpdatableArea
 {
 public:
-  UpdatableArea(World &world, const SPos &pos, unsigned int radius = 5);
+  void OnNewSector(SPos s);
+  void OnDeleteSector(SPos s);
+  UpdatableArea(World &world, const SPos &pos, int radius = 5);
   ~UpdatableArea();
 
   void SetPos(const SPos &pos);
 
-  void SetRadius(unsigned int radius);
+  void SetRadius(int radius);
 
 private:
   World &mWorld;
   SPos mPos;
 
-  std::vector<std::tuple<SPos, SPos>> mPositions;
+  struct Positions
+  {
+    SPos pos;
+    void init() {}
+    void reset(SPos s) { pos = s; }
+  };
+
+  RingBuffer2D<Positions> mPositions;
 private:
-  void UpdateRadius(unsigned int radius);
-  void UpdatePos(const SPos &pos);
+  boost::signals2::connection addCon, delCon;
 };
 
 

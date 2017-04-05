@@ -3,6 +3,7 @@
 #include <numeric>
 #include <Magnum\Magnum.h>
 #include <tools\CoordSystem.h>
+#include <boost\signals2.hpp>
 
 template<typename T>
 class RingBuffer2D
@@ -17,6 +18,13 @@ public:
 
   RingBuffer2D<T> &SetSize(Magnum::Vector2i size)
   {
+    for (int i = -size.x(); i <= size.x(); i++)
+      for (int j = -size.y(); j <= size.y(); j++)
+      {
+        SPos spos = mPos + SPos(i, 0, j);
+        onDeletting(spos);
+      }
+
     mRadius = size;
     mDim = size * 2 + Magnum::Vector2i(1, 1);
     mStorage.clear();
@@ -32,6 +40,8 @@ public:
         Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
         Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - mDim * sec_pos;
         mStorage[wpos.y() * mDim.x() + wpos.x()].reset(spos);
+
+        onAdding(spos);
       }
 
     return *this;
@@ -65,6 +75,9 @@ public:
         // приведение координат к [0, radius*2+1)
         Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - mDim * sec_pos;
         mStorage[wpos.y() * mDim.x() + wpos.x()].reset(spos);
+
+        onAdding(spos);
+        onDeletting(spos - SPos(mDim.x(), 0, 0));
       }
 
     //новые строки
@@ -76,6 +89,9 @@ public:
         Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
         Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - mDim * sec_pos;
         mStorage[wpos.y() * mDim.x() + wpos.x()].reset(spos);
+
+        onAdding(spos);
+        onDeletting(spos - SPos(0, 0, mDim.y()));
       }
 
     mPos = pos;
@@ -96,6 +112,10 @@ public:
     return mStorage.end();
   }
 
+  boost::signals2::signal<void(SPos new_pos)> onAdding;
+  boost::signals2::signal<void(SPos new_pos)> onDeletting;
+
+private:
   inline Magnum::Vector2i WrapSPos(const Magnum::Vector2i &pos)
   {
     Magnum::Vector2i spos;
@@ -107,7 +127,7 @@ public:
   }
 
   std::vector<T> mStorage;
-  Magnum::Vector2i mRadius = { 3, 3 };
-  Magnum::Vector2i mDim = { 7, 7 };
-  SPos mPos = { 4,0,4 };
+  Magnum::Vector2i mRadius;
+  Magnum::Vector2i mDim;
+  SPos mPos;
 };
