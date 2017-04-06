@@ -13,7 +13,7 @@
 #include <memory>
 #include "ThreadProcess.h"
 
-class SectorCompiler : public ThreadProcess<SectorCompiler>
+class SectorCompiler : public ThreadProcess_old<SectorCompiler>
 {
 public:
   SectorCompiler(const DataBase &dataBase);

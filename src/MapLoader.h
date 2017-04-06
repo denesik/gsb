@@ -4,7 +4,7 @@
 #include <memory>
 #include "ThreadProcess.h"
 
-class MapLoader : public ThreadProcess<MapLoader>
+class MapLoader : public ThreadProcess_old<MapLoader>
 {
 public:
   MapLoader(const IMapGenerator &generator);

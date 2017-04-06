@@ -6,12 +6,26 @@
 #include <atomic>
 #include <thread>
 
-
-template<class Worker>
+// Класс заглушка.
+template<class Worker, class Task>
 class ThreadProcess
 {
 public:
-  ThreadProcess()
+  // Количество потоков, количество воркеров.
+  ThreadProcess(size_t thread_count, size_t worker_count) {};
+  // Добавить задачу на выполнение.
+  void Push(Task &&task) {};
+
+  void Update() {};
+};
+
+
+
+template<class Worker>
+class ThreadProcess_old
+{
+public:
+  ThreadProcess_old()
   {
     mThread = std::thread([this]()
     {
@@ -28,7 +42,7 @@ public:
     });
   }
 
-  ~ThreadProcess()
+  ~ThreadProcess_old()
   {
     // Скорей всего этот метод нужно вызывать в деструкторах потомков, 
     // что бы поток завершился до того, как начнут уничтожаться данные потомка.
