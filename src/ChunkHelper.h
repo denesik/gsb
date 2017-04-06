@@ -10,6 +10,26 @@
 // „анки нужны дл€ обновлени€ света (сервер) и геометрии (клиент).
 // ѕробегаем по чанкам в секторе. ƒл€ каждого чанка перестраиваем геометрию, если нужно.
 
+
+namespace tools
+{
+  namespace detail
+  {
+
+    template <typename T, std::size_t...Is>
+    std::array<T, sizeof...(Is)> make_array(const T& value, std::index_sequence<Is...>)
+    {
+      return{ { (static_cast<void>(Is), value)... } };
+    }
+  }
+
+  template <std::size_t N, typename T>
+  std::array<T, N> make_array(const T& value)
+  {
+    return detail::make_array(value, std::make_index_sequence<N>());
+  }
+}
+
 enum
 {
   T_SECTOR_SIZE = 16,
@@ -80,7 +100,11 @@ struct SectorAround
     AroundCapacity,
   };
 
-  std::array<std::weak_ptr<Sector>, AroundCapacity> sectors;
+  SectorAround(Sector &sector)
+    : sectors(tools::make_array<AroundCapacity>(std::ref(sector)))
+  {}
+
+  std::array<std::reference_wrapper<Sector>, AroundCapacity> sectors;
   static const std::array<SPos, AroundCapacity> pos;
 
   inline bool inside(const SPos &pos)

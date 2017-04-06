@@ -7,7 +7,12 @@
 #include "Sector.h"
 
 World::World(const DataBase &blocksDataBase)
-  : mBlocksDataBase(blocksDataBase), mUpdatableSectors(*this), mPlayer(*this), mWorldGenerator(std::make_unique<BiomeMapGenerator>(blocksDataBase)), mLoaderWorker(*mWorldGenerator)
+  : mBlocksDataBase(blocksDataBase), 
+  mFakeSector(*this, SPos{}),
+  mUpdatableSectors(*this), 
+  mPlayer(*this), 
+  mWorldGenerator(std::make_unique<BiomeMapGenerator>(blocksDataBase)), 
+  mLoaderWorker(*mWorldGenerator)
 {
 }
 
@@ -18,27 +23,56 @@ World::~World()
 
 void World::LoadSector(const SPos &pos)
 {
-  // Если сектора нет на карте и сектор не загружается, поставим его на загрузку.
-  auto sector = GetSector(pos);
-  if (sector.expired())
+  for (const auto &offset : gSectorNeighboard)
   {
-    auto it = mLoadedSectors.find(pos);
-    if (it == mLoadedSectors.end())
+    if (UseSector(pos + offset) == 1)
     {
-      mLoadedSectors.emplace(pos);
-      mLoaderWorker.Add({ *this, pos });
-    }
+
+    };
   }
 }
 
 void World::UnLoadSector(const SPos &pos)
 {
+  for (const auto &offset : gSectorNeighboard)
+  {
+    UnuseSector(pos + offset);
+  }
+}
+
+size_t World::UseSector(const SPos &pos)
+{
   auto it = mSectors.find(pos);
   if (it != mSectors.end())
   {
-    UnloadSectorEvent(*it->second);
-    mSectors.erase(it);
+    auto &res = mSectors.emplace(pos, this, pos);
+    if (!res.second)
+      return 0;
+    // Загрузили сектор, сообщим ему и всем его соседям об этом.
+
+    it = res.first;
   }
+
+  ++it->second.count;
+  return it->second.count;
+}
+
+size_t World::UnuseSector(const SPos &pos)
+{
+  auto count = 0;
+  auto it = mSectors.find(pos);
+  if (it != mSectors.end())
+  {
+    --it->second.count;
+    count = it->second.count;
+    if (!it->second.count)
+    {
+      // Выгрузили сектор, сообщим ему и всем его соседям об этом.
+
+      mSectors.erase(it);
+    }
+  }
+  return count;
 }
 
 const DataBase & World::GetBlocksDataBase() const
@@ -46,51 +80,51 @@ const DataBase & World::GetBlocksDataBase() const
   return mBlocksDataBase;
 }
 
-std::weak_ptr<Sector> World::GetSector(const SPos &pos) const
-{
-  auto it = mSectors.find(pos);
-  if (it != mSectors.end())
-  {
-    return {it->second};
-  }
-  return {};
-}
+// boost::optional<Sector> World::GetSector(const SPos &pos) const
+// {
+//   auto it = mSectors.find(pos);
+//   if (it != mSectors.end())
+//   {
+//     return{ it->second };
+//   }
+//   return{};
+// }
 
 BlockId World::GetBlockId(const WBPos& pos) const
 {
-  auto spos = cs::WBtoS(pos);
-  auto sector = GetSector(spos);
-  if(!sector.expired())
-  {
-    auto shared = sector.lock();
-    return shared->GetBlockId(cs::WBtoSB(pos));
-  }
+//   auto spos = cs::WBtoS(pos);
+//   auto sector = GetSector(spos);
+//   if(!sector.expired())
+//   {
+//     auto shared = sector.lock();
+//     return shared->GetBlockId(cs::WBtoSB(pos));
+//   }
 
   return{};
 }
 
 Block* World::GetBlockDynamic(const WBPos& pos) const
 {
-  auto spos = cs::WBtoS(pos);
-  auto sector = GetSector(spos);
-  if (!sector.expired())
-  {
-    auto shared = sector.lock();
-    return shared->GetBlockDynamic(cs::WBtoSB(pos));
-  }
+//   auto spos = cs::WBtoS(pos);
+//   auto sector = GetSector(spos);
+//   if (!sector.expired())
+//   {
+//     auto shared = sector.lock();
+//     return shared->GetBlockDynamic(cs::WBtoSB(pos));
+//   }
 
   return {};
 }
 
 void World::CreateBlock(const WBPos& pos, BlockId id)
 {
-  auto spos = cs::WBtoS(pos);
-  auto sector = GetSector(spos);
-  if (!sector.expired())
-  {
-    auto shared = sector.lock();
-    return shared->CreateBlock(cs::WBtoSB(pos), id);
-  }
+//   auto spos = cs::WBtoS(pos);
+//   auto sector = GetSector(spos);
+//   if (!sector.expired())
+//   {
+//     auto shared = sector.lock();
+//     return shared->CreateBlock(cs::WBtoSB(pos), id);
+//   }
 }
 
 UpdatableSectors & World::GetUpdatableSectors()
@@ -110,8 +144,7 @@ void World::Wipe()
 
 void World::Update()
 {
-  mLoaderWorker.Update();
-  mUpdatableSectors.Update();
+  //mUpdatableSectors.Update();
 }
 
 void World::LoadSectorEvent(Sector &sector)
@@ -160,25 +193,4 @@ void World::UnloadSectorEvent(Sector &sector)
   mWorldSectorObserver.UnLoad(sector);
 }
 
-TaskGenerate::TaskGenerate(World &morld, const SPos &pos)
-{
-  mSector = std::make_shared<Sector>(morld, pos);
-}
 
-bool TaskGenerate::Begin(MapLoader &loader)
-{
-  loader.SetSector(mSector);
-  return true;
-}
-
-void TaskGenerate::End(const MapLoader &loader)
-{
-  auto &world = mSector->GetWorld();
-  auto &res = world.mSectors.emplace(std::make_pair(mSector->GetPos(), mSector));
-  if (res.second)
-  {
-    // TODO: узнать почему может вернуться false
-    world.LoadSectorEvent(*(res.first->second));
-  }
-  world.mLoadedSectors.erase(mSector->GetPos());
-}

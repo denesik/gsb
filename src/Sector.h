@@ -73,6 +73,13 @@ public:
   // Обработчик события выгрузки сектора.
   void UnloadSector(Sector &sector);
 
+  inline bool is_loaded() const
+  {
+    return m_is_loaded;
+  }
+
+  void set_loaded();
+
 private:
   std::array<BlockId, gSectorCapacity> mStaticBlocks;
   std::array<std::unique_ptr<Block>, gSectorCapacity> mDinamicBlocks;
@@ -85,7 +92,15 @@ private:
   bool mNeedCompile = true;
 
   SectorAround mSectorAround;
+  // Количество загруженных секторов вокруг текущего.
+  int m_count_loaded = 0;
+  bool m_is_loaded = false;
+
   Chunk mChunk;
+
+private:
+  void change_count_loaded(int count);
+
 };
 
 

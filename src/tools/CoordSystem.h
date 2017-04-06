@@ -70,6 +70,20 @@ constexpr Magnum::Int gChunkCapacity = gChunkSize.x() * gChunkSize.y() * gChunkS
 constexpr SPos gBlockBatcherSize(gChunkSize.x() + 2, gChunkSize.y() + 2, gChunkSize.z() + 2);
 constexpr Magnum::Int gBlockBatcherCapacity = gBlockBatcherSize.x() * gBlockBatcherSize.y() * gBlockBatcherSize.z();
 
+// todo: http://stackoverflow.com/questions/19019252/create-n-element-constexpr-array-in-c11
+constexpr std::array<SPos, 9> gSectorNeighboard
+{
+  SPos{ -1, 0, -1 },
+  SPos{ 0, 0, -1 },
+  SPos{ 1, 0, -1 },
+  SPos{ -1, 0, 0 },
+  SPos{ 0, 0, 0 },
+  SPos{ 1, 0, 0 },
+  SPos{ -1, 0, 1 },
+  SPos{ 0, 0, 1 },
+  SPos{ 1, 0, 1 },
+};
+
 /// Система координат.
 namespace cs
 {
