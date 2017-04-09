@@ -40,8 +40,6 @@ public:
 
   World &GetWorld();
 
-  void ApplyGenerator(IMapGenerator &generator);
-
   BlockId GetBlockId(SBPos pos) const;
   Block* GetBlockDynamic(const WBPos& pos) const;
 

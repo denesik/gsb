@@ -153,6 +153,13 @@ namespace cs
     return wpos;
   }
 
+  //  оординаты нулевого блока в секторе.
+  inline SBPos StoSB(const SPos &pos)
+  {
+    SBPos wpos(pos * gSectorSize);
+    return wpos;
+  }
+
   // »ндекс блока в секторе в позицию блока в секторе.
   inline SBPos BItoSB(IndexType i)
   {

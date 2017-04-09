@@ -12,7 +12,7 @@ public:
   size_t count = 1;
 
   // <"id"[, count]>
-  void JsonLoad(DataBase& db, const rapidjson::Value& val) override;
+  void JsonLoad(const DataBase& db, const rapidjson::Value& val) override;
 
   bool operator ==(const RecipeIn& other) const;
 };
@@ -25,7 +25,7 @@ public:
   float chance = 1.0;
 
   // <"id"[, count[, chance]]>
-  void JsonLoad(DataBase& db, const rapidjson::Value& val) override;
+  void JsonLoad(const DataBase& db, const rapidjson::Value& val) override;
 
   bool operator ==(const RecipeOut& other) const;
 };
@@ -40,7 +40,7 @@ public:
 
   virtual ~IRecipe() = default;
 
-  void JsonLoad(DataBase & db, const rapidjson::Value& val) override;
+  void JsonLoad(const DataBase & db, const rapidjson::Value& val) override;
 
   virtual const std::vector<RecipeIn> & Components() const;
   virtual const std::vector<RecipeOut> & Results() const;

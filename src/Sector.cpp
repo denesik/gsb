@@ -72,11 +72,6 @@ World & Sector::GetWorld()
   return mWorld;
 }
 
-void Sector::ApplyGenerator(IMapGenerator &generator)
-{
-  generator.Generate(*this);
-}
-
 BlockId Sector::GetBlockId(SBPos pos) const
 {
   return mStaticBlocks[cs::SBtoBI(pos)];

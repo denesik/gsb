@@ -53,12 +53,6 @@ Game::Game(const Arguments & arguments)
 
   mWorld = std::make_unique<World>(*mBlocksDataBase);
 
-  //auto mapgen = std::make_unique<MapLoader>(std::make_unique<PrimitivaMountains>(*mBlocksDataBase, 1.f));
-  //auto mapgen = std::make_unique<MapLoader>(std::make_unique<WorldGeneratorFlat>(*mBlocksDataBase));
-  //mapgen->SetWorld(mWorld.get());
-
-  //mWorld->SetLoader(std::move(mapgen));
-
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{}, tmp_area_size);
   mUpdatableArea = std::make_unique<UpdatableArea>(*mWorld, SPos{}, tmp_area_size);
 

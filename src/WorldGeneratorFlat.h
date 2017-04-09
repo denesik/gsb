@@ -1,23 +1,33 @@
 #pragma once
-#ifndef WorldGeneratorFlat_h__
-#define WorldGeneratorFlat_h__
-
-#include "IMapGenerator.h"
-
+#include <IMapGenerator.h>
+#include "../FastNoise/FastNoise.h"
 
 class WorldGeneratorFlat : public IMapGenerator
 {
 public:
-  WorldGeneratorFlat(const DataBase &db);
-  WorldGeneratorFlat(const DataBase &db, const std::string & id);
-  ~WorldGeneratorFlat();
-
-  void Generate(Sector &sector) const override;
-
-private:
-  std::string top_layer = "grass";
+  // Inherited via IMapGenerator
+  Layering GetLayering(const DataBase & db, int x, int z) const override;
+  unsigned short GetGroundLevel(const DataBase & db, int x, int z) const override;
+  const std::string & GetBiome(const DataBase & db, int x, int z) const override;
 };
 
+class WorldGeneratorFlat2 : public IMapGenerator
+{
+public:
+  // Inherited via IMapGenerator
+  Layering GetLayering(const DataBase & db, int x, int z) const override;
+  unsigned short GetGroundLevel(const DataBase & db, int x, int z) const override;
+  const std::string & GetBiome(const DataBase & db, int x, int z) const override;
 
+  WorldGeneratorFlat2(int seed = 1234);
 
-#endif // WorldGeneratorFlat_h__
+private:
+  unsigned short water_level = 80;
+  unsigned short land_level = 47;
+  float hill_multiplier = 33.f;
+  float freq = 0.01f;
+  std::string dirt_analog = "dirt";
+  std::string grass_analog = "grass";
+
+  mutable FastNoise noise;
+};

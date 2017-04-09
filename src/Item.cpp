@@ -13,7 +13,7 @@ Item::~Item()
 {
 }
 
-void Item::JsonLoad(DataBase & db, const rapidjson::Value & val)
+void Item::JsonLoad(const DataBase & db, const rapidjson::Value & val)
 {
   if (val.HasMember("tex") && val["tex"].IsString())
   {
