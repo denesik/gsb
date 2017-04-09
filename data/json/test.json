@@ -39,12 +39,12 @@
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [
-        "data/stone.png",
-        "data/stone.png",
-        "data/stone.png",
-        "data/stone.png",
-        "data/stone.png",
-        "data/stone.png"
+        "data/stone_original.png",
+        "data/stone_original.png",
+        "data/stone_original.png",
+        "data/stone_original.png",
+        "data/stone_original.png",
+        "data/stone_original.png"
       ]
     }
   },
@@ -261,6 +261,54 @@
         "data/test_west.png",
         "data/test_top.png",
         "data/test_down.png"
+      ]
+    }
+  },
+    {
+    "section": "block",
+    "name": "dirt2",
+    "id": 17,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/dirt2.png",
+        "data/dirt2.png",
+        "data/dirt2.png",
+        "data/dirt2.png",
+        "data/dirt2.png",
+        "data/dirt2.png"
+      ]
+    }
+  },
+  {
+    "section": "block",
+    "name": "dirt3",
+    "id": 18,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/dirt3.png",
+        "data/dirt3.png",
+        "data/dirt3.png",
+        "data/dirt3.png",
+        "data/dirt3.png",
+        "data/dirt3.png"
+      ]
+    }
+  },
+  {
+    "section": "block",
+    "name": "dirt4",
+    "id": 19,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/dirt4.png",
+        "data/dirt4.png",
+        "data/dirt4.png",
+        "data/dirt4.png",
+        "data/dirt4.png",
+        "data/dirt4.png"
       ]
     }
   },

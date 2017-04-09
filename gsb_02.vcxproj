@@ -107,14 +107,8 @@
     <ClInclude Include="src\Creature.h" />
     <ClInclude Include="src\DrawableArea.h" />
     <ClInclude Include="src\Game.h" />
-    <ClInclude Include="src\IGui.h" />
-    <ClInclude Include="src\IItem.h" />
-    <ClInclude Include="src\IJsonSerializable.h" />
-    <ClInclude Include="src\IMapGenerator.h" />
-    <ClInclude Include="src\IMapLoader.h" />
     <ClInclude Include="src\ImguiPort.h" />
     <ClInclude Include="src\imgui\imgui_widgets.h" />
-    <ClInclude Include="src\IRecipe.h" />
     <ClInclude Include="src\Item.h" />
     <ClInclude Include="src\JsonDataBase.h" />
     <ClInclude Include="src\Log.h" />

@@ -275,24 +275,6 @@
     <ClInclude Include="src\tools\Common.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\IItem.h">
-      <Filter>Файлы исходного кода\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\IJsonSerializable.h">
-      <Filter>Файлы исходного кода\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\IMapGenerator.h">
-      <Filter>Файлы исходного кода\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\IMapLoader.h">
-      <Filter>Файлы исходного кода\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\IRecipe.h">
-      <Filter>Файлы исходного кода\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\IGui.h">
-      <Filter>Файлы исходного кода\interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="src\BlockAutoCrafter.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>

@@ -2,7 +2,7 @@
 
 IGui::~IGui()
 {
-  onGuiClose();
+  //onGuiClose();
 }
 
 void GuiCtx::Reset()

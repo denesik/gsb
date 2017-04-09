@@ -7,6 +7,7 @@
 class Sector;
 class DataBase;
 
+using BlockInterval = boost::icl::interval<unsigned short>;
 using Layering = boost::icl::interval_map<unsigned short, BlockId>;
 
 class GSB_NOVTABLE IMapGenerator
