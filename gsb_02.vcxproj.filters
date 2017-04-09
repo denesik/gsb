@@ -22,6 +22,9 @@
     <Filter Include="Файлы исходного кода\gui">
       <UniqueIdentifier>{fb83a368-9c09-4f44-9fe6-2651c7d98e2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы исходного кода\include">
+      <UniqueIdentifier>{a753d521-6692-47f3-b260-6e3aa77be4b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Game.cpp">
@@ -119,9 +122,6 @@
     </ClCompile>
     <ClCompile Include="src\imgui\imgui_widgets.cpp">
       <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="src\IMapGenerator.cpp">
-      <Filter>Файлы исходного кода\interfaces</Filter>
     </ClCompile>
     <ClCompile Include="src\IMapLoader.cpp">
       <Filter>Файлы исходного кода\interfaces</Filter>
@@ -388,6 +388,15 @@
     </ClInclude>
     <ClInclude Include="GuiWindow.h">
       <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tools\RangeSet.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\mapgen_types.h">
+      <Filter>Файлы исходного кода\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IMapGenerator.h">
+      <Filter>Файлы исходного кода\include</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -48,7 +48,6 @@
     <ClCompile Include="src\Creature.cpp" />
     <ClCompile Include="src\DrawableArea.cpp" />
     <ClCompile Include="src\Game.cpp" />
-    <ClCompile Include="src\IMapGenerator.cpp" />
     <ClCompile Include="src\IMapLoader.cpp" />
     <ClCompile Include="src\ImguiPort.cpp" />
     <ClCompile Include="src\imgui\imgui_widgets.cpp" />
@@ -97,6 +96,8 @@
     <ClInclude Include="src\ConfiguratableMapGenerator.h" />
     <ClInclude Include="src\DataBase.h" />
     <ClInclude Include="src\DataBaseFakeData.h" />
+    <ClInclude Include="src\include\IMapGenerator.h" />
+    <ClInclude Include="src\include\mapgen_types.h" />
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Observer.h" />
     <ClInclude Include="src\StaticBlock.h" />
@@ -138,6 +139,7 @@
     <ClInclude Include="src\tools\DebugLines.h" />
     <ClInclude Include="src\tools\FpsCounter.h" />
     <ClInclude Include="src\Movable.h" />
+    <ClInclude Include="src\tools\RangeSet.h" />
     <ClInclude Include="src\UpdatableArea.h" />
     <ClInclude Include="src\UpdatableSectors.h" />
     <ClInclude Include="src\World.h" />
@@ -202,7 +204,7 @@
     <SourcePath>src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)..\3rdparty\msvc14_x86\include;$(ProjectDir)..\3rdparty\msvc14_x86\include\MagnumExternal\OpenGL;$(ProjectDir)..\3rdparty\msvc14_x86\include\SDL2;$(ProjectDir)..\3rdparty\msvc14_x86\include\GLFW;$(ProjectDir)rapidjson\include;$(ProjectDir)..\3rdparty\msvc14_x86\boost;$(ProjectDir)src\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\3rdparty\msvc14_x86\include;$(ProjectDir)..\3rdparty\msvc14_x86\include\MagnumExternal\OpenGL;$(ProjectDir)..\3rdparty\msvc14_x86\include\SDL2;$(ProjectDir)..\3rdparty\msvc14_x86\include\GLFW;$(ProjectDir)rapidjson\include;$(ProjectDir)..\3rdparty\msvc14_x86\boost;$(ProjectDir)src\include\;$(ProjectDir)src\;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)..\3rdparty\msvc14_x86\lib;$(ProjectDir)..\3rdparty\msvc14_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

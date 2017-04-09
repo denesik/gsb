@@ -6,8 +6,8 @@
 #include <memory>
 #include "Tesselator.h"
 #include <boost\optional\optional.hpp>
+#include <include\mapgen_types.h>
 
-typedef uint16_t BlockId;
 class Model;
 class DataBase;
 
