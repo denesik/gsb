@@ -31,3 +31,19 @@ private:
 
   mutable FastNoise noise;
 };
+
+class WorldGeneratorBiome : public IMapGenerator
+{
+public:
+  WorldGeneratorBiome(int seed = 1234);
+
+  // Inherited via IMapGenerator
+  Layering GetLayering(const DataBase & db, int x, int z) const override;
+  unsigned short GetGroundLevel(const DataBase & db, int x, int z) const override;
+  const std::string & GetBiome(const DataBase & db, int x, int z) const override;
+
+private:
+  mutable FastNoise noise;
+  WorldGeneratorFlat2 flat2;
+  WorldGeneratorFlat flat;
+};

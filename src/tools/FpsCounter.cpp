@@ -28,6 +28,10 @@ void FpsCounter::Update()
   fpsTime += frameTime;
   fpsStack.push_back(frameTime);
 
+  frame_length[++frame_length_cur] = static_cast<float>(frameTime);
+  if (frame_length_cur == frame_length.size() - 1)
+    frame_length_cur = 0;
+
   while (fpsTime > 1)
   {
     fpsTime -= fpsStack.front();
@@ -95,6 +99,16 @@ size_t FpsCounter::GetMinFps() const
 size_t FpsCounter::GetMeanFps() const
 {
   return static_cast<size_t>(1.0 / mean);
+}
+
+const std::array<float, 100> &FpsCounter::GetFramesLength() const
+{
+  return frame_length;
+}
+
+int FpsCounter::GetFramesLengthCurrent() const
+{
+  return frame_length_cur;
 }
 
 size_t FpsCounter::GetPercentLongFrame() const

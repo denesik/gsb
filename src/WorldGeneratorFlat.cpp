@@ -3,6 +3,8 @@
 #include <vector>
 #include <limits>
 
+#define ADDL layering.insert(layering.begin(), { BlockInterval::right_open(
+
 Layering WorldGeneratorFlat::GetLayering(const DataBase & db, int x, int z) const
 {
   unsigned short max = std::numeric_limits<unsigned short>::max();
@@ -59,10 +61,9 @@ Layering WorldGeneratorFlat2::GetLayering(const DataBase & db, int x, int z) con
   BlockId furnance = db.BlockIdFromName("furnance").value_or(0);
   BlockId stone = db.BlockIdFromName("stone").value_or(0);
 
-  const auto &wb_pos = SBPos{ x, 0, z };
-  auto value = static_cast<float>(noise.GetNoise(static_cast<float>(wb_pos.x()), static_cast<float>(wb_pos.z()))) / 2.f + 1.f;
+  auto value = static_cast<float>(noise.GetNoise(static_cast<float>(x), static_cast<float>(z))) / 2.f + 1.f;
 
-  auto sq = static_cast<float>(noise.GetNoise(static_cast<float>(-wb_pos.x()), static_cast<float>(-wb_pos.z()))) + 1.f;
+  auto sq = static_cast<float>(noise.GetNoise(static_cast<float>(-x), static_cast<float>(-z))) + 1.f;
   sq = std::pow(sq, 20);
   sq = std::max(std::logf(sq) / std::logf(10), 1.f);
 
@@ -71,14 +72,14 @@ Layering WorldGeneratorFlat2::GetLayering(const DataBase & db, int x, int z) con
   unsigned short hill_level = static_cast<unsigned short>(value * hill_multiplier + land_level);
   Layering layering;
 
-  layering.insert(layering.begin(), std::make_pair(BlockInterval::right_open(0, land_level), stone));
-  layering.insert(layering.begin(), std::make_pair(BlockInterval::right_open(land_level, hill_level - 15), dirt4));
-  layering.insert(layering.begin(), std::make_pair(BlockInterval::right_open(land_level, hill_level - 9), dirt3));
-  layering.insert(layering.begin(), std::make_pair(BlockInterval::right_open(land_level, hill_level - 4), dirt2));
-  layering.insert(layering.begin(), std::make_pair(BlockInterval::right_open(land_level, hill_level), dirt));
-  layering.insert(layering.begin(), std::make_pair(BlockInterval::right_open(hill_level, hill_level + 1), grass));
-  layering.insert(layering.begin(), std::make_pair(BlockInterval::right_open(hill_level + 1, water_level), water));
-  layering.insert(layering.begin(), std::make_pair(BlockInterval::right_open(std::max(static_cast<unsigned short>(hill_level + 1), water_level), max), air));
+  layering.insert(layering.begin(), { BlockInterval::right_open(0, land_level), stone });
+  layering.insert(layering.begin(), { BlockInterval::right_open(land_level, hill_level - 15), dirt4 });
+  layering.insert(layering.begin(), { BlockInterval::right_open(land_level, hill_level - 9), dirt3 });
+  layering.insert(layering.begin(), { BlockInterval::right_open(land_level, hill_level - 4), dirt2 });
+  layering.insert(layering.begin(), { BlockInterval::right_open(land_level, hill_level), dirt });
+  layering.insert(layering.begin(), { BlockInterval::right_open(hill_level, hill_level + 1), grass });
+  layering.insert(layering.begin(), { BlockInterval::right_open(hill_level + 1, water_level), water });
+  layering.insert(layering.begin(), { BlockInterval::right_open(std::max(static_cast<unsigned short>(hill_level + 1), water_level), max), air });
 
   return layering;
 }
@@ -98,4 +99,27 @@ WorldGeneratorFlat2::WorldGeneratorFlat2(int seed)
 {
   noise.SetSeed(seed);
   noise.SetNoiseType(FastNoise::SimplexFractal);
+}
+
+WorldGeneratorBiome::WorldGeneratorBiome(int seed)
+  : flat2(seed)
+{
+  noise.SetSeed(seed);
+  noise.SetNoiseType(FastNoise::SimplexFractal);
+}
+
+Layering WorldGeneratorBiome::GetLayering(const DataBase & db, int x, int z) const
+{
+  return Layering();
+}
+
+unsigned short WorldGeneratorBiome::GetGroundLevel(const DataBase & db, int x, int z) const
+{
+  auto value = static_cast<float>(noise.GetNoise(static_cast<float>(x), static_cast<float>(z))) / 2.f + 1.f;
+  return 0;
+}
+
+const std::string & WorldGeneratorBiome::GetBiome(const DataBase & db, int x, int z) const
+{
+  return "";
 }

@@ -7,6 +7,7 @@
 
 #include <chrono>
 #include <list>
+#include <array>
 
 class FpsCounter
 {
@@ -25,6 +26,8 @@ public:
   size_t GetMaxFps() const;
   size_t GetMinFps() const;
   size_t GetMeanFps() const;
+  const std::array<float, 100> &GetFramesLength() const;
+  int GetFramesLengthCurrent() const;
 
   size_t GetPercentLongFrame() const;
 
@@ -47,6 +50,8 @@ private:
   size_t count_long_frame = 0;
   size_t percent_long_frame = 0;
 
+  std::array<float, 100> frame_length;
+  int frame_length_cur = 0;
 };
 
 

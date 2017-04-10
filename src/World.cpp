@@ -1,4 +1,4 @@
-#include "World.h"
+п»ї#include "World.h"
 #include "MapLoader.h"
 #include "WorldGeneratorFlat.h"
 #include "ChunkHelper.h"
@@ -20,7 +20,7 @@ World::~World()
 
 void World::LoadSector(const SPos &pos)
 {
-  // Если сектора нет на карте и сектор не загружается, поставим его на загрузку.
+  // Р•СЃР»Рё СЃРµРєС‚РѕСЂР° РЅРµС‚ РЅР° РєР°СЂС‚Рµ Рё СЃРµРєС‚РѕСЂ РЅРµ Р·Р°РіСЂСѓР¶Р°РµС‚СЃСЏ, РїРѕСЃС‚Р°РІРёРј РµРіРѕ РЅР° Р·Р°РіСЂСѓР·РєСѓ.
   auto sector = GetSector(pos);
   if (sector.expired())
   {
@@ -118,9 +118,9 @@ void World::Update()
 
 void World::LoadSectorEvent(Sector &sector)
 {
-  // Сообщаем текущему сектору что он загружен.
-  // Сообщаем всем соседям текущего сектора что сектор загружен.
-  // Сообщаем текущему сектору о всех его соседях.
+  // РЎРѕРѕР±С‰Р°РµРј С‚РµРєСѓС‰РµРјСѓ СЃРµРєС‚РѕСЂСѓ С‡С‚Рѕ РѕРЅ Р·Р°РіСЂСѓР¶РµРЅ.
+  // РЎРѕРѕР±С‰Р°РµРј РІСЃРµРј СЃРѕСЃРµРґСЏРј С‚РµРєСѓС‰РµРіРѕ СЃРµРєС‚РѕСЂР° С‡С‚Рѕ СЃРµРєС‚РѕСЂ Р·Р°РіСЂСѓР¶РµРЅ.
+  // РЎРѕРѕР±С‰Р°РµРј С‚РµРєСѓС‰РµРјСѓ СЃРµРєС‚РѕСЂСѓ Рѕ РІСЃРµС… РµРіРѕ СЃРѕСЃРµРґСЏС….
   sector.LoadSector(sector);
   for (size_t i = 0; i < SectorAround::pos.size(); ++i)
   {
@@ -141,9 +141,9 @@ void World::LoadSectorEvent(Sector &sector)
 
 void World::UnloadSectorEvent(Sector &sector)
 {
-  // Сообщаем текущему сектору что он выгружен.
-  // Сообщаем всем соседям текущего сектора что сектор выгружен.
-  // Сообщаем текущему сектору о всех его соседях.
+  // РЎРѕРѕР±С‰Р°РµРј С‚РµРєСѓС‰РµРјСѓ СЃРµРєС‚РѕСЂСѓ С‡С‚Рѕ РѕРЅ РІС‹РіСЂСѓР¶РµРЅ.
+  // РЎРѕРѕР±С‰Р°РµРј РІСЃРµРј СЃРѕСЃРµРґСЏРј С‚РµРєСѓС‰РµРіРѕ СЃРµРєС‚РѕСЂР° С‡С‚Рѕ СЃРµРєС‚РѕСЂ РІС‹РіСЂСѓР¶РµРЅ.
+  // РЎРѕРѕР±С‰Р°РµРј С‚РµРєСѓС‰РµРјСѓ СЃРµРєС‚РѕСЂСѓ Рѕ РІСЃРµС… РµРіРѕ СЃРѕСЃРµРґСЏС….
   sector.UnloadSector(sector);
   for (size_t i = 0; i < SectorAround::pos.size(); ++i)
   {
@@ -179,7 +179,7 @@ void TaskGenerate::End(const MapLoader &loader)
   auto &res = world.mSectors.emplace(std::make_pair(mSector->GetPos(), mSector));
   if (res.second)
   {
-    // TODO: узнать почему может вернуться false
+    // TODO: СѓР·РЅР°С‚СЊ РїРѕС‡РµРјСѓ РјРѕР¶РµС‚ РІРµСЂРЅСѓС‚СЊСЃСЏ false
     world.LoadSectorEvent(*(res.first->second));
   }
   world.mLoadedSectors.erase(mSector->GetPos());
