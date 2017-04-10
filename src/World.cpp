@@ -21,17 +21,28 @@ World::~World()
 {
 }
 
+
+// 108 calls find
+// —оздаем себ€ и всех соседей.
+// ≈сли кто то не был поставлен на загрузку, ставим на загрузку.
 void World::LoadSector(const SPos &pos)
 {
   for (const auto &offset : gSectorNeighboard)
   {
-    if (UseSector(pos + offset) == 1)
+    UseSector(pos + offset);
+    auto it = mSectors.find(pos + offset);
+    if (it != mSectors.end())
     {
-
-    };
+      if (!it->second.added)
+      {
+        it->second.added = true;
+        // √енерируем сектор.
+      }
+    }
   }
 }
 
+// ќсвобождаем себ€ и всех соседей.
 void World::UnLoadSector(const SPos &pos)
 {
   for (const auto &offset : gSectorNeighboard)
@@ -48,11 +59,10 @@ size_t World::UseSector(const SPos &pos)
     auto &res = mSectors.emplace(pos, this, pos);
     if (!res.second)
       return 0;
-    // «агрузили сектор, сообщим ему и всем его сосед€м об этом.
-
     it = res.first;
+    // —оздали сектор, сообщим ему и всем его сосед€м об этом.
+    CacheSector(pos, Sector::CACHE_LOAD);
   }
-
   ++it->second.count;
   return it->second.count;
 }
@@ -68,11 +78,35 @@ size_t World::UnuseSector(const SPos &pos)
     if (!it->second.count)
     {
       // ¬ыгрузили сектор, сообщим ему и всем его сосед€м об этом.
-
+      CacheSector(pos, Sector::CACHE_UNLOAD);
       mSectors.erase(it);
     }
   }
   return count;
+}
+
+void World::CacheSector(const SPos &pos, Sector::CacheState state)
+{
+  auto it = mSectors.find(pos);
+  if (it != mSectors.end())
+  {
+    // —ообщаем текущему сектору что он загружен.
+    // —ообщаем всем сосед€м текущего сектора что сектор загружен.
+    // —ообщаем текущему сектору о всех его сосед€х.
+    it->second.sector.Cache(it->second.sector, state);
+    for (size_t i = 0; i < SectorAround::pos.size(); ++i)
+    {
+      auto sec_it = mSectors.find(pos + SectorAround::pos[i]);
+      if (sec_it != mSectors.end())
+      {
+        if (it->second.sector.GetPos() != sec_it->second.sector.GetPos())
+        {
+          sec_it->second.sector.Cache(it->second.sector, state);
+          it->second.sector.Cache(sec_it->second.sector, state);
+        }
+      }
+    }
+  }
 }
 
 const DataBase & World::GetBlocksDataBase() const
@@ -139,7 +173,7 @@ IMapGenerator & World::GetWorldGenerator()
 
 void World::Wipe()
 {
-	mSectors.clear();
+
 }
 
 void World::Update()

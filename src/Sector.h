@@ -23,6 +23,12 @@ class World;
 class Sector
 {
 public:
+  enum CacheState
+  {
+    CACHE_LOAD,
+    CACHE_UNLOAD,
+  };
+
   Sector(World &morld, const SPos &pos);
   ~Sector();
 
@@ -67,18 +73,13 @@ public:
     return mSectorAround;
   }
 
-  // Обработчик события загрузки сектора.
-  void LoadSector(Sector &sector);
+//   // Обработчик события загрузки сектора.
+//   void LoadSector(Sector &sector);
+// 
+//   // Обработчик события выгрузки сектора.
+//   void UnloadSector(Sector &sector);
 
-  // Обработчик события выгрузки сектора.
-  void UnloadSector(Sector &sector);
-
-  inline bool is_loaded() const
-  {
-    return m_is_loaded;
-  }
-
-  void set_loaded();
+  void Cache(Sector &sector, CacheState state);
 
 private:
   std::array<BlockId, gSectorCapacity> mStaticBlocks;
@@ -92,15 +93,7 @@ private:
   bool mNeedCompile = true;
 
   SectorAround mSectorAround;
-  // Количество загруженных секторов вокруг текущего.
-  int m_count_loaded = 0;
-  bool m_is_loaded = false;
-
   Chunk mChunk;
-
-private:
-  void change_count_loaded(int count);
-
 };
 
 
