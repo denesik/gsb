@@ -8,7 +8,7 @@ World::World(const DataBase &blocksDataBase)
   : mBlocksDataBase(blocksDataBase)
   , mUpdatableSectors(*this)
   , mPlayer(*this)
-  , mWorldGenerator(std::make_unique<WorldGeneratorFlat2>())
+  , mWorldGenerator(std::make_unique<WorldGeneratorBiome>())
   , mLoaderWorker(*mWorldGenerator, blocksDataBase)
 {
 }

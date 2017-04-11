@@ -31,9 +31,10 @@ void MapLoader::Process()
       for (int k = 0; k < gSectorSize.z(); k++)
       {
         const auto &layering = mGenerator.GetLayering(mDb, offset.x() + i, offset.z() + k);
+        const auto max_h = mGenerator.GetGroundLevel(mDb, offset.x() + i, offset.z() + k);
         for(auto &bottom = layering.begin(); bottom != layering.end(); ++bottom)
         {
-          for(auto j = bottom->first.lower(); j < bottom->first.upper() && j < gSectorSize.y(); ++j)
+          for(auto j = bottom->first.lower(); j < bottom->first.upper() && j <= max_h; ++j)
             sector->CreateBlock(SBPos{i, j, k}, bottom->second);
         }
       }

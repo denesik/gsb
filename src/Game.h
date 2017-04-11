@@ -35,8 +35,6 @@
 #include "../TextureGenerator.h"
 #include "../GuiWindow.h"
 
-#include "../FastNoise/FastNoise.h"
-
 using namespace Magnum;
 
 class Game : public Platform::Application
@@ -104,8 +102,6 @@ private:
   Texture2D mShadowTexture;
   TextureGenerator test_texgen;
   TexGenShader test_texgenshader;
-
-  FastNoise noise;
 
   bool gui_CaracterWindow = false;
 };

@@ -78,9 +78,6 @@ Game::Game(const Arguments & arguments)
 
   CORRADE_INTERNAL_ASSERT(mShadowFramebuffer.checkStatus(FramebufferTarget::Draw) == Framebuffer::Status::Complete);
 
-  noise.SetSeed(1234);
-  noise.SetNoiseType(FastNoise::SimplexFractal);
-
   mTimeline.start();
 }
 
@@ -179,7 +176,7 @@ void Game::drawEvent()
       ImGui::Text("fps: %i; max: %i; min: %i; long frame: %i%%",
         mFpsCounter.GetCount(), mFpsCounter.GetMaxFps(), mFpsCounter.GetMinFps(), mFpsCounter.GetPercentLongFrame());
 
-      ImGui::PlotLines( "", &mFpsCounter.GetFramesLength()[0], 100, mFpsCounter.GetFramesLengthCurrent(), "", 0, 0.018f, { 100,50 });
+      ImGui::PlotLines("", &mFpsCounter.GetFramesLength()[0], 100, mFpsCounter.GetFramesLengthCurrent(), "", 0, 0.018f, { 100,50 });
 
       static int drawable_area_size = tmp_area_size;
       int das = drawable_area_size;
@@ -193,12 +190,6 @@ void Game::drawEvent()
       if (uas != updatable_area_size)
         mUpdatableArea->SetRadius(updatable_area_size);
 
-     /* {
-        ImDrawList* dl = ImGui::GetWindowDrawList();
-        for (int i = 0; i < 100; i++)
-          for (int j = 0; j < 100; j++)
-            dl->AddRect(ImVec2(float(i), float(j)), ImVec2(float(i + 1), float(j + 1)), ImU32(0xffffffff));
-      }*/
     }
 
     // 2. Show another simple window, this time using an explicit Begin/End pair

@@ -43,7 +43,7 @@ public:
   const std::string & GetBiome(const DataBase & db, int x, int z) const override;
 
 private:
-  mutable FastNoise noise;
+  mutable FastNoise noise, noise_dist;
   WorldGeneratorFlat2 flat2;
   WorldGeneratorFlat flat;
 };
