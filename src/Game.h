@@ -79,6 +79,7 @@ private:
 
   Vector3 mCameraVelocity;
   Vector3 mCameraAngle;
+  float move_speed = 1000.f;
 
   Timeline mTimeline;
 

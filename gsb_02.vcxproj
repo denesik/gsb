@@ -39,6 +39,7 @@
     <ClCompile Include="src\DataBase.cpp" />
     <ClCompile Include="src\IGui.cpp" />
     <ClCompile Include="src\IItem.cpp" />
+    <ClCompile Include="src\include\IMapGenerator.cpp" />
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\StaticBlock.cpp" />
     <ClCompile Include="src\Camera.cpp" />

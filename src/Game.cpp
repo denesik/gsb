@@ -178,6 +178,8 @@ void Game::drawEvent()
 
       ImGui::PlotLines("", &mFpsCounter.GetFramesLength()[0], 100, mFpsCounter.GetFramesLengthCurrent(), "", 0, 0.018f, { 100,50 });
 
+      ImGui::SliderFloat("Movement speed", &move_speed, 500, 10000);
+
       static int drawable_area_size = tmp_area_size;
       int das = drawable_area_size;
       ImGui::SliderInt("Drawable area size", &drawable_area_size, 0, 10);
@@ -215,7 +217,8 @@ void Game::drawEvent()
 
     modalWindow.Draw(mTimeline);
 
-    //mWorld->GetWorldGenerator().DrawGui(mTimeline);
+    static GuiCtx worldgen_ctx;
+    mWorld->GetWorldGenerator().DrawGui(mTimeline, worldgen_ctx);
 
     if (ImGui::Button("wipe all"))
       mWorld->Wipe();
@@ -239,15 +242,15 @@ void Game::keyPressEvent(KeyEvent& event)
   mImguiPort.keyPressEvent(event);
 
   if (event.key() == KeyEvent::Key::A)
-    mCameraVelocity.x() = -1000.0f * mTimeline.previousFrameDuration();
+    mCameraVelocity.x() = -move_speed * mTimeline.previousFrameDuration();
   if (event.key() == KeyEvent::Key::D)
-    mCameraVelocity.x() = 1000.0f * mTimeline.previousFrameDuration();
+    mCameraVelocity.x() = move_speed * mTimeline.previousFrameDuration();
 
   if (event.key() == KeyEvent::Key::W)
-    mCameraVelocity.z() = -1000.0f * mTimeline.previousFrameDuration();
+    mCameraVelocity.z() = -move_speed * mTimeline.previousFrameDuration();
 
   if (event.key() == KeyEvent::Key::S)
-    mCameraVelocity.z() = 1000.0f * mTimeline.previousFrameDuration();
+    mCameraVelocity.z() = move_speed * mTimeline.previousFrameDuration();
 
   if (event.key() == KeyEvent::Key::F5)
     mCurrentCamera = (mCurrentCamera == mCamera.get()) ? mSunCamera.get() : mCamera.get();
