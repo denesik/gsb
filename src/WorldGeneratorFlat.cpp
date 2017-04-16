@@ -301,9 +301,9 @@ unsigned short WorldGeneratorBiome::GetGroundLevel(const DataBase & db, int x, i
     return 0;
 
   float total_sum = 0;
-  for (size_t i = 0; i < biome_values.size(); ++i)
+  for (auto &i = biome_values.begin(); i != biome_values.end(); i++)
   {
-    total_sum += biome_values[i] * biomes[i]->GetGroundLevel(db, x, z);
+    total_sum += std::get<1>(*i) * biomes[std::get<0>(*i)]->GetGroundLevel(db, x, z);
   }
 
   return static_cast<unsigned short>(total_sum);
