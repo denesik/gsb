@@ -66,8 +66,23 @@ public:
   WorldGeneratorDesert(int seed = 1234);
 
 private:
-  unsigned short water_level = 80;
-  unsigned short land_level = 47;
+  float hill_multiplier = 11.f;
+  float freq = 0.01f;
+
+  mutable FastNoise noise;
+};
+
+class WorldGeneratorRockDesert : public IMapGenerator
+{
+public:
+  // Inherited via IMapGenerator
+  Layering GetLayering(const DataBase & db, int x, int z) const override;
+  unsigned short GetGroundLevel(const DataBase & db, int x, int z) const override;
+  const std::string & GetBiome(const DataBase & db, int x, int z) const override;
+
+  WorldGeneratorRockDesert(int seed = 1234);
+
+private:
   float hill_multiplier = 11.f;
   float freq = 0.01f;
 
@@ -95,6 +110,7 @@ private:
   WorldGeneratorHills hills;
   WorldGeneratorExtremeHills ex_hills;
   WorldGeneratorDesert desert;
+  WorldGeneratorRockDesert rock_desert;
 
   std::vector<IMapGenerator*> biomes;
 

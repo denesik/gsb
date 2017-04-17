@@ -35,7 +35,7 @@ void MapLoader::Process()
         for(auto &bottom = layering.begin(); bottom != layering.end(); ++bottom)
         {
           for(auto j = bottom->first.lower(); j < bottom->first.upper() && j <= max_h; ++j)
-            sector->CreateBlock(SBPos{i, j, k}, bottom->second);
+            sector->CreateBlock(SBPos{i, max_h - j, k}, bottom->second);
         }
       }
   }
