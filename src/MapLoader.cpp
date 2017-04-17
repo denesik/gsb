@@ -22,6 +22,8 @@ void MapLoader::SetSector(std::weak_ptr<Sector> sector)
 
 void MapLoader::Process()
 {
+  BlockId water = mDb.BlockIdFromName("water").value_or(0);
+
   if (!mSector.expired())
   {
     auto &sector = mSector.lock();
@@ -32,6 +34,16 @@ void MapLoader::Process()
       {
         const auto &layering = mGenerator.GetLayering(mDb, offset.x() + i, offset.z() + k);
         const auto max_h = mGenerator.GetGroundLevel(mDb, offset.x() + i, offset.z() + k);
+        const auto w_level = mGenerator.GetWaterLevel(mDb, offset.x() + i, offset.z() + k);
+
+        if (w_level > max_h)
+        {
+          for (auto j = max_h; j < w_level; ++j)
+          {
+            sector->CreateBlock(SBPos{ i, j, k }, water);
+          }
+        }
+
         for(auto &bottom = layering.begin(); bottom != layering.end(); ++bottom)
         {
           for(auto j = bottom->first.lower(); j < bottom->first.upper() && j <= max_h; ++j)

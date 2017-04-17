@@ -89,6 +89,28 @@ private:
   mutable FastNoise noise;
 };
 
+class WorldGeneratorSwamp : public IMapGenerator
+{
+public:
+  // Inherited via IMapGenerator
+  Layering GetLayering(const DataBase & db, int x, int z) const override;
+  unsigned short GetGroundLevel(const DataBase & db, int x, int z) const override;
+  unsigned short GetWaterLevel(const DataBase &db, int x, int z) const override;
+  const std::string & GetBiome(const DataBase & db, int x, int z) const override;
+
+  WorldGeneratorSwamp(int seed = 1234);
+
+  // Унаследовано через IMapGenerator
+  virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx) override;
+
+private:
+  float hill_multiplier = 5.f;
+  float freq = 0.01f;
+  int w_level = 48;
+
+  mutable FastNoise noise;
+};
+
 class WorldGeneratorBiome : public IMapGenerator
 {
 public:
@@ -98,6 +120,7 @@ public:
   Layering GetLayering(const DataBase & db, int x, int z) const override;
   unsigned short GetGroundLevel(const DataBase & db, int x, int z) const override;
   const std::string & GetBiome(const DataBase & db, int x, int z) const override;
+  unsigned short GetWaterLevel(const DataBase &db, int x, int z) const override;
 
   // Унаследовано через IMapGenerator
   virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx) override;
@@ -111,6 +134,7 @@ private:
   WorldGeneratorExtremeHills ex_hills;
   WorldGeneratorDesert desert;
   WorldGeneratorRockDesert rock_desert;
+  WorldGeneratorSwamp swamp;
 
   std::vector<IMapGenerator*> biomes;
 

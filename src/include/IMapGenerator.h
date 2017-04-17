@@ -19,6 +19,7 @@ public:
 
   virtual Layering GetLayering(const DataBase &db, int x, int z) const = 0;
   virtual unsigned short GetGroundLevel(const DataBase &db, int x, int z) const = 0;
+  virtual unsigned short GetWaterLevel(const DataBase &db, int x, int z) const { return 0; }
   virtual const std::string &GetBiome(const DataBase &db, int x, int z) const = 0;
 
   // Унаследовано через IGui

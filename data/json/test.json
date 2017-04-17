@@ -361,6 +361,54 @@
     }
   },
   {
+    "section": "block",
+    "name": "peat_grass",
+    "id": 23,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/peat_grass_side.png",
+        "data/peat_grass_side.png",
+        "data/peat_grass_side.png",
+        "data/peat_grass_side.png",
+        "data/grass_top.png",
+        "data/peat.png"
+      ]
+    }
+  },
+  {
+    "section": "block",
+    "name": "peat",
+    "id": 24,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/peat.png",
+        "data/peat.png",
+        "data/peat.png",
+        "data/peat.png",
+        "data/peat.png",
+        "data/peat.png"
+      ]
+    }
+  },
+  {
+    "section": "block",
+    "name": "sapropel",
+    "id": 25,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/sapropel.png",
+        "data/sapropel.png",
+        "data/sapropel.png",
+        "data/sapropel.png",
+        "data/sapropel.png",
+        "data/sapropel.png"
+      ]
+    }
+  },
+  {
     "section": "item",
     "type": "Item",
     "id": 1,

@@ -41,9 +41,6 @@ const std::string & WorldGeneratorFlat::GetBiome(const DataBase & db, int x, int
 
 Layering WorldGeneratorHills::GetLayering(const DataBase & db, int x, int z) const
 {
-  if ((x > 0 && x < 10) || (z > 0 && z < 10))
-    return{};
-
   BlockId dirt = db.BlockIdFromName("dirt").value_or(0);
   BlockId dirt2 = db.BlockIdFromName("dirt2").value_or(0);
   BlockId dirt3 = db.BlockIdFromName("dirt3").value_or(0);
@@ -92,9 +89,6 @@ WorldGeneratorHills::WorldGeneratorHills(int seed)
 
 Layering WorldGeneratorExtremeHills::GetLayering(const DataBase & db, int x, int z) const
 {
-  if ((x > 0 && x < 10) || (z > 0 && z < 10))
-    return{};
-
   BlockId dirt = db.BlockIdFromName("dirt").value_or(0);
   BlockId dirt2 = db.BlockIdFromName("dirt2").value_or(0);
   BlockId dirt3 = db.BlockIdFromName("dirt3").value_or(0);
@@ -147,9 +141,6 @@ void WorldGeneratorExtremeHills::DrawGui(const Magnum::Timeline & dt, GuiCtx & c
 
 Layering WorldGeneratorDesert::GetLayering(const DataBase & db, int x, int z) const
 {
-  if ((x > 0 && x < 10) || (z > 0 && z < 10))
-    return{};
-
   BlockId sand = db.BlockIdFromName("sand").value_or(0);
   BlockId sand2 = db.BlockIdFromName("sand2").value_or(0);
   BlockId sand3 = db.BlockIdFromName("sand3").value_or(0);
@@ -194,12 +185,6 @@ void WorldGeneratorDesert::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx)
 WorldGeneratorBiome::WorldGeneratorBiome(int seed)
   : hills(seed)
 {
-  noise_dist.SetSeed(seed);
-  noise_dist.SetNoiseType(FastNoise::Cellular);
-  noise_dist.SetCellularReturnType(FastNoise::Distance);
-  noise_dist.SetFrequency(0.02f);
-  noise_dist.SetCellularDistanceFunction(FastNoise::Euclidean);
-
   noise.SetSeed(seed);
   noise.SetNoiseType(FastNoise::Cellular);
   noise.SetCellularReturnType(FastNoise::CellValue);
@@ -210,6 +195,7 @@ WorldGeneratorBiome::WorldGeneratorBiome(int seed)
   biomes.push_back(&ex_hills);
   biomes.push_back(&desert);
   biomes.push_back(&rock_desert);
+  biomes.push_back(&swamp);
 }
 
 Layering WorldGeneratorBiome::GetLayering(const DataBase & db, int x, int z) const
@@ -224,26 +210,23 @@ float lerp(float t, float a, float b) {
 
 int WorldGeneratorBiome::CalcBiome(int x, int z) const
 {
-  return static_cast<int>((noise.GetNoise(static_cast<float>(x), static_cast<float>(z)) / 2.f + 0.5f) * biomes.size());
+  float fx = static_cast<float>(x), fz = static_cast<float>(z);
+  noise.GradientPerturbFractal(fx, fz);
+  return static_cast<int>((noise.GetNoise(fx, fz) / 2.f + 0.5f) * biomes.size());
 }
 
 void WorldGeneratorBiome::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx)
 {
-  static int ret_type = 0;
+ /* static int ret_type = 0;
   ImGui::SliderInt("return_type", &ret_type, 0, 7);
-  noise_dist.SetCellularReturnType(static_cast<FastNoise::CellularReturnType>(ret_type));
+  noise_dist.SetCellularReturnType(static_cast<FastNoise::CellularReturnType>(ret_type));*/
 
-  ImGui::BeginGroup();
-  ex_hills.DrawGui(dt, ctx);
-  ImGui::EndGroup();
-
-  ImGui::BeginGroup();
-  hills.DrawGui(dt, ctx);
-  ImGui::EndGroup();
-
-  ImGui::BeginGroup();
-  desert.DrawGui(dt, ctx);
-  ImGui::EndGroup();
+  for (size_t i = 0; i < biomes.size(); ++i)
+  {
+    ImGui::BeginGroup();
+    biomes[i]->DrawGui(dt, ctx);
+    ImGui::EndGroup();
+  }
 }
 
 constexpr float pi() { return 3.1415f; }
@@ -314,9 +297,6 @@ float apply_kernel(std::function<int(int, int)> func, int x, int y, std::array<s
 
 unsigned short WorldGeneratorBiome::GetGroundLevel(const DataBase & db, int x, int z) const
 {
-  //auto biome = CalcBiome(x, z);
-  //auto other_biome = biomes[biome]->GetGroundLevel(db, x, z);
-
   std::map<int, float> biome_values;
 
   for (size_t i = 0; i < biomes.size(); ++i)
@@ -344,11 +324,16 @@ const std::string & WorldGeneratorBiome::GetBiome(const DataBase & db, int x, in
   return biomes[biome]->GetBiome(db, x, z);
 }
 
+unsigned short WorldGeneratorBiome::GetWaterLevel(const DataBase & db, int x, int z) const
+{
+  auto biome = CalcBiome(x, z);
+  return biomes[biome]->GetWaterLevel(db, x, z);
+}
+
+//-------------------------------------------------------
+
 Layering WorldGeneratorRockDesert::GetLayering(const DataBase & db, int x, int z) const
 {
-  if ((x > 0 && x < 10) || (z > 0 && z < 10))
-    return{};
-
   BlockId stone = db.BlockIdFromName("stone").value_or(0);
 
   Layering layering;
@@ -375,4 +360,54 @@ WorldGeneratorRockDesert::WorldGeneratorRockDesert(int seed)
 {
   noise.SetSeed(1234 - seed);
   noise.SetNoiseType(FastNoise::SimplexFractal);
+}
+
+//-------------------------------------------------------
+
+Layering WorldGeneratorSwamp::GetLayering(const DataBase & db, int x, int z) const
+{
+  BlockId sapropel = db.BlockIdFromName("sapropel").value_or(0);
+  BlockId peat = db.BlockIdFromName("peat").value_or(0);
+  BlockId peat_grass = db.BlockIdFromName("peat_grass").value_or(0);
+  BlockId stone = db.BlockIdFromName("stone").value_or(0);
+
+  auto value = static_cast<float>(noise.GetNoise(static_cast<float>(-x), static_cast<float>(-z))) / 2.f + 0.5f;
+  auto depth = static_cast<unsigned short>(value * hill_multiplier * 3) + 1;
+  Layering layering;
+
+  layering.set({ BlockInterval::right_open(0, 1), peat_grass });
+  layering.set({ BlockInterval::right_open(1, depth), peat });
+  layering.set({ BlockInterval::right_open(depth, depth + 2), sapropel });
+  layering.set({ BlockInterval::right_open(depth + 2, 999), stone });
+
+  return layering;
+}
+
+unsigned short WorldGeneratorSwamp::GetGroundLevel(const DataBase & db, int x, int z) const
+{
+  auto value = static_cast<float>(noise.GetNoise(static_cast<float>(-x), static_cast<float>(-z))) / 2.f + 0.5f;
+
+  return static_cast<unsigned short>(value * hill_multiplier + 50) + 1;
+}
+
+unsigned short WorldGeneratorSwamp::GetWaterLevel(const DataBase & db, int x, int z) const
+{
+  return static_cast<unsigned short>(w_level);
+}
+
+const std::string & WorldGeneratorSwamp::GetBiome(const DataBase & db, int x, int z) const
+{
+  static const std::string b = "swamp";
+  return b;
+}
+
+WorldGeneratorSwamp::WorldGeneratorSwamp(int seed)
+{
+  noise.SetSeed(4356 - seed);
+  noise.SetNoiseType(FastNoise::SimplexFractal);
+}
+
+void WorldGeneratorSwamp::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx)
+{
+  ImGui::SliderInt("water level", &w_level, 0, 255);
 }
