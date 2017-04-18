@@ -97,6 +97,7 @@ public:
   unsigned short GetGroundLevel(const DataBase & db, int x, int z) const override;
   unsigned short GetWaterLevel(const DataBase &db, int x, int z) const override;
   const std::string & GetBiome(const DataBase & db, int x, int z) const override;
+  std::list<MapTemplate> GetProps(const DataBase &db, SPos pos) const override;
 
   WorldGeneratorSwamp(int seed = 1234);
 
@@ -121,6 +122,9 @@ public:
   unsigned short GetGroundLevel(const DataBase & db, int x, int z) const override;
   const std::string & GetBiome(const DataBase & db, int x, int z) const override;
   unsigned short GetWaterLevel(const DataBase &db, int x, int z) const override;
+
+  std::list<MapTemplate> GetProps(const DataBase &db, SPos pos) const override;
+  std::list<MapTemplate> GetStructures(const DataBase &db, int x, int z, StructureSize size) const override;
 
   // Унаследовано через IMapGenerator
   virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx) override;

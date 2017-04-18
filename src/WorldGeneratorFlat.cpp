@@ -189,7 +189,8 @@ WorldGeneratorBiome::WorldGeneratorBiome(int seed)
   noise.SetNoiseType(FastNoise::Cellular);
   noise.SetCellularReturnType(FastNoise::CellValue);
   noise.SetFrequency(0.02f);
-  noise.SetCellularDistanceFunction(FastNoise::Euclidean);
+  noise.SetCellularDistanceFunction(FastNoise::Natural);
+  noise.SetGradientPerturbAmp(2.f);
 
   biomes.push_back(&hills);
   biomes.push_back(&ex_hills);
@@ -330,6 +331,19 @@ unsigned short WorldGeneratorBiome::GetWaterLevel(const DataBase & db, int x, in
   return biomes[biome]->GetWaterLevel(db, x, z);
 }
 
+std::list<MapTemplate> WorldGeneratorBiome::GetProps(const DataBase & db, SPos pos) const
+{
+  auto sbpos = cs::StoSB(pos);
+  auto biome = CalcBiome(sbpos.x(), sbpos.z());
+  return biomes[biome]->GetProps(db, pos);
+}
+
+std::list<MapTemplate> WorldGeneratorBiome::GetStructures(const DataBase & db, int x, int z, StructureSize size) const
+{
+  auto biome = CalcBiome(x, z);
+  return biomes[biome]->GetStructures(db, x, z, size);
+}
+
 //-------------------------------------------------------
 
 Layering WorldGeneratorRockDesert::GetLayering(const DataBase & db, int x, int z) const
@@ -399,6 +413,44 @@ const std::string & WorldGeneratorSwamp::GetBiome(const DataBase & db, int x, in
 {
   static const std::string b = "swamp";
   return b;
+}
+
+std::list<MapTemplate> WorldGeneratorSwamp::GetProps(const DataBase & db, SPos pos) const
+{
+  std::list<MapTemplate> l;
+  
+  for(int i = 0; i < 3; i++)
+    for (int j = 0; j < 3; j++)
+  {
+    MapTemplate t;
+    t.size = { 3,5,3 };
+    t.position = cs::StoSB(pos) + SBPos(i * 5, 0, j * 5);
+
+    //TODO: check biome
+    t.position.y() = GetGroundLevel(db, t.position.x(), t.position.z()) - t.size.y();
+
+    t.data =
+    { 0,0,0,
+     0,0,0,
+     0,6,0,
+     6,6,6,
+     0,6,0,
+
+     0,7,0,
+     0,7,0,
+     6,7,6,
+     6,7,6,
+     6,6,6,
+
+     0,0,0,
+     0,0,0,
+     0,6,0,
+     6,6,6,
+     0,6,0 };
+
+    l.emplace_back(std::move(t));
+  }
+  return l;
 }
 
 WorldGeneratorSwamp::WorldGeneratorSwamp(int seed)

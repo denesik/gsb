@@ -82,6 +82,23 @@ namespace cs
     }
   }
 
+  // »ндекс блока в секторе в позицию блока в секторе.
+  inline SBPos BItoSBcustom(IndexType i, SPos customSectorSize)
+  {
+    return SBPos{
+      static_cast<SBPosType>(i % customSectorSize.x()),
+      static_cast<SBPosType>((i / customSectorSize.x()) % customSectorSize.y()),
+      static_cast<SBPosType>(i / (customSectorSize.x() * customSectorSize.y())) };
+  }
+
+  // ѕозици€ блока в секторе в индекс блока в секторе.
+  inline IndexType SBtoBIcustom(const SBPos &pos, SPos customSectorSize)
+  {
+    return static_cast<IndexType>(pos.z()) * customSectorSize.x() * customSectorSize.y() +
+      static_cast<IndexType>(pos.y()) * customSectorSize.x() +
+      static_cast<IndexType>(pos.x());
+  }
+
   // ћировые координаты в координаты блока в мире.
   inline WBPos WtoWB(const WPos &pos)
   {
