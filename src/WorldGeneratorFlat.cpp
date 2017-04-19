@@ -349,10 +349,12 @@ std::list<MapTemplate> WorldGeneratorBiome::GetStructures(const DataBase & db, i
 Layering WorldGeneratorRockDesert::GetLayering(const DataBase & db, int x, int z) const
 {
   BlockId stone = db.BlockIdFromName("stone").value_or(0);
+  BlockId grassy_stone = db.BlockIdFromName("grassy_stone").value_or(0);
 
   Layering layering;
 
-  layering.set({ BlockInterval::right_open(0, 999), stone });
+  layering.set({ BlockInterval::right_open(0, 1), grassy_stone });
+  layering.set({ BlockInterval::right_open(1, 999), stone });
 
   return layering;
 }
@@ -415,42 +417,52 @@ const std::string & WorldGeneratorSwamp::GetBiome(const DataBase & db, int x, in
   return b;
 }
 
+int GetSeededInteger(FastNoise &noise, int x, int y, SBPos offset)
+{
+  return static_cast<int>(noise.GetNoise(static_cast<float>(x + offset.x()), static_cast<float>(y + offset.z()) / 2.f + 0.5f) * static_cast<float>(std::numeric_limits<int>::max()));
+}
+
 std::list<MapTemplate> WorldGeneratorSwamp::GetProps(const DataBase & db, SPos pos) const
 {
-  std::list<MapTemplate> l;
+  std::list<MapTemplate> templates;
+
+  BlockId l = db.BlockIdFromName("leaves_block").value_or(0);
+  BlockId t = db.BlockIdFromName("tree_block").value_or(0);
+
+  SBPos sbpos = cs::StoSB(pos);
   
   for(int i = 0; i < 3; i++)
     for (int j = 0; j < 3; j++)
   {
-    MapTemplate t;
-    t.size = { 3,5,3 };
-    t.position = cs::StoSB(pos) + SBPos(i * 5, 0, j * 5);
+    MapTemplate templ;
+    templ.size = { 3,5,3 };
+    templ.position = sbpos + SBPos(GetSeededInteger(noise, i, j, sbpos) % 32, 0, GetSeededInteger(noise, i, j, sbpos*2) % 32);
 
     //TODO: check biome
-    t.position.y() = GetGroundLevel(db, t.position.x(), t.position.z()) - t.size.y();
+    templ.position.y() = GetGroundLevel(db, templ.position.x(), templ.position.z()) - templ.size.y();
 
-    t.data =
+    templ.data =
     { 0,0,0,
-     0,0,0,
-     0,6,0,
-     6,6,6,
-     0,6,0,
+      0,0,0,
+      0,l,0,
+      l,l,l,
+      0,l,0,
 
-     0,7,0,
-     0,7,0,
-     6,7,6,
-     6,7,6,
-     6,6,6,
+      0,t,0,
+      0,t,0,
+      l,t,l,
+      l,t,l,
+      l,l,l,
+      
+      0,0,0,
+      0,0,0,
+      0,l,0,
+      l,l,l,
+      0,l,0 };
 
-     0,0,0,
-     0,0,0,
-     0,6,0,
-     6,6,6,
-     0,6,0 };
-
-    l.emplace_back(std::move(t));
+    templates.emplace_back(std::move(templ));
   }
-  return l;
+  return templates;
 }
 
 WorldGeneratorSwamp::WorldGeneratorSwamp(int seed)

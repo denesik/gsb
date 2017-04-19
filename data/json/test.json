@@ -409,6 +409,54 @@
     }
   },
   {
+    "section": "block",
+    "name": "grassy_stone",
+    "id": 26,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/grassy_stone.png",
+        "data/grassy_stone.png",
+        "data/grassy_stone.png",
+        "data/grassy_stone.png",
+        "data/grassy_stone.png",
+        "data/grassy_stone.png"
+      ]
+    }
+  },
+  {
+    "section": "block",
+    "name": "tree_block",
+    "id": 27,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/tree_block.png",
+        "data/tree_block.png",
+        "data/tree_block.png",
+        "data/tree_block.png",
+        "data/tree_block.png",
+        "data/tree_block.png"
+      ]
+    }
+  },
+  {
+    "section": "block",
+    "name": "leaves_block",
+    "id": 28,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/leaves_block.png",
+        "data/leaves_block.png",
+        "data/leaves_block.png",
+        "data/leaves_block.png",
+        "data/leaves_block.png",
+        "data/leaves_block.png"
+      ]
+    }
+  },
+  {
     "section": "item",
     "type": "Item",
     "id": 1,

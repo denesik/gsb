@@ -182,13 +182,13 @@ void Game::drawEvent()
 
       static int drawable_area_size = tmp_area_size;
       int das = drawable_area_size;
-      ImGui::SliderInt("Drawable area size", &drawable_area_size, 0, 10);
+      ImGui::SliderInt("Drawable area size", &drawable_area_size, 0, 15);
       if (das != drawable_area_size)
         mDrawableArea->SetRadius(drawable_area_size);
 
       static int updatable_area_size = tmp_area_size;
       int uas = updatable_area_size;
-      ImGui::SliderInt("Updatable area size", &updatable_area_size, 0, 10);
+      ImGui::SliderInt("Updatable area size", &updatable_area_size, 0, 15);
       if (uas != updatable_area_size)
         mUpdatableArea->SetRadius(updatable_area_size);
 
