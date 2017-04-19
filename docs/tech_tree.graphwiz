@@ -1,0 +1,100 @@
+digraph g{
+subgraph cluster_0{
+label="Legend"
+Tool[color="0.5 1 1"]
+Machine[color="red"]
+"Machine\\Hand"[color="aquamarine3"]
+"Milestone"[color="yellow"]
+Component
+}
+
+"Ore"->"Crusher 1"
+"Rich ore"->"Crusher 1"
+"Poor ore"->"Crusher 1"
+
+"Crusher 1"->"chrushed ore"->"Screener 1"->"impure ore gravel"->"Washer 1"
+"Screener 1"->"stone gravel"
+"Screener 1"->"impure ore dust"
+"Washer 1"->"pure ore gravel"->"Macerator 1"->"impure ore dust"
+"Washer 1"->"variadic dust"
+"variadic dust"->"Separator 1"
+"impure ore dust"->"Separator 1"->"pure dust"
+"pure dust"->"ingot"
+
+"glass"->"glass bubble"->"Sawmill 1" ->"empty glass lamp"
+
+"ingot"->"wire x1"->"isolated wire x1"
+"wire x1"->"wire x2"->"isolated wire x2"
+"wire x2"->"wire x4"->"isolated wire x4"
+"wire x4"->"wire x8"->"isolated wire x8"
+"wire x8"->"wire x16"->"isolated wire x16"
+"wire x16"->"wire x32"
+"wire x1"->"lamp base"
+
+"formaldehyde"->"bakelite"
+"phenol"->"bakelite"
+"varnish"->"lamp logic circuit"
+"wooden plate"->"lamp logic circuit"
+"tree_block"->"Sawmill 2"->"wooden plate"
+
+"tree_block 1"->"Distilator 1"->"turpentine"
+"turpentine"->"varnish"
+"asphalt"->"varnish"
+"natural asphalt"->"varnish"
+"heavy oil"->"Destilator 3"->"asphalt"
+"oil"->"Refinery 1"->"heavy oil"
+"Refinery 1"->"light oil"
+"coal"->"coal tar"
+"coal"->"coke"
+"coal tar"->"Extractor 1"->"phenol"
+"methanol"->"formaldehyde"
+"1 O2"->"formaldehyde"
+"organics"->"Distilator 2"->"methanol"
+"light oil"->"Destilator 4"->"ethylene"->"Chemical Reactor 3"->"polyethylene"
+
+"4 FeS2"->"Furnance 1"->"8 SO2"->"Chemical Reactor 1"->"8 SO3"
+"V2O5"->"Chemical Reactor 1"
+"11 O2"->"Chemical Reactor 1"
+"Compressor 1"->"11 O2"
+"8 SO3"->"Chemical Reactor 2"
+"8 H2O"->"Chemical Reactor 2"->"H2SO4"
+
+"thread"->"Loom 1"->"cloth"
+"cloth"->"advanced lamp logic circuit"
+
+"empty glass lamp"->"electronic lamp"
+"wire x1"->"electronic lamp"
+"electronic lamp"->"lamp logic circuit"
+"bakelite"->"advanced lamp logic circuit"
+"electronic lamp"->"advanced lamp logic circuit"
+
+"polyethylene"->"solid capacitor"
+"metal foil"->"solid capacitor"
+
+"Crusher 1"[color="0 1 1"]
+"Furnance 1"[color="0 1 1"]
+"Macerator 1"[color="0 1 1"]
+V2O5[color="0.5 1 1"]
+"Chemical Reactor 1"[color="red"]
+"Chemical Reactor 2"[color="red"]
+"Chemical Reactor 3"[color="red"]
+"Compressor 1"[color="0 1 1"]
+"Screener 1"[color="0 1 1"]
+"Washer 1"[color="0 1 1"]
+"Macerator 1"[color="0 1 1"]
+"Separator 1"[color="0 1 1"]
+"Sawmill 1"[color="aquamarine3"]
+"Sawmill 2"[color="aquamarine3"]
+"varnish"[color="black"]
+"wooden plate"[color="black"]
+"bakelite"[color="black"]
+"cloth"[color="black"]
+"polyethylene"[color="black"]
+"Loom 1"[color="aquamarine3"]
+"Distilator 1"[color="red"]
+"Distilator 2"[color="red"]
+"Destilator 3"[color="red"]
+"Destilator 4"[color="red"]
+"Refinery 1"[color="red"]
+"Extractor 1"[color="red"]
+}
