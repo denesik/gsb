@@ -435,7 +435,7 @@ std::list<MapTemplate> WorldGeneratorSwamp::GetProps(const DataBase & db, SPos p
     for (int j = 0; j < 3; j++)
   {
     MapTemplate templ;
-    templ.size = { 3,5,3 };
+    templ.size = { 3,6,3 };
     templ.position = sbpos + SBPos(GetSeededInteger(noise, i, j, sbpos) % 32, 0, GetSeededInteger(noise, i, j, sbpos*2) % 32);
 
     //TODO: check biome
@@ -444,16 +444,19 @@ std::list<MapTemplate> WorldGeneratorSwamp::GetProps(const DataBase & db, SPos p
     templ.data =
     { 0,0,0,
       0,0,0,
+      0,0,0,
       0,l,0,
       l,l,l,
       0,l,0,
 
       0,t,0,
       0,t,0,
+      0,t,0,
       l,t,l,
       l,t,l,
       l,l,l,
       
+      0,0,0,
       0,0,0,
       0,0,0,
       0,l,0,

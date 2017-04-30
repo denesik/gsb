@@ -20,6 +20,21 @@ enum class StructureSize
   s128x128,
 };
 
+class MapTemplateGenerator
+{
+  std::list<BlockId> data;
+  SBPos zero_offset;
+  SPos size;
+
+  BlockId &operator [](SBPos position);
+  BlockId at(SBPos position) const;
+
+  std::vector<BlockId> to_vector();
+  void extend_x(size_t layer_offset = 0, size_t count = 1);
+  void extend_y(size_t layer_offset = 0, size_t count = 1);
+  void extend_z(size_t layer_offset = 0, size_t count = 1);
+};
+
 struct MapTemplate
 {
   std::vector<BlockId> data;
