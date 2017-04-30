@@ -22,7 +22,7 @@ enum class StructureSize
 
 class MapTemplateGenerator
 {
-  std::list<BlockId> data;
+  std::vector<BlockId> data;
   SBPos zero_offset;
   SPos size;
 

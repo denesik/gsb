@@ -9,7 +9,7 @@ void MapTemplateGenerator::extend_x(size_t layer_offset, size_t count)
   auto presize = size;
 
   size.x() += count;
-  data.resize(size.length());
+  data.resize(static_cast<int>(size.length()));
 }
 
 void MapTemplateGenerator::extend_y(size_t layer_offset, size_t count)
