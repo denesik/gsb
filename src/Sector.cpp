@@ -9,7 +9,7 @@ Sector::Sector(World &world, const SPos &pos)
   : mWorld(world), mPos(pos), mChunk(*this)
 {
   // generate sector
-  mStaticBlocks.fill(0);
+  mStaticBlocks.fill(1);
 }
 
 

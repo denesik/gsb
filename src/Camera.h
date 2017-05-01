@@ -20,7 +20,7 @@ public:
     Ortho
   };
 
-  Camera(Movable &movable, const Magnum::Range2Di &viewport, Type type = Type::Perspective);
+  Camera(IMovable &movable, const Magnum::Range2Di &viewport, Type type = Type::Perspective);
   ~Camera();
 
   void SetViewport(const Magnum::Range2Di &viewport);
@@ -36,7 +36,7 @@ public:
 private:
   void Reinit();
 
-  Movable &mMovable;
+  IMovable &mMovable;
   Type mType;
 
   Magnum::Range2D mViewport;

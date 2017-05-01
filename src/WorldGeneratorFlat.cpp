@@ -11,11 +11,11 @@
 Layering WorldGeneratorFlat::GetLayering(const DataBase & db, int x, int z) const
 {
   const int dirt_level = 64;
-  BlockId dirt = db.BlockIdFromName("dirt").value_or(0);
-  BlockId grass = db.BlockIdFromName("grass").value_or(0);
-  BlockId furnance = db.BlockIdFromName("furnance").value_or(0);
-  BlockId number = db.BlockIdFromName("number").value_or(0);
-  BlockId world_side = db.BlockIdFromName("world_side").value_or(0);
+  BlockId dirt = db.BlockIdFromName("dirt").value_or(1);
+  BlockId grass = db.BlockIdFromName("grass").value_or(1);
+  BlockId furnance = db.BlockIdFromName("furnance").value_or(1);
+  BlockId number = db.BlockIdFromName("number").value_or(1);
+  BlockId world_side = db.BlockIdFromName("world_side").value_or(1);
 
   Layering layering;
   layering += std::make_pair(boost::icl::interval<unsigned short>::right_open(0, 64), dirt);
@@ -41,14 +41,14 @@ const std::string & WorldGeneratorFlat::GetBiome(const DataBase & db, int x, int
 
 Layering WorldGeneratorHills::GetLayering(const DataBase & db, int x, int z) const
 {
-  BlockId dirt = db.BlockIdFromName("dirt").value_or(0);
-  BlockId dirt2 = db.BlockIdFromName("dirt2").value_or(0);
-  BlockId dirt3 = db.BlockIdFromName("dirt3").value_or(0);
-  BlockId dirt4 = db.BlockIdFromName("dirt4").value_or(0);
-  BlockId grass = db.BlockIdFromName("grass").value_or(0);
-  BlockId water = db.BlockIdFromName("water").value_or(0);
-  BlockId furnance = db.BlockIdFromName("furnance").value_or(0);
-  BlockId stone = db.BlockIdFromName("stone").value_or(0);
+  BlockId dirt = db.BlockIdFromName("dirt").value_or(1);
+  BlockId dirt2 = db.BlockIdFromName("dirt2").value_or(1);
+  BlockId dirt3 = db.BlockIdFromName("dirt3").value_or(1);
+  BlockId dirt4 = db.BlockIdFromName("dirt4").value_or(1);
+  BlockId grass = db.BlockIdFromName("grass").value_or(1);
+  BlockId water = db.BlockIdFromName("water").value_or(1);
+  BlockId furnance = db.BlockIdFromName("furnance").value_or(1);
+  BlockId stone = db.BlockIdFromName("stone").value_or(1);
 
   unsigned short hill_level = GetGroundLevel(db, x, z);
   Layering layering;
@@ -89,14 +89,14 @@ WorldGeneratorHills::WorldGeneratorHills(int seed)
 
 Layering WorldGeneratorExtremeHills::GetLayering(const DataBase & db, int x, int z) const
 {
-  BlockId dirt = db.BlockIdFromName("dirt").value_or(0);
-  BlockId dirt2 = db.BlockIdFromName("dirt2").value_or(0);
-  BlockId dirt3 = db.BlockIdFromName("dirt3").value_or(0);
-  BlockId dirt4 = db.BlockIdFromName("dirt4").value_or(0);
-  BlockId grass = db.BlockIdFromName("grass").value_or(0);
-  BlockId water = db.BlockIdFromName("water").value_or(0);
-  BlockId furnance = db.BlockIdFromName("furnance").value_or(0);
-  BlockId stone = db.BlockIdFromName("stone").value_or(0);
+  BlockId dirt = db.BlockIdFromName("dirt").value_or(1);
+  BlockId dirt2 = db.BlockIdFromName("dirt2").value_or(1);
+  BlockId dirt3 = db.BlockIdFromName("dirt3").value_or(1);
+  BlockId dirt4 = db.BlockIdFromName("dirt4").value_or(1);
+  BlockId grass = db.BlockIdFromName("grass").value_or(1);
+  BlockId water = db.BlockIdFromName("water").value_or(1);
+  BlockId furnance = db.BlockIdFromName("furnance").value_or(1);
+  BlockId stone = db.BlockIdFromName("stone").value_or(1);
 
   unsigned short hill_level = GetGroundLevel(db, x, z);
   Layering layering;
@@ -348,8 +348,8 @@ std::list<MapTemplate> WorldGeneratorBiome::GetStructures(const DataBase & db, i
 
 Layering WorldGeneratorRockDesert::GetLayering(const DataBase & db, int x, int z) const
 {
-  BlockId stone = db.BlockIdFromName("stone").value_or(0);
-  BlockId grassy_stone = db.BlockIdFromName("grassy_stone").value_or(0);
+  BlockId stone = db.BlockIdFromName("stone").value_or(1);
+  BlockId grassy_stone = db.BlockIdFromName("grassy_stone").value_or(1);
 
   Layering layering;
 
@@ -382,10 +382,10 @@ WorldGeneratorRockDesert::WorldGeneratorRockDesert(int seed)
 
 Layering WorldGeneratorSwamp::GetLayering(const DataBase & db, int x, int z) const
 {
-  BlockId sapropel = db.BlockIdFromName("sapropel").value_or(0);
-  BlockId peat = db.BlockIdFromName("peat").value_or(0);
-  BlockId peat_grass = db.BlockIdFromName("peat_grass").value_or(0);
-  BlockId stone = db.BlockIdFromName("stone").value_or(0);
+  BlockId sapropel = db.BlockIdFromName("sapropel").value_or(1);
+  BlockId peat = db.BlockIdFromName("peat").value_or(1);
+  BlockId peat_grass = db.BlockIdFromName("peat_grass").value_or(1);
+  BlockId stone = db.BlockIdFromName("stone").value_or(1);
 
   auto value = static_cast<float>(noise.GetNoise(static_cast<float>(-x), static_cast<float>(-z))) / 2.f + 0.5f;
   auto depth = static_cast<unsigned short>(value * hill_multiplier * 3) + 1;
@@ -426,8 +426,8 @@ std::list<MapTemplate> WorldGeneratorSwamp::GetProps(const DataBase & db, SPos p
 {
   std::list<MapTemplate> templates;
 
-  BlockId l = db.BlockIdFromName("leaves_block").value_or(0);
-  BlockId t = db.BlockIdFromName("tree_block").value_or(0);
+  BlockId l = db.BlockIdFromName("leaves_block").value_or(1);
+  BlockId t = db.BlockIdFromName("tree_block").value_or(1);
 
   SBPos sbpos = cs::StoSB(pos);
   

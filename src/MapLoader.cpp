@@ -22,7 +22,7 @@ void MapLoader::SetSector(std::weak_ptr<Sector> sector)
 
 void MapLoader::Process()
 {
-  BlockId water = mDb.BlockIdFromName("water").value_or(0);
+  BlockId water = mDb.BlockIdFromName("water").value_or(1);
 
   if (!mSector.expired())
   {

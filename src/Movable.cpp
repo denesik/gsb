@@ -23,7 +23,7 @@ void Movable::Rotate(const Magnum::Vector3 &euler)
   mNextRotation += euler;
 }
 
-void Movable::Move(const Magnum::Vector3 &dist)
+void Movable::MoveRelative(const Magnum::Vector3 &dist)
 {
   mNextMove += mQuat.transformVector(dist);
 }
@@ -42,17 +42,17 @@ void Movable::SetPos(const Magnum::Vector3 &pos)
   mNextMove = {};
 }
 
-const Magnum::Matrix4 & Movable::Model() const
+const Magnum::Matrix4 Movable::Model() const
 {
   return mModel;
 }
 
-const Magnum::Vector3 & Movable::Pos() const
+const Magnum::Vector3 Movable::Pos() const
 {
   return mPos;
 }
 
-void Movable::Update()
+void Movable::Update(const Magnum::Timeline &gt)
 {
   auto pitch = Quaternion::rotation(Rad(mNextRotation.y()), Vector3::xAxis());
   auto yaw = Quaternion::rotation(Rad(mNextRotation.x()), Vector3::yAxis());
@@ -72,3 +72,55 @@ const Magnum::Vector3 Movable::Direction() const
 	return (mEye - mPos).normalized();
 }
 
+void Acceleratable::Accelerate(const Magnum::Vector3 & velocity)
+{
+  mVelocity += velocity;
+}
+
+void Acceleratable::SetAcceleration(const Magnum::Vector3 & velocity)
+{
+  mVelocity = velocity;
+}
+
+void Acceleratable::Update(const Magnum::Timeline & gt)
+{
+  mVelocity += mGravity * gt.previousFrameDuration();
+  mPos += mVelocity * gt.previousFrameDuration();
+  Movable::Update(gt);
+}
+
+Magnum::Vector3 &Acceleratable::Velocity()
+{
+  return mVelocity;
+}
+
+void Acceleratable::Stop()
+{
+  mVelocity = {};
+}
+
+MovableOffseted::MovableOffseted(Movable & movable, const Magnum::Vector3 & off) 
+  : mReference(movable)
+  , mOffset(off)
+{
+}
+
+const Magnum::Matrix4 MovableOffseted::Model() const
+{
+  return mReference.Model() * Matrix4::translation(mOffset);
+}
+
+const Magnum::Vector3 MovableOffseted::Pos() const
+{
+  return mReference.Pos() + mOffset;
+}
+
+void MovableOffseted::Update(const Magnum::Timeline &gt)
+{
+  mReference.Update(gt);
+}
+
+const Magnum::Vector3 MovableOffseted::Direction() const
+{
+  return mReference.Direction();
+}

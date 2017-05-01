@@ -8,13 +8,13 @@
 
 class World;
 
-class Creature : public Movable, public IGui
+class Creature : public Acceleratable, public IGui
 {
 public:
   Creature(World &world);
   ~Creature();
 
-  void Update();
+  void Update(const Magnum::Timeline &tl);
 
   // Inherited via IGui
   virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx) override;

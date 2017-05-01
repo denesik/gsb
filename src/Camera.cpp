@@ -18,7 +18,7 @@ void Camera::Reinit()
   }
 }
 
-Camera::Camera(Movable &movable, const Magnum::Range2Di &viewport, Camera::Type type)
+Camera::Camera(IMovable &movable, const Magnum::Range2Di &viewport, Camera::Type type)
   : mViewport(viewport)
   , mMovable(movable)
   , mType(type)

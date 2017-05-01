@@ -1,6 +1,11 @@
 [
   {
     "section": "block",
+    "name": "air",
+    "id": 1
+  },
+  {
+    "section": "block",
     "name": "grass",
     "id": 2,
     "tesselator": {

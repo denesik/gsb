@@ -59,7 +59,8 @@ Game::Game(const Arguments & arguments)
   setSwapInterval(0);
   setMouseLocked(true);
 
-  mCamera = std::make_unique<Camera>(mWorld->mPlayer, defaultFramebuffer.viewport());
+  static auto pl_off = MovableOffseted(mWorld->mPlayer, { 0, 1.8f, 0 });
+  mCamera = std::make_unique<Camera>(pl_off, defaultFramebuffer.viewport());
   mSunCamera = std::make_unique<Camera>(mSun, Range2Di{ {},{ 512, 512 } }, Camera::Type::Ortho);
   mCurrentCamera = mCamera.get();
 
@@ -89,14 +90,14 @@ void Game::drawEvent()
   Renderer::enable(Renderer::Feature::FaceCulling);
   Renderer::setClearColor({ clear_color.x, clear_color.y, clear_color.z, clear_color.w });
 
-  mWorld->mPlayer.Move(mCameraVelocity * 0.006f);
+  mWorld->mPlayer.MoveRelative(mCameraVelocity * 0.006f);
   mWorld->mPlayer.Rotate(mCameraAngle * 0.003f);
-  mWorld->mPlayer.Update();
+  mWorld->mPlayer.Update(mTimeline);
 
   auto spos = mWorld->mPlayer.Pos() + Vector3{ std::sin(mTimeline.previousFrameTime()) * 100, 111, std::cos(mTimeline.previousFrameTime()) * 100 };
   mSun.SetPos(spos);
   mSun.LookAt(mWorld->mPlayer.Pos());
-  mSun.Update();
+  mSun.Update(mTimeline);
 
   auto ray = mCamera->Ray({ static_cast<Float>(defaultFramebuffer.viewport().centerX()) ,
     static_cast<Float>(defaultFramebuffer.viewport().centerY()) });
@@ -175,6 +176,8 @@ void Game::drawEvent()
       if (ImGui::Button("Another Window")) show_another_window ^= 1;
       ImGui::Text("fps: %i; max: %i; min: %i; long frame: %i%%",
         mFpsCounter.GetCount(), mFpsCounter.GetMaxFps(), mFpsCounter.GetMinFps(), mFpsCounter.GetPercentLongFrame());
+      ImGui::Text("player pos %g %g %g",
+        mWorld->mPlayer.Pos().x(), mWorld->mPlayer.Pos().y(), mWorld->mPlayer.Pos().z());
 
       ImGui::PlotLines("", &mFpsCounter.GetFramesLength()[0], 100, mFpsCounter.GetFramesLengthCurrent(), "", 0, 0.018f, { 100,50 });
 
@@ -251,6 +254,9 @@ void Game::keyPressEvent(KeyEvent& event)
 
   if (event.key() == KeyEvent::Key::S)
     mCameraVelocity.z() = move_speed * mTimeline.previousFrameDuration();
+
+  if (event.key() == KeyEvent::Key::Space)
+    mWorld->mPlayer.SetAcceleration({0, 10, 0});
 
   if (event.key() == KeyEvent::Key::F5)
     mCurrentCamera = (mCurrentCamera == mCamera.get()) ? mSunCamera.get() : mCamera.get();
