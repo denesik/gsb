@@ -95,6 +95,17 @@ void World::CreateBlock(const WBPos& pos, BlockId id)
   }
 }
 
+void World::DestroyBlock(const WBPos & pos)
+{
+  auto spos = cs::WBtoS(pos);
+  auto sector = GetSector(spos);
+  if (!sector.expired())
+  {
+    auto shared = sector.lock();
+    return shared->CreateBlock(cs::WBtoSB(pos), 1);
+  }
+}
+
 UpdatableSectors & World::GetUpdatableSectors()
 {
   return mUpdatableSectors;

@@ -74,3 +74,8 @@ Magnum::Frustum Camera::Frustum() const
 {
   return Math::Frustum<Float>::fromMatrix(Project() * View());
 }
+
+Magnum::Vector3 Camera::Pos() const
+{
+  return mMovable.Pos();
+}

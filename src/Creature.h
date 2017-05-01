@@ -18,6 +18,7 @@ public:
 
   // Inherited via IGui
   virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx) override;
+  std::vector<std::tuple<ItemId, size_t>> &Inventory();
 
 private:
   World &mWorld;

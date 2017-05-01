@@ -54,11 +54,11 @@ Layering WorldGeneratorHills::GetLayering(const DataBase & db, int x, int z) con
   Layering layering;
 
   layering.set({ BlockInterval::right_open(0, 1), grass });
-  layering.set({ BlockInterval::right_open(1, 5), dirt });
-  layering.set({ BlockInterval::right_open(5, 10), dirt2 });
-  layering.set({ BlockInterval::right_open(10, 15), dirt3 });
-  layering.set({ BlockInterval::right_open(15, 25), dirt4 });
-  layering.set({ BlockInterval::right_open(25, 999), stone });
+  layering.set({ BlockInterval::right_open(1, 2), dirt });
+  layering.set({ BlockInterval::right_open(2, 3), dirt2 });
+  layering.set({ BlockInterval::right_open(3, 4), dirt3 });
+  layering.set({ BlockInterval::right_open(4, 5), dirt4 });
+  layering.set({ BlockInterval::right_open(5, 999), stone });
 
   //if (hill_level + 1 < water_level)
   //  layering.insert(layering.begin(), { BlockInterval::right_open(hill_level + 1, water_level), water });
@@ -102,11 +102,11 @@ Layering WorldGeneratorExtremeHills::GetLayering(const DataBase & db, int x, int
   Layering layering;
 
   layering.set({ BlockInterval::right_open(0, 1), grass });
-  layering.set({ BlockInterval::right_open(1, 5), dirt });
-  layering.set({ BlockInterval::right_open(5, 10), dirt2 });
-  layering.set({ BlockInterval::right_open(10, 15), dirt3 });
-  layering.set({ BlockInterval::right_open(15, 25), dirt4 });
-  layering.set({ BlockInterval::right_open(25, 999), stone });
+  layering.set({ BlockInterval::right_open(1, 2), dirt });
+  layering.set({ BlockInterval::right_open(2, 3), dirt2 });
+  layering.set({ BlockInterval::right_open(3, 4), dirt3 });
+  layering.set({ BlockInterval::right_open(4, 5), dirt4 });
+  layering.set({ BlockInterval::right_open(5, 999), stone });
 
   //if (hill_level + 1 < water_level)
   //  layering.insert(layering.begin(), { BlockInterval::right_open(hill_level + 1, water_level), water });

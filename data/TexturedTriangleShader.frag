@@ -19,8 +19,8 @@ void main() {
   vec3 ambient = vec3(0.2, 0.2, 0.2);
   
   vec3 sc = frag_shadow;
-  //sc.x = sc.x / (abs(sc.x) + 0.05);
-  //sc.y = sc.y / (abs(sc.y) + 0.05);
+  sc.x = sc.x / (abs(sc.x) + 0.005);
+  sc.y = sc.y / (abs(sc.y) + 0.005);
 
   lowp float intensity;
   #ifdef GSB_NORMAL_LGHT

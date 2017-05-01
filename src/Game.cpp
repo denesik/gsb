@@ -53,6 +53,11 @@ Game::Game(const Arguments & arguments)
 
   mWorld = std::make_unique<World>(*mBlocksDataBase);
 
+  modalWindow = std::make_unique<GuiWindow>(*mBlocksDataBase, "Selected");
+  inventoryWindow = std::make_unique<GuiWindow>(*mBlocksDataBase, "Inventory");
+
+  inventoryWindow->AddGui(&mWorld->mPlayer);
+
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{}, tmp_area_size);
   mUpdatableArea = std::make_unique<UpdatableArea>(*mWorld, SPos{}, tmp_area_size);
 
@@ -66,7 +71,7 @@ Game::Game(const Arguments & arguments)
 
   mWorld->mPlayer.SetPos({ 0, 70, 0 });
 
-  mShadowTexture.setImage(0, TextureFormat::DepthComponent, ImageView2D{ PixelFormat::DepthComponent, PixelType::Float,{ 512, 512 }, nullptr })
+  mShadowTexture.setImage(0, TextureFormat::DepthComponent, ImageView2D{ PixelFormat::DepthComponent, PixelType::Float, { 2048, 2048 }, nullptr })
     .setMaxLevel(0)
     .setCompareFunction(Sampler::CompareFunction::LessOrEqual)
     .setCompareMode(Sampler::CompareMode::CompareRefToTexture)
@@ -75,6 +80,7 @@ Game::Game(const Arguments & arguments)
 
   mShadowFramebuffer.attachTexture(Framebuffer::BufferAttachment::Depth, mShadowTexture, 0)
     .mapForDraw(Framebuffer::DrawAttachment::None)
+    .setViewport({ {}, { 2048, 2048 } })
     .bind();
 
   CORRADE_INTERNAL_ASSERT(mShadowFramebuffer.checkStatus(FramebufferTarget::Draw) == Framebuffer::Status::Complete);
@@ -102,12 +108,13 @@ void Game::drawEvent()
   auto ray = mCamera->Ray({ static_cast<Float>(defaultFramebuffer.viewport().centerX()) ,
     static_cast<Float>(defaultFramebuffer.viewport().centerY()) });
 
-  auto blocks = voxel_traversal(mWorld->mPlayer.Pos(), mWorld->mPlayer.Pos() + ray.normalized() * 100.0f);
+  auto blocks = voxel_traversal(mCamera->Pos(), mCamera->Pos() + ray.normalized() * 100.0f);
 
   Vector3i picked;
   for (auto &i : blocks)
   {
-    if (mWorld->GetBlockId(i) != 0)
+    auto selid = mWorld->GetBlockId(i);
+    if (selid != 0 && selid != 1)
     {
       picked = i;
       break;
@@ -124,20 +131,34 @@ void Game::drawEvent()
 
   debugLines.addLine(mWorld->mPlayer.Pos(), mWorld->mPlayer.Pos() + ray * 1, { 1,1,1 });
 
-  if (ImGui::IsMouseClicked(0) && !ImGui::IsAnyItemHovered())
+  if (ImGui::IsMouseClicked(1) && !ImGui::IsAnyItemHovered())
   {
     auto p = mWorld->GetBlockDynamic(picked);
     if (p)
     {
-      modalWindow.Open();
-      modalWindow.Reset();
-      modalWindow.AddGui(p);
+      modalWindow->Reset();
+      modalWindow->AddGui(p);
     }
     else
     {
-      modalWindow.Reset();
-      modalWindow.Close();
+      modalWindow->Reset();
+      modalWindow->Close();
     }
+  }
+
+  static float pressedT = 0;
+  if (ImGui::IsMouseDown(0) && !ImGui::IsAnyItemHovered())
+  {
+    pressedT += mTimeline.previousFrameDuration();
+    if (pressedT >= 0.3)
+    {
+      mWorld->DestroyBlock(picked);
+      pressedT = 0;
+    }
+  }
+  else
+  {
+    pressedT = 0;
   }
 
   //shadow pass
@@ -213,14 +234,10 @@ void Game::drawEvent()
       ImGui::ShowTestWindow(&show_test_window);
     }
 
-    if (gui_CaracterWindow)
-    {
-      gui::DrawCaracterWindow(gui_CaracterWindow, mWorld->mPlayer);
-    }
+    inventoryWindow->Draw(mTimeline);
+    modalWindow->Draw(mTimeline);
 
-    modalWindow.Draw(mTimeline);
-
-    static GuiCtx worldgen_ctx;
+    static GuiCtx worldgen_ctx(*mBlocksDataBase);
     mWorld->GetWorldGenerator().DrawGui(mTimeline, worldgen_ctx);
 
     if (ImGui::Button("wipe all"))
@@ -256,13 +273,13 @@ void Game::keyPressEvent(KeyEvent& event)
     mCameraVelocity.z() = move_speed * mTimeline.previousFrameDuration();
 
   if (event.key() == KeyEvent::Key::Space)
-    mWorld->mPlayer.SetAcceleration({0, 10, 0});
+    mWorld->mPlayer.SetAcceleration({0, 6, 0});
 
   if (event.key() == KeyEvent::Key::F5)
     mCurrentCamera = (mCurrentCamera == mCamera.get()) ? mSunCamera.get() : mCamera.get();
 
   if (event.key() == KeyEvent::Key::E)
-    gui_CaracterWindow = !gui_CaracterWindow;
+    inventoryWindow->Toggle();
 
   event.setAccepted();
 }

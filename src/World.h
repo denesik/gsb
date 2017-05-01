@@ -77,6 +77,8 @@ public:
   Block* GetBlockDynamic(const WBPos &pos) const;
   void CreateBlock(const WBPos &pos, BlockId id);
 
+  void DestroyBlock(const WBPos &pos);
+
   UpdatableSectors &GetUpdatableSectors();
   
   IMapGenerator &GetWorldGenerator();

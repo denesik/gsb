@@ -33,6 +33,8 @@ public:
 
   Magnum::Frustum Frustum() const;
 
+  Magnum::Vector3 Pos() const;
+
 private:
   void Reinit();
 

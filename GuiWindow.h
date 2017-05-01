@@ -1,11 +1,12 @@
 #pragma once
 #include <IGui.h>
 #include <list>
+#include <IDBHolder.h>
 
-class GuiWindow
+class GuiWindow : public IDBHolder
 {
 public:
-  GuiWindow(const std::string &name);
+  GuiWindow(DataBase &db, const std::string &name);
 
   void Draw(const Magnum::Timeline & dt);
 
@@ -14,10 +15,11 @@ public:
   void Reset();
   void Open();
   void Close();
+  void Toggle();
 
 private:
   std::list<IGui *> guis;
-  bool mClosed = false;
+  bool mClosed = true;
   GuiCtx mCtx;
   std::string mName;
 };

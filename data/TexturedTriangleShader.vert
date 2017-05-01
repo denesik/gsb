@@ -18,8 +18,6 @@ out vec3 frag_shadow;
 #endif
 
 void main() {
-  const float bias = 0.000005;
-  
   frag_uv = vert_uv;
   
   gl_Position = projectionMatrix * vec4(vert_pos, 1);

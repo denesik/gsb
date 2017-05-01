@@ -2,7 +2,10 @@
 #include <functional>
 #include "imgui/imgui.h"
 
-GuiWindow::GuiWindow(const std::string & name) : mName(name)
+GuiWindow::GuiWindow(DataBase &db, const std::string & name)
+  : mName(name)
+  , IDBHolder(db)
+  , mCtx(db)
 {
 }
 
@@ -44,4 +47,12 @@ void GuiWindow::Open()
 void GuiWindow::Close()
 {
   mClosed = true;
+}
+
+void GuiWindow::Toggle()
+{
+  if (mClosed)
+    Open();
+  else
+    Close();
 }

@@ -377,5 +377,11 @@
     <ClInclude Include="src\include\IRecipe.h">
       <Filter>Файлы исходного кода\include</Filter>
     </ClInclude>
+    <ClInclude Include="src\include\IDbHolder.h">
+      <Filter>Файлы исходного кода\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IHolderHelper.h">
+      <Filter>Файлы исходного кода\include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

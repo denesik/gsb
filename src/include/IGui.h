@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <boost/optional.hpp>
 #include "Log.h"
+#include <IDbHolder.h>
 
 namespace Magnum {
   class Timeline;
@@ -13,9 +14,11 @@ namespace Magnum {
 
 using GuiFunction = std::function<void(const Magnum::Timeline &dt)>;
 
-class GuiCtx
+class GuiCtx : public IDBHolder
 {
 public:
+  GuiCtx(DataBase &db);
+
   template<typename T>
   T * Get(intptr_t caller)
   {
