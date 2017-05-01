@@ -33,3 +33,13 @@ boost::optional<const Model &> StaticBlock::GetModel() const
 
   return{};
 }
+
+const std::vector<ItemId>& StaticBlock::GetDropList()
+{
+  return mDrop;
+}
+
+void StaticBlock::SetDropList(const std::vector<ItemId>& drop)
+{
+  mDrop = drop;
+}

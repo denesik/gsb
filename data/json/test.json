@@ -18,7 +18,9 @@
         "data/grass_top.png",
         "data/dirt.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["dirt", 1]]
   },
   {
     "section": "block",
@@ -35,7 +37,9 @@
         "data/grass_top.png",
         "data/dirt.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["tree_block", 1]]
   },
   {
     "section": "block",
@@ -51,7 +55,9 @@
         "data/stone_original.png",
         "data/stone_original.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["stone", 1]]
   },
   {
     "section": "block",
@@ -78,7 +84,9 @@
         "data/dirt.png",
         "data/dirt.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["dirt", 1]]
   },
   {
     "section": "block",
@@ -131,7 +139,9 @@
 		"fast":true,
 		"Input":"2",
 		"Output":"2"
-	}
+	},
+    "generate_item":true,
+    "drop":[["furnance", 1]]
   },
   {
     "section": "block",
@@ -171,7 +181,9 @@
         "data/sand.png",
         "data/sand.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["sand", 1]]
   },
   {
     "section": "block",
@@ -187,7 +199,9 @@
         "data/grass_top_w.png",
         "data/dirt.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["rainforest_grass", 1]]
   },
   {
     "section": "block",
@@ -203,7 +217,9 @@
         "data/grass_top_t.png",
         "data/dirt.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["taiga_grass", 1]]
   },
   {
     "section": "block",
@@ -219,7 +235,9 @@
         "data/grass_top_f.png",
         "data/dirt.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["seasonforest_grass", 1]]
   },
   {
     "section": "block",
@@ -235,7 +253,9 @@
         "data/grass_top_s.png",
         "data/grass_top_s.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["snow", 1]]
   },
   {
     "section": "block",
@@ -283,7 +303,9 @@
         "data/dirt2.png",
         "data/dirt2.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["dirt2", 1]]
   },
   {
     "section": "block",
@@ -299,7 +321,9 @@
         "data/dirt3.png",
         "data/dirt3.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["dirt3", 1]]
   },
   {
     "section": "block",
@@ -315,7 +339,9 @@
         "data/dirt4.png",
         "data/dirt4.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["dirt4", 1]]
   },
   {
     "section": "block",
@@ -331,7 +357,9 @@
         "data/sand.png",
         "data/sand.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["sand", 1]]
   },
   {
     "section": "block",
@@ -347,7 +375,9 @@
         "data/sand2.png",
         "data/sand2.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["sand2", 1]]
   },
   {
     "section": "block",
@@ -363,7 +393,9 @@
         "data/sand3.png",
         "data/sand3.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["sand3", 1]]
   },
   {
     "section": "block",
@@ -379,7 +411,9 @@
         "data/grass_top.png",
         "data/peat.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["peat_grass", 1]]
   },
   {
     "section": "block",
@@ -395,7 +429,9 @@
         "data/peat.png",
         "data/peat.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["peat", 1]]
   },
   {
     "section": "block",
@@ -411,7 +447,9 @@
         "data/sapropel.png",
         "data/sapropel.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["sapropel", 1]]
   },
   {
     "section": "block",
@@ -427,7 +465,9 @@
         "data/grassy_stone.png",
         "data/grassy_stone.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["grassy_stone", 1]]
   },
   {
     "section": "block",
@@ -443,7 +483,9 @@
         "data/tree_block.png",
         "data/tree_block.png"
       ]
-    }
+    },
+    "generate_item":true,
+    "drop":[["tree_block", 1]]
   },
   {
     "section": "block",
@@ -459,14 +501,15 @@
         "data/leaves_block.png",
         "data/leaves_block.png"
       ]
-    }
+    },
+    "generate_item":true
   },
   {
     "section": "item",
     "type": "Item",
     "id": 1,
     "name": "coal",
-	  "tex": "data/items/coal_lump.png"
+    "tex": "data/items/coal_lump.png"
   },
   {
     "section": "item",
