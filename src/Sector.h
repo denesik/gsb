@@ -15,6 +15,9 @@
 #include <Magnum/AbstractShaderProgram.h>
 #include "ChunkHelper.h"
 
+
+#include "Sector_generated.h"
+
 class IMapGenerator;
 class World;
 
@@ -70,6 +73,8 @@ public:
 
   // Обработчик события выгрузки сектора.
   void UnloadSector(Sector &sector);
+
+  void FlatbufferLoad(const gsb_flat::Sector &sec);
 
 private:
   std::array<BlockId, gSectorCapacity> mStaticBlocks;

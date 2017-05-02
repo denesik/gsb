@@ -5,19 +5,11 @@
 #include "ThreadProcess.h"
 #include <DataBase.h>
 
-class MapLoader : public ThreadProcess<MapLoader>
+class MapLoader : public IMapLoader
 {
 public:
   MapLoader(const IMapGenerator &generator, const DataBase &db);
-  ~MapLoader();
-
-  void SetSector(std::weak_ptr<Sector> sector);
 
   void Process();
-
-private:
-  std::weak_ptr<Sector> mSector;
-  const IMapGenerator &mGenerator;
-  const DataBase &mDb;
 };
 

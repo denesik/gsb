@@ -3,22 +3,10 @@
 
 
 MapLoader::MapLoader(const IMapGenerator &generator, const DataBase &db)
-  : mGenerator(generator)
-  , mDb(db)
+  : IMapLoader(generator, db)
 {
 
 }
-
-MapLoader::~MapLoader()
-{
-  Release();
-}
-
-void MapLoader::SetSector(std::weak_ptr<Sector> sector)
-{
-  mSector = sector;
-}
-
 
 void MapLoader::Process()
 {

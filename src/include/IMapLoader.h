@@ -1,25 +1,22 @@
 #pragma once
-#include "tools/CoordSystem.h"
-#include <memory>
-#include <tools/Common.h>
 #include "IMapGenerator.h"
+#include "ThreadProcess.h"
 
 class Sector;
-class World;
+class DataBase;
 
-class GSB_NOVTABLE IMapLoader
+class GSB_NOVTABLE IMapLoader : public ThreadProcess<IMapLoader>
 {
 public:
-  IMapLoader(std::unique_ptr<IMapGenerator>);
-  virtual ~IMapLoader() = default;
-  virtual std::shared_ptr<Sector> GetSector(SPos pos) = 0;
+  IMapLoader(const IMapGenerator &generator, const DataBase &db);
+  ~IMapLoader();
 
-  void SetWorld(World *world) { mWorld = world; }
+  void SetSector(std::weak_ptr<Sector> sector);
 
-  IMapGenerator & GetGenerator();
-
+  virtual void Process() = 0;
 
 protected:
-  World *mWorld = nullptr;
-  std::unique_ptr<IMapGenerator> mGenerator;
+  std::weak_ptr<Sector> mSector;
+  const IMapGenerator &mGenerator;
+  const DataBase &mDb;
 };

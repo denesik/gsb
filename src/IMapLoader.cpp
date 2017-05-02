@@ -1,11 +1,18 @@
 #include "IMapLoader.h"
 
-IMapLoader::IMapLoader(std::unique_ptr<IMapGenerator> gen) : mGenerator(std::move(gen))
+IMapLoader::IMapLoader(const IMapGenerator &generator, const DataBase &db)
+  : mGenerator(generator)
+  , mDb(db)
 {
+
 }
 
-IMapGenerator & IMapLoader::GetGenerator()
+IMapLoader::~IMapLoader()
 {
-	if (mGenerator)
-		return *mGenerator;
+  Release();
+}
+
+void IMapLoader::SetSector(std::weak_ptr<Sector> sector)
+{
+  mSector = sector;
 }

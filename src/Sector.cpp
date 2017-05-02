@@ -118,3 +118,8 @@ void Sector::UnloadSector(Sector &sector)
     mSectorAround.sectors[mSectorAround.to_index(pos)].reset();
   }
 }
+
+void Sector::FlatbufferLoad(const gsb_flat::Sector & sec)
+{
+  //for(size_t i = 0; i <)
+}
