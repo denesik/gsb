@@ -47,9 +47,9 @@ class TaskGenerate
 public:
   TaskGenerate(World &morld, const SPos &pos);
 
-  bool Begin(MapLoader &loader);
+  bool Begin(IMapLoader &loader);
 
-  void End(const MapLoader &loader);
+  void End(const IMapLoader &loader);
 
 private:
   std::shared_ptr<Sector> mSector;

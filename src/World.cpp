@@ -178,13 +178,13 @@ TaskGenerate::TaskGenerate(World &morld, const SPos &pos)
   mSector = std::make_shared<Sector>(morld, pos);
 }
 
-bool TaskGenerate::Begin(MapLoader &loader)
+bool TaskGenerate::Begin(IMapLoader &loader)
 {
   loader.SetSector(mSector);
   return true;
 }
 
-void TaskGenerate::End(const MapLoader &loader)
+void TaskGenerate::End(const IMapLoader &loader)
 {
   auto &world = mSector->GetWorld();
   auto &res = world.mSectors.emplace(std::make_pair(mSector->GetPos(), mSector));
