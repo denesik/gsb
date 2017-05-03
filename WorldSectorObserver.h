@@ -3,17 +3,19 @@
 #define WorldSectorObserver_h__
 
 #include "Observer.h"
+#include <tools\Common.h>
 
 class Sector;
 
-class WorldSectorEvent
+class GSB_NOVTABLE IWorldSectorEvent
 {
 public:
-  void Load(Sector &sector);
-  void UnLoad(Sector &sector);
+  virtual ~IWorldSectorEvent();
+  virtual void Load(Sector &sector) = 0;
+  virtual void UnLoad(Sector &sector) = 0;
 };
 
-class WorldSectorObserver : public ptl::observer<WorldSectorEvent>
+class WorldSectorObserver : public ptl::observer<IWorldSectorEvent>
 {
 public:
   WorldSectorObserver();

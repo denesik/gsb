@@ -1,6 +1,10 @@
 #include "MapLoader.h"
 #include "Sector.h"
 
+#include <flatbuffers\flatbuffers.h>
+#include <Sector_generated.h>
+#include <fstream>
+#include <boost/format.hpp>
 
 MapLoaderFromGenerator::MapLoaderFromGenerator(const IMapGenerator &generator, const DataBase &db)
   : IMapLoader(db)
@@ -92,16 +96,34 @@ MapLoaderFromDisk::MapLoaderFromDisk(boost::filesystem::path path, const DataBas
 
 void MapLoaderFromDisk::Process()
 {
-  volatile int s = 2;
-  s = 4;
+  
 }
 
-MapLoaderFromNetwork::MapLoaderFromNetwork(boost::asio::ip::address address, const DataBase & db)
-  : IMapLoader(db)
-  , mAddress(address)
+//MapLoaderFromNetwork::MapLoaderFromNetwork(boost::asio::ip::address address, const DataBase & db)
+//  : IMapLoader(db)
+//  , mAddress(address)
+//{
+//}
+//
+//void MapLoaderFromNetwork::Process()
+//{
+//}
+
+MapSaverToDisk::MapSaverToDisk(boost::filesystem::path path, const DataBase & db)
+  : IMapSaver(db)
+  , mPath(path)
 {
 }
 
-void MapLoaderFromNetwork::Process()
+void MapSaverToDisk::Process()
 {
+  flatbuffers::FlatBufferBuilder fbb;
+  auto pos = gsb_flat::SPos(mSector->mPos.x(), mSector->mPos.z());
+  auto blocks = fbb.CreateVector<int32_t>(reinterpret_cast<int32_t*>(&mSector->mStaticBlocks[0]), mSector->mStaticBlocks.size());
+  auto sector = gsb_flat::CreateSector(fbb, &pos, blocks);
+  fbb.Finish(sector);
+
+  std::ofstream fs((boost::format("%1%.%2%.bin") % mSector->mPos.x() % mSector->mPos.z()).str(), std::ofstream::binary);
+  fs.write(reinterpret_cast<char *>(fbb.GetBufferPointer()), fbb.GetSize());
+  fs.close();
 }

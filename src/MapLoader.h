@@ -5,7 +5,6 @@
 #include "ThreadProcess.h"
 #include <DataBase.h>
 #include <boost/filesystem.hpp>
-#include <boost/asio.hpp>
 
 class MapLoaderFromGenerator : public IMapLoader
 {
@@ -29,13 +28,24 @@ private:
   boost::filesystem::path mPath;
 };
 
-class MapLoaderFromNetwork : public IMapLoader
+//class MapLoaderFromNetwork : public IMapLoader
+//{
+//public:
+//  MapLoaderFromNetwork(boost::asio::ip::address address, const DataBase &db);
+//
+//  void Process() override;
+//
+//private:
+//  boost::asio::ip::address mAddress;
+//};
+
+class MapSaverToDisk : public IMapSaver
 {
 public:
-  MapLoaderFromNetwork(boost::asio::ip::address address, const DataBase &db);
+  MapSaverToDisk(boost::filesystem::path path, const DataBase &db);
 
   void Process() override;
 
 private:
-  boost::asio::ip::address mAdress;
+  boost::filesystem::path mPath;
 };

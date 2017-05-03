@@ -85,11 +85,11 @@ bool LoadBlock(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &
   {
     const rapidjson::Value &drop = val["drop"];
     std::vector<ItemId> dropList;
-    for (const auto &d : drop.GetArray())
+    /*for (const auto &d : drop.GetArray())
     {
       if(auto id = db.ItemIdFromName(d.GetString()))
         dropList.push_back(id.get());
-    }
+    }*/
 
     static_part->SetDropList(dropList);
   }

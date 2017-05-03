@@ -42,10 +42,10 @@
 
 class MapLoaderFromGenerator;
 
-class TaskGenerate
+class TaskLoad
 {
 public:
-  TaskGenerate(World &morld, const SPos &pos);
+  TaskLoad(World &morld, const SPos &pos);
 
   bool Begin(IMapLoader &loader);
 
@@ -55,7 +55,31 @@ private:
   std::shared_ptr<Sector> mSector;
 };
 
+class TaskUnload
+{
+public:
+  TaskUnload(Sector * sector); //TODO: refs
 
+  bool Begin(IMapSaver &loader);
+
+  void End(const IMapSaver &loader);
+
+private:
+  Sector * mSector;
+};
+
+class UnloadObserver : public IWorldSectorEvent
+{
+public:
+  UnloadObserver(IThreadWorker<TaskUnload> &saverWorker);
+
+  // Унаследовано через IWorldSectorEvent
+  void Load(Sector &sector) override;
+  void UnLoad(Sector &sector) override;
+
+private:
+  IThreadWorker<TaskUnload> &mSaverWorker;
+};
 
 class World
 {
@@ -97,9 +121,13 @@ public:
 private:
   const DataBase &mBlocksDataBase;
 
-  friend class TaskGenerate;
+  friend class TaskLoad;
+  friend class TaskUnload;
   std::unique_ptr<IMapGenerator> mWorldGenerator;
-  std::unique_ptr<IThreadWorker<TaskGenerate>> mLoaderWorker;
+  std::unique_ptr<IThreadWorker<TaskLoad>> mLoaderWorker;
+
+  std::unique_ptr<UnloadObserver> unloadObserver;
+  std::unique_ptr<IThreadWorker<TaskUnload>> mSaverWorker;
 
   UpdatableSectors mUpdatableSectors;
 

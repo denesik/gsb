@@ -13,20 +13,14 @@ WorldSectorObserver::~WorldSectorObserver()
 
 void WorldSectorObserver::Load(Sector &sector)
 {
-  notify(&WorldSectorEvent::Load, sector);
+  notify(&IWorldSectorEvent::Load, sector);
 }
 
 void WorldSectorObserver::UnLoad(Sector &sector)
 {
-  notify(&WorldSectorEvent::UnLoad, sector);
+  notify(&IWorldSectorEvent::UnLoad, sector);
 }
 
-void WorldSectorEvent::Load(Sector &sector)
+IWorldSectorEvent::~IWorldSectorEvent()
 {
-
-}
-
-void WorldSectorEvent::UnLoad(Sector &sector)
-{
-
 }

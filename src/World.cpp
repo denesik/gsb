@@ -9,8 +9,11 @@ World::World(const DataBase &blocksDataBase)
   , mUpdatableSectors(*this)
   , mPlayer(*this)
   , mWorldGenerator(std::make_unique<WorldGeneratorBiome>())
-  , mLoaderWorker(std::make_unique<ThreadWorker<TaskGenerate, MapLoaderFromGenerator>>(*mWorldGenerator, blocksDataBase))
+  , mLoaderWorker(std::make_unique<ThreadWorker<TaskLoad, MapLoaderFromGenerator>>(*mWorldGenerator, blocksDataBase))
+  , mSaverWorker(std::make_unique<ThreadWorker<TaskUnload, MapSaverToDisk>>("/save/", blocksDataBase))
 {
+  unloadObserver = std::make_unique<UnloadObserver>(*mSaverWorker);
+  //mWorldSectorObserver.attach(*unloadObserver);
 }
 
 
@@ -39,7 +42,7 @@ void World::UnLoadSector(const SPos &pos)
   if (it != mSectors.end())
   {
     UnloadSectorEvent(*it->second);
-    mSectors.erase(it);
+    mSectors.erase(it); //TODO: нужно владеть сектором, пока его не запишут или передавать владение
   }
 }
 
@@ -124,6 +127,7 @@ void World::Wipe()
 void World::Update()
 {
   mLoaderWorker->Update();
+  mSaverWorker->Update();
   mUpdatableSectors.Update();
 }
 
@@ -173,18 +177,18 @@ void World::UnloadSectorEvent(Sector &sector)
   mWorldSectorObserver.UnLoad(sector);
 }
 
-TaskGenerate::TaskGenerate(World &morld, const SPos &pos)
+TaskLoad::TaskLoad(World &morld, const SPos &pos)
 {
   mSector = std::make_shared<Sector>(morld, pos);
 }
 
-bool TaskGenerate::Begin(IMapLoader &loader)
+bool TaskLoad::Begin(IMapLoader &loader)
 {
   loader.SetSector(mSector);
   return true;
 }
 
-void TaskGenerate::End(const IMapLoader &loader)
+void TaskLoad::End(const IMapLoader &loader)
 {
   auto &world = mSector->GetWorld();
   auto &res = world.mSectors.emplace(std::make_pair(mSector->GetPos(), mSector));
@@ -194,4 +198,33 @@ void TaskGenerate::End(const IMapLoader &loader)
     world.LoadSectorEvent(*(res.first->second));
   }
   world.mLoadedSectors.erase(mSector->GetPos());
+}
+
+TaskUnload::TaskUnload(Sector * sector)
+  : mSector(sector)
+{
+}
+
+bool TaskUnload::Begin(IMapSaver & loader)
+{
+  loader.SetSector(mSector);
+  return true;
+}
+
+void TaskUnload::End(const IMapSaver & loader)
+{
+}
+
+UnloadObserver::UnloadObserver(IThreadWorker<TaskUnload>& saverWorker)
+  : mSaverWorker(saverWorker)
+{
+}
+
+void UnloadObserver::Load(Sector &sector)
+{
+}
+
+void UnloadObserver::UnLoad(Sector &sector)
+{
+  mSaverWorker.Add({ &sector });
 }

@@ -25,7 +25,7 @@ void GuiWindow::Draw(const Magnum::Timeline & dt)
 void GuiWindow::AddGui(IGui * gui)
 {
   guis.push_back(gui);
-  gui->onGuiClose.connect([this]() { Close(); Reset(); });
+  //gui->onGuiClose.connect([this]() { Close(); Reset(); });
 }
 
 void GuiWindow::RemoveGui(IGui * gui)

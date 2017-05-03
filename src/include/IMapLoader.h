@@ -9,7 +9,7 @@ class GSB_NOVTABLE IMapLoader : public ThreadProcess<IMapLoader>
 {
 public:
   IMapLoader(const DataBase &db);
-  ~IMapLoader();
+  virtual ~IMapLoader();
 
   void SetSector(std::weak_ptr<Sector> sector);
 
@@ -17,5 +17,20 @@ public:
 
 protected:
   std::weak_ptr<Sector> mSector;
+  const DataBase &mDb;
+};
+
+class GSB_NOVTABLE IMapSaver : public ThreadProcess<IMapSaver>
+{
+public:
+  IMapSaver(const DataBase &db);
+  virtual ~IMapSaver();
+
+  void SetSector(Sector * sector);
+
+  virtual void Process() = 0;
+
+protected:
+  Sector * mSector;
   const DataBase &mDb;
 };

@@ -26,6 +26,8 @@ class World;
 class Sector
 {
 public:
+  friend class MapSaverToDisk;
+
   Sector(World &morld, const SPos &pos);
   ~Sector();
 
