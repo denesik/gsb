@@ -2,13 +2,14 @@
 #include "Sector.h"
 
 
-MapLoader::MapLoader(const IMapGenerator &generator, const DataBase &db)
-  : IMapLoader(generator, db)
+MapLoaderFromGenerator::MapLoaderFromGenerator(const IMapGenerator &generator, const DataBase &db)
+  : IMapLoader(db)
+  , mGenerator(generator)
 {
 
 }
 
-void MapLoader::Process()
+void MapLoaderFromGenerator::Process()
 {
   BlockId water = mDb.BlockIdFromName("water").value_or(1);
 
@@ -81,4 +82,26 @@ void MapLoader::Process()
       }
     }
   }
+}
+
+MapLoaderFromDisk::MapLoaderFromDisk(boost::filesystem::path path, const DataBase & db)
+  : IMapLoader(db)
+  , mPath(path)
+{
+}
+
+void MapLoaderFromDisk::Process()
+{
+  volatile int s = 2;
+  s = 4;
+}
+
+MapLoaderFromNetwork::MapLoaderFromNetwork(boost::asio::ip::address address, const DataBase & db)
+  : IMapLoader(db)
+  , mAddress(address)
+{
+}
+
+void MapLoaderFromNetwork::Process()
+{
 }

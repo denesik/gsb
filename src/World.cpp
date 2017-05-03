@@ -9,7 +9,7 @@ World::World(const DataBase &blocksDataBase)
   , mUpdatableSectors(*this)
   , mPlayer(*this)
   , mWorldGenerator(std::make_unique<WorldGeneratorBiome>())
-  , mLoaderWorker(*mWorldGenerator, blocksDataBase)
+  , mLoaderWorker(std::make_unique<ThreadWorker<TaskGenerate, MapLoaderFromGenerator>>(*mWorldGenerator, blocksDataBase))
 {
 }
 
@@ -28,7 +28,7 @@ void World::LoadSector(const SPos &pos)
     if (it == mLoadedSectors.end())
     {
       mLoadedSectors.emplace(pos);
-      mLoaderWorker.Add({ *this, pos });
+      mLoaderWorker->Add({ *this, pos });
     }
   }
 }
@@ -123,7 +123,7 @@ void World::Wipe()
 
 void World::Update()
 {
-  mLoaderWorker.Update();
+  mLoaderWorker->Update();
   mUpdatableSectors.Update();
 }
 

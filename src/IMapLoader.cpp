@@ -1,8 +1,7 @@
 #include "IMapLoader.h"
 
-IMapLoader::IMapLoader(const IMapGenerator &generator, const DataBase &db)
-  : mGenerator(generator)
-  , mDb(db)
+IMapLoader::IMapLoader(const DataBase &db)
+  : mDb(db)
 {
 
 }

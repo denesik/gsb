@@ -29,8 +29,16 @@
 // Завершил ли воркер работу?
 // bool Worker::IsDone() const;
 
+template<class Task>
+class IThreadWorker
+{
+public:
+  virtual void Update() = 0;
+  virtual void Add(Task &&task) = 0;
+};
+
 template<class Task, class Worker>
-class ThreadWorker
+class ThreadWorker : public IThreadWorker<Task>
 {
 public:
   template<class ...Args>
@@ -40,12 +48,12 @@ public:
   }
 
   // Добавить задачу на исполнение.
-  void Add(Task &&task)
+  void Add(Task &&task) override
   {
     mData.push_back({std::forward<Task>(task), nullptr});
   }
 
-  void Update()
+  void Update() override
   {
     // Пробегаем по всем задачам.
     for (auto it = mData.begin(); it != mData.end();)
@@ -95,17 +103,17 @@ public:
   }
 
 private:
-  using WorkerType = std::shared_ptr<Worker>;
+  using WorkerPtr = std::shared_ptr<Worker>;
 
   struct Data
   {
     Task task;
-    WorkerType worker;
+    WorkerPtr worker;
   };
 
   std::list<Data> mData;
 
-  WorkerType mWorker;
+  WorkerPtr mWorker;
 };
 
 

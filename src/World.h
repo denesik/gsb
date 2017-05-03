@@ -40,7 +40,7 @@
 // Если сектор существует,он сразу же выгружается.
 // Если не существует, дожидаемся загрузчи сектора и выгружаем сектор.
 
-class MapLoader;
+class MapLoaderFromGenerator;
 
 class TaskGenerate
 {
@@ -99,7 +99,7 @@ private:
 
   friend class TaskGenerate;
   std::unique_ptr<IMapGenerator> mWorldGenerator;
-  ThreadWorker<TaskGenerate, MapLoader> mLoaderWorker;
+  std::unique_ptr<IThreadWorker<TaskGenerate>> mLoaderWorker;
 
   UpdatableSectors mUpdatableSectors;
 
