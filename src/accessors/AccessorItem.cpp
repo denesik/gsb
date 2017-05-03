@@ -60,7 +60,7 @@ void AccessorItem::DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx)
   }
 
   const auto &db = mParent.GetDataBase();
-  gui::DrawInventorySlots(mItems, db, ctx, reinterpret_cast<intptr_t>(this));
+  gui::DrawInventory::DrawInventorySlots(mItems, db, ctx, reinterpret_cast<intptr_t>(this), nullptr);
   ImGui::EndGroup();
 }
 

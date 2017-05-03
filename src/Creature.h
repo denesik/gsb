@@ -23,6 +23,8 @@ public:
 private:
   World &mWorld;
   std::vector<std::tuple<ItemId, size_t>> mInventory;
+  std::vector<std::tuple<ItemId, size_t>> mHotbar;
+  int hotSelection;
 };
 
 

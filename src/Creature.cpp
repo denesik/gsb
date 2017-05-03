@@ -1,11 +1,12 @@
 #include "Creature.h"
 #include "World.h"
 #include "../InventorySlot.h"
-
+#include "../imgui/imgui.h"
 
 Creature::Creature(World &world)
   : mWorld(world)
-  , mInventory({ { 1,1 },{ 2,1 },{ 3,1 },{ },{ }, {},{},{},{},{},{}, {} })
+  , mInventory({ { 1,1 },{ 2,1 },{ 3,1 },{ },{ }, {},{},{},{},{},{}, {},{},{},{},{},{},{},{},{},{},{},{},{},{} })
+  , mHotbar({ {1,1},{},{},{},{} })
 {
 }
 
@@ -62,7 +63,9 @@ void Creature::Update(const Magnum::Timeline &tl)
 void Creature::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx)
 {
   const auto &db = ctx.GetDataBase();
-  gui::DrawInventorySlots(mInventory, db, ctx, reinterpret_cast<intptr_t>(this));
+  gui::DrawInventory::DrawInventorySlots(mInventory, db, ctx, reinterpret_cast<intptr_t>(&mInventory), nullptr, 5);
+  ImGui::Separator();
+  gui::DrawInventory::DrawInventorySlots(mHotbar, db, ctx, reinterpret_cast<intptr_t>(&mHotbar), &hotSelection, 5);
 }
 
 std::vector<std::tuple<ItemId, size_t>>& Creature::Inventory()
