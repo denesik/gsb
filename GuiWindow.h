@@ -10,17 +10,21 @@ public:
 
   void Draw(const Magnum::Timeline & dt);
 
-  void AddGui(IGui * gui);
-  void RemoveGui(IGui * gui);
+  void AddGui(IGui & gui);
+
   void Reset();
+
   void Open();
   void Close();
   void Toggle();
 
 private:
-  std::list<IGui *> guis;
-  bool mClosed = true;
+
+  std::list<GuiCtx::GuiLinkage> mLinkages;
   GuiCtx mCtx;
+
+  bool mClosed = true;
+  
   std::string mName;
 };
 

@@ -27,7 +27,7 @@ enum /*class*/ AccessorDirection
 
 // Акцессор. Любое влияние на другой блок, которое изменяет состояние блока, происходит через наследников данного класса.
 // Каждый экземпляр акцессора имеет имя. Имя должно быть уникально внутри блока.
-class GSB_NOVTABLE Accessor : public IGui
+class GSB_NOVTABLE Accessor : public INoContextGui
 {
 public:
   using factory = TemplateFactory<std::string, Accessor, void(const DataBase &, const rapidjson::Value &, Block &)>;

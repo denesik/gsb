@@ -56,7 +56,7 @@ Game::Game(const Arguments & arguments)
   modalWindow = std::make_unique<GuiWindow>(*mBlocksDataBase, "Selected");
   inventoryWindow = std::make_unique<GuiWindow>(*mBlocksDataBase, "Inventory");
 
-  inventoryWindow->AddGui(&mWorld->mPlayer);
+  inventoryWindow->AddGui(mWorld->mPlayer);
 
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{}, tmp_area_size);
   mUpdatableArea = std::make_unique<UpdatableArea>(*mWorld, SPos{}, tmp_area_size);
@@ -137,7 +137,7 @@ void Game::drawEvent()
     if (p)
     {
       modalWindow->Reset();
-      modalWindow->AddGui(p);
+      modalWindow->AddGui(*p);
     }
     else
     {
@@ -237,8 +237,11 @@ void Game::drawEvent()
     inventoryWindow->Draw(mTimeline);
     modalWindow->Draw(mTimeline);
 
-    static GuiCtx worldgen_ctx(*mBlocksDataBase);
-    mWorld->GetWorldGenerator().DrawGui(mTimeline, worldgen_ctx);
+    static auto worldgen_link = [&]() {
+      static GuiCtx ctx(*mBlocksDataBase);
+      return ctx.Register(mWorld->GetWorldGenerator());
+    }();
+    worldgen_link.DrawGui(mTimeline);
 
     if (ImGui::Button("wipe all"))
       mWorld->Wipe();

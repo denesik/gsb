@@ -60,12 +60,12 @@ void Creature::Update(const Magnum::Timeline &tl)
     Movable::SetPos(old_pos);
 }
 
-void Creature::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx)
+void Creature::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IContext & context)
 {
   const auto &db = ctx.GetDataBase();
-  gui::DrawInventory::DrawInventorySlots(mInventory, db, ctx, reinterpret_cast<intptr_t>(&mInventory), nullptr, 5);
+  gui::DrawInventory::DrawInventorySlots(mInventory, db, reinterpret_cast<intptr_t>(&mInventory), nullptr, 5);
   ImGui::Separator();
-  gui::DrawInventory::DrawInventorySlots(mHotbar, db, ctx, reinterpret_cast<intptr_t>(&mHotbar), &hotSelection, 5);
+  gui::DrawInventory::DrawInventorySlots(mHotbar, db, reinterpret_cast<intptr_t>(&mHotbar), &hotSelection, 5);
 }
 
 std::vector<std::tuple<ItemId, size_t>>& Creature::Inventory()

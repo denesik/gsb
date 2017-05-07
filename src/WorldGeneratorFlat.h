@@ -39,7 +39,7 @@ public:
   const std::string & GetBiome(const DataBase & db, int x, int z) const override;
 
   // Унаследовано через IMapGenerator
-  virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx) override;
+  virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IContext & context) override;
 
   WorldGeneratorExtremeHills(int seed = 1234);
 
@@ -61,7 +61,7 @@ public:
   const std::string & GetBiome(const DataBase & db, int x, int z) const override;
 
   // Унаследовано через IMapGenerator
-  virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx) override;
+  virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IContext & context) override;
 
   WorldGeneratorDesert(int seed = 1234);
 
@@ -102,7 +102,7 @@ public:
   WorldGeneratorSwamp(int seed = 1234);
 
   // Унаследовано через IMapGenerator
-  virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx) override;
+  virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IContext & context) override;
 
 private:
   float hill_multiplier = 5.f;
@@ -127,7 +127,7 @@ public:
   std::list<MapTemplate> GetStructures(const DataBase &db, int x, int z, StructureSize size) const override;
 
   // Унаследовано через IMapGenerator
-  virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx) override;
+  virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IContext & context) override;
 
 private:
   int CalcBiome(int x, int z) const;

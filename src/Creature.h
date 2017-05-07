@@ -8,7 +8,7 @@
 
 class World;
 
-class Creature : public Acceleratable, public IGui
+class Creature : public Acceleratable, public INoContextGui
 {
 public:
   Creature(World &world);
@@ -17,7 +17,7 @@ public:
   void Update(const Magnum::Timeline &tl);
 
   // Inherited via IGui
-  virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx) override;
+  virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IContext & context) override;
   std::vector<std::tuple<ItemId, size_t>> &Inventory();
 
 private:

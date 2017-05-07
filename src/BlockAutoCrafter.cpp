@@ -51,18 +51,18 @@ std::unique_ptr<Block> BlockAutoCrafter::Clone(Sector &parent)
   return std::make_unique<BlockAutoCrafter>(*this, parent);
 }
 
-void BlockAutoCrafter::DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx)
+void BlockAutoCrafter::DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx, IContext & context)
 {
   ImGui::PushID(0);
   {
     ImGui::PushID(0);
-    mCrafterInput.DrawGui(dt, ctx);
+    mCrafterInput.DrawGui(dt, ctx, context);
     ImGui::PopID();
 
     ImGui::SameLine();
 
     ImGui::PushID(1);
-    mCrafterOutput.DrawGui(dt, ctx);
+    mCrafterOutput.DrawGui(dt, ctx, context);
     ImGui::PopID();
 
     ImGui::ProgressBar(mCrafter.Progress(), ImVec2(0.0f, 0.0f), " ");
@@ -71,7 +71,7 @@ void BlockAutoCrafter::DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx)
   ImGui::PushID(1);
   {
     ImGui::PushID(0);
-    mGeneratorInput.DrawGui(dt, ctx);
+    mGeneratorInput.DrawGui(dt, ctx, context);
     ImGui::PopID();
 
     //     ImGui::SameLine();
