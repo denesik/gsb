@@ -78,7 +78,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)..\3rdparty\msvc14_x86\include;$(SolutionDir)..\3rdparty\msvc14_x86\include\MagnumExternal\OpenGL;$(SolutionDir)..\3rdparty\msvc14_x86\include\SDL2;$(SolutionDir)..\3rdparty\msvc14_x86\include\GLFW;$(SolutionDir)rapidjson\include;$(SolutionDir)..\3rdparty\msvc14_x86\boost;$(SolutionDir)src\include\;$(SolutionDir)src\;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\3rdparty\msvc14_x86\lib;$(SolitionDir)..\3rdparty\msvc14_x86\lib;$(SolitionDir)..\3rdparty\msvc14_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolitionDir)..\..\3rdparty\msvc14_x86\lib;$(SolitionDir)..\..\3rdparty\msvc14_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
