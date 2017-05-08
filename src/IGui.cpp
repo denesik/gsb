@@ -1,15 +1,25 @@
 #include "IGui.h"
 
-GuiCtx::GuiCtx(DataBase & db)
-  : IDBHolder(db)
+GuiCtx::GuiLinkage::GuiLinkage(GuiLinkage && other)
+  : mCtx(other.mCtx)
+  , mGui(other.mGui)
+  , mContext(other.mContext)
 {
 }
 
-void GuiCtx::Unregister(GuiLinkage & linkage)
+GuiCtx::GuiLinkage::~GuiLinkage()
 {
-  mStorage.remove_if([&linkage](const decltype(*mStorage.begin()) & compare) {
-    return compare.get() == &linkage.Context();
-  });
+  mCtx.Unregister(*this);
+}
+
+IGui & GuiCtx::GuiLinkage::Gui()
+{
+  return mGui;
+}
+
+void GuiCtx::GuiLinkage::DrawGui(const Magnum::Timeline & dt)
+{
+  mGui.DrawGui(dt, mCtx, mContext);
 }
 
 GuiCtx::GuiLinkage::GuiLinkage(GuiCtx & ctx, IGui & gui, IContext & context)
@@ -19,22 +29,27 @@ GuiCtx::GuiLinkage::GuiLinkage(GuiCtx & ctx, IGui & gui, IContext & context)
 {
 }
 
-void GuiCtx::GuiLinkage::DrawGui(const Magnum::Timeline & dt)
+GuiCtx::GuiCtx(DataBase & db)
+  : DBHolder(db)
 {
-  mGui.DrawGui(dt, mCtx, mContext);
+
 }
 
-GuiCtx::GuiLinkage::~GuiLinkage()
+GuiCtx::GuiLinkage GuiCtx::Register(IGui & gui)
 {
-  mCtx.Unregister(*this);
+  mStorage.push_front(std::move(std::make_unique<IContext>(gui.CreateContext())));
+  auto &con = **mStorage.begin();
+  return GuiCtx::GuiLinkage(*this, gui, con);
 }
 
-IContext & GuiCtx::GuiLinkage::Context()
+size_t GuiCtx::RegisteredCount()
 {
-  return mContext;
+  return mStorage.size();
 }
 
-IGui & GuiCtx::GuiLinkage::Gui()
+void GuiCtx::Unregister(GuiLinkage & linkage)
 {
-  return mGui;
+  mStorage.remove_if([&linkage](const decltype(*mStorage.begin()) & compare) {
+    return compare.get() == &linkage.Context<IContext::NoContext>();
+  });
 }

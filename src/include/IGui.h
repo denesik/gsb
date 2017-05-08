@@ -5,7 +5,6 @@
 #include <boost/any.hpp>
 #include <unordered_map>
 #include <boost/optional.hpp>
-#include "Log.h"
 #include <IDbHolder.h>
 
 namespace Magnum {
@@ -26,8 +25,6 @@ public:
 
 class IContext::NoContext : public IContext
 {
-public:
-  IContext::NoContext() = default;
 };
 
 class GSB_NOVTABLE IGui
@@ -39,51 +36,46 @@ public:
 };
 
 template <typename Context>
-class GSB_NOVTABLE IContextGui : public IGui
+class GSB_NOVTABLE ContextGui : public IGui
 {
 public:
-  IContextGui(Context & context)
-    : mContext(context)
-  {
-  }
-
   IContext CreateContext()
   {
     return Context();
   }
-
-private:
-  IContext &mContext;
 };
 
-
-class GSB_NOVTABLE INoContextGui : public IContextGui<IContext::NoContext>
+class GSB_NOVTABLE NoContextGui : public ContextGui<IContext::NoContext>
 {
 public:
-  INoContextGui() 
-    : IContextGui<IContext::NoContext>(mFakeContext)
-  {
-
-  }
-  virtual ~INoContextGui() = default;
+  virtual ~NoContextGui() = default;
 
   boost::signals2::signal<void()> onGuiClose;
-
-private:
-  IContext::NoContext mFakeContext;
 };
 
-class GuiCtx : public IDBHolder
+class GuiCtx : public DBHolder, public boost::noncopyable
 {
 public:
 
-  class GuiLinkage
+  class GuiLinkage : public boost::noncopyable
   {
   public:
 
+    GuiLinkage(GuiLinkage && other);
     ~GuiLinkage();
 
-    IContext & Context();
+    template<typename Type>
+    Type & Context()
+    {
+      return static_cast<Type&>(mContext);
+    }
+
+    template<>
+    IContext & Context()
+    {
+      return mContext;
+    }
+
     IGui & Gui();
 
     void DrawGui(const Magnum::Timeline & dt);
@@ -98,28 +90,11 @@ public:
     IContext & mContext;
   };
 
-  GuiCtx(DataBase &db);
 
-  template<typename T>
-  T * Get(intptr_t caller)
-  {
-    if (mStorage.find(caller) == mStorage.end())
-      mStorage[caller] = T();
+  GuiCtx(DataBase & db);
 
-    auto & i = mStorage[caller];
-
-    if (i.type() != typeid(T))
-      LOG(error) << "ctx type mismatch; caller = 0x" << std::hex << caller << "; type = " << typeid(T).name();
-
-    return boost::any_cast<T>(&i);
-  }
-
-  GuiLinkage Register(IGui & gui)
-  {
-    mStorage.push_front(std::move(std::make_unique<IContext>(gui.CreateContext())));
-    auto &con = **mStorage.begin();
-    return GuiLinkage(*this, gui, con);
-  }
+  GuiLinkage Register(IGui & gui);
+  size_t RegisteredCount();
 
 private:
   void Unregister(GuiLinkage & linkage);

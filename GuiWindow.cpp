@@ -4,7 +4,7 @@
 
 GuiWindow::GuiWindow(DataBase &db, const std::string & name)
   : mName(name)
-  , IDBHolder(db)
+  , DBHolder(db)
   , mCtx(db)
 {
 }

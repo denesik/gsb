@@ -3,7 +3,7 @@
 #include <list>
 #include <IDBHolder.h>
 
-class GuiWindow : public IDBHolder
+class GuiWindow : public DBHolder
 {
 public:
   GuiWindow(DataBase &db, const std::string &name);

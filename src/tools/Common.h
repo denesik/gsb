@@ -23,4 +23,4 @@ public:
 //};
 //
 //using EmptyHolder = IHolderHelper<>;
-//using GuiDefaultHolders = IHolderHelper<class IDBHolder>;
+//using GuiDefaultHolders = IHolderHelper<class DBHolder>;

@@ -8,7 +8,7 @@
 
 class World;
 
-class Creature : public Acceleratable, public INoContextGui
+class Creature : public Acceleratable, public NoContextGui
 {
 public:
   Creature(World &world);
