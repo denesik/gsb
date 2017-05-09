@@ -1,37 +1,77 @@
 #include "ResourceNetwork.h"
 #include <limits>
 #include <boost/graph/boykov_kolmogorov_max_flow.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
 
 ResourceNetwork::ResourceNetwork()
 {
   Reset();
 }
 
-ResourceNetwork::Graph::vertex_descriptor ResourceNetwork::AddProducer()
+constexpr auto maxPair = std::make_pair(ResourceNetwork::ProrertySubtype(), std::numeric_limits<ResourceNetwork::ProrertySubtype>::max());
+
+ResourceNetwork::V ResourceNetwork::AddProducer()
 {
-  Graph::vertex_descriptor v0 = boost::add_vertex(g);
+  V v0 = boost::add_vertex(g);
   mProducers.push_back(v0);
-  boost::add_edge(mMainProducer, v0, std::numeric_limits<PropertyType>::max(), g);
+  boost::add_edge(mMainProducer, v0, maxPair, g);
   return v0;
 }
 
-ResourceNetwork::Graph::vertex_descriptor ResourceNetwork::AddConsumer()
+ResourceNetwork::V ResourceNetwork::AddConsumer()
 {
-  Graph::vertex_descriptor v0 = boost::add_vertex(g);
+  V v0 = boost::add_vertex(g);
   mConsumers.push_back(v0);
-  boost::add_edge(v0, mMainConsumer, std::numeric_limits<PropertyType>::max(), g);
+  boost::add_edge(v0, mMainConsumer, maxPair, g);
   return v0;
 }
 
-void ResourceNetwork::AddTransmitter(Graph::vertex_descriptor from, Graph::vertex_descriptor to, PropertyType weight)
+void ResourceNetwork::AddTransmitter(V from, V to, ProrertySubtype weight)
 {
-  boost::add_edge(from, to, weight, g);
+  auto res = boost::add_edge(from, to, std::make_pair(0.f, weight), g);
 }
 
-ResourceNetwork::PropertyType ResourceNetwork::MaxFlow()
+inline ResourceNetwork::PropertyType top(void *p)
 {
-  PropertyType flow = boykov_kolmogorov_max_flow(g, mMainProducer, mMainConsumer);
-  return flow;
+  return * reinterpret_cast<ResourceNetwork::PropertyType *>(p);
+}
+
+ResourceNetwork::ProrertySubtype ResourceNetwork::MaxFlow()
+{
+  V u = mMainProducer;
+  std::deque<V> toVisit;
+
+  std::vector<bool>            mark(boost::distance(boost::vertices(g)));
+  std::vector<ProrertySubtype> dist(boost::distance(boost::vertices(g)));
+  std::vector<ProrertySubtype> push(boost::distance(boost::vertices(g)));
+  std::vector<V>               pred(boost::distance(boost::vertices(g)));
+
+  toVisit.push_back(mMainProducer);
+
+  while (!toVisit.empty())
+  {
+    auto v = *toVisit.begin();
+    toVisit.pop_front();
+    mark[v] = true;
+    pred[v] = u;
+
+    auto edges = boost::out_edges(v, g);
+    for (auto edge = edges.first; edge != edges.second; ++edge)
+    {
+      if (edge->m_target == mMainConsumer)
+        break;
+
+      auto eprop = top(edge->get_property());
+      push[v] = std::min(push[u], eprop.second - eprop.first);
+
+      if(!mark[edge->m_target])
+        toVisit.push_back(edge->m_target);
+    }
+
+    u = v;
+  }
+
+  return 0;
 }
 
 void ResourceNetwork::Reset()
