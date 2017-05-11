@@ -66,7 +66,7 @@ Game::Game(const Arguments & arguments)
 
   static auto pl_off = MovableOffseted(mWorld->mPlayer, { 0, 1.8f, 0 });
   mCamera = std::make_unique<Camera>(pl_off, defaultFramebuffer.viewport());
-  mSunCamera = std::make_unique<Camera>(mSun, Range2Di{ {},{ 512, 512 } }, Camera::Type::Ortho);
+  mSunCamera = std::make_unique<Camera>(mSun, Range2Di{ {},{ 200, 200 } }, Camera::Type::Ortho);
   mCurrentCamera = mCamera.get();
 
   mWorld->mPlayer.SetPos({ 0, 70, 0 });

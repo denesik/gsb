@@ -4,6 +4,7 @@
 #include <Magnum\Magnum.h>
 #include <tools\CoordSystem.h>
 #include <boost\signals2.hpp>
+#include <boost\optional.hpp>
 
 template<typename T>
 class RingBuffer2D
@@ -47,6 +48,17 @@ public:
     return *this;
   }
 
+  boost::optional<T &> Get(Magnum::Vector2i spos)
+  {
+    if ((std::abs(mPos.x() - spos.x()) < mRadius.x()) || (std::abs(mPos.y() - spos.y()) < mRadius.y()))
+      return{};
+
+    Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
+    Magnum::Vector2i wpos = spos - sec_pos * mDim;
+
+    return mStorage[wpos.y() * mDim.x() + wpos.x()];
+  }
+
   template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
   }
@@ -67,7 +79,7 @@ public:
         // новые столбцы будут в координатах центр(pos) + радиус(mSize.x()) + номер столбца(i)
         // для отрицательных координат центр(pos) - радиус(mSize.x()) - номер столбца(i)\
         // потому в таком случае они умножаются на -1(sgn(deltaX))
-        SPos spos = pos + SPos(mRadius.x() * sgn(deltaX) + (i)* sgn(deltaX), 0, j - mRadius.y());
+        SPos spos = pos + SPos((mRadius.x() + i) * sgn(deltaX), 0, j - mRadius.y());
 
         // координаты очередного элемента в виртуальных секторах, размером radius*2+1
         Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
@@ -85,7 +97,7 @@ public:
       for (int i = 0; i < mDim.x(); i++)
       {
         // все аналогично, читай выше
-        SPos spos = pos + SPos(i - mRadius.x(), 0, mRadius.y() * sgn(deltaY) + (j)* sgn(deltaY));
+        SPos spos = pos + SPos(i - mRadius.x(), 0, (mRadius.y() + j) * sgn(deltaY));
         Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
         Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - mDim * sec_pos;
         mStorage[wpos.y() * mDim.x() + wpos.x()].reset(spos);
