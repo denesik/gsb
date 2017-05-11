@@ -3,10 +3,15 @@
 
 class DataBase;
 
-class GSB_NOVTABLE IDBHolder
+class GSB_NOVTABLE NoDBHolder
 {
 public:
-  IDBHolder(const DataBase &db)
+};
+
+class GSB_NOVTABLE DBHolder
+{
+public:
+  DBHolder(const DataBase &db)
     : mDB(db)
   {
 

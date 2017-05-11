@@ -37,8 +37,6 @@ public:
 
   void AddRecipe(const std::string &tag, std::unique_ptr<IRecipe> move);
 
-
-
   const std::unique_ptr<StaticBlock> &GetBlockStaticPart(BlockId id) const;
 
   boost::optional<BlockId> BlockIdFromName(const std::string &name) const;

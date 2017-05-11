@@ -133,7 +133,7 @@ WorldGeneratorExtremeHills::WorldGeneratorExtremeHills(int seed)
   noise.SetNoiseType(FastNoise::SimplexFractal);
 }
 
-void WorldGeneratorExtremeHills::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx)
+void WorldGeneratorExtremeHills::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IContext & context)
 {
 }
 
@@ -176,7 +176,7 @@ WorldGeneratorDesert::WorldGeneratorDesert(int seed)
   noise.SetNoiseType(FastNoise::SimplexFractal);
 }
 
-void WorldGeneratorDesert::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx)
+void WorldGeneratorDesert::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IContext & context)
 {
 }
 
@@ -216,7 +216,7 @@ int WorldGeneratorBiome::CalcBiome(int x, int z) const
   return static_cast<int>((noise.GetNoise(fx, fz) / 2.f + 0.5f) * biomes.size());
 }
 
-void WorldGeneratorBiome::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx)
+void WorldGeneratorBiome::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IContext & context)
 {
  /* static int ret_type = 0;
   ImGui::SliderInt("return_type", &ret_type, 0, 7);
@@ -225,7 +225,7 @@ void WorldGeneratorBiome::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx)
   for (size_t i = 0; i < biomes.size(); ++i)
   {
     ImGui::BeginGroup();
-    biomes[i]->DrawGui(dt, ctx);
+    biomes[i]->DrawGui(dt, ctx, context);
     ImGui::EndGroup();
   }
 }
@@ -474,7 +474,7 @@ WorldGeneratorSwamp::WorldGeneratorSwamp(int seed)
   noise.SetNoiseType(FastNoise::SimplexFractal);
 }
 
-void WorldGeneratorSwamp::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx)
+void WorldGeneratorSwamp::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IContext & context)
 {
   ImGui::SliderInt("water level", &w_level, 0, 255);
 }

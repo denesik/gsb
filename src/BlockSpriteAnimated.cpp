@@ -35,7 +35,7 @@ std::unique_ptr<Block> BlockSpriteAnimated::Clone(Sector &parent)
   return std::make_unique<BlockSpriteAnimated>(*this, parent);
 }
 
-void BlockSpriteAnimated::DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx)
+void BlockSpriteAnimated::DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx, IContext & context)
 {
 }
 

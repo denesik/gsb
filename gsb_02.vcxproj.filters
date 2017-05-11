@@ -5,10 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Заголовочные файлы">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Файлы ресурсов">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -192,6 +188,9 @@
     <ClCompile Include="src\include\IFlatBuffer.cpp">
       <Filter>Файлы исходного кода\include</Filter>
     </ClCompile>
+    <ClCompile Include="src\ResourceNetwork.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -341,23 +340,11 @@
     <ClInclude Include="RingBuffer.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\Observer.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldSectorObserver.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="GuiInventory.h">
       <Filter>Файлы исходного кода\gui</Filter>
     </ClInclude>
-    <ClInclude Include="DragNDrop.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="InventorySlot.h">
       <Filter>Файлы исходного кода\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="GuiWindow.h">
-      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="src\include\mapgen_types.h">
       <Filter>Файлы исходного кода\include</Filter>
@@ -385,6 +372,21 @@
     </ClInclude>
     <ClInclude Include="src\include\IHolderHelper.h">
       <Filter>Файлы исходного кода\include</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldSectorObserver.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="DragNDrop.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiWindow.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Observer.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ResourceNetwork.h">
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

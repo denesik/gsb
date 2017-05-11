@@ -16,7 +16,7 @@ boost::optional<size_t> find_item(std::vector<std::tuple<ItemId, size_t>> &slots
   return{};
 }
 
-void gui::DrawInventory::DrawInventorySlots(std::vector<std::tuple<ItemId, size_t>> &slots, const DataBase &db, GuiCtx & ctx, intptr_t caller, int *selection, int hor_size)
+void gui::DrawInventory::DrawInventorySlots(std::vector<std::tuple<ItemId, size_t>> &slots, const DataBase &db, intptr_t caller, int *selection, int hor_size)
 {
   ImDrawList* draw_list = ImGui::GetWindowDrawList();
 

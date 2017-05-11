@@ -24,7 +24,7 @@ class DataBase;
 class Sector;
 
 // Интерфейс блока. Нельзя создать.
-class Block : public IGui
+class Block : public NoContextGui
 {
 public:
   using factory = TemplateFactory<std::string, Block, void(const DataBase &, const rapidjson::Value &, Sector &, BlockId)>;

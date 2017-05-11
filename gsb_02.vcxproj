@@ -42,6 +42,7 @@
     <ClCompile Include="src\include\IFlatBuffer.cpp" />
     <ClCompile Include="src\include\IMapGenerator.cpp" />
     <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\ResourceNetwork.cpp" />
     <ClCompile Include="src\StaticBlock.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Crafter.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="src\include\mapgen_types.h" />
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Observer.h" />
+    <ClInclude Include="src\ResourceNetwork.h" />
     <ClInclude Include="src\StaticBlock.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\configure.h" />
@@ -201,7 +203,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)..\3rdparty\msvc14_x86\include;$(SolutionDir)..\3rdparty\msvc14_x86\include\MagnumExternal\OpenGL;$(SolutionDir)..\3rdparty\msvc14_x86\include\SDL2;$(SolutionDir)..\3rdparty\msvc14_x86\include\GLFW;$(SolutionDir)rapidjson\include;$(SolutionDir)..\3rdparty\msvc14_x86\boost;$(SolutionDir)src\include\;$(SolutionDir)src\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)..\3rdparty\msvc14_x86\lib;$(ProjectDir)..\3rdparty\msvc14_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolitionDir)..\3rdparty\msvc14_x86\lib;$(SolitionDir)..\3rdparty\msvc14_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

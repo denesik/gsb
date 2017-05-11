@@ -4,7 +4,7 @@
 
 GuiWindow::GuiWindow(DataBase &db, const std::string & name)
   : mName(name)
-  , IDBHolder(db)
+  , DBHolder(db)
   , mCtx(db)
 {
 }
@@ -16,27 +16,21 @@ void GuiWindow::Draw(const Magnum::Timeline & dt)
 
   ImGui::Begin(mName.c_str());
 
-  for(auto i = guis.begin(); i != guis.end(); ++i)
-    (*i)->DrawGui(dt, mCtx);
+  for (auto & link : mLinkages)
+    link.DrawGui(dt);
 
   ImGui::End();
 }
 
-void GuiWindow::AddGui(IGui * gui)
-{
-  guis.push_back(gui);
+void GuiWindow::AddGui(IGui & gui)
+{ 
+  mLinkages.emplace_back(mCtx.Register(gui));
   //gui->onGuiClose.connect([this]() { Close(); Reset(); });
-}
-
-void GuiWindow::RemoveGui(IGui * gui)
-{
-  guis.remove(gui);
 }
 
 void GuiWindow::Reset()
 {
-  mCtx.Reset();
-  guis.clear();
+  mLinkages.clear();
 }
 
 void GuiWindow::Open()

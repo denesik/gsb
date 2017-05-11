@@ -42,10 +42,10 @@ struct MapTemplate
   SBPos position;
 };
 
-class GSB_NOVTABLE IMapGenerator : public IGui
+class GSB_NOVTABLE IMapGenerator : public NoContextGui
 {
 public:
-  IMapGenerator() { }
+  IMapGenerator() = default;
   virtual ~IMapGenerator() = default;
 
   virtual Layering GetLayering(const DataBase &db, int x, int z) const = 0;
@@ -59,5 +59,5 @@ public:
   virtual std::list<MapTemplate> GetStructures(const DataBase &db, int x, int z, StructureSize size) const { return{}; }
 
   // Унаследовано через IGui
-  virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx) override; //temp
+  virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IContext & context) override; //temp
 };

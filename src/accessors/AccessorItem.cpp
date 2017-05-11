@@ -45,7 +45,7 @@ AccessorItem::AccessorItem(const DataBase &db, const rapidjson::Value &val, Bloc
   mItems.resize(size);
 }
 
-void AccessorItem::DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx)
+void AccessorItem::DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx, IContext & context)
 {
   ImGui::BeginGroup();
 
@@ -60,7 +60,7 @@ void AccessorItem::DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx)
   }
 
   const auto &db = mParent.GetDataBase();
-  gui::DrawInventory::DrawInventorySlots(mItems, db, ctx, reinterpret_cast<intptr_t>(this), nullptr);
+  gui::DrawInventory::DrawInventorySlots(mItems, db, reinterpret_cast<intptr_t>(this), nullptr);
   ImGui::EndGroup();
 }
 
