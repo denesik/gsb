@@ -189,3 +189,8 @@ FakeData & DataBase::GetFakeData()
   return *mFakeData;
 }
 
+ItemId DataBase::NextItemId()
+{
+  return mLastItemId++;
+}
+

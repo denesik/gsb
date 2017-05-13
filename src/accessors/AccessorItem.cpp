@@ -10,8 +10,7 @@
 #include <string>
 #include <algorithm>
 #include "../../InventorySlot.h"
-
-
+#include <ItemContainerContext.h>
 
 AccessorItem::AccessorItem(const AccessorItem &other)
   : ParentType(other)
@@ -60,7 +59,7 @@ void AccessorItem::DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx, IContext & 
   }
 
   const auto &db = mParent.GetDataBase();
-  gui::DrawInventory::DrawInventorySlots(mItems, db, reinterpret_cast<intptr_t>(this), nullptr);
+  gui::DrawInventory::DrawInventorySlots(mItems, db, ItemContainerContext(), 2);
   ImGui::EndGroup();
 }
 
@@ -109,7 +108,7 @@ size_t AccessorItem::ItemCount(ItemId id) const
   return 0;
 }
 
-const AccessorItem::ItemList & AccessorItem::Items() const
+const ItemList & AccessorItem::Items() const
 {
   return mItems;
 }

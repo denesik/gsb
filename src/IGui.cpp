@@ -35,11 +35,10 @@ GuiCtx::GuiCtx(DataBase & db)
 
 }
 
-GuiCtx::GuiLinkage GuiCtx::Register(IGui & gui)
+std::unique_ptr<GuiCtx::GuiLinkage> GuiCtx::Register(IGui & gui)
 {
-  mStorage.push_front(std::move(std::make_unique<IContext>(gui.CreateContext())));
-  auto &con = **mStorage.begin();
-  return GuiCtx::GuiLinkage(shared_from_this(), gui, con);
+  mStorage.push_front(std::move(gui.CreateContext()));
+  return std::make_unique<GuiCtx::GuiLinkage>(shared_from_this(), gui, **mStorage.begin());
 }
 
 size_t GuiCtx::RegisteredCount()

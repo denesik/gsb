@@ -16,7 +16,6 @@ class AccessorItem : public NumeredAgent<AccessorItem, gsb::crc32<std::string>()
 {
 public:
   using ParentType = NumeredAgent<AccessorItem, gsb::crc32<std::string>()("AccessorItem")>;
-  using ItemList = std::vector<std::tuple<ItemId, size_t>>;
 
   AccessorItem() = delete;
   ~AccessorItem() override = default;

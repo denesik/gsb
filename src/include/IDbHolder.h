@@ -1,9 +1,9 @@
 #pragma once
 #include <tools\Common.h>
 
-class DataBase;
-
 class GSB_NOVTABLE NoDBHolder { };
+
+class DataBase;
 
 class GSB_NOVTABLE DBHolder
 {

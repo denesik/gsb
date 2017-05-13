@@ -7,6 +7,7 @@
 #include <boost/optional.hpp>
 #include <IDbHolder.h>
 #include <memory>
+#include <boost\noncopyable.hpp>
 
 namespace Magnum {
   class Timeline;
@@ -16,7 +17,7 @@ using GuiFunction = std::function<void(const Magnum::Timeline &dt)>;
 
 class GuiCtx;
 
-class IContext
+class IContext : boost::noncopyable
 {
 public:
   IContext() = default;
@@ -26,32 +27,31 @@ public:
 
 class IContext::NoContext : public IContext
 {
+public:
 };
 
-class GSB_NOVTABLE IGui
+class IGui
 {
 public:
   virtual void DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx, IContext & context) = 0;
-  virtual IContext CreateContext() = 0;
+  virtual std::unique_ptr<IContext> CreateContext() = 0;
   virtual ~IGui() = default;
 };
 
 template <typename Context>
-class GSB_NOVTABLE ContextGui : public IGui
+class ContextGui : public IGui
 {
 public:
-  IContext CreateContext()
+  std::unique_ptr<IContext> CreateContext() override
   {
-    return Context();
+    return std::make_unique<Context>();
   }
 };
 
-class GSB_NOVTABLE NoContextGui : public ContextGui<IContext::NoContext>
+class NoContextGui : public ContextGui<IContext::NoContext>
 {
 public:
   virtual ~NoContextGui() = default;
-
-  boost::signals2::signal<void()> onGuiClose;
 };
 
 class GuiCtx : public DBHolder, boost::noncopyable, public std::enable_shared_from_this<GuiCtx>
@@ -81,8 +81,6 @@ public:
 
     void DrawGui(const Magnum::Timeline & dt);
 
-  private:
-    friend class GuiCtx;
     GuiLinkage(std::shared_ptr<GuiCtx> ctx, IGui & gui, IContext & context);
 
   private:
@@ -94,7 +92,7 @@ public:
 
   GuiCtx(DataBase & db);
 
-  GuiLinkage Register(IGui & gui);
+  std::unique_ptr<GuiLinkage> Register(IGui & gui);
   size_t RegisteredCount();
 
 private:

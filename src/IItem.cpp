@@ -19,3 +19,13 @@ void IItem::SetDescription(const std::string & descriprion)
 {
 	mDescription = descriprion;
 }
+
+void IItem::SetBlock(BlockId b)
+{
+  mBlock = b;
+}
+
+BlockId IItem::GetBlock() const
+{
+  return mBlock;
+}

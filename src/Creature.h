@@ -5,12 +5,15 @@
 #include "Movable.h"
 #include <IGui.h>
 #include <vector>
+#include <ItemContainerContext.h>
 
 class World;
 
-class Creature : public Acceleratable, public NoContextGui
+class Creature : public Acceleratable, public ContextGui<PlayerInventoryContext>
 {
 public:
+  using ContextType = PlayerInventoryContext;
+
   Creature(World &world);
   ~Creature();
 
@@ -18,12 +21,13 @@ public:
 
   // Inherited via IGui
   virtual void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IContext & context) override;
-  std::vector<std::tuple<ItemId, size_t>> &Inventory();
+  ItemList & Inventory();
+  ItemList & Hotbar();
 
 private:
   World &mWorld;
-  std::vector<std::tuple<ItemId, size_t>> mInventory;
-  std::vector<std::tuple<ItemId, size_t>> mHotbar;
+  ItemList mInventory;
+  ItemList mHotbar;
   int hotSelection;
 };
 

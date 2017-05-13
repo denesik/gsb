@@ -54,9 +54,7 @@ Game::Game(const Arguments & arguments)
   mWorld = std::make_unique<World>(*mBlocksDataBase);
 
   modalWindow = std::make_unique<GuiWindow>(*mBlocksDataBase, "Selected");
-  inventoryWindow = std::make_unique<GuiWindow>(*mBlocksDataBase, "Inventory");
-
-  inventoryWindow->AddGui(mWorld->mPlayer);
+  inventoryWindow = std::make_unique<GuiWindowPlayerInventory>(mWorld->mPlayer, *mBlocksDataBase);
 
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{}, tmp_area_size);
   mUpdatableArea = std::make_unique<UpdatableArea>(*mWorld, SPos{}, tmp_area_size);
@@ -109,7 +107,10 @@ void Game::drawEvent()
     static_cast<Float>(defaultFramebuffer.viewport().centerY()) });
 
   auto blocks = voxel_traversal(mCamera->Pos(), mCamera->Pos() + ray.normalized() * 100.0f);
+  auto selId = inventoryWindow->HotbarSelection();
+  auto &selItem = mBlocksDataBase->GetItem(selId);
 
+  Vector3i prepicked;
   Vector3i picked;
   for (auto &i : blocks)
   {
@@ -119,7 +120,11 @@ void Game::drawEvent()
       picked = i;
       break;
     }
+
+    prepicked = i;
   }
+
+  picked = (selId && selItem->GetBlock()) ? prepicked : picked;
 
   debugLines.addLine(picked, picked + Vector3i{ 1,0,0 }, { 1,0,0 });
   debugLines.addLine(picked, picked + Vector3i{ 0,1,0 }, { 0,1,0 });
@@ -152,7 +157,10 @@ void Game::drawEvent()
     pressedT += mTimeline.previousFrameDuration();
     if (pressedT >= 0.3)
     {
-      mWorld->DestroyBlock(picked);
+      if (selId && selItem->GetBlock())
+        mWorld->CreateBlock(picked, selItem->GetBlock());
+      else
+        mWorld->DestroyBlock(picked);
       pressedT = 0;
     }
   }

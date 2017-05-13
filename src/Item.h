@@ -28,7 +28,6 @@ public:
 private:
   Magnum::Range2D mTextureCoord;
   const size_t mTextId = 1;
-
 };
 
 

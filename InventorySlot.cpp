@@ -2,8 +2,12 @@
 #include "DragNDrop.h"
 #include <Item.h>
 #include "imgui\imgui.h"
+#include <Creature.h>
 
-boost::optional<size_t> find_item(std::vector<std::tuple<ItemId, size_t>> &slots, ItemId id)
+constexpr float selectionTickness = 2;
+constexpr float halfSelectionTickness = selectionTickness / 2.f;
+
+boost::optional<size_t> find_item(ItemList &slots, ItemId id)
 {
   auto it = std::find_if(slots.begin(), slots.end(), [id](const auto &val)
   {
@@ -16,7 +20,7 @@ boost::optional<size_t> find_item(std::vector<std::tuple<ItemId, size_t>> &slots
   return{};
 }
 
-void gui::DrawInventory::DrawInventorySlots(std::vector<std::tuple<ItemId, size_t>> &slots, const DataBase &db, intptr_t caller, int *selection, int hor_size)
+void gui::DrawInventory::DrawInventorySlots(ItemList &slots, const DataBase &db, ItemContainerContext & context, int hor_size)
 {
   ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
@@ -34,17 +38,16 @@ void gui::DrawInventory::DrawInventorySlots(std::vector<std::tuple<ItemId, size_
 
     ImGui::ImageButton(
       ImTextureID(1),
-      ImVec2(32, 32),
-      ImVec2(coord.left(), coord.top()),
-      ImVec2(coord.right(), coord.bottom()),
+      { 32, 32 },
+      { coord.left(), coord.top() },
+      { coord.right(), coord.bottom() },
       -1,
-      (selection && *selection == curItem) ? ImVec4(1, 1, 1, 0.5) : ImVec4(0, 0, 0, 0)
+      { 0, 0, 0, 0 }
     );
 
     if (ImGui::IsItemHovered() && ((ImGui::IsMouseClicked(0) || ImGui::IsMouseClicked(1))))
     {
-      if(selection)
-        *selection = curItem;
+      context.Selected = curItem;
     }
 
     if (ImGui::IsItemHovered())
@@ -115,7 +118,23 @@ void gui::DrawInventory::DrawInventorySlots(std::vector<std::tuple<ItemId, size_
     if (ImGui::IsItemHovered() && has_item)
       ImGui::SetTooltip("%s x%d\n%s", db_item->GetName().c_str(), std::get<1>(slots[curItem]), db_item->GetDescription().c_str());
 
-    draw_list->AddRect(base_pos, ImVec2(base_pos.x + 32 + 4 * 2, base_pos.y + 32 + 3 * 2), IM_COL32(255, 255, 255, 100));
+
+    if (context.Selected == curItem)
+    {
+      draw_list->AddRect(
+        ImVec2(base_pos.x - halfSelectionTickness, base_pos.y - halfSelectionTickness),
+        ImVec2(base_pos.x + 32 + 4 * 2 + halfSelectionTickness, base_pos.y + 32 + 3 * 2 + halfSelectionTickness),
+        IM_COL32(255, 255, 255, 255),
+        0,
+        -1,
+        selectionTickness
+      );
+    }
+    else
+    {
+      draw_list->AddRect(base_pos, ImVec2(base_pos.x + 32 + 4 * 2, base_pos.y + 32 + 3 * 2), IM_COL32(255, 255, 255, 100));
+    }
+
     if (((curItem + 1 + hor_size) % hor_size) != 0) ImGui::SameLine();
   }
 }

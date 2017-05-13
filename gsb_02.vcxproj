@@ -41,6 +41,7 @@
     <ClCompile Include="src\IItem.cpp" />
     <ClCompile Include="src\include\IFlatBuffer.cpp" />
     <ClCompile Include="src\include\IMapGenerator.cpp" />
+    <ClCompile Include="src\include\ItemTools.cpp" />
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\ResourceNetwork.cpp" />
     <ClCompile Include="src\StaticBlock.cpp" />
@@ -102,7 +103,9 @@
     <ClInclude Include="src\include\IMapGenerator.h" />
     <ClInclude Include="src\include\IMapLoader.h" />
     <ClInclude Include="src\include\IRecipe.h" />
+    <ClInclude Include="src\include\ItemTools.h" />
     <ClInclude Include="src\include\mapgen_types.h" />
+    <ClInclude Include="src\ItemContainerContext.h" />
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Observer.h" />
     <ClInclude Include="src\ResourceNetwork.h" />

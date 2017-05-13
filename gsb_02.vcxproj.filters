@@ -191,6 +191,9 @@
     <ClCompile Include="src\ResourceNetwork.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="src\include\ItemTools.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -387,6 +390,12 @@
     </ClInclude>
     <ClInclude Include="src\ResourceNetwork.h">
       <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ItemContainerContext.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\ItemTools.h">
+      <Filter>Файлы исходного кода\include</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -52,6 +52,8 @@ public:
   const TextureAtlas &GetAtlasItems() const;
   const TextureAtlas &GetAtlas() const;
 
+  ItemId NextItemId();
+
   /// ѕолучить список рецептов дл€ указанного списка итемов.
   std::vector<std::reference_wrapper<const IRecipe>> GetRecipes(IRecipe::Tag tag, const std::vector<std::tuple<ItemId, size_t>> &items) const;
 
@@ -81,7 +83,7 @@ private:
 
 private:
   std::unique_ptr<FakeData> mFakeData;
-
+  ItemId mLastItemId = 0xFFFF / 2; //TODO: полностью перейти на генерацию
 };
 
 

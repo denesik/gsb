@@ -19,8 +19,11 @@
         "data/dirt.png"
       ]
     },
-    "generate_item":true,
-    "drop":[["dirt", 1]]
+    "generate_item":{
+      "tex":"data/items/grass_side.png",
+      "name":"grass"
+    },
+    "drop":[["grass", 1]]
   },
   {
     "section": "block",
@@ -37,9 +40,7 @@
         "data/grass_top.png",
         "data/dirt.png"
       ]
-    },
-    "generate_item":true,
-    "drop":[["tree_block", 1]]
+    }
   },
   {
     "section": "block",
@@ -56,7 +57,10 @@
         "data/stone_original.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/stone_original.png",
+      "name":"stone"
+    },
     "drop":[["stone", 1]]
   },
   {
@@ -66,7 +70,12 @@
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [
-        "data/test_white.png","data/test_white.png","data/test_white.png","data/test_white.png","data/test_white.png","data/test_white.png"
+        "data/test_white.png",
+        "data/test_white.png",
+        "data/test_white.png",
+        "data/test_white.png",
+        "data/test_white.png",
+        "data/test_white.png"
       ]
     }
   },
@@ -85,7 +94,10 @@
         "data/dirt.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/dirt.png",
+      "name":"dirt"
+    },
     "drop":[["dirt", 1]]
   },
   {
@@ -103,7 +115,7 @@
         "data/furnance_top_bottom.png"
       ]
     },
-	"type":"BlockAutoCrafter",
+    "type":"BlockAutoCrafter",
     "agents":[
       {
         "type":"AccessorItem",
@@ -126,21 +138,24 @@
                     "size":4
       }
     ],
-	"Crafter1":
-	{
-		"Recipe":"RecipeHand",
-		"fast":false,
-		"Input":"1",
-		"Output":"0"
-	},
-	"Crafter2":
-	{
-		"Recipe":"RecipeBurn",
-		"fast":true,
-		"Input":"2",
-		"Output":"2"
-	},
-    "generate_item":true,
+    "Crafter1":
+    {
+      "Recipe":"RecipeHand",
+      "fast":false,
+      "Input":"1",
+      "Output":"0"
+    },
+    "Crafter2":
+    {
+      "Recipe":"RecipeBurn",
+      "fast":true,
+      "Input":"2",
+      "Output":"2"
+    },
+    "generate_item":{
+      "tex":"data/items/furnance_front.png",
+      "name":"furnance"
+    },
     "drop":[["furnance", 1]]
   },
   {
@@ -148,7 +163,7 @@
     "name": "number",
     "id": 8,
     "model": "",
-	  "type":"BlockSpriteAnimated"
+    "type":"BlockSpriteAnimated"
   },
   {
     "section": "block",
@@ -169,24 +184,6 @@
   },
   {
     "section": "block",
-    "name": "sand",
-    "id": 10,
-    "tesselator": {
-      "type": "TesselatorSolidBlock",
-      "tex": [
-        "data/sand.png",
-        "data/sand.png",
-        "data/sand.png",
-        "data/sand.png",
-        "data/sand.png",
-        "data/sand.png"
-      ]
-    },
-    "generate_item":true,
-    "drop":[["sand", 1]]
-  },
-  {
-    "section": "block",
     "name": "rainforest_grass",
     "id": 11,
     "tesselator": {
@@ -200,7 +197,10 @@
         "data/dirt.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/dirt.png",
+      "name":"rainforest_grass"
+    },
     "drop":[["rainforest_grass", 1]]
   },
   {
@@ -218,7 +218,10 @@
         "data/dirt.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/dirt.png",
+      "name":"taiga_grass"
+    },
     "drop":[["taiga_grass", 1]]
   },
   {
@@ -236,7 +239,10 @@
         "data/dirt.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/dirt.png",
+      "name":"seasonforest_grass"
+    },
     "drop":[["seasonforest_grass", 1]]
   },
   {
@@ -254,7 +260,10 @@
         "data/grass_top_s.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/dirt.png",
+      "name":"snow"
+    },
     "drop":[["snow", 1]]
   },
   {
@@ -304,7 +313,10 @@
         "data/dirt2.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/dirt2.png",
+      "name":"dirt2"
+    },
     "drop":[["dirt2", 1]]
   },
   {
@@ -322,7 +334,10 @@
         "data/dirt3.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/dirt3.png",
+      "name":"dirt3"
+    },
     "drop":[["dirt3", 1]]
   },
   {
@@ -340,7 +355,10 @@
         "data/dirt4.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/dirt4.png",
+      "name":"dirt4"
+    },
     "drop":[["dirt4", 1]]
   },
   {
@@ -358,7 +376,10 @@
         "data/sand.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/sand.png",
+      "name":"sand"
+    },
     "drop":[["sand", 1]]
   },
   {
@@ -376,7 +397,10 @@
         "data/sand2.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/sand2.png",
+      "name":"sand2"
+    },
     "drop":[["sand2", 1]]
   },
   {
@@ -394,7 +418,10 @@
         "data/sand3.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/sand3.png",
+      "name":"sand3"
+    },
     "drop":[["sand3", 1]]
   },
   {
@@ -412,7 +439,10 @@
         "data/peat.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/peat_grass_side.png",
+      "name":"peat_grass"
+    },
     "drop":[["peat_grass", 1]]
   },
   {
@@ -430,7 +460,10 @@
         "data/peat.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/peat.png",
+      "name":"peat"
+    },
     "drop":[["peat", 1]]
   },
   {
@@ -448,7 +481,10 @@
         "data/sapropel.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/sapropel.png",
+      "name":"sapropel"
+    },
     "drop":[["sapropel", 1]]
   },
   {
@@ -466,7 +502,10 @@
         "data/grassy_stone.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/grassy_stone.png",
+      "name":"grassy_stone"
+    },
     "drop":[["grassy_stone", 1]]
   },
   {
@@ -484,7 +523,10 @@
         "data/tree_block.png"
       ]
     },
-    "generate_item":true,
+    "generate_item":{
+      "tex":"data/items/dirt.png",
+      "name":"tree_block"
+    },
     "drop":[["tree_block", 1]]
   },
   {
@@ -502,7 +544,10 @@
         "data/leaves_block.png"
       ]
     },
-    "generate_item":true
+    "generate_item":{
+      "tex":"data/items/dirt.png",
+      "name":"leaves_block"
+    }
   },
   {
     "section": "item",
@@ -516,14 +561,14 @@
     "type": "Item",
     "id": 2,
     "name": "iron_ingot",
-	  "tex": "data/items/iron_ingot.png"
+    "tex": "data/items/iron_ingot.png"
   },
   {
     "section": "item",
     "type": "Item",
     "id": 3,
     "name": "iron_ore",
-	  "tex": "data/items/iron_ore.png"
+    "tex": "data/items/iron_ore.png"
   },
   {
     "section": "recipe",
