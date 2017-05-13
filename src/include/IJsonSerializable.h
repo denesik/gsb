@@ -5,7 +5,7 @@
 class TextureAtlas;
 class DataBase;
 
-class GSB_NOVTABLE IJsonSerializable
+class GSB_NOVTABLE IJsonSerializable GSB_ABSTRACT
 {
 public:
   //virtual ~IJsonSerializable() = default; не используетс€ дл€ хранени€ экземпл€ров, виртуальный деструктор не требуетс€

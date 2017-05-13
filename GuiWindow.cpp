@@ -5,8 +5,8 @@
 GuiWindow::GuiWindow(DataBase &db, const std::string & name)
   : mName(name)
   , DBHolder(db)
-  , mCtx(db)
 {
+  mCtx = std::shared_ptr<GuiCtx>(new GuiCtx(db));
 }
 
 void GuiWindow::Draw(const Magnum::Timeline & dt)
@@ -24,7 +24,7 @@ void GuiWindow::Draw(const Magnum::Timeline & dt)
 
 void GuiWindow::AddGui(IGui & gui)
 { 
-  mLinkages.emplace_back(mCtx.Register(gui));
+  mLinkages.emplace_back(mCtx->Register(gui));
   //gui->onGuiClose.connect([this]() { Close(); Reset(); });
 }
 

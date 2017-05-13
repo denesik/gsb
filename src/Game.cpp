@@ -237,12 +237,6 @@ void Game::drawEvent()
     inventoryWindow->Draw(mTimeline);
     modalWindow->Draw(mTimeline);
 
-    static auto worldgen_link = [&]() {
-      static GuiCtx ctx(*mBlocksDataBase);
-      return ctx.Register(mWorld->GetWorldGenerator());
-    }();
-    worldgen_link.DrawGui(mTimeline);
-
     if (ImGui::Button("wipe all"))
       mWorld->Wipe();
 

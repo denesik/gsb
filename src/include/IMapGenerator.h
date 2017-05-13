@@ -42,7 +42,7 @@ struct MapTemplate
   SBPos position;
 };
 
-class GSB_NOVTABLE IMapGenerator : public NoContextGui
+class GSB_NOVTABLE IMapGenerator GSB_ABSTRACT : public NoContextGui
 {
 public:
   IMapGenerator() = default;

@@ -9,7 +9,7 @@ GuiCtx::GuiLinkage::GuiLinkage(GuiLinkage && other)
 
 GuiCtx::GuiLinkage::~GuiLinkage()
 {
-  mCtx.Unregister(*this);
+  mCtx->Unregister(*this);
 }
 
 IGui & GuiCtx::GuiLinkage::Gui()
@@ -19,10 +19,10 @@ IGui & GuiCtx::GuiLinkage::Gui()
 
 void GuiCtx::GuiLinkage::DrawGui(const Magnum::Timeline & dt)
 {
-  mGui.DrawGui(dt, mCtx, mContext);
+  mGui.DrawGui(dt, *mCtx, mContext);
 }
 
-GuiCtx::GuiLinkage::GuiLinkage(GuiCtx & ctx, IGui & gui, IContext & context)
+GuiCtx::GuiLinkage::GuiLinkage(std::shared_ptr<GuiCtx> ctx, IGui & gui, IContext & context)
   : mCtx(ctx)
   , mGui(gui)
   , mContext(context)
@@ -39,7 +39,7 @@ GuiCtx::GuiLinkage GuiCtx::Register(IGui & gui)
 {
   mStorage.push_front(std::move(std::make_unique<IContext>(gui.CreateContext())));
   auto &con = **mStorage.begin();
-  return GuiCtx::GuiLinkage(*this, gui, con);
+  return GuiCtx::GuiLinkage(shared_from_this(), gui, con);
 }
 
 size_t GuiCtx::RegisteredCount()

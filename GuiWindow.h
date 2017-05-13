@@ -21,7 +21,7 @@ public:
 private:
 
   std::list<GuiCtx::GuiLinkage> mLinkages;
-  GuiCtx mCtx;
+  std::shared_ptr<GuiCtx> mCtx;
 
   bool mClosed = true;
   

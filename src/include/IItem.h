@@ -5,7 +5,7 @@
 #include "IJsonSerializable.h"
 
 // TODO: переименовать в элемент
-class GSB_NOVTABLE IItem : public IJsonSerializable
+class GSB_NOVTABLE IItem GSB_ABSTRACT : public IJsonSerializable
 {
 public:
   using factory = TemplateFactory<std::string, IItem, void()>;

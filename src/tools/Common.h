@@ -5,8 +5,10 @@ typedef uint32_t ItemId;
 
 #ifdef _MSC_VER
 #define GSB_NOVTABLE __declspec(novtable)
+#define GSB_ABSTRACT abstract
 #elif
 #define GSB_NOVTABLE /*__declspec(novtable)*/
+#define GSB_ABSTRACT
 #endif
 
 class NotImplemented : public std::logic_error

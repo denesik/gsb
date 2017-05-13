@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <boost/optional.hpp>
 #include <IDbHolder.h>
+#include <memory>
 
 namespace Magnum {
   class Timeline;
@@ -53,7 +54,7 @@ public:
   boost::signals2::signal<void()> onGuiClose;
 };
 
-class GuiCtx : public DBHolder, public boost::noncopyable
+class GuiCtx : public DBHolder, boost::noncopyable, public std::enable_shared_from_this<GuiCtx>
 {
 public:
 
@@ -82,10 +83,10 @@ public:
 
   private:
     friend class GuiCtx;
-    GuiLinkage(GuiCtx & ctx, IGui & gui, IContext & context);
+    GuiLinkage(std::shared_ptr<GuiCtx> ctx, IGui & gui, IContext & context);
 
   private:
-    GuiCtx & mCtx;
+    std::shared_ptr<GuiCtx> mCtx;
     IGui & mGui;
     IContext & mContext;
   };

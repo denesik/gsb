@@ -3,10 +3,7 @@
 
 class DataBase;
 
-class GSB_NOVTABLE NoDBHolder
-{
-public:
-};
+class GSB_NOVTABLE NoDBHolder { };
 
 class GSB_NOVTABLE DBHolder
 {
