@@ -52,6 +52,9 @@ Game::Game(const Arguments & arguments)
   mBlocksDataBase->ApplyLoader(std::make_unique<JsonDataBase>("data/json"));
 
   mWorld = std::make_unique<World>(*mBlocksDataBase);
+  mWorld->mPlayer.Inventory()[10] = std::make_pair(mBlocksDataBase->ItemIdFromName("white bricks").value_or(0), 10);
+  mWorld->mPlayer.Inventory()[11] = std::make_pair(mBlocksDataBase->ItemIdFromName("yellow bricks").value_or(0), 10);
+  mWorld->mPlayer.Inventory()[12] = std::make_pair(mBlocksDataBase->ItemIdFromName("red bricks").value_or(0), 10);
 
   modalWindow = std::make_unique<GuiWindow>(*mBlocksDataBase, "Selected");
   inventoryWindow = std::make_unique<GuiWindowPlayerInventory>(mWorld->mPlayer, *mBlocksDataBase);

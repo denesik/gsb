@@ -550,6 +550,69 @@
     }
   },
   {
+    "section": "block",
+    "name": "yellow bricks",
+    "id": 29,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/yellow_bricks.png",
+        "data/yellow_bricks.png",
+        "data/yellow_bricks.png",
+        "data/yellow_bricks.png",
+        "data/yellow_bricks.png",
+        "data/yellow_bricks.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/yellow_bricks.png",
+      "name":"yellow bricks"
+    },
+    "drop":[["yellow bricks", 1]]
+  },
+  {
+    "section": "block",
+    "name": "red bricks",
+    "id": 30,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/red_bricks.png",
+        "data/red_bricks.png",
+        "data/red_bricks.png",
+        "data/red_bricks.png",
+        "data/red_bricks.png",
+        "data/red_bricks.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/red_bricks.png",
+      "name":"red bricks"
+    },
+    "drop":[["red bricks", 1]]
+  },
+  {
+    "section": "block",
+    "name": "white bricks",
+    "id": 31,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/white_bricks.png",
+        "data/white_bricks.png",
+        "data/white_bricks.png",
+        "data/white_bricks.png",
+        "data/white_bricks.png",
+        "data/white_bricks.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/white_bricks.png",
+      "name":"white bricks"
+    },
+    "drop":[["white bricks", 1]]
+  },
+  {
     "section": "item",
     "type": "Item",
     "id": 1,
