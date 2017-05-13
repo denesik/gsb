@@ -31,10 +31,12 @@ void gui::DrawInventory::DrawInventorySlots(ItemList &slots, const DataBase &db,
     Magnum::Range2D &coord = Magnum::Range2D(Magnum::Vector2(0,0), Magnum::Vector2(0, 0));
 
     bool has_item = std::get<0>(slots[curItem]) != 0;
+    const auto &db_item = db.GetItem(std::get<0>(slots[curItem]));
 
     if (has_item)
-      coord = static_cast<const Item &>(*(db.GetItem(std::get<0>(slots[curItem])))).TextureCoord();
-    const auto &db_item = db.GetItem(std::get<0>(slots[curItem]));
+    {
+      coord = static_cast<const Item &>(*db_item).TextureCoord();
+    }
 
     ImGui::ImageButton(
       ImTextureID(1),

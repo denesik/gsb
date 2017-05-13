@@ -4,7 +4,7 @@
 class ItemContainerContext : public IContext
 {
 public:
-  size_t Selected = 2;
+  size_t Selected = 0;
 };
 
 class PlayerInventoryContext : public IContext

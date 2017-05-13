@@ -143,6 +143,7 @@ void Game::drawEvent()
     {
       modalWindow->Reset();
       modalWindow->AddGui(*p);
+      modalWindow->Open();
     }
     else
     {
