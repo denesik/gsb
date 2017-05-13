@@ -5,8 +5,8 @@
 GuiWindow::GuiWindow(DataBase &db, const std::string & name)
   : mName(name)
   , DBHolder(db)
+  , mCtx(std::shared_ptr<GuiCtx>(new GuiCtx(db)))
 {
-  mCtx = std::shared_ptr<GuiCtx>(new GuiCtx(db));
 }
 
 void GuiWindow::Draw(const Magnum::Timeline & dt)
