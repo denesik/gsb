@@ -72,19 +72,21 @@ Game::Game(const Arguments & arguments)
 
   mWorld->mPlayer.SetPos({ 0, 70, 0 });
 
-  mShadowTexture.setImage(0, TextureFormat::DepthComponent, ImageView2D{ PixelFormat::DepthComponent, PixelType::Float, { 2048, 2048 }, nullptr })
+  mShadowTextureArray.setImage(0, TextureFormat::DepthComponent, ImageView3D{ PixelFormat::DepthComponent, PixelType::Float, { 2048, 2048, Int(StandartShader::ShadowMapLevels) }, nullptr })
     .setMaxLevel(0)
     .setCompareFunction(Sampler::CompareFunction::LessOrEqual)
     .setCompareMode(Sampler::CompareMode::CompareRefToTexture)
     .setMinificationFilter(Sampler::Filter::Linear, Sampler::Mipmap::Base)
     .setMagnificationFilter(Sampler::Filter::Linear);
 
-  mShadowFramebuffer.attachTexture(Framebuffer::BufferAttachment::Depth, mShadowTexture, 0)
-    .mapForDraw(Framebuffer::DrawAttachment::None)
-    .setViewport({ {}, { 2048, 2048 } })
-    .bind();
-
-  CORRADE_INTERNAL_ASSERT(mShadowFramebuffer.checkStatus(FramebufferTarget::Draw) == Framebuffer::Status::Complete);
+  for (std::int_fast32_t i = 0; i < StandartShader::ShadowMapLevels; ++i) {
+    Framebuffer& shadowFramebuffer = mShadowFramebuffer;
+    shadowFramebuffer.attachTextureLayer(Framebuffer::BufferAttachment::Depth, mShadowTextureArray, 0, i)
+      .mapForDraw(Framebuffer::DrawAttachment::None)
+      .setViewport({ {},{ 2048, 2048 } })
+      .bind();
+    CORRADE_INTERNAL_ASSERT(shadowFramebuffer.checkStatus(FramebufferTarget::Draw) == Framebuffer::Status::Complete);
+  }
 
   mTimeline.start();
 }

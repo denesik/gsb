@@ -101,6 +101,7 @@ private:
   Camera * mCurrentCamera;
   Movable mSun;
   Framebuffer mShadowFramebuffer;
+  Texture2DArray mShadowTextureArray;
   Texture2D mShadowTexture;
   TextureGenerator test_texgen;
   TexGenShader test_texgenshader;

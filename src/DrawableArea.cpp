@@ -155,7 +155,7 @@ void SectorRenderData::SetPos(const SPos &pos)
 
 void SectorRenderData::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, const Magnum::Matrix4 &sun_matrix, const Magnum::Vector3 &lightdir, StandartShader& shader)
 {
-  constexpr const Matrix4 bias
+  constexpr const Magnum::Matrix4 bias
   { { 0.5f, 0.0f, 0.0f, 0.0f },
   { 0.0f, 0.5f, 0.0f, 0.0f },
   { 0.0f, 0.0f, 0.5f, 0.0f },
@@ -163,9 +163,14 @@ void SectorRenderData::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix
 
   if (Math::Geometry::Intersection::boxFrustum(aabb, frustum))
   {
-    shader.setProjection(matrix * model);
-    shader.setLightVector(lightdir);
-    shader.setShadowMatrix(bias * sun_matrix * model);
+    shader.setProjection(matrix * model)
+      .setLightVector(lightdir);
+
+    Containers::Array<Matrix4> shadowMatrices{ Containers::NoInit, StandartShader::ShadowMapLevels };
+    for (std::size_t layerIndex = 0; layerIndex != StandartShader::ShadowMapLevels; ++layerIndex)
+      shadowMatrices[layerIndex] = bias * sun_matrix * model;
+
+    shader.setShadowMatrix(shadowMatrices);
     mesh.draw(shader);
   }
 }

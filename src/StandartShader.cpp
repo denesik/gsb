@@ -5,6 +5,7 @@
 #include <Magnum/Shader.h>
 #include <Magnum/Version.h>
 
+using namespace Magnum;
 
 StandartShader::StandartShader()
 {
@@ -13,17 +14,30 @@ StandartShader::StandartShader()
   Shader vert{ Version::GL330, Shader::Type::Vertex };
   Shader frag{ Version::GL330, Shader::Type::Fragment };
 
-  const char *preambula = 
-    ""
-    "#define GSB_SHADOWMAP_LGHT\n" 
-    "#define GSB_NORMAL_LGHT\n"
-    ;
+  constexpr char *peamble =
+    "\n"
+    "#define GSB_SHADOWMAP_LGHT\n"
+    "#define GSB_NORMAL_LGHT\n";
 
-  vert.addSource(preambula);
-  vert.addFile("data\\TexturedTriangleShader.vert");
+  std::string shadowLevels = "#define NUM_SHADOW_MAP_LEVELS " + std::to_string(ShadowMapLevels) + "\n";
 
-  frag.addSource(preambula);
-  frag.addFile("data\\TexturedTriangleShader.frag");
+  constexpr char *vertDefine = 
+    "\n"
+    "#define _VERTEX_";
+
+  constexpr char *fragDefine =
+    "\n"
+    "#define _FRAGMENT_";
+
+  vert.addSource(peamble)
+    .addSource(shadowLevels)
+    .addSource(vertDefine)
+    .addFile("data\\TexturedTriangleShader.glsl");
+
+  frag.addSource(peamble)
+    .addSource(shadowLevels)
+    .addSource(fragDefine)
+    .addFile("data\\TexturedTriangleShader.glsl");
 
   CORRADE_INTERNAL_ASSERT_OUTPUT(Shader::compile({ vert, frag }));
 
@@ -31,12 +45,41 @@ StandartShader::StandartShader()
 
   CORRADE_INTERNAL_ASSERT_OUTPUT(link());
 
-  mUniformProjection = uniformLocation("projectionMatrix");
-  mShadowProjection = uniformLocation("shadowMatrix");
-  mLightVector = uniformLocation("lightVector");
+  mProjectionMatrixUniform = uniformLocation("projectionMatrix");
+  mShadowmapMatrixUniform = uniformLocation("shadowmapMatrix");
+  mLightVectorUniform = uniformLocation("lightVector");
 
   setUniform(uniformLocation("textureData"), TextureLayer);
   setUniform(uniformLocation("shadowDepth"), ShadowDepth);
+}
+
+StandartShader & StandartShader::setProjection(const Matrix4 & mat)
+{
+  setUniform(mProjectionMatrixUniform, mat);
+  return *this;
+}
+
+StandartShader & StandartShader::setShadowMatrix(const Magnum::Containers::ArrayView<const Magnum::Matrix4>& mat)
+{
+  setUniform(mShadowmapMatrixUniform, mat);
+  return *this;
+}
+
+StandartShader & StandartShader::setLightVector(const Vector3 & light)
+{
+  setUniform(mLightVectorUniform, light);
+  return *this;
+}
+
+StandartShader & StandartShader::setTexture(Texture2D & texture) {
+  texture.bind(TextureLayer);
+  return *this;
+}
+
+StandartShader & StandartShader::setShadowDepthTexture(Texture2D & shadowDepth)
+{
+  shadowDepth.bind(ShadowDepth);
+  return *this;
 }
 
 ShadowShader::ShadowShader()
