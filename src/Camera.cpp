@@ -114,7 +114,7 @@ SunCamera::SunCamera(IMovable &movable, const Magnum::Range2Di &viewport, Camera
 {
   for (std::int_fast32_t i = 0; i < StandartShader::ShadowMapLevels; ++i) 
   {
-    _layers.emplace_back(viewport.size(), Magnum::Vector2(24.f * (i*i + 1), 24.f * (i*i + 1)), *this);
+    _layers.emplace_back(viewport.size(), Magnum::Vector2(16.f * (i*i + 1), 16.f * (i*i + 1)), *this);
     auto &layer = GetLayer(i);
     layer.shadowFramebuffer.attachTextureLayer(Framebuffer::BufferAttachment::Depth, shadowTextureArray, 0, i)
       .mapForDraw(Framebuffer::DrawAttachment::None)

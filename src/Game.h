@@ -96,6 +96,7 @@ private:
   DebugLines debugLines;
   bool centering = true;
 
+  std::unique_ptr<MovableOffseted> playerHead;
   std::unique_ptr<Camera> mCamera;
   std::unique_ptr<SunCamera> mSunCamera;
   Camera * mCurrentCamera;

@@ -36,7 +36,10 @@ void main() {
 
   #ifdef GSB_SHADOWMAP_LGHT
   for(int i = 0; i < NUM_SHADOW_MAP_LEVELS; i++) {
-    frag_shadow[i] = (shadowmapMatrix[i] * vec4(vert_pos, 1)).xyz;
+    vec3 shadowCoord = (shadowmapMatrix[i] * vec4(vert_pos, 1)).xyz;
+	//shadowCoord.x = (shadowCoord.x - 0.5f) / (abs(shadowCoord.x - 0.5f) + 0.5f);
+    //shadowCoord.y = (shadowCoord.y - 0.5f) / (abs(shadowCoord.y - 0.5f) + 0.5f);
+	frag_shadow[i] = shadowCoord;
   }
   #endif
   
@@ -72,12 +75,12 @@ out vec4 frag_out;
 ///////////////////////////////////
 
 float jitter[9] = float[9](0.001, -0.002, 0.0015, -0.0005, -0.0002, 0.0001, 0.00015, 0.00005, 0.000025);
-vec2 shadow_texel_size = vec2( 1.0/2048.0, 1.0/2048.0 );
-float shadow_bias = 0.00004;
+vec2 shadow_texel_size = vec2( 1.0 / (2048.0), 1.0 / (2048.0) );
+float shadow_bias  = 0;// = 0.0000004; //
 
 float ShadowMap(vec2 loc, float pixel_z, int layer)
 {
-    return texture(shadowmapTexture, vec4(loc, layer, pixel_z - shadow_bias * pow(layer + 1.0, 2.0)));
+    return texture(shadowmapTexture, vec4(loc, layer, pixel_z + shadow_bias * pow(layer + 1.0, 2.0)));
 }
 
 float Gaussian(vec2 x, float a, vec2 b, float c)
@@ -144,7 +147,7 @@ void main() {
                   shadowCoord.z >= 0 &&
                   shadowCoord.z <  1;
         if(inRange) {
-            inverseShadow = ShadowMapPCF(shadowCoord.xy, shadowCoord.z, 3, shadowLevel);
+            inverseShadow = ShadowMapPCF(shadowCoord.xy, shadowCoord.z, 1, shadowLevel);
             break;
         }
     }

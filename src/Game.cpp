@@ -64,17 +64,17 @@ Game::Game(const Arguments & arguments)
   setSwapInterval(0);
   setMouseLocked(true);
 
-  static auto pl_off = MovableOffseted(mWorld->mPlayer, { 0, 1.8f, 0 });
-  mCamera = std::make_unique<Camera>(pl_off, defaultFramebuffer.viewport());
+  playerHead = std::make_unique<MovableOffseted>(mWorld->mPlayer, Vector3{ 0, 1.8f, 0 });
+  mCamera = std::make_unique<Camera>(*playerHead, defaultFramebuffer.viewport());
 
-  mShadowTextureArray.setImage(0, TextureFormat::DepthComponent, ImageView3D{ PixelFormat::DepthComponent, PixelType::Float,{ 512, 512, Int(StandartShader::ShadowMapLevels) }, nullptr })
+  mShadowTextureArray.setImage(0, TextureFormat::DepthComponent, ImageView3D{ PixelFormat::DepthComponent, PixelType::Float,{ 1024, 1024, Int(StandartShader::ShadowMapLevels) }, nullptr })
     .setMaxLevel(0)
     .setCompareFunction(Sampler::CompareFunction::LessOrEqual)
     .setCompareMode(Sampler::CompareMode::CompareRefToTexture)
     .setMinificationFilter(Sampler::Filter::Linear, Sampler::Mipmap::Base)
     .setMagnificationFilter(Sampler::Filter::Linear);
 
-  mSunCamera = std::make_unique<SunCamera>(mSun, Range2Di{ {},{ 512, 512 } }, Camera::Type::Ortho, mShadowTextureArray);
+  mSunCamera = std::make_unique<SunCamera>(mSun, Range2Di{ {},{ 1024, 1024 } }, Camera::Type::Ortho, mShadowTextureArray);
   mCurrentCamera = mCamera.get();
 
   mWorld->mPlayer.SetPos({ 0, 70, 0 });
@@ -95,9 +95,9 @@ void Game::drawEvent()
   mWorld->mPlayer.Update(mTimeline);
 
   auto ray = mCamera->Ray({ static_cast<Float>(defaultFramebuffer.viewport().centerX()) ,
-    static_cast<Float>(defaultFramebuffer.viewport().centerY()) });
+    static_cast<Float>(defaultFramebuffer.viewport().centerY()) }).normalized();
 
-  auto blocks = voxel_traversal(mCamera->Pos(), mCamera->Pos() + ray.normalized() * 100.0f);
+  auto blocks = voxel_traversal(playerHead->Pos(), playerHead->Pos() + ray * 100.0f);
   auto selId = inventoryWindow->HotbarSelection();
   auto &selItem = mBlocksDataBase->GetItem(selId);
 
@@ -125,9 +125,9 @@ void Game::drawEvent()
   debugLines.addLine(picked + Vector3i{ 1,1,1 }, picked + Vector3i{ 1,0,1 }, { 1,1,1 });
   debugLines.addLine(picked + Vector3i{ 1,1,1 }, picked + Vector3i{ 1,1,0 }, { 1,1,1 });
 
-  debugLines.addLine(mWorld->mPlayer.Pos(), mWorld->mPlayer.Pos() + ray * 1, { 1,1,1 });
+  debugLines.addLine(playerHead->Pos(), playerHead->Pos() + ray * 100.0f, { 1,1,1 });
 
-  if (ImGui::IsMouseClicked(1) && !ImGui::IsAnyItemHovered())
+  if (centering && ImGui::IsMouseClicked(1) && !ImGui::IsAnyItemHovered())
   {
     auto p = mWorld->GetBlockDynamic(picked);
     if (p)
@@ -144,16 +144,16 @@ void Game::drawEvent()
   }
 
   static float pressedT = 0;
-  if (ImGui::IsMouseDown(0) && !ImGui::IsAnyItemHovered())
+  if (centering && ImGui::IsMouseDown(0) && !ImGui::IsAnyItemHovered())
   {
-    pressedT += mTimeline.previousFrameDuration();
-    if (pressedT >= 0.3)
+    pressedT -= mTimeline.previousFrameDuration();
+    if (pressedT <= 0)
     {
       if (selId && selItem->GetBlock())
         mWorld->CreateBlock(picked, selItem->GetBlock());
       else
         mWorld->DestroyBlock(picked);
-      pressedT = 0;
+      pressedT = 0.3f;
     }
   }
   else
