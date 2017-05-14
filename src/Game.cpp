@@ -28,7 +28,6 @@ static const int tmp_area_size = 0;
 
 Game::Game(const Arguments & arguments)
   : Platform::Application{ arguments, Configuration{}.setTitle("sge").setWindowFlags(Configuration::WindowFlag::Resizable).setVersion(Magnum::Version::GL330) }
-  , mShadowFramebuffer{ Range2Di{{}, {512, 512}} }
   , test_texgen{ test_texgenshader, {200, 200} }
 {
   test();
@@ -67,26 +66,18 @@ Game::Game(const Arguments & arguments)
 
   static auto pl_off = MovableOffseted(mWorld->mPlayer, { 0, 1.8f, 0 });
   mCamera = std::make_unique<Camera>(pl_off, defaultFramebuffer.viewport());
-  mSunCamera = std::make_unique<Camera>(mSun, Range2Di{ {},{ 200, 200 } }, Camera::Type::Ortho);
-  mCurrentCamera = mCamera.get();
 
-  mWorld->mPlayer.SetPos({ 0, 70, 0 });
-
-  mShadowTextureArray.setImage(0, TextureFormat::DepthComponent, ImageView3D{ PixelFormat::DepthComponent, PixelType::Float, { 2048, 2048, Int(StandartShader::ShadowMapLevels) }, nullptr })
+  mShadowTextureArray.setImage(0, TextureFormat::DepthComponent, ImageView3D{ PixelFormat::DepthComponent, PixelType::Float,{ 1024, 1024, Int(StandartShader::ShadowMapLevels) }, nullptr })
     .setMaxLevel(0)
     .setCompareFunction(Sampler::CompareFunction::LessOrEqual)
     .setCompareMode(Sampler::CompareMode::CompareRefToTexture)
     .setMinificationFilter(Sampler::Filter::Linear, Sampler::Mipmap::Base)
     .setMagnificationFilter(Sampler::Filter::Linear);
 
-  for (std::int_fast32_t i = 0; i < StandartShader::ShadowMapLevels; ++i) {
-    Framebuffer& shadowFramebuffer = mShadowFramebuffer;
-    shadowFramebuffer.attachTextureLayer(Framebuffer::BufferAttachment::Depth, mShadowTextureArray, 0, i)
-      .mapForDraw(Framebuffer::DrawAttachment::None)
-      .setViewport({ {},{ 2048, 2048 } })
-      .bind();
-    CORRADE_INTERNAL_ASSERT(shadowFramebuffer.checkStatus(FramebufferTarget::Draw) == Framebuffer::Status::Complete);
-  }
+  mSunCamera = std::make_unique<SunCamera>(mSun, Range2Di{ {},{ 1024, 1024 } }, Camera::Type::Ortho, mShadowTextureArray);
+  mCurrentCamera = mCamera.get();
+
+  mWorld->mPlayer.SetPos({ 0, 70, 0 });
 
   mTimeline.start();
 }
@@ -176,17 +167,14 @@ void Game::drawEvent()
   }
 
   //shadow pass
-  mShadowFramebuffer.clear(FramebufferClear::Depth).bind();
-  Renderer::setColorMask(false, false, false, false);
-  Renderer::setFaceCullingMode(Magnum::Renderer::PolygonFacing::Front);
-  mDrawableArea->DrawShadowPass(*mSunCamera, mShadowPass);
+  mSunCamera->Draw(*mDrawableArea, mShadowPass);
 
   //forward pass
   Renderer::setColorMask(true, true, true, true);
   defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth).bind();
   Renderer::setFaceCullingMode(Magnum::Renderer::PolygonFacing::Back);
   mShader.setTexture(mTexture);
-  mShader.setShadowDepthTexture(mShadowTexture);
+  mShader.setShadowDepthTexture(mShadowTextureArray);
   mDrawableArea->Draw(*mCurrentCamera, *mSunCamera, mSun.Direction(), mShader);
 
   mDrawableArea->SetPos(cs::WtoS(mWorld->mPlayer.Pos()));
@@ -292,6 +280,9 @@ void Game::keyPressEvent(KeyEvent& event)
   if (event.key() == KeyEvent::Key::E)
     inventoryWindow->Toggle();
 
+  if (event.key() == KeyEvent::Key::F6)
+    mSunCamera->SwitchLayerDebug();
+    
   event.setAccepted();
 }
 

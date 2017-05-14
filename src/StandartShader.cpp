@@ -17,7 +17,9 @@ StandartShader::StandartShader()
   constexpr char *peamble =
     "\n"
     "#define GSB_SHADOWMAP_LGHT\n"
-    "#define GSB_NORMAL_LGHT\n";
+    "#define GSB_NORMAL_LGHT\n"
+    //"#define DEBUG_SHADOWMAP_LEVELS"
+    ;
 
   std::string shadowLevels = "#define NUM_SHADOW_MAP_LEVELS " + std::to_string(ShadowMapLevels) + "\n";
 
@@ -50,7 +52,7 @@ StandartShader::StandartShader()
   mLightVectorUniform = uniformLocation("lightVector");
 
   setUniform(uniformLocation("textureData"), TextureLayer);
-  setUniform(uniformLocation("shadowDepth"), ShadowDepth);
+  setUniform(uniformLocation("shadowmapTexture"), shadowmapTexture);
 }
 
 StandartShader & StandartShader::setProjection(const Matrix4 & mat)
@@ -76,9 +78,9 @@ StandartShader & StandartShader::setTexture(Texture2D & texture) {
   return *this;
 }
 
-StandartShader & StandartShader::setShadowDepthTexture(Texture2D & shadowDepth)
+StandartShader & StandartShader::setShadowDepthTexture(Texture2DArray & shadowDepth)
 {
-  shadowDepth.bind(ShadowDepth);
+  shadowDepth.bind(shadowmapTexture);
   return *this;
 }
 

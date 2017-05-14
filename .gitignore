@@ -32,3 +32,4 @@ World.VC.opendb
 *.db
 *.opendb
 /.vs/config/applicationhost.config
+/3rdparty/msvc14_x86

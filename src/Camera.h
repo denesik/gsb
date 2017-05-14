@@ -10,8 +10,22 @@
 #include <Magnum/Math/Vector2.h>
 #include "Movable.h"
 #include <Magnum/Math/Range.h>
+#include <vector>
+#include <Magnum\Framebuffer.h>
 
-class Camera/* : public Movable*/
+class ShadowShader;
+class DrawableArea;
+
+class ICamera
+{
+public:
+  virtual Magnum::Matrix4 Project() const = 0;
+  virtual Magnum::Matrix4 View() const = 0;
+
+  virtual Magnum::Frustum Frustum() const = 0;
+};
+
+class Camera : public ICamera/* : public Movable*/
 {
 public:
   enum class Type
@@ -28,14 +42,14 @@ public:
   Magnum::Vector3 Unproject(Magnum::Vector2 pixel, float depth) const;
   Magnum::Vector3 Ray(Magnum::Vector2 pixel) const;
 
-  Magnum::Matrix4 Project() const;
-  Magnum::Matrix4 View() const;
-
-  Magnum::Frustum Frustum() const;
-
   Magnum::Vector3 Pos() const;
 
-private:
+  // Унаследовано через ICamera
+  Magnum::Matrix4 Project() const override;
+  Magnum::Matrix4 View() const override;
+  Magnum::Frustum Frustum() const override;
+
+protected:
   void Reinit();
 
   IMovable &mMovable;
@@ -48,6 +62,45 @@ private:
   Magnum::Matrix4 mProject;
 };
 
+class SunCamera : public Camera
+{
+public:
+  struct ShadowLayerData : ICamera {
+    Magnum::Framebuffer shadowFramebuffer;
+    Magnum::Vector2i size;
+    Magnum::Vector2 orthographicSize;
 
+    Magnum::Float orthographicNear = -500, orthographicFar = 500;
+
+    Magnum::Matrix4 shadowMatrix;
+
+    /*Magnum::Float cutPlane;
+    Magnum::Matrix4 shadowCameraMatrix;*/
+
+    explicit ShadowLayerData(const Magnum::Vector2i& size, const Magnum::Vector2& orthoSize, Camera &parent);
+
+    // Унаследовано через ICamera
+    Magnum::Matrix4 Project() const override;
+    Magnum::Matrix4 View() const override;
+    Magnum::Frustum Frustum() const override;
+
+  private:
+    Camera & mParent;
+  };
+
+  SunCamera(IMovable &movable, const Magnum::Range2Di &viewport, Camera::Type type, Magnum::Texture2DArray & shadowTextureArray);
+
+  ShadowLayerData & GetLayer(size_t number);
+
+  std::vector<ShadowLayerData> _layers;
+
+  void Draw(DrawableArea & area, ShadowShader & shader);
+
+  void SwitchLayerDebug();
+  int mCurrentLayerDebug = 0;
+
+  Magnum::Matrix4 Project() const override;
+  Magnum::Matrix4 View() const override;
+};
 
 #endif // Camera_h__

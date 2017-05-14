@@ -1,6 +1,9 @@
 #include "Camera.h"
 #include <Magnum/Math/Packing.h>
 #include <Magnum/DefaultFramebuffer.h>
+#include <StandartShader.h>
+#include <DrawableArea.h>
+#include <Magnum/Renderer.h>
 
 using namespace Magnum;
 
@@ -78,4 +81,78 @@ Magnum::Frustum Camera::Frustum() const
 Magnum::Vector3 Camera::Pos() const
 {
   return mMovable.Pos();
+}
+
+
+
+SunCamera::ShadowLayerData::ShadowLayerData(const Magnum::Vector2i& _size, const Magnum::Vector2& _orthoSize, Camera & parent)
+  : shadowFramebuffer{ { {}, _size } }
+  , size(_size)
+  , orthographicSize(_orthoSize)
+  , shadowMatrix(Matrix4::orthographicProjection(_orthoSize, orthographicNear, orthographicFar))
+  , mParent(parent)
+{
+}
+
+Magnum::Matrix4 SunCamera::ShadowLayerData::Project() const
+{
+  return shadowMatrix;
+}
+
+Magnum::Matrix4 SunCamera::ShadowLayerData::View() const
+{
+  return mParent.View();
+}
+
+Magnum::Frustum SunCamera::ShadowLayerData::Frustum() const
+{
+  return Math::Frustum<Float>::fromMatrix(Project() * View());
+}
+
+SunCamera::SunCamera(IMovable &movable, const Magnum::Range2Di &viewport, Camera::Type type, Texture2DArray & shadowTextureArray)
+  : Camera(movable, viewport, type)
+{
+  for (std::int_fast32_t i = 0; i < StandartShader::ShadowMapLevels; ++i) 
+  {
+    _layers.emplace_back(viewport.size(), Magnum::Vector2(32.f * (i*4 + 1), 32.f * (i*4 + 1)), *this);
+    auto &layer = GetLayer(i);
+    layer.shadowFramebuffer.attachTextureLayer(Framebuffer::BufferAttachment::Depth, shadowTextureArray, 0, i)
+      .mapForDraw(Framebuffer::DrawAttachment::None)
+      .setViewport(viewport)
+      .bind();
+    CORRADE_INTERNAL_ASSERT(layer.shadowFramebuffer.checkStatus(FramebufferTarget::Draw) == Framebuffer::Status::Complete);
+  }
+}
+
+SunCamera::ShadowLayerData & SunCamera::GetLayer(size_t number)
+{
+  return _layers[number];
+}
+
+void SunCamera::Draw(DrawableArea & area, ShadowShader & shader)
+{
+  for (size_t i = 0; i < StandartShader::ShadowMapLevels; i++)
+  {
+    _layers[i].shadowFramebuffer.clear(FramebufferClear::Depth).bind();
+    Renderer::setColorMask(false, false, false, false);
+    Renderer::setFaceCullingMode(Magnum::Renderer::PolygonFacing::Front);
+    area.DrawShadowPass(_layers[i], shader);
+  }
+}
+
+void SunCamera::SwitchLayerDebug()
+{
+  mCurrentLayerDebug++;
+  if (mCurrentLayerDebug >= StandartShader::ShadowMapLevels)
+    mCurrentLayerDebug = 0;
+}
+
+Magnum::Matrix4 SunCamera::Project() const
+{
+  return _layers[mCurrentLayerDebug].Project();
+}
+
+Magnum::Matrix4 SunCamera::View() const
+{
+  return Camera::View();
 }

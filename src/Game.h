@@ -97,12 +97,12 @@ private:
   bool centering = true;
 
   std::unique_ptr<Camera> mCamera;
-  std::unique_ptr<Camera> mSunCamera;
+  std::unique_ptr<SunCamera> mSunCamera;
   Camera * mCurrentCamera;
   Movable mSun;
-  Framebuffer mShadowFramebuffer;
+
   Texture2DArray mShadowTextureArray;
-  Texture2D mShadowTexture;
+
   TextureGenerator test_texgen;
   TexGenShader test_texgenshader;
 };

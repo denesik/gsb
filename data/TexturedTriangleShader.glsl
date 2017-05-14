@@ -4,6 +4,7 @@ uniform sampler2DArrayShadow shadowmapTexture;
 uniform highp mat4 projectionMatrix;
 uniform highp mat4 shadowmapMatrix[NUM_SHADOW_MAP_LEVELS];
 uniform highp vec3 lightVector;
+uniform highp vec3 skyColor = vec3(114.0/255.0, 144.0/255.0, 154.0/255.0);
 
 uniform float shadowDepthSplits[NUM_SHADOW_MAP_LEVELS];
 
@@ -31,12 +32,11 @@ out highp vec3 frag_shadow[NUM_SHADOW_MAP_LEVELS];
 void main() {
   frag_uv = vert_uv;
   
-  vec4 pos4 = projectionMatrix * vec4(vert_pos, 1);
-  gl_Position = pos4;
+  gl_Position = projectionMatrix * vec4(vert_pos, 1);
 
   #ifdef GSB_SHADOWMAP_LGHT
-  for(int i = 0; i < shadowmapMatrix.length(); i++) {
-    frag_shadow[i] = (shadowmapMatrix[i] * pos4).xyz;
+  for(int i = 0; i < NUM_SHADOW_MAP_LEVELS; i++) {
+    frag_shadow[i] = (shadowmapMatrix[i] * vec4(vert_pos, 1)).xyz;
   }
   #endif
   
@@ -62,7 +62,7 @@ in mediump vec3 frag_normal;
 #endif
 
 #ifdef GSB_SHADOWMAP_LGHT
-in vec3 frag_shadow[NUM_SHADOW_MAP_LEVELS];
+in highp vec3 frag_shadow[NUM_SHADOW_MAP_LEVELS];
 #endif
 
 ///////////////////////////////////
@@ -73,11 +73,11 @@ out vec4 frag_out;
 
 float jitter[9] = float[9](0.001, -0.002, 0.0015, -0.0005, -0.0002, 0.0001, 0.00015, 0.00005, 0.000025);
 vec2 shadow_texel_size = vec2( 1.0/2048.0, 1.0/2048.0 );
-float shadow_bias = 0.00006;
+float shadow_bias = 0.00007;
 
-float ShadowMap(vec2 loc, float pixel_z)
+float ShadowMap(vec2 loc, float pixel_z, int layer)
 {
-    return texture(shadowmapTexture, vec4(loc, 0, pixel_z - shadow_bias));
+    return texture(shadowmapTexture, vec4(loc, layer, pixel_z - shadow_bias * layer * 2));
 }
 
 float Gaussian(vec2 x, float a, vec2 b, float c)
@@ -85,7 +85,7 @@ float Gaussian(vec2 x, float a, vec2 b, float c)
     return a * exp( dot(x - b, x - b) / (2 * c * c) );
 }
 
-float ShadowMapPCF(vec2 center, float pixel_z, int pcf_size)
+float ShadowMapPCF(vec2 center, float pixel_z, int pcf_size, int layer)
 {
     vec2 base_loc = center - shadow_texel_size.xy * (pcf_size - 1) / 2.0f;
     vec2 c_loc = base_loc;
@@ -102,7 +102,7 @@ float ShadowMapPCF(vec2 center, float pixel_z, int pcf_size)
             c_jit = (c_jit + 2) % 8;
 
             float cwgt = Gaussian(c_loc + m_jit, 1, center, 1);
-            intensity += ShadowMap(c_loc + m_jit, pixel_z) * cwgt;
+            intensity += ShadowMap(c_loc + m_jit, pixel_z, layer) * cwgt;
             weight += cwgt;
             c_loc.x += shadow_texel_size.x;
         }
@@ -115,8 +115,6 @@ void main() {
   vec4 textureSample = texture(textureData, frag_uv);
   vec3 albedo = textureSample.rgb;
   vec3 ambient = vec3(0.2, 0.2, 0.2);
-  
-  vec3 sc = frag_shadow[0];
 
   lowp float intensity;
   #ifdef GSB_NORMAL_LGHT
@@ -125,7 +123,7 @@ void main() {
   intensity = 1.0;
   #endif
   
-  float inverseShadow;
+  float inverseShadow = 1.0;
   #ifdef GSB_SHADOWMAP_LGHT
   if(intensity <= 0)
   {
@@ -146,22 +144,24 @@ void main() {
                   shadowCoord.z >= 0 &&
                   shadowCoord.z <  1;
         if(inRange) {
-            inverseShadow = ShadowMap(shadowCoord.xy, shadowCoord.z);//  texture(shadowmapTexture, vec4(shadowCoord.xy, shadowLevel, shadowCoord.z - shadow_bias));
+            inverseShadow = ShadowMapPCF(shadowCoord.xy, shadowCoord.z, 3, shadowLevel);
             break;
         }
     }
 
     #ifdef DEBUG_SHADOWMAP_LEVELS
     switch(shadowLevel) {
-        case 0: albedo *= vec3(1,0,0); break;
-        case 1: albedo *= vec3(1,1,0); break;
-        case 2: albedo *= vec3(0,1,0); break;
-        case 3: albedo *= vec3(0,1,1); break;
-        default: albedo *= vec3(1,0,1); break;
+        case 0:  albedo = vec3(1,0,0); break;
+        case 1:  albedo = vec3(0,1,0); break;
+        case 2:  albedo = vec3(0,0,1); break;
+        case 3:  albedo = vec3(1,1,0); break;
+		case 4:  albedo = vec3(0,1,1); break;
+		case 5:  albedo = vec3(1,0,1); break;
+        default: albedo = vec3(1,1,1); break;
     }
     #else
     if(!inRange) {
-        albedo *= vec3(1,0,1); //Something has gone wrong - didn't find a shadow map
+        albedo = vec3(1,0,0);
     }
     #endif
   

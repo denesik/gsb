@@ -7,6 +7,7 @@
 #include <Magnum/Math/Color.h>
 #include <Magnum/Math/Matrix4.h>
 #include <Magnum/Framebuffer.h>
+#include <Magnum/TextureArray.h>
 
 class StandartShader : public Magnum::AbstractShaderProgram
 {
@@ -14,7 +15,7 @@ public:
   using Position = Magnum::Attribute<0, Magnum::Vector3>;
   using TextureCoordinates = Magnum::Attribute<1, Magnum::Vector2>;
   using Normal = Magnum::Attribute<2, Magnum::Vector3>;
-  constexpr static size_t ShadowMapLevels = 4;
+  constexpr static size_t ShadowMapLevels = 3;
 
   explicit StandartShader();
 
@@ -26,10 +27,10 @@ public:
 
   StandartShader& setTexture(Magnum::Texture2D& texture);
 
-  StandartShader& setShadowDepthTexture(Magnum::Texture2D& shadowDepth);
+  StandartShader& setShadowDepthTexture(Magnum::Texture2DArray& shadowDepth);
 
 private:
-  enum : Magnum::Int { TextureLayer = 0, ShadowDepth = 2 };
+  enum : Magnum::Int { TextureLayer = 0, shadowmapTexture = 2 };
 
   Magnum::Int mProjectionMatrixUniform;
   Magnum::Int mShadowmapMatrixUniform;
