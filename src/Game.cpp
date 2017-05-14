@@ -67,14 +67,14 @@ Game::Game(const Arguments & arguments)
   static auto pl_off = MovableOffseted(mWorld->mPlayer, { 0, 1.8f, 0 });
   mCamera = std::make_unique<Camera>(pl_off, defaultFramebuffer.viewport());
 
-  mShadowTextureArray.setImage(0, TextureFormat::DepthComponent, ImageView3D{ PixelFormat::DepthComponent, PixelType::Float,{ 1024, 1024, Int(StandartShader::ShadowMapLevels) }, nullptr })
+  mShadowTextureArray.setImage(0, TextureFormat::DepthComponent, ImageView3D{ PixelFormat::DepthComponent, PixelType::Float,{ 512, 512, Int(StandartShader::ShadowMapLevels) }, nullptr })
     .setMaxLevel(0)
     .setCompareFunction(Sampler::CompareFunction::LessOrEqual)
     .setCompareMode(Sampler::CompareMode::CompareRefToTexture)
     .setMinificationFilter(Sampler::Filter::Linear, Sampler::Mipmap::Base)
     .setMagnificationFilter(Sampler::Filter::Linear);
 
-  mSunCamera = std::make_unique<SunCamera>(mSun, Range2Di{ {},{ 1024, 1024 } }, Camera::Type::Ortho, mShadowTextureArray);
+  mSunCamera = std::make_unique<SunCamera>(mSun, Range2Di{ {},{ 512, 512 } }, Camera::Type::Ortho, mShadowTextureArray);
   mCurrentCamera = mCamera.get();
 
   mWorld->mPlayer.SetPos({ 0, 70, 0 });
@@ -93,11 +93,6 @@ void Game::drawEvent()
   mWorld->mPlayer.MoveRelative(mCameraVelocity * 0.006f);
   mWorld->mPlayer.Rotate(mCameraAngle * 0.003f);
   mWorld->mPlayer.Update(mTimeline);
-
-  auto spos = mWorld->mPlayer.Pos() + Vector3{ std::sin(mTimeline.previousFrameTime()) * 100, 111, std::cos(mTimeline.previousFrameTime()) * 100 };
-  mSun.SetPos(spos);
-  mSun.LookAt(mWorld->mPlayer.Pos());
-  mSun.Update(mTimeline);
 
   auto ray = mCamera->Ray({ static_cast<Float>(defaultFramebuffer.viewport().centerX()) ,
     static_cast<Float>(defaultFramebuffer.viewport().centerY()) });
@@ -165,6 +160,12 @@ void Game::drawEvent()
   {
     pressedT = 0;
   }
+
+  auto sunref = Vector3(picked); // mWorld->mPlayer.Pos(); // 
+  auto spos = sunref + Vector3{ std::sin(mTimeline.previousFrameTime() / 10.f) * 100, 111, std::cos(mTimeline.previousFrameTime() / 10.f) * 100 };
+  mSun.SetPos(spos);
+  mSun.LookAt(sunref);
+  mSun.Update(mTimeline);
 
   //shadow pass
   mSunCamera->Draw(*mDrawableArea, mShadowPass);
