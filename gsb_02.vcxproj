@@ -187,13 +187,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)..\3rdparty\msvc14_x86\include;$(ProjectDir)..\3rdparty\msvc14_x86\include\MagnumExternal\OpenGL;$(ProjectDir)..\3rdparty\msvc14_x86\include\SDL2;$(ProjectDir)..\3rdparty\msvc14_x86\include\GLFW;$(ProjectDir)rapidjson\include;$(ProjectDir)..\3rdparty\msvc14_x86\boost;$(ProjectDir)src\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)..\3rdparty\msvc14_x86\lib;$(ProjectDir)..\3rdparty\msvc14_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)..\3rdparty\msvc15_x86\include;$(ProjectDir)..\3rdparty\msvc15_x86\include\MagnumExternal\OpenGL;$(ProjectDir)..\3rdparty\msvc15_x86\include\SDL2;$(ProjectDir)..\3rdparty\msvc15_x86\include\GLFW;$(ProjectDir)rapidjson\include;$(ProjectDir)..\3rdparty\msvc15_x86\boost;$(ProjectDir)src\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\3rdparty\msvc15_x86\lib;$(ProjectDir)..\3rdparty\msvc15_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
     <SourcePath>src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)..\3rdparty\msvc14_x86\include;$(ProjectDir)..\3rdparty\msvc14_x86\include\MagnumExternal\OpenGL;$(ProjectDir)..\3rdparty\msvc14_x86\include\SDL2;$(ProjectDir)..\3rdparty\msvc14_x86\include\GLFW;$(ProjectDir)rapidjson\include;$(ProjectDir)..\3rdparty\msvc14_x86\boost;$(ProjectDir)src\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)..\3rdparty\msvc14_x86\lib;$(ProjectDir)..\3rdparty\msvc14_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)..\3rdparty\msvc15_x86\include;$(ProjectDir)..\3rdparty\msvc15_x86\include\MagnumExternal\OpenGL;$(ProjectDir)..\3rdparty\msvc15_x86\include\SDL2;$(ProjectDir)..\3rdparty\msvc15_x86\include\GLFW;$(ProjectDir)rapidjson\include;$(ProjectDir)..\3rdparty\msvc15_x86\boost;$(ProjectDir)src\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\3rdparty\msvc15_x86\lib;$(ProjectDir)..\3rdparty\msvc15_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
