@@ -36,7 +36,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 namespace Magnum {
 
   DebugLines::DebugLines() : _mesh{ MeshPrimitive::Lines } {
-    _mesh.addVertexBuffer(_buffer, 0, Shader::Position(), Shader::Color());
+    _mesh.addVertexBuffer(_buffer, 0, Shader::Position(), Shader::Color(Shader::Color::Components::Three));
   }
 
   void DebugLines::reset() {
