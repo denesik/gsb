@@ -88,7 +88,7 @@ void World::UnuseSector(const SPos &pos)
           auto jt = mSectors.find(pos + offset);
           if (jt != mSectors.end())
           {
-            if (CountLoaded(pos + offset) == 9/*gSectorNeighboard.size()*/)
+            if (CountLoaded(pos + offset) == gSectorNeighboard.size())
             {
               mWorldSectorObserver.UnLoad(jt->second.sector);
               CacheSector(pos + offset, Sector::CACHE_UNLOAD);
@@ -170,7 +170,7 @@ void World::OnSectorLoadEnd(Worker &worker, Sector &sector)
     if (it != mSectors.end())
     {
       // Сектор и все его соседи загружены.
-      if (CountLoaded(pos + offset) == 9/*gSectorNeighboard.size()*/)
+      if (CountLoaded(pos + offset) == gSectorNeighboard.size())
       {
         CacheSector(pos + offset, Sector::CACHE_LOAD);
         mWorldSectorObserver.Load(it->second.sector);

@@ -14,7 +14,7 @@ SectorCompiler::SectorCompiler(const DataBase &dataBase)
 
 SectorCompiler::~SectorCompiler()
 {
-  Release();
+  //Release();
 }
 
 const std::vector<TesselatorVertex> & SectorCompiler::GetVertexData() const

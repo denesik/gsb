@@ -47,7 +47,7 @@ public:
     return *this;
   }
 
-  boost::optional<T &> Get(Magnum::Vector2i spos)
+  boost::optional<T &> Get(const SPos &spos)
   {
     if ((std::abs(mPos.x() - spos.x()) < mRadius.x()) || (std::abs(mPos.y() - spos.y()) < mRadius.y()))
       return{};

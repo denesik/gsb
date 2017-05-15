@@ -19,6 +19,9 @@
 #include "Camera.h"
 #include "ThreadWorker.h"
 #include <StandartShader.h>
+#include <boost\optional\optional.hpp>
+#include "RingBuffer.h"
+#include "ThreadProcess.h"
 
 class World;
 
@@ -45,35 +48,10 @@ struct SectorRenderData
 };
 
 
-class TaskCompile
-{
-public:
-  TaskCompile(std::weak_ptr<Sector> sector, std::weak_ptr<SectorRenderData> drawable);
-
-  bool Begin(SectorCompiler &compiler);
-
-  void End(const SectorCompiler &compiler);
-
-private:
-  std::weak_ptr<Sector> mSector;
-  std::weak_ptr<SectorRenderData> mDrawable;
-  SPos mPos;
-};
-
-// Список на обновление.
-// Проверяем есть ли воркер.
-// Если нету - ищем подходящий воркер. ??
-// Если есть проверяем завершил ли воркер работу.
-// Если завершил - вызываем обвновление данных, удаляем элемент, удаляем воркер.
-// Если нету но нашли - вызываем загрузку данных в воркер.
-// Если не смогли загрузить - удаляем элемент, удаляем воркер.
-
-// Рисуем сектора в указанной области.
-// Данный класс не загружает сектора в память при их отсутствии!
 class DrawableArea
 {
 public:
-  DrawableArea(World &world, const SPos &pos, unsigned int radius = 5);
+  DrawableArea(World &world, const SPos &pos, unsigned int radius = 1);
   ~DrawableArea();
 
   void SetRadius(unsigned int radius);
@@ -82,7 +60,7 @@ public:
 
   //TODO: Не компилировать сектор, если он компилируется в данный момент.
   void Draw(const Camera &camera, const Camera &sun, const Vector3 &lightdir, StandartShader& shader);
-  void DrawShadowPass(const Camera &sun, ShadowShader& shader);
+  //void DrawShadowPass(const Camera &sun, ShadowShader& shader);
 
 private:
   World &mWorld;
@@ -90,20 +68,35 @@ private:
 
   struct Data
   {
-    SPos local_pos;
-    SPos world_pos;
-    std::weak_ptr<Sector> sector;
-    std::shared_ptr<SectorRenderData> drawable;
+    boost::optional<Sector &> sector;
+    SectorRenderData drawable;
   };
 
-  std::vector<Data> mData;
+  RingBuffer2D<Data> mData;
   Timer mTimer;
 
-private:
-  void UpdateRadius(unsigned int radius);
-  void UpdatePos(const SPos &pos);
+  struct Worker
+  {
+    Worker(const DataBase &dataBase)
+      : compiler(dataBase)
+    {}
 
-  ThreadWorker<TaskCompile, SectorCompiler> mCompilerWorker;
+    void Process(Sector &sector)
+    {
+      compiler.Process();
+    }
+
+    SectorCompiler compiler;
+  };
+
+  ThreadProcess<Worker, SPos> mCompiler;
+
+private:
+  void OnSectorLoadBegin(Worker &worker, SPos &pos);
+  void OnSectorLoadEnd(Worker &worker, SPos &pos);
+
+  void OnSectorAdd(const SPos &pos);
+  void OnSectorRemove(const SPos &pos);
 };
 
 
