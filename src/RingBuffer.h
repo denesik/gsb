@@ -6,6 +6,19 @@
 #include <functional>
 #include <boost\optional.hpp>
 
+namespace
+{
+  inline void StoreOrderedInc(SPos & pos, Magnum::Vector2i radius)
+  {
+    pos.z()++;
+    if (pos.z() > radius.y())
+    {
+      pos.z() = -radius.y();
+      pos.x()++;
+    }
+  }
+}
+
 template<typename T>
 class RingBuffer
 {
@@ -31,12 +44,7 @@ public:
         SPos spos = mPos + unoffseted;
         onDeletting(mStorage[i], spos);
 
-        unoffseted.z()++;
-        if (unoffseted.z() > size.y())
-        {
-          unoffseted.z() = -size.y();
-          unoffseted.x()++;
-        }
+        StoreOrderedInc(unoffseted, size);
       }
     }
 
@@ -51,12 +59,7 @@ public:
 
       mStorage.emplace_back(onAdding(spos));
 
-      unoffseted.z()++;
-      if (unoffseted.z() > size.y())
-      {
-        unoffseted.z() = -size.y();
-        unoffseted.x()++;
-      }
+      StoreOrderedInc(unoffseted, size);
     }
 
     return *this;
@@ -98,12 +101,7 @@ public:
         onAdding(newPos);
       }
 
-      unoffseted.z()++;
-      if (unoffseted.z() > mRadius.y())
-      {
-        unoffseted.z() = -mRadius.y();
-        unoffseted.x()++;
-      }
+      StoreOrderedInc(unoffseted, mRadius);
     }
 
     mPos = pos;
