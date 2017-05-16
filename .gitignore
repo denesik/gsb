@@ -32,3 +32,13 @@ World.VC.opendb
 *.db
 *.opendb
 /.vs/config/applicationhost.config
+/3rdparty
+/lib_source/zlib/
+/lib_source/SDL-mirror/
+/lib_source/magnum-plugins/
+/lib_source/magnum/
+/lib_source/libpng/
+/lib_source/glfw/
+/lib_source/flatbuffers/
+/lib_source/corrade/
+/build.cmd
