@@ -20,12 +20,12 @@ World::World(const DataBase &blocksDataBase)
 {
   mSectorLoader.SetBeginCallback([this](Worker &worker, Sector &sector)
   {
-    OnSectorLoadBegin(worker, sector);
+    return OnSectorLoadBegin(worker, sector);
   });
 
   mSectorLoader.SetEndCallback([this](Worker &worker, Sector &sector)
   {
-    OnSectorLoadEnd(worker, sector);
+    return OnSectorLoadEnd(worker, sector);
   });
 }
 
@@ -66,7 +66,10 @@ void World::UseSector(const SPos &pos)
   auto it = mSectors.find(pos);
   if (it != mSectors.end())
   {
-    auto &res = mSectors.emplace(pos, this, pos);
+    auto &res = mSectors.emplace(std::piecewise_construct,
+      std::forward_as_tuple(pos),
+      std::forward_as_tuple(*this, pos));
+    
     if (!res.second)
       return;
     it = res.first;
@@ -144,12 +147,12 @@ void World::CacheSector(const SPos &pos, Sector::CacheState state)
   }
 }
 
-void World::OnSectorLoadBegin(Worker &worker, Sector &sector)
+bool World::OnSectorLoadBegin(Worker &worker, Sector &sector)
 {
-
+  return true;
 }
 
-void World::OnSectorLoadEnd(Worker &worker, Sector &sector)
+bool World::OnSectorLoadEnd(Worker &worker, Sector &sector)
 {
   const auto pos = sector.GetPos();
 
@@ -177,6 +180,7 @@ void World::OnSectorLoadEnd(Worker &worker, Sector &sector)
       }
     }
   }
+  return true;
 }
 
 const DataBase & World::GetBlocksDataBase() const

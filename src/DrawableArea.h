@@ -22,6 +22,8 @@
 #include <boost\optional\optional.hpp>
 #include "RingBuffer.h"
 #include "ThreadProcess.h"
+#include <unordered_map>
+#include <type_traits>
 
 class World;
 
@@ -40,6 +42,8 @@ struct SectorRenderData
   Magnum::Matrix4 model;
 
   SectorRenderData();
+  SectorRenderData(SectorRenderData &&other) = default;
+  SectorRenderData &operator=(SectorRenderData &&) = default;
 
   void SetPos(const SPos &pos);
 
@@ -66,13 +70,33 @@ private:
   World &mWorld;
   SPos mPos;
 
-  struct Data
+  struct SectorData
   {
+    SectorData() = default;
+    SectorData(const SPos &_pos)
+      : pos(_pos)
+    {}
+
+    const SPos pos;
     boost::optional<Sector &> sector;
+    size_t count = 0;
+    bool added = false;
+  };
+
+  struct BufferData
+  {
+    BufferData(SectorData &_sector)
+      : sector(_sector)
+    {}
+    BufferData(BufferData &&other) = default;
+    BufferData &operator=(BufferData &&) = default;
+
+    std::reference_wrapper<SectorData> sector;
     SectorRenderData drawable;
   };
 
-  RingBuffer2D<Data> mData;
+  std::unordered_map<SPos, SectorData> mSectors;
+  RingBuffer2D<BufferData> mBufferData;
   Timer mTimer;
 
   struct Worker
@@ -92,11 +116,19 @@ private:
   ThreadProcess<Worker, SPos> mCompiler;
 
 private:
-  void OnSectorLoadBegin(Worker &worker, SPos &pos);
-  void OnSectorLoadEnd(Worker &worker, SPos &pos);
-
   void OnSectorAdd(const SPos &pos);
   void OnSectorRemove(const SPos &pos);
+
+  BufferData OnBufferAdd(const SPos &pos);
+  void OnBufferRemove(BufferData &data, const SPos &pos);
+
+  bool OnCompilerBegin(Worker &worker, SPos &pos);
+  bool OnCompilerEnd(Worker &worker, SPos &pos);
+
+  void UseSector(const SPos &pos);
+  void UnuseSector(const SPos &pos);
+
+  SectorData &GetSectorData(const SPos &pos);
 };
 
 

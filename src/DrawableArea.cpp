@@ -12,17 +12,27 @@ using namespace Magnum;
 DrawableArea::DrawableArea(World &world, const SPos &pos, unsigned int radius)
   : mWorld(world), mPos(pos), 
   mCompiler(1, 1, world.GetBlocksDataBase()),
-  mData({1, 1})
+  mBufferData({1, 1})
 {
-  mData.onAdding = [this](const SPos &pos)
+  mBufferData.onAdding = [this](const SPos &pos)
   {
-    OnSectorAdd(pos);
+    return OnBufferAdd(pos);
   };
 
-  mData.onDeletting = [this](const SPos &pos)
+  mBufferData.onDeletting = [this](BufferData &data, const SPos &pos)
   {
-    OnSectorRemove(pos);
+    OnBufferRemove(data, pos);
   };
+
+  mCompiler.SetBeginCallback([this](Worker &worker, SPos &pos)
+  {
+    return OnCompilerBegin(worker, pos);
+  });
+
+  mCompiler.SetEndCallback([this](Worker &worker, SPos &pos)
+  {
+    return OnCompilerEnd(worker, pos);
+  });
 }
 
 
@@ -36,7 +46,7 @@ void DrawableArea::SetRadius(unsigned int radius)
 
 void DrawableArea::SetPos(const SPos &pos)
 {
-  mData.UpdatePos(pos);
+  mBufferData.UpdatePos(pos);
 }
 
 // TODO: Не компилировать сектор, если он компилируется в данный момент.
@@ -107,38 +117,69 @@ void DrawableArea::Draw(const Camera & camera, const Camera & sun, const Vector3
   const auto &matrix = camera.Project() * camera.View();
   const auto &sun_matrix = sun.Project() * sun.View();
 
-  for (auto &data : mData)
+//   for (auto &data : mData)
+//   {
+//     //Каждый кадр бегаем по всем элементам, если сектор нужно скомпилить, отправляем его на компиляцию.
+//     if (data.sector)
+//     {
+//       if (data.sector->NeedCompile())
+//       {
+//         data.sector->NeedCompile(false);
+//         mCompiler.Push(data.sector->GetPos());
+//       }
+// 
+//       data.drawable.Draw(frustum, matrix, sun_matrix, lightdir, shader);
+//     }
+//   }
+// 
+//   mCompiler.Update();
+}
+
+bool DrawableArea::OnCompilerBegin(Worker &worker, SPos &pos)
+{
+  auto &data = GetSectorData(pos);
+  if (data.sector)
   {
-    //Каждый кадр бегаем по всем элементам, если сектор нужно скомпилить, отправляем его на компиляцию.
-    if (data.sector)
-    {
-      if (data.sector->NeedCompile())
-      {
-        data.sector->NeedCompile(false);
-        mCompiler.Push(data.sector->GetPos());
-      }
-
-      data.drawable.Draw(frustum, matrix, sun_matrix, lightdir, shader);
-    }
+    data.sector->SetCompilerData(worker.compiler);
   }
-
-  mCompiler.Update();
+  else
+  {
+    UnuseSector(pos);
+    return false;
+  }
+  return true;
 }
 
-void DrawableArea::OnSectorLoadBegin(Worker &worker, SPos &pos)
+bool DrawableArea::OnCompilerEnd(Worker &worker, SPos &pos)
 {
-  auto &sector = mData.Get(pos); 
-  if (sector && sector->sector)
-    sector->sector->SetCompilerData(worker.compiler);
+  auto &data = mBufferData.Get(pos);
+  if (data && data->sector.get().sector)
+  {
+    auto &drawable = data->drawable;
+    drawable.SetPos(mPos);
+    drawable.vertex_buffer.setData(worker.compiler.GetVertexData(), BufferUsage::StaticDraw);
+    drawable.index_buffer.setData(worker.compiler.GetIndexData(), BufferUsage::StaticDraw);
+    drawable.mesh.setCount(worker.compiler.GetIndexData().size());
+  }
+  UnuseSector(pos);
+  return true;
 }
 
-void DrawableArea::OnSectorLoadEnd(Worker &worker, SPos &pos)
+DrawableArea::BufferData DrawableArea::OnBufferAdd(const SPos &pos)
 {
+  UseSector(pos);
+  return{ GetSectorData(pos) };
+}
 
+void DrawableArea::OnBufferRemove(BufferData &data, const SPos &pos)
+{
+  UnuseSector(pos);
 }
 
 void DrawableArea::OnSectorAdd(const SPos &pos)
 {
+  UseSector(pos);
+
 //   auto &sector = mData.Get(pos);
 //   if (sector)
 //     sector->sector->SetCompilerData(worker.compiler);
@@ -146,7 +187,41 @@ void DrawableArea::OnSectorAdd(const SPos &pos)
 
 void DrawableArea::OnSectorRemove(const SPos &pos)
 {
+  GetSectorData(pos).sector.reset();
+  UnuseSector(pos);
+}
 
+void DrawableArea::UseSector(const SPos &pos)
+{
+  auto it = mSectors.find(pos);
+  if (it != mSectors.end())
+  {
+    auto &res = mSectors.emplace(pos, pos);
+    if (!res.second)
+      return;
+    it = res.first;
+    // Создали сектор, сообщим ему и всем его соседям об этом.
+  }
+  ++it->second.count;
+}
+
+void DrawableArea::UnuseSector(const SPos &pos)
+{
+  auto it = mSectors.find(pos);
+  if (it != mSectors.end())
+  {
+    --it->second.count;
+    if (!it->second.count)
+    {
+      mSectors.erase(it);
+    }
+  }
+}
+
+DrawableArea::SectorData & DrawableArea::GetSectorData(const SPos &pos)
+{
+  auto it = mSectors.find(pos);
+  return it->second;
 }
 
 //=============== SectorRenderData ===============

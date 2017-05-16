@@ -13,7 +13,7 @@ template<class Worker, class Task>
 class ThreadProcess
 {
 public:
-  using CallbackType = std::function<void(Worker &, Task &)>;
+  using CallbackType = std::function<bool(Worker &, Task &)>;
 
   //  оличество потоков, количество воркеров.
   template<class ...Args>

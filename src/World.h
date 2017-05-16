@@ -124,8 +124,8 @@ private:
 
   void CacheSector(const SPos &pos, Sector::CacheState state);
 
-  void OnSectorLoadBegin(Worker &worker, Sector &sector);
-  void OnSectorLoadEnd(Worker &worker, Sector &sector);
+  bool OnSectorLoadBegin(Worker &worker, Sector &sector);
+  bool OnSectorLoadEnd(Worker &worker, Sector &sector);
 
   std::vector<SPos> mUnloadSectors;
 

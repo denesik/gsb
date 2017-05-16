@@ -9,6 +9,7 @@
 #include <Magnum/Math/Vector3.h>
 #include <Magnum/Magnum.h>
 #include <assert.h>
+#include <array>
 
 enum SideIndex : int
 {

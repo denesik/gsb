@@ -22,26 +22,24 @@ public:
       for (int j = -size.y(); j <= size.y(); j++)
       {
         SPos spos = mPos + SPos(i, 0, j);
-        if (onDeletting) onDeletting(spos);
+        Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
+        Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - mDim * sec_pos;
+        onDeletting(mStorage[wpos.y() * mDim.x() + wpos.x()], spos);
       }
 
     mRadius = size;
     mDim = size * 2 + Magnum::Vector2i(1, 1);
     mStorage.clear();
-    mStorage.resize(mDim.x() * mDim.y());
-
-    for (auto &i : mStorage)
-      i.init();
 
     for (int i = -size.x(); i <= size.x(); i++)
       for (int j = -size.y(); j <= size.y(); j++)
       {
         SPos spos = mPos + SPos(i, 0, j);
-        Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
-        Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - mDim * sec_pos;
-        mStorage[wpos.y() * mDim.x() + wpos.x()].reset(spos);
+//         Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
+//         Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - mDim * sec_pos;
+//         mStorage[wpos.y() * mDim.x() + wpos.x()].reset(spos);
 
-        if (onAdding) onAdding(spos);
+        mStorage.emplace_back(onAdding(spos));
       }
 
     return *this;
@@ -53,7 +51,7 @@ public:
       return{};
 
     Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
-    Magnum::Vector2i wpos = spos - sec_pos * mDim;
+    Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - sec_pos * mDim;
 
     return mStorage[wpos.y() * mDim.x() + wpos.x()];
   }
@@ -85,10 +83,9 @@ public:
 
         // приведение координат к [0, radius*2+1)
         Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - mDim * sec_pos;
-        mStorage[wpos.y() * mDim.x() + wpos.x()].reset(spos);
 
-        if (onAdding) onAdding(spos);
-        if (onDeletting) onDeletting(spos - SPos(mDim.x(), 0, 0));
+        onDeletting(mStorage[wpos.y() * mDim.x() + wpos.x()], spos - SPos(mDim.x(), 0, 0));
+        mStorage[wpos.y() * mDim.x() + wpos.x()] = onAdding(spos);
       }
 
     //новые строки
@@ -99,10 +96,9 @@ public:
         SPos spos = pos + SPos(i - mRadius.x(), 0, (mRadius.y() + j) * sgn(deltaY));
         Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
         Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - mDim * sec_pos;
-        mStorage[wpos.y() * mDim.x() + wpos.x()].reset(spos);
 
-        if (onAdding) onAdding(spos);
-        if (onDeletting) onDeletting(spos - SPos(0, 0, mDim.y()));
+        onDeletting(mStorage[wpos.y() * mDim.x() + wpos.x()], spos - SPos(0, 0, mDim.y()));
+        mStorage[wpos.y() * mDim.x() + wpos.x()] = onAdding(spos);
       }
 
     mPos = pos;
@@ -123,8 +119,8 @@ public:
     return mStorage.end();
   }
 
-  std::function<void(const SPos &)> onAdding;
-  std::function<void(const SPos &)> onDeletting;
+  std::function<T(const SPos &)> onAdding;
+  std::function<void(T &, const SPos &)> onDeletting;
 
 private:
   inline Magnum::Vector2i WrapSPos(const Magnum::Vector2i &pos)

@@ -55,9 +55,8 @@ void Chunk::SetCompilerData(SectorCompiler &sectorCompiler)
   auto &tesselators = sectorCompiler.Tesselators();
   auto &tesselators_data = sectorCompiler.TesselatorsData();
 
-  if (!sectors[SectorAround::Middle].expired())
   {
-    const auto &sector = *sectors[SectorAround::Middle].lock();
+    const auto &sector = sectors[SectorAround::Middle].get();
     for (size_t i = 0; i < data.compilator_middle.size(); ++i)
     {
       tesselators[data.compilator_middle[i]] = sector.GetBlockId(i);
@@ -66,9 +65,8 @@ void Chunk::SetCompilerData(SectorCompiler &sectorCompiler)
     }
   }
 
-  if (!sectors[SectorAround::South].expired())
   {
-    const auto &sector = *sectors[SectorAround::South].lock();
+    const auto &sector = sectors[SectorAround::South].get();
     for (size_t i = 0; i < data.compilator_south.size(); ++i)
     {
       tesselators[data.compilator_south[i]] = sector.GetBlockId(data.chunk_south[i]);
@@ -77,9 +75,8 @@ void Chunk::SetCompilerData(SectorCompiler &sectorCompiler)
     }
   }
 
-  if (!sectors[SectorAround::Down].expired())
   {
-    const auto &sector = *sectors[SectorAround::Down].lock();
+    const auto &sector = sectors[SectorAround::Down].get();
     for (size_t i = 0; i < data.compilator_down.size(); ++i)
     {
       tesselators[data.compilator_down[i]] = sector.GetBlockId(data.chunk_down[i]);
@@ -88,9 +85,8 @@ void Chunk::SetCompilerData(SectorCompiler &sectorCompiler)
     }
   }
 
-  if (!sectors[SectorAround::East].expired())
   {
-    const auto &sector = *sectors[SectorAround::East].lock();
+    const auto &sector = sectors[SectorAround::East].get();
     for (size_t i = 0; i < data.compilator_east.size(); ++i)
     {
       tesselators[data.compilator_east[i]] = sector.GetBlockId(data.chunk_east[i]);
@@ -99,9 +95,8 @@ void Chunk::SetCompilerData(SectorCompiler &sectorCompiler)
     }
   }
 
-  if (!sectors[SectorAround::North].expired())
   {
-    const auto &sector = *sectors[SectorAround::North].lock();
+    const auto &sector = sectors[SectorAround::North].get();
     for (size_t i = 0; i < data.compilator_north.size(); ++i)
     {
       tesselators[data.compilator_north[i]] = sector.GetBlockId(data.chunk_north[i]);
@@ -110,9 +105,8 @@ void Chunk::SetCompilerData(SectorCompiler &sectorCompiler)
     }
   }
 
-  if (!sectors[SectorAround::Top].expired())
   {
-    const auto &sector = *sectors[SectorAround::Top].lock();
+    const auto &sector = sectors[SectorAround::Top].get();
     for (size_t i = 0; i < data.compilator_top.size(); ++i)
     {
       tesselators[data.compilator_top[i]] = sector.GetBlockId(data.chunk_top[i]);
@@ -121,9 +115,8 @@ void Chunk::SetCompilerData(SectorCompiler &sectorCompiler)
     }
   }
 
-  if (!sectors[SectorAround::West].expired())
   {
-    const auto &sector = *sectors[SectorAround::West].lock();
+    const auto &sector = sectors[SectorAround::West].get();
     for (size_t i = 0; i < data.compilator_west.size(); ++i)
     {
       tesselators[data.compilator_west[i]] = sector.GetBlockId(data.chunk_west[i]);
