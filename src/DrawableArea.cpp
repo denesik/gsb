@@ -10,12 +10,29 @@
 using namespace Magnum;
 
 DrawableArea::DrawableArea(World &world, const SPos &pos, unsigned int radius)
-  : mWorld(world), mPos(pos), mCompilerWorker(world.GetBlocksDataBase())
+  : mWorld(world), mPos(pos), 
+  mCompiler(1, 1, world.GetBlocksDataBase()),
+  mBufferData({1, 1})
 {
-  UpdateRadius(radius);
-  UpdatePos(mPos);
+  mBufferData.onAdding = [this](const SPos &pos)
+  {
+    return OnBufferAdd(pos);
+  };
 
+  mBufferData.onDeletting = [this](BufferData &data, const SPos &pos)
+  {
+    OnBufferRemove(data, pos);
+  };
 
+  mCompiler.SetBeginCallback([this](Worker &worker, SPos &pos)
+  {
+    return OnCompilerBegin(worker, pos);
+  });
+
+  mCompiler.SetEndCallback([this](Worker &worker, SPos &pos)
+  {
+    return OnCompilerEnd(worker, pos);
+  });
 }
 
 
@@ -25,144 +42,186 @@ DrawableArea::~DrawableArea()
 
 void DrawableArea::SetRadius(unsigned int radius)
 {
-  UpdateRadius(radius);
-  UpdatePos(mPos);
 }
 
 void DrawableArea::SetPos(const SPos &pos)
 {
-  if (mPos != pos)
-  {
-    mPos = pos;
-    UpdatePos(mPos);
-  }
+  mBufferData.UpdatePos(pos);
 }
 
-//TODO: Не компилировать сектор, если он компилируется в данный момент.
-void DrawableArea::DrawShadowPass(const Camera & sun, ShadowShader & shader)
-{
-  // Обновляем список видимых секторов N раз в сек.
-
-  const double N = 10.0;
-  bool loading = false;
-  if (mTimer.Elapsed() > 1.0 / N)
-  {
-    mTimer.Start();
-    loading = true;
-  }
-  loading = true;
-
-  const auto &frustum = sun.Frustum();
-  const auto &sun_matrix = sun.Project() * sun.View();
-
-  for (auto &data : mData)
-  {
-    if (data.sector.expired())
-    {
-      if (loading)
-      {
-        data.sector = mWorld.GetSector(data.world_pos);
-      }
-      data.drawable->valide = false;
-      data.drawable->compile = false;
-    }
-
-    if (data.drawable->valide)
-    {
-      data.drawable->DrawShadowPass(frustum, sun_matrix, shader);
-    }
-
-    if (!data.sector.expired())
-    {
-      auto sector = data.sector.lock();
-      if (sector->NeedCompile() /*|| !data.drawable->compile*/)
-      {
-        data.drawable->compile = true;
-        sector->NeedCompile(false);
-        mCompilerWorker.Add({ data.sector, data.drawable });
-      }
-
-      //sector->Draw(matrix, shader);
-    }
-  }
-
-  mCompilerWorker.Update();
-}
+// TODO: Не компилировать сектор, если он компилируется в данный момент.
+// void DrawableArea::DrawShadowPass(const Camera & sun, ShadowShader & shader)
+// {
+//   // Обновляем список видимых секторов N раз в сек.
+// 
+//   const double N = 10.0;
+//   bool loading = false;
+//   if (mTimer.Elapsed() > 1.0 / N)
+//   {
+//     mTimer.Start();
+//     loading = true;
+//   }
+//   loading = true;
+// 
+//   const auto &frustum = sun.Frustum();
+//   const auto &sun_matrix = sun.Project() * sun.View();
+// 
+//   for (auto &data : mData)
+//   {
+//     if (data.sector.expired())
+//     {
+//       if (loading)
+//       {
+//         data.sector = mWorld.GetSector(data.world_pos);
+//       }
+//       data.drawable->valide = false;
+//       data.drawable->compile = false;
+//     }
+// 
+//     if (data.drawable->valide)
+//     {
+//       data.drawable->DrawShadowPass(frustum, sun_matrix, shader);
+//     }
+// 
+//     if (!data.sector.expired())
+//     {
+//       auto sector = data.sector.lock();
+//       if (sector->NeedCompile() /*|| !data.drawable->compile*/)
+//       {
+//         data.drawable->compile = true;
+//         sector->NeedCompile(false);
+//         mCompilerWorker.Add({ data.sector, data.drawable });
+//       }
+// 
+//       //sector->Draw(matrix, shader);
+//     }
+//   }
+// 
+//   mCompilerWorker.Update();
+// }
 
 void DrawableArea::Draw(const Camera & camera, const Camera & sun, const Vector3 &lightdir, StandartShader & shader)
 {
   // Обновляем список видимых секторов N раз в сек.
 
-  const double N = 10.0;
-  bool loading = false;
-  if (mTimer.Elapsed() > 1.0 / N)
-  {
-    mTimer.Start();
-    loading = true;
-  }
-  loading = true;
+//   const double N = 10.0;
+//   bool loading = false;
+//   if (mTimer.Elapsed() > 1.0 / N)
+//   {
+//     mTimer.Start();
+//     loading = true;
+//   }
+//   loading = true;
 
   const auto &frustum = camera.Frustum();
   const auto &matrix = camera.Project() * camera.View();
   const auto &sun_matrix = sun.Project() * sun.View();
 
-  for (auto &data : mData)
-  {
-    if (data.sector.expired())
-    {
-      if (loading)
-      {
-        data.sector = mWorld.GetSector(data.world_pos);
-      }
-      data.drawable->valide = false;
-      data.drawable->compile = false;
-    }
-
-    if (data.drawable->valide)
-    {
-      data.drawable->Draw(frustum, matrix, sun_matrix, lightdir, shader);
-    }
-
-    if (!data.sector.expired())
-    {
-      auto sector = data.sector.lock();
-      if (sector->NeedCompile() /*|| !data.drawable->compile*/)
-      {
-        data.drawable->compile = true;
-        sector->NeedCompile(false);
-        mCompilerWorker.Add({ data.sector, data.drawable });
-      }
-
-      //sector->Draw(matrix, shader);
-    }
-  }
-
-  mCompilerWorker.Update();
+//   for (auto &data : mData)
+//   {
+//     //Каждый кадр бегаем по всем элементам, если сектор нужно скомпилить, отправляем его на компиляцию.
+//     if (data.sector)
+//     {
+//       if (data.sector->NeedCompile())
+//       {
+//         data.sector->NeedCompile(false);
+//         mCompiler.Push(data.sector->GetPos());
+//       }
+// 
+//       data.drawable.Draw(frustum, matrix, sun_matrix, lightdir, shader);
+//     }
+//   }
+// 
+//   mCompiler.Update();
 }
 
-void DrawableArea::UpdateRadius(unsigned int radius)
+bool DrawableArea::OnCompilerBegin(Worker &worker, SPos &pos)
 {
-  mData.clear();
-
-  int begin = -static_cast<int>(radius);
-  int end = static_cast<int>(radius);
-  SPos pos(begin);
-  pos.y() = 0;
-  for (pos.z() = begin; pos.z() <= end; ++pos.z())
-    for (pos.x() = begin; pos.x() <= end; ++pos.x())
-    {
-      mData.push_back({ pos, SPos{}, std::weak_ptr<Sector>{}, std::make_shared<SectorRenderData>() });
-    }
+  auto &data = GetSectorData(pos);
+  if (data.sector)
+  {
+    data.sector->SetCompilerData(worker.compiler);
+  }
+  else
+  {
+    UnuseSector(pos);
+    return false;
+  }
+  return true;
 }
 
-void DrawableArea::UpdatePos(const SPos &pos)
+bool DrawableArea::OnCompilerEnd(Worker &worker, SPos &pos)
 {
-  for (auto &data : mData)
+  auto &data = mBufferData.Get(pos);
+  if (data && data->sector.get().sector)
   {
-    data.world_pos = data.local_pos + pos;
-    data.drawable->valide = false;
-    data.sector.reset();
+    auto &drawable = data->drawable;
+    drawable.SetPos(mPos);
+    drawable.vertex_buffer.setData(worker.compiler.GetVertexData(), BufferUsage::StaticDraw);
+    drawable.index_buffer.setData(worker.compiler.GetIndexData(), BufferUsage::StaticDraw);
+    drawable.mesh.setCount(worker.compiler.GetIndexData().size());
   }
+  UnuseSector(pos);
+  return true;
+}
+
+DrawableArea::BufferData DrawableArea::OnBufferAdd(const SPos &pos)
+{
+  UseSector(pos);
+  return{ GetSectorData(pos) };
+}
+
+void DrawableArea::OnBufferRemove(BufferData &data, const SPos &pos)
+{
+  UnuseSector(pos);
+}
+
+void DrawableArea::OnSectorAdd(const SPos &pos)
+{
+  UseSector(pos);
+
+//   auto &sector = mData.Get(pos);
+//   if (sector)
+//     sector->sector->SetCompilerData(worker.compiler);
+}
+
+void DrawableArea::OnSectorRemove(const SPos &pos)
+{
+  GetSectorData(pos).sector.reset();
+  UnuseSector(pos);
+}
+
+void DrawableArea::UseSector(const SPos &pos)
+{
+  auto it = mSectors.find(pos);
+  if (it != mSectors.end())
+  {
+    auto &res = mSectors.emplace(pos, pos);
+    if (!res.second)
+      return;
+    it = res.first;
+    // Создали сектор, сообщим ему и всем его соседям об этом.
+  }
+  ++it->second.count;
+}
+
+void DrawableArea::UnuseSector(const SPos &pos)
+{
+  auto it = mSectors.find(pos);
+  if (it != mSectors.end())
+  {
+    --it->second.count;
+    if (!it->second.count)
+    {
+      mSectors.erase(it);
+    }
+  }
+}
+
+DrawableArea::SectorData & DrawableArea::GetSectorData(const SPos &pos)
+{
+  auto it = mSectors.find(pos);
+  return it->second;
 }
 
 //=============== SectorRenderData ===============
@@ -212,36 +271,9 @@ void SectorRenderData::DrawShadowPass(const Magnum::Frustum &frustum, const Magn
 }
 
 
-//================== TaskCompile ==================
-TaskCompile::TaskCompile(std::weak_ptr<Sector> sector, std::weak_ptr<SectorRenderData> drawable)
-{
-  mSector = sector;
-  mDrawable = drawable;
-  if (!mSector.expired())
-  {
-    mPos = mSector.lock()->GetPos();
-  }
-}
-
-bool TaskCompile::Begin(SectorCompiler &compiler)
-{
-  if (!mSector.expired())
-  {
-    mSector.lock()->SetCompilerData(compiler);
-    return true;
-  }
-  return false;
-}
-
-void TaskCompile::End(const SectorCompiler &compiler)
-{
-  if (!mDrawable.expired())
-  {
-    auto drawable = mDrawable.lock();
-    drawable->SetPos(mPos);
-    drawable->vertex_buffer.setData(compiler.GetVertexData(), BufferUsage::StaticDraw);
-    drawable->index_buffer.setData(compiler.GetIndexData(), BufferUsage::StaticDraw);
-    drawable->mesh.setCount(compiler.GetIndexData().size());
-    drawable->valide = true;
-  }
-}
+// auto drawable = mDrawable.lock();
+// drawable->SetPos(mPos);
+// drawable->vertex_buffer.setData(compiler.GetVertexData(), BufferUsage::StaticDraw);
+// drawable->index_buffer.setData(compiler.GetIndexData(), BufferUsage::StaticDraw);
+// drawable->mesh.setCount(compiler.GetIndexData().size());
+// drawable->valide = true;

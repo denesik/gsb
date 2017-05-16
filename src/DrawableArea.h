@@ -19,6 +19,11 @@
 #include "Camera.h"
 #include "ThreadWorker.h"
 #include <StandartShader.h>
+#include <boost\optional\optional.hpp>
+#include "RingBuffer.h"
+#include "ThreadProcess.h"
+#include <unordered_map>
+#include <type_traits>
 
 class World;
 
@@ -37,6 +42,8 @@ struct SectorRenderData
   Magnum::Matrix4 model;
 
   SectorRenderData();
+  SectorRenderData(SectorRenderData &&other) = default;
+  SectorRenderData &operator=(SectorRenderData &&) = default;
 
   void SetPos(const SPos &pos);
 
@@ -45,35 +52,10 @@ struct SectorRenderData
 };
 
 
-class TaskCompile
-{
-public:
-  TaskCompile(std::weak_ptr<Sector> sector, std::weak_ptr<SectorRenderData> drawable);
-
-  bool Begin(SectorCompiler &compiler);
-
-  void End(const SectorCompiler &compiler);
-
-private:
-  std::weak_ptr<Sector> mSector;
-  std::weak_ptr<SectorRenderData> mDrawable;
-  SPos mPos;
-};
-
-// Список на обновление.
-// Проверяем есть ли воркер.
-// Если нету - ищем подходящий воркер. ??
-// Если есть проверяем завершил ли воркер работу.
-// Если завершил - вызываем обвновление данных, удаляем элемент, удаляем воркер.
-// Если нету но нашли - вызываем загрузку данных в воркер.
-// Если не смогли загрузить - удаляем элемент, удаляем воркер.
-
-// Рисуем сектора в указанной области.
-// Данный класс не загружает сектора в память при их отсутствии!
 class DrawableArea
 {
 public:
-  DrawableArea(World &world, const SPos &pos, unsigned int radius = 5);
+  DrawableArea(World &world, const SPos &pos, unsigned int radius = 1);
   ~DrawableArea();
 
   void SetRadius(unsigned int radius);
@@ -82,28 +64,71 @@ public:
 
   //TODO: Не компилировать сектор, если он компилируется в данный момент.
   void Draw(const Camera &camera, const Camera &sun, const Vector3 &lightdir, StandartShader& shader);
-  void DrawShadowPass(const Camera &sun, ShadowShader& shader);
+  //void DrawShadowPass(const Camera &sun, ShadowShader& shader);
 
 private:
   World &mWorld;
   SPos mPos;
 
-  struct Data
+  struct SectorData
   {
-    SPos local_pos;
-    SPos world_pos;
-    std::weak_ptr<Sector> sector;
-    std::shared_ptr<SectorRenderData> drawable;
+    SectorData() = default;
+    SectorData(const SPos &_pos)
+      : pos(_pos)
+    {}
+
+    const SPos pos;
+    boost::optional<Sector &> sector;
+    size_t count = 0;
+    bool added = false;
   };
 
-  std::vector<Data> mData;
+  struct BufferData
+  {
+    BufferData(SectorData &_sector)
+      : sector(_sector)
+    {}
+    BufferData(BufferData &&other) = default;
+    BufferData &operator=(BufferData &&) = default;
+
+    std::reference_wrapper<SectorData> sector;
+    SectorRenderData drawable;
+  };
+
+  std::unordered_map<SPos, SectorData> mSectors;
+  RingBuffer2D<BufferData> mBufferData;
   Timer mTimer;
 
-private:
-  void UpdateRadius(unsigned int radius);
-  void UpdatePos(const SPos &pos);
+  struct Worker
+  {
+    Worker(const DataBase &dataBase)
+      : compiler(dataBase)
+    {}
 
-  ThreadWorker<TaskCompile, SectorCompiler> mCompilerWorker;
+    void Process(Sector &sector)
+    {
+      compiler.Process();
+    }
+
+    SectorCompiler compiler;
+  };
+
+  ThreadProcess<Worker, SPos> mCompiler;
+
+private:
+  void OnSectorAdd(const SPos &pos);
+  void OnSectorRemove(const SPos &pos);
+
+  BufferData OnBufferAdd(const SPos &pos);
+  void OnBufferRemove(BufferData &data, const SPos &pos);
+
+  bool OnCompilerBegin(Worker &worker, SPos &pos);
+  bool OnCompilerEnd(Worker &worker, SPos &pos);
+
+  void UseSector(const SPos &pos);
+  void UnuseSector(const SPos &pos);
+
+  SectorData &GetSectorData(const SPos &pos);
 };
 
 

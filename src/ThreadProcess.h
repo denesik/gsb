@@ -5,18 +5,61 @@
 #include <mutex>
 #include <atomic>
 #include <thread>
+#include <functional>
+#include <vector>
 
 // Класс заглушка.
 template<class Worker, class Task>
 class ThreadProcess
 {
 public:
-  // Количество потоков, количество воркеров.
-  ThreadProcess(size_t thread_count, size_t worker_count) {};
-  // Добавить задачу на выполнение.
-  void Push(Task &&task) {};
+  using CallbackType = std::function<bool(Worker &, Task &)>;
 
-  void Update() {};
+  // Количество потоков, количество воркеров.
+  template<class ...Args>
+  ThreadProcess(size_t thread_count, size_t worker_count, Args &&...args)
+    : mWorker(std::forward<Args>(args)...)
+  {
+  }
+
+  // Добавить задачу на выполнение.
+  void Push(Task &task) 
+  {
+    mTasks.emplace_back(task);
+  };
+
+  void Update() 
+  {
+    if (!mTasks.empty())
+    {
+      for (auto &task : mTasks)
+      {
+        if (mBeginCallback)
+          mBeginCallback(mWorker, task);
+        mWorker.Process(task);
+        if (mEndCallback)
+          mEndCallback(mWorker, task);
+      }
+      mTasks.clear();
+    }
+  };
+
+  void SetBeginCallback(CallbackType func) 
+  {
+    mBeginCallback = func;
+  };
+
+  void SetEndCallback(CallbackType func) 
+  {
+    mEndCallback = func;
+  };
+
+private:
+  CallbackType mBeginCallback;
+  CallbackType mEndCallback;
+
+  Worker mWorker;
+  std::vector<std::reference_wrapper<Task>> mTasks;
 };
 
 

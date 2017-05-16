@@ -140,7 +140,7 @@ void Game::drawEvent()
   mShadowFramebuffer.clear(FramebufferClear::Depth).bind();
   Renderer::setColorMask(false, false, false, false);
   Renderer::setFaceCullingMode(Magnum::Renderer::PolygonFacing::Front);
-  mDrawableArea->DrawShadowPass(*mSunCamera, mShadowPass);
+//  mDrawableArea->DrawShadowPass(*mSunCamera, mShadowPass);
 
   //forward pass
   Renderer::setColorMask(true, true, true, true);

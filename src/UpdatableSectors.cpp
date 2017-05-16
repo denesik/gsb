@@ -56,32 +56,32 @@ void UpdatableSectors::Remove(const SPos &pos)
 
 void UpdatableSectors::Update()
 {
-  const double N = 60.0;
-  bool updating = false;
-  if (mTimer.Elapsed() > 1.0 / N)
-  {
-    mTimer.Start();
-    updating = true;
-  }
-  updating = true;
-
-  if (updating)
-  for (auto &site : mSectors)
-  {
-    auto sector = std::get<2>(site).lock();
-    if (!sector)
-    {
-      std::get<2>(site) = mWorld.GetSector(std::get<0>(site));
-      sector = std::get<2>(site).lock();
-      if (!sector)
-      {
-        mWorld.LoadSector(std::get<0>(site));
-      }
-    }
-
-    if (sector)
-    {
-      sector->Update();
-    }
-  }
+//   const double N = 60.0;
+//   bool updating = false;
+//   if (mTimer.Elapsed() > 1.0 / N)
+//   {
+//     mTimer.Start();
+//     updating = true;
+//   }
+//   updating = true;
+// 
+//   if (updating)
+//   for (auto &site : mSectors)
+//   {
+//     auto sector = std::get<2>(site).lock();
+//     if (!sector)
+//     {
+//       std::get<2>(site) = mWorld.GetSector(std::get<0>(site));
+//       sector = std::get<2>(site).lock();
+//       if (!sector)
+//       {
+//         mWorld.LoadSector(std::get<0>(site));
+//       }
+//     }
+// 
+//     if (sector)
+//     {
+//       sector->Update();
+//     }
+//   }
 }
