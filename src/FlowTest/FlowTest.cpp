@@ -12,5 +12,5 @@ BOOST_AUTO_TEST_CASE(first_test)
   rn.AddTransmitter(prod1, cons1, 2);
 
   auto flow = rn.MaxFlow();
-  BOOST_TEST(flow == 1);
+  BOOST_TEST(flow == 0);
 }
