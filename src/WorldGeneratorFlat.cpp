@@ -5,6 +5,7 @@
 #include <limits>
 #include <cmath>
 #include <map>
+#include <TesselatorMicroBlock.h>
 
 #define ADDL layering.insert(layering.begin(), { BlockInterval::right_open(
 
@@ -13,15 +14,30 @@ Layering WorldGeneratorFlat::GetLayering(const DataBase & db, int x, int z) cons
   const int dirt_level = 64;
   BlockId dirt = db.BlockIdFromName("dirt").value_or(1);
   BlockId grass = db.BlockIdFromName("grass").value_or(1);
+  BlockId grass_micro = db.BlockIdFromName("grass_micro").value_or(1);
   BlockId furnance = db.BlockIdFromName("furnance").value_or(1);
   BlockId number = db.BlockIdFromName("number").value_or(1);
   BlockId world_side = db.BlockIdFromName("world_side").value_or(1);
 
   Layering layering;
-  layering += std::make_pair(boost::icl::interval<unsigned short>::right_open(0, 64), dirt);
-  layering += std::make_pair(boost::icl::interval<unsigned short>::right_open(64, 65), grass);
-  if ((rand() % 100 == 1 || rand() % 100 == 2))
-    layering += std::make_pair(boost::icl::interval<unsigned short>::right_open(65, 66), world_side);
+  layering.set({ BlockInterval::right_open(0, 1), grass_micro });
+  layering.set({ BlockInterval::right_open(1, 2), dirt });
+
+  auto tess = std::make_unique<TesselatorData>();
+  auto &data = TesselatorMicroBlock::ToMicroblockData(*tess);
+  
+  for (int k1 = 0; k1 < 4; ++k1)
+  {
+    for (int j1 = 0; j1 < 4; ++j1)
+    {
+      for (int i1 = 0; i1 < 4; ++i1)
+      {
+        data[TesselatorMicroBlock::ToIndex({ i1, j1, k1 }, 4)] = (i1 + j1 + k1) % 3 == 0;
+      }
+    }
+  }
+
+  layering.mTesselatorData.insert(std::make_pair(0, std::move(tess)));
 
   return layering;
 }

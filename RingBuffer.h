@@ -143,3 +143,13 @@ private:
   Magnum::Vector2i mDim;
   SPos mPos;
 };
+
+class A : public RingBuffer2D<std::reference_wrapper<int>>
+{
+public:
+
+  void b()
+  {
+
+  }
+};

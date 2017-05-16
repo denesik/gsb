@@ -5,6 +5,7 @@
 #include <Sector_generated.h>
 #include <fstream>
 #include <boost/format.hpp>
+#include <TesselatorMicroBlock.h>
 
 MapLoaderFromGenerator::MapLoaderFromGenerator(const IMapGenerator &generator, const DataBase &db)
   : IMapLoader(db)
@@ -26,7 +27,7 @@ void MapLoaderFromGenerator::Process()
     for (int i = 0; i < gSectorSize.x(); i++)
       for (int k = 0; k < gSectorSize.z(); k++)
       {
-        const auto &layering = mGenerator.GetLayering(mDb, offset.x() + i, offset.z() + k);
+        const auto layering = mGenerator.GetLayering(mDb, offset.x() + i, offset.z() + k);
         const auto max_h = mGenerator.GetGroundLevel(mDb, offset.x() + i, offset.z() + k);
         const auto w_level = mGenerator.GetWaterLevel(mDb, offset.x() + i, offset.z() + k);
 
@@ -42,6 +43,12 @@ void MapLoaderFromGenerator::Process()
         {
           for(auto j = bottom->first.lower(); j < bottom->first.upper() && j <= max_h; ++j)
             sector->CreateBlock(SBPos{i, max_h - j, k}, bottom->second);
+        }
+
+        for (const auto &tess : layering.mTesselatorData)
+        {
+          auto &tessData = TesselatorMicroBlock::ToMicroblockData(sector->GetTesselatorData(SBPos{ i, max_h - tess.first, k }).value());
+          tessData = TesselatorMicroBlock::ToMicroblockData(*tess.second);
         }
       }
 

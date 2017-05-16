@@ -42,19 +42,30 @@ public:
 
   IndexType ToIndex(const MBPos &pos) const
   {
+    return ToIndex(pos, mSize);
+  }
+
+  MBPos FromIndex(IndexType i) const
+  {
+    return FromIndex(i, mSize);
+  }
+
+  static IndexType ToIndex(const MBPos &pos, IndexType mSize)
+  {
     const auto size = static_cast<IndexType>(mSize);
     return static_cast<IndexType>(pos.z()) * size * size +
       static_cast<IndexType>(pos.y()) * size +
       static_cast<IndexType>(pos.x());
   }
 
-  MBPos FromIndex(IndexType i) const
+  static MBPos FromIndex(IndexType i, IndexType mSize)
   {
     const auto size = static_cast<IndexType>(mSize);
     return STPos{
       static_cast<STPosType>(i % size),
       static_cast<STPosType>((i / size) % size),
-      static_cast<STPosType>(i / (size * size)) };
+      static_cast<STPosType>(i / (size * size)) 
+    };
   }
 
   MBPosType Size() const

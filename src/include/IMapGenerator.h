@@ -6,12 +6,20 @@
 #include <IGui.h>
 #include <list>
 #include <tools\CoordSystem.h>
+#include <map>
+#include <Tesselator.h>
+#include <boost/container/flat_map.hpp>
 
 class Sector;
 class DataBase;
 
 using BlockInterval = boost::icl::interval<unsigned short>;
-using Layering = boost::icl::interval_map<unsigned short, BlockId>;
+
+class Layering : public boost::icl::interval_map<unsigned short, BlockId>
+{
+public:
+  boost::container::flat_map<int, std::unique_ptr<TesselatorData>> mTesselatorData;
+};
 
 enum class StructureSize
 {

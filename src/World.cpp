@@ -8,7 +8,7 @@ World::World(const DataBase &blocksDataBase)
   : mBlocksDataBase(blocksDataBase)
   , mUpdatableSectors(*this)
   , mPlayer(*this)
-  , mWorldGenerator(std::make_unique<WorldGeneratorBiome>())
+  , mWorldGenerator(std::make_unique<WorldGeneratorFlat>())
   , mLoaderWorker(std::make_unique<ThreadWorker<TaskLoad, MapLoaderFromGenerator>>(*mWorldGenerator, blocksDataBase))
   , mSaverWorker(std::make_unique<ThreadWorker<TaskUnload, MapSaverToDisk>>("/save/", blocksDataBase))
 {
