@@ -31,16 +31,20 @@ public:
     mDim = size * 2 + Magnum::Vector2i(1, 1);
     mStorage.clear();
 
-    for (int i = -size.x(); i <= size.x(); i++)
-      for (int j = -size.y(); j <= size.y(); j++)
-      {
-        SPos spos = mPos + SPos(i, 0, j);
-//         Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
-//         Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - mDim * sec_pos;
-//         mStorage[wpos.y() * mDim.x() + wpos.x()].reset(spos);
+    SPos unoffseted = { -size.x(), 0, -size.y() };
+    for (int i = 0; i < mDim.x() * mDim.y(); i++)
+    {
+      SPos spos = mPos + unoffseted;
 
-        mStorage.emplace_back(onAdding(spos));
+      mStorage.emplace_back(onAdding(spos));
+
+      unoffseted.z()++;
+      if (unoffseted.z() > size.y())
+      {
+        unoffseted.z() = -size.y();
+        unoffseted.x()++;
       }
+    }
 
     return *this;
   }
