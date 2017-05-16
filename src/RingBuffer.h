@@ -4,28 +4,41 @@
 #include <Magnum\Magnum.h>
 #include <tools\CoordSystem.h>
 #include <functional>
+#include <boost\optional.hpp>
 
 template<typename T>
-class RingBuffer2D
+class RingBuffer
 {
 public:
   using StoredType = T;
+  using AddFunction = std::function<T(const SPos &)>;
+  using DeleteFunction = std::function<void(T &, const SPos &)>;
 
-  RingBuffer2D<T>(Magnum::Vector2i size = { 3, 3 })
+  RingBuffer<T>(Magnum::Vector2i size, AddFunction add, DeleteFunction del)
+    : onAdding(add)
+    , onDeletting(del)
   {
     SetSize(size);
   }
 
-  RingBuffer2D<T> &SetSize(Magnum::Vector2i size)
+  RingBuffer<T> &SetSize(Magnum::Vector2i size)
   {
-    for (int i = -size.x(); i <= size.x(); i++)
-      for (int j = -size.y(); j <= size.y(); j++)
+    if (!mStorage.empty())
+    {
+      SPos unoffseted = { -size.x(), 0, -size.y() };
+      for (int i = 0; i < mDim.x() * mDim.y(); i++)
       {
-        SPos spos = mPos + SPos(i, 0, j);
-        Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
-        Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - mDim * sec_pos;
-        onDeletting(mStorage[wpos.y() * mDim.x() + wpos.x()], spos);
+        SPos spos = mPos + unoffseted;
+        onDeletting(mStorage[i], spos);
+
+        unoffseted.z()++;
+        if (unoffseted.z() > size.y())
+        {
+          unoffseted.z() = -size.y();
+          unoffseted.x()++;
+        }
       }
+    }
 
     mRadius = size;
     mDim = size * 2 + Magnum::Vector2i(1, 1);
@@ -51,7 +64,7 @@ public:
 
   boost::optional<T &> Get(const SPos &spos)
   {
-    if ((std::abs(mPos.x() - spos.x()) < mRadius.x()) || (std::abs(mPos.y() - spos.y()) < mRadius.y()))
+    if ((std::abs(mPos.x() - spos.x()) > mRadius.x()) || (std::abs(mPos.z() - spos.z()) > mRadius.y()))
       return{};
 
     Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
@@ -70,40 +83,28 @@ public:
     if (pos == mPos)
       return;
 
-    int deltaX = std::max(std::min(pos.x() - mPos.x(), mRadius.x() * 2), -mRadius.x() * 2);
-    int deltaY = std::max(std::min(pos.z() - mPos.z(), mRadius.y() * 2), -mRadius.y() * 2);
-
-    //новые столбцы
-    for (int i = 0; i < std::abs(deltaX); i++)
-      for (int j = 0; j < mDim.y(); j++)
+    SPos unoffseted = { -mRadius.x(), 0, -mRadius.y() };
+    for (int i = 0; i < mDim.x() * mDim.y(); i++)
+    {
+      SPos oldPos = mPos + unoffseted;
+      if (std::abs(oldPos.x() - pos.x()) > mRadius.x() || std::abs(oldPos.z() - pos.z()) > mRadius.y())
       {
-        // новые столбцы будут в координатах центр(pos) + радиус(mSize.x()) + номер столбца(i)
-        // для отрицательных координат центр(pos) - радиус(mSize.x()) - номер столбца(i)\
-        // потому в таком случае они умножаются на -1(sgn(deltaX))
-        SPos spos = pos + SPos((mRadius.x() + i) * sgn(deltaX), 0, j - mRadius.y());
-
-        // координаты очередного элемента в виртуальных секторах, размером radius*2+1
-        Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
-
-        // приведение координат к [0, radius*2+1)
-        Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - mDim * sec_pos;
-
-        onDeletting(mStorage[wpos.y() * mDim.x() + wpos.x()], spos - SPos(mDim.x(), 0, 0));
-        mStorage[wpos.y() * mDim.x() + wpos.x()] = onAdding(spos);
+        onDeletting(mStorage[i], oldPos);
       }
 
-    //новые строки
-    for (int j = 0; j < std::abs(deltaY); j++)
-      for (int i = 0; i < mDim.x(); i++)
+      SPos newPos = pos + unoffseted;
+      if (std::abs(mPos.x() - newPos.x()) > mRadius.x() || std::abs(mPos.z() - newPos.z()) > mRadius.y())
       {
-        // все аналогично, читай выше
-        SPos spos = pos + SPos(i - mRadius.x(), 0, (mRadius.y() + j) * sgn(deltaY));
-        Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
-        Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - mDim * sec_pos;
-
-        onDeletting(mStorage[wpos.y() * mDim.x() + wpos.x()], spos - SPos(0, 0, mDim.y()));
-        mStorage[wpos.y() * mDim.x() + wpos.x()] = onAdding(spos);
+        onAdding(newPos);
       }
+
+      unoffseted.z()++;
+      if (unoffseted.z() > mRadius.y())
+      {
+        unoffseted.z() = -mRadius.y();
+        unoffseted.x()++;
+      }
+    }
 
     mPos = pos;
   }
@@ -123,8 +124,8 @@ public:
     return mStorage.end();
   }
 
-  std::function<T(const SPos &)> onAdding;
-  std::function<void(T &, const SPos &)> onDeletting;
+  AddFunction onAdding;
+  DeleteFunction onDeletting;
 
 private:
   inline Magnum::Vector2i WrapSPos(const Magnum::Vector2i &pos)

@@ -12,18 +12,16 @@ using namespace Magnum;
 DrawableArea::DrawableArea(World &world, const SPos &pos, unsigned int radius)
   : mWorld(world), mPos(pos), 
   mCompiler(1, 1, world.GetBlocksDataBase()),
-  mBufferData({1, 1})
+  mBufferData({1, 1}, 
+    [this](const SPos &pos)
+    {
+      return OnBufferAdd(pos);
+    },
+    [this](BufferData &data, const SPos &pos)
+    {
+      OnBufferRemove(data, pos);
+    })
 {
-  mBufferData.onAdding = [this](const SPos &pos)
-  {
-    return OnBufferAdd(pos);
-  };
-
-  mBufferData.onDeletting = [this](BufferData &data, const SPos &pos)
-  {
-    OnBufferRemove(data, pos);
-  };
-
   mCompiler.SetBeginCallback([this](Worker &worker, SPos &pos)
   {
     return OnCompilerBegin(worker, pos);

@@ -96,7 +96,7 @@ private:
   };
 
   std::unordered_map<SPos, SectorData> mSectors;
-  RingBuffer2D<BufferData> mBufferData;
+  RingBuffer<BufferData> mBufferData;
   Timer mTimer;
 
   struct Worker

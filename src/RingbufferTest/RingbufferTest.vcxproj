@@ -71,12 +71,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)..\3rdparty\msvc15_x86\include;$(SolutionDir)..\3rdparty\msvc15_x86\include\MagnumExternal\OpenGL;$(SolutionDir)..\3rdparty\msvc15_x86\include\SDL2;$(SolutionDir)..\3rdparty\msvc15_x86\include\GLFW;$(SolutionDir)rapidjson\include;$(SolutionDir)..\3rdparty\msvc15_x86\boost;$(SolutionDir)src\include\;$(SolutionDir)src\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolitionDir)..\..\..\3rdparty\msvc15_x86\lib;$(SolitionDir)..\..\..\3rdparty\msvc15_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)..\3rdparty\msvc15_x86\include;$(SolutionDir)..\3rdparty\msvc15_x86\include\MagnumExternal\OpenGL;$(SolutionDir)..\3rdparty\msvc15_x86\include\SDL2;$(SolutionDir)..\3rdparty\msvc15_x86\include\GLFW;$(SolutionDir)rapidjson\include;$(SolutionDir)..\3rdparty\msvc15_x86\boost;$(SolutionDir)src\include\;$(SolutionDir)src\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolitionDir)..\..\..\3rdparty\msvc15_x86\lib;$(SolitionDir)..\..\..\3rdparty\msvc15_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -94,6 +98,10 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -125,7 +133,11 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Magnum.lib;MagnumSdl2Application.lib;CorradePluginManager.lib;CorradeUtility.lib;opengl32.lib;SDL2.lib;MagnumShaders.lib;MagnumTextureTools.lib;winmm.lib;imm32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>$(TargetPath)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -146,6 +158,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
