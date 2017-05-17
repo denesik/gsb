@@ -16,6 +16,7 @@
 #include <map>
 #include <boost\optional\optional.hpp>
 #include <type_traits>
+#include <boost/icl/interval_map.hpp>
 
 struct FakeData;
 
@@ -26,6 +27,9 @@ class DataBase
 public:
   DataBase(const TextureAtlas &atlas, const TextureAtlas &atlas_items);
   ~DataBase();
+
+  using ItemStorage = std::array<std::unique_ptr<IItem>, 0xFFFF>;
+  using ItemStorageInterval = boost::icl::interval_map<unsigned short, bool>;
 
   /// Добавить блок в БД.
   /// Если блок с указанным ид существует, он не добавляется и возвращается false.
@@ -47,7 +51,11 @@ public:
   
   boost::optional<ItemId> ItemIdFromName(const std::string& name) const;
 
+  const size_t GetItemCount() const;
   const std::unique_ptr<IItem> &GetItem(ItemId id) const;
+  const ItemStorage &GetItems() const;
+  const ItemStorageInterval &GetLoadedItemsInterval() const;
+
 
   const TextureAtlas &GetAtlasItems() const;
   const TextureAtlas &GetAtlas() const;
@@ -67,7 +75,10 @@ private:
   std::array<std::tuple<std::unique_ptr<StaticBlock>, std::unique_ptr<Block>>, 0xFFFF> mBlocks;
   std::unordered_map<std::string, BlockId> mBlockNames;
 
-  std::array<std::unique_ptr<IItem>, 0xFFFF> mItems;
+
+  size_t mItemCount;
+  ItemStorage mItems;
+  ItemStorageInterval mLoadedItemsInterval;
   std::unordered_map<std::string, ItemId> mItemNames;
 
   std::map<IRecipe::Tag, std::vector<std::unique_ptr<IRecipe>>> mRecipes;

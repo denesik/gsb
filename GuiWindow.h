@@ -22,6 +22,8 @@ public:
   void Open();
   void Close();
   void Toggle();
+  const std::string &GetName();
+  bool IsClosed();
 
 private:
 
@@ -50,6 +52,21 @@ public:
 
 };
 
+class ItemDBGuiContext : public IContext
+{
+public:
+};
+
+class ItemDBGui : public ContextGui<ItemDBGuiContext>
+{
+public:
+  using ContextType = ItemDBGuiContext;
+
+  // Унаследовано через ContextGui
+  void DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IContext & context) override;
+
+};
+
 class GuiWindowPlayerInventory : public GuiWindow
 {
 public:
@@ -66,6 +83,9 @@ private:
 
   ItemListTransformGui mTransformGui;
   GuiCtx::GuiLinkage &mTransformLink;
+
+  ItemDBGui mItemDBGui;
+  GuiCtx::GuiLinkage &mItemDBLink;
 
   std::unique_ptr<SortItemList> mSort;
 

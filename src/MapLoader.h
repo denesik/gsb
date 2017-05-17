@@ -6,6 +6,7 @@
 #include <DataBase.h>
 #include <boost/filesystem.hpp>
 
+//TODO: rename to sector loader
 class MapLoaderFromGenerator : public IMapLoader
 {
 public:

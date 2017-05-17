@@ -2,6 +2,7 @@
 #include <functional>
 #include "imgui/imgui.h"
 #include <Creature.h>
+#include <Item.h>
 
 GuiWindow::GuiWindow(DataBase &db, const std::string & name)
   : mName(name)
@@ -24,7 +25,7 @@ void GuiWindow::Draw(const Magnum::Timeline & dt)
 }
 
 GuiCtx::GuiLinkage & GuiWindow::AddGui(IGui & gui)
-{ 
+{
   mLinkages.push_back(std::move(mCtx->Register(gui)));
   return **(--mLinkages.end());
 }
@@ -52,10 +53,21 @@ void GuiWindow::Toggle()
     Close();
 }
 
+const std::string & GuiWindow::GetName()
+{
+  return mName;
+}
+
+bool GuiWindow::IsClosed()
+{
+  return mClosed;
+}
+
 GuiWindowPlayerInventory::GuiWindowPlayerInventory(Creature &player, DataBase & db, const std::string & name)
   : GuiWindow(db, name)
   , mPlayer(player)
   , mTransformLink(AddGui(mTransformGui))
+  , mItemDBLink(AddGui(mItemDBGui))
   , mSort(std::make_unique<SortItemList>(mTransformLink.Context<ItemListTransformGui::ContextType>().SortParams))
   , mPlayerGui(AddGui(player))
 {
@@ -83,6 +95,9 @@ void GuiWindowPlayerInventory::Sort()
 
 void GuiWindowPlayerInventory::Draw(const Magnum::Timeline & dt)
 {
+  if (IsClosed())
+    return;
+
   auto &resort = mTransformLink.Context<ItemListTransformGui::ContextType>().Resort;
   if (resort)
     Sort();
@@ -104,7 +119,44 @@ void ItemListTransformGui::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IC
   {
     if (context.SortParams.IsIncreasing())
       context.SortParams.SetDecreaseSort();
-    else 
+    else
       context.SortParams.SetIncreaseSort();
+  }
+}
+
+void ItemDBGui::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IContext & context)
+{
+  const auto &dbItems = ctx.GetDataBase().GetItems();
+  const auto &dbItemsInterval = ctx.GetDataBase().GetLoadedItemsInterval();
+  const size_t count = ctx.GetDataBase().GetItemCount();
+  constexpr int hor_size = 6;
+
+  int curItem = 0;
+  for (const auto &itemInterval : dbItemsInterval)
+  {
+    for (size_t index = itemInterval.first.lower(); index < itemInterval.first.upper(); ++index)
+    {
+      ImVec2 base_pos = ImGui::GetCursorScreenPos();
+      ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+      const auto &db_item = dbItems[index];
+
+      Magnum::Range2D coord = static_cast<const Item &>(*db_item).TextureCoord();
+
+      ImGui::ImageButton(
+        ImTextureID(1),
+        { 32, 32 },
+        { coord.left(), coord.top() },
+        { coord.right(), coord.bottom() },
+        -1,
+        { 0, 0, 0, 0 }
+      );
+
+      if (ImGui::IsItemHovered())
+        ImGui::SetTooltip("%s \n%s", db_item->GetName().c_str(), db_item->GetDescription().c_str());
+
+      if (((curItem + 1 + hor_size) % hor_size) != 0 && curItem != count - 1) ImGui::SameLine();
+      curItem++;
+    }
   }
 }

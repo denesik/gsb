@@ -77,6 +77,8 @@ void DataBase::AddItem(const std::string &name, ItemId id, std::unique_ptr<IItem
 {
   mItems[id] = std::move(move);
   mItemNames.emplace(name, id);
+  mLoadedItemsInterval.set({ BlockInterval::right_open(id, id+1), true });
+  ++mItemCount;
 }
 
 boost::optional<ItemId> DataBase::ItemIdFromName(const std::string& name) const
@@ -90,9 +92,24 @@ boost::optional<ItemId> DataBase::ItemIdFromName(const std::string& name) const
   return{};
 }
 
+const size_t DataBase::GetItemCount() const
+{
+  return mItemCount;
+}
+
 const std::unique_ptr<IItem> & DataBase::GetItem(ItemId id) const
 {
   return mItems[id];
+}
+
+const DataBase::ItemStorage & DataBase::GetItems() const
+{
+  return mItems;
+}
+
+const DataBase::ItemStorageInterval & DataBase::GetLoadedItemsInterval() const
+{
+  return mLoadedItemsInterval;
 }
 
 std::tuple<BlockId, std::unique_ptr<TesselatorData>, std::unique_ptr<Block>> DataBase::CreateBlock(Sector &parent, BlockId id) const
