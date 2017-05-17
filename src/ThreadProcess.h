@@ -23,7 +23,7 @@ public:
   }
 
   // Добавить задачу на выполнение.
-  void Push(Task &task) 
+  void Push(const Task &task)
   {
     mTasks.emplace_back(task);
   };
@@ -35,7 +35,10 @@ public:
       for (auto &task : mTasks)
       {
         if (mBeginCallback)
-          mBeginCallback(mWorker, task);
+        {
+          if (!mBeginCallback(mWorker, task))
+            continue;
+        }
         mWorker.Process(task);
         if (mEndCallback)
           mEndCallback(mWorker, task);
@@ -59,7 +62,7 @@ private:
   CallbackType mEndCallback;
 
   Worker mWorker;
-  std::vector<std::reference_wrapper<Task>> mTasks;
+  std::vector<Task> mTasks;
 };
 
 

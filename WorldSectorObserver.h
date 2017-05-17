@@ -9,8 +9,10 @@ class Sector;
 class WorldSectorEvent
 {
 public:
-  void Load(Sector &sector);
-  void UnLoad(Sector &sector);
+  virtual ~WorldSectorEvent() = default;
+
+  virtual void Load(Sector &sector);
+  virtual void UnLoad(Sector &sector);
 };
 
 class WorldSectorObserver : public ptl::observer<WorldSectorEvent>

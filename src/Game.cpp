@@ -22,7 +22,7 @@
 #include "ChunkHelper.h"
 #include <Magnum/Version.h>
 
-static const int tmp_area_size = 0;
+static const int tmp_area_size = 1;
 
 Game::Game(const Arguments & arguments)
   : Platform::Application{ arguments, Configuration{}.setTitle("sge").setWindowFlags(Configuration::WindowFlag::Resizable).setVersion(Magnum::Version::GL330) }
@@ -58,7 +58,9 @@ Game::Game(const Arguments & arguments)
   //mWorld->SetLoader(std::move(mapgen));
 
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{}, tmp_area_size);
-  mUpdatableArea = std::make_unique<UpdatableArea>(*mWorld, SPos{}, tmp_area_size);
+  mWorld->GetWorldSectorObserver().attach(*mDrawableArea);
+  mWorld->LoadSector(SPos{});
+  //mUpdatableArea = std::make_unique<UpdatableArea>(*mWorld, SPos{}, tmp_area_size);
 
   setSwapInterval(0);
   setMouseLocked(true);

@@ -14,6 +14,7 @@
 #include <unordered_set>
 #include "..\WorldSectorObserver.h"
 #include <boost\optional\optional.hpp>
+#include <type_traits>
 
 
 class MapLoader;
@@ -101,15 +102,15 @@ private:
 
     }
 
-    void Process(Sector &sector)
+    void Process(std::reference_wrapper<Sector> sector)
     {
-      generator.Generate(sector);
+      generator.Generate(sector.get());
     }
 
     IMapGenerator &generator;
   };
 
-  ThreadProcess<Worker, Sector> mSectorLoader;
+  ThreadProcess<Worker, std::reference_wrapper<Sector>> mSectorLoader;
 
 private:
   /// Сообщить миру что мы хотим использовать этот сектор.

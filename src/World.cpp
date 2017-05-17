@@ -15,7 +15,7 @@ World::World(const DataBase &blocksDataBase)
   mFakeSector(*this, SPos{}),
   mUpdatableSectors(*this), 
   mPlayer(*this), 
-  mWorldGenerator(std::make_unique<BiomeMapGenerator>(blocksDataBase)),
+  mWorldGenerator(std::make_unique<WorldGeneratorFlat>(blocksDataBase)),
   mSectorLoader(1, 1, *mWorldGenerator)
 {
   mSectorLoader.SetBeginCallback([this](Worker &worker, Sector &sector)
@@ -64,7 +64,7 @@ void World::UnLoadSector(const SPos &pos)
 void World::UseSector(const SPos &pos)
 {
   auto it = mSectors.find(pos);
-  if (it != mSectors.end())
+  if (it == mSectors.end())
   {
     auto &res = mSectors.emplace(std::piecewise_construct,
       std::forward_as_tuple(pos),

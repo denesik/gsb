@@ -24,6 +24,7 @@
 #include "ThreadProcess.h"
 #include <unordered_map>
 #include <type_traits>
+#include "..\WorldSectorObserver.h"
 
 class World;
 
@@ -52,7 +53,7 @@ struct SectorRenderData
 };
 
 
-class DrawableArea
+class DrawableArea : public WorldSectorEvent
 {
 public:
   DrawableArea(World &world, const SPos &pos, unsigned int radius = 1);
@@ -86,12 +87,12 @@ private:
   struct BufferData
   {
     BufferData(SectorData &_sector)
-      : sector(_sector)
+      : sector_data(_sector)
     {}
     BufferData(BufferData &&other) = default;
     BufferData &operator=(BufferData &&) = default;
 
-    std::reference_wrapper<SectorData> sector;
+    std::reference_wrapper<SectorData> sector_data;
     SectorRenderData drawable;
   };
 
@@ -105,7 +106,7 @@ private:
       : compiler(dataBase)
     {}
 
-    void Process(Sector &sector)
+    void Process(SPos &pos)
     {
       compiler.Process();
     }
@@ -116,8 +117,8 @@ private:
   ThreadProcess<Worker, SPos> mCompiler;
 
 private:
-  void OnSectorAdd(const SPos &pos);
-  void OnSectorRemove(const SPos &pos);
+  void Load(Sector &sector) override;
+  void UnLoad(Sector &sector) override;
 
   BufferData OnBufferAdd(const SPos &pos);
   void OnBufferRemove(BufferData &data, const SPos &pos);
