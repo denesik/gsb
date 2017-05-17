@@ -12,7 +12,7 @@ using namespace Magnum;
 DrawableArea::DrawableArea(World &world, const SPos &pos, unsigned int radius)
   : mWorld(world), mPos(pos), 
   mCompiler(1, 1, world.GetBlocksDataBase()),
-  mBufferData({0, 0}, 
+  mBufferData({1, 1}, 
     [this](const SPos &pos)
     {
       return OnBufferAdd(pos);
@@ -157,7 +157,7 @@ bool DrawableArea::OnCompilerEnd(Worker &worker, SPos &pos)
   if (data && data->sector_data.get().sector)
   {
     auto &drawable = data->drawable;
-    drawable.SetPos(mPos);
+    drawable.SetPos(pos);
     drawable.vertex_buffer.setData(worker.compiler.GetVertexData(), BufferUsage::StaticDraw);
     drawable.index_buffer.setData(worker.compiler.GetIndexData(), BufferUsage::StaticDraw);
     drawable.mesh.setCount(worker.compiler.GetIndexData().size());

@@ -59,7 +59,16 @@ Game::Game(const Arguments & arguments)
 
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{}, tmp_area_size);
   mWorld->GetWorldSectorObserver().attach(*mDrawableArea);
-  mWorld->LoadSector(SPos{});
+  mWorld->LoadSector({ -1, 0, -1 });
+  mWorld->LoadSector({ -1, 0, 0 });
+  mWorld->LoadSector({ -1, 0, 1 });
+  mWorld->LoadSector({ 0, 0, -1 });
+  mWorld->LoadSector({ 0, 0, 0 });
+  mWorld->LoadSector({ 0, 0, 1 });
+  mWorld->LoadSector({ 1, 0, -1 });
+  mWorld->LoadSector({ 1, 0, 0 });
+  mWorld->LoadSector({ 1, 0, 1 });
+
   //mUpdatableArea = std::make_unique<UpdatableArea>(*mWorld, SPos{}, tmp_area_size);
 
   setSwapInterval(0);
