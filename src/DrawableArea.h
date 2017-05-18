@@ -42,6 +42,8 @@ struct SectorRenderData
   Magnum::Range3D aabb;
   Magnum::Matrix4 model;
 
+  SPos m_pos;
+
   SectorRenderData();
   SectorRenderData(SectorRenderData &&other) = default;
   SectorRenderData &operator=(SectorRenderData &&) = default;
@@ -56,7 +58,7 @@ struct SectorRenderData
 class DrawableArea : public WorldSectorEvent
 {
 public:
-  DrawableArea(World &world, const SPos &pos, unsigned int radius = 1);
+  DrawableArea(World &world);
   ~DrawableArea();
 
   void SetRadius(unsigned int radius);

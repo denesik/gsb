@@ -84,3 +84,35 @@ void UpdatableArea::UpdatePos(const SPos &pos)
   }
 }
 
+SectorLoader::SectorLoader(World &world)
+  : mWorld(world),
+  mBufferData(
+    [&world](const SPos &pos)
+    {
+      world.LoadSector(pos);
+      //LOG(trace) << "Load sector [" << pos.x() << " " << pos.z() << "]. Count: ";
+      return 0;
+    },
+    [&world](int &data, const SPos &pos)
+    {
+      world.UnLoadSector(pos);
+      //LOG(trace) << "UnLoad sector [" << pos.x() << " " << pos.z() << "]. Count: ";
+    })
+{
+
+}
+
+SectorLoader::~SectorLoader()
+{
+
+}
+
+void SectorLoader::SetPos(const SPos &pos)
+{
+  mBufferData.UpdatePos(pos);
+}
+
+void SectorLoader::SetRadius(unsigned int radius)
+{
+  mBufferData.SetSize({ static_cast<int>(radius), static_cast<int>(radius) });
+}

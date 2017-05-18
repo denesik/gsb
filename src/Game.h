@@ -86,7 +86,8 @@ private:
   std::unique_ptr<DataBase> mBlocksDataBase;
   std::unique_ptr<World> mWorld;
   std::unique_ptr<UpdatableArea> mUpdatableArea;
-  std::unique_ptr<DrawableArea> mDrawableArea; // Должна уничтожиться раньше чем мир и бд.
+  std::unique_ptr<DrawableArea> mDrawableArea; 
+  std::unique_ptr<SectorLoader> mSectorLoader;
 
   FpsCounter mFpsCounter;
   DebugLines debugLines;
