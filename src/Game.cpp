@@ -62,8 +62,9 @@ Game::Game(const Arguments & arguments)
   mSectorLoader = std::make_unique<SectorLoader>(*mWorld);
 
   mDrawableArea->SetPos(SPos{});
-  mDrawableArea->SetRadius(tmp_area_size);
   mSectorLoader->SetPos(SPos{});
+
+  mDrawableArea->SetRadius(tmp_area_size);
   mSectorLoader->SetRadius(tmp_area_size);
 
   //mUpdatableArea = std::make_unique<UpdatableArea>(*mWorld, SPos{}, tmp_area_size);
@@ -75,7 +76,7 @@ Game::Game(const Arguments & arguments)
   mSunCamera = std::make_unique<Camera>(mSun, Range2Di{ {},{ 512, 512 } }, Camera::Type::Ortho);
   mCurrentCamera = mCamera.get();
 
-  mWorld->mPlayer.SetPos({ 0, 150, 0 });
+  mWorld->mPlayer.SetPos({ 0, 400, 0 });
 
   mShadowTexture.setImage(0, TextureFormat::DepthComponent, ImageView2D{ PixelFormat::DepthComponent, PixelType::Float,{ 512, 512 }, nullptr })
 	  .setMaxLevel(0)
@@ -104,6 +105,9 @@ void Game::drawEvent()
   mWorld->mPlayer.Move(mCameraVelocity * 0.006f);
   mWorld->mPlayer.Rotate(mCameraAngle * 0.003f);
   mWorld->mPlayer.Update();
+
+  mDrawableArea->SetPos(cs::WtoS(mWorld->mPlayer.Pos()));
+  mSectorLoader->SetPos(cs::WtoS(mWorld->mPlayer.Pos()));
 
   auto spos = Vector3{ std::sin(mTimeline.previousFrameTime()) * 100, 111, std::cos(mTimeline.previousFrameTime()) * 100 };
   mSun.SetPos(spos);
