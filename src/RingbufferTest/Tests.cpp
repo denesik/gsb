@@ -295,4 +295,22 @@ BOOST_AUTO_TEST_CASE(get_test)
     BOOST_TEST(element->spos.x() == 0);
     BOOST_TEST(element->spos.z() == 5);
   }
+
+  {
+    auto atZero = rb.Get({ 2, 0, 2 });
+    BOOST_CHECK(atZero.is_initialized());
+    auto &element = atZero.value();
+    BOOST_TEST(element->spos.x() == 2);
+    BOOST_TEST(element->spos.z() == 2);
+  }
+
+  rb.UpdatePos({ 1, 0, 0 });
+
+  {
+    auto atZero = rb.Get({ -1, 0, -2 });
+    BOOST_CHECK(atZero.is_initialized());
+    auto &element = atZero.value();
+    BOOST_TEST(element->spos.x() == -1);
+    BOOST_TEST(element->spos.z() == -2);
+  }
 }

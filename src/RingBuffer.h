@@ -62,6 +62,8 @@ public:
       StoreOrderedInc(unoffseted, mRadius);
     }
 
+    mBias = mPos;
+
     return *this;
   }
 
@@ -70,15 +72,10 @@ public:
     if ((std::abs(mPos.x() - spos.x()) > mRadius.x()) || (std::abs(mPos.z() - spos.z()) > mRadius.y()))
       return{};
 
-    auto sposInternal = spos - mPos + SPos(mRadius.x(), 0, mRadius.y());
-    Magnum::Vector2i sec_pos = WrapSPos({ sposInternal.x(), sposInternal.z() });
-    Magnum::Vector2i wpos = Magnum::Vector2i(sposInternal.x(), sposInternal.z()) - sec_pos * mDim;
+    Magnum::Vector2i sec_pos = WrapSPos(Magnum::Vector2i{ spos.x(), spos.z() });
+    Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - sec_pos * mDim + mRadius;
     auto t = wpos.x() * mDim.x() + wpos.y();
     return mStorage[t];
-
-    /*const SPos spos2 = (mPos - spos) + SPos(mRadius.x(), 0, mRadius.y());
-    auto t = spos2.x() * mDim.y() + spos2.z();
-    return mStorage[t];*/
   }
 
   template <typename T> int sgn(T val) {
@@ -127,8 +124,9 @@ public:
   DeleteFunction onDeletting;
 
 private:
-  inline Magnum::Vector2i WrapSPos(const Magnum::Vector2i &pos)
+  inline Magnum::Vector2i WrapSPos(const Magnum::Vector2i &_pos)
   {
+    const Magnum::Vector2i pos = _pos - Magnum::Vector2i(mBias.x(), mBias.z()) + mRadius;
     Magnum::Vector2i spos;
 
     spos.x() = (pos.x() >= 0) ? static_cast<int>(pos.x()) / mDim.x() : (static_cast<int>(pos.x()) - mDim.x() + int(1)) / mDim.x();
@@ -141,4 +139,5 @@ private:
   Magnum::Vector2i mRadius;
   Magnum::Vector2i mDim;
   SPos mPos;
+  SPos mBias;
 };
