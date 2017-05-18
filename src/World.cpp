@@ -254,9 +254,7 @@ void World::Update()
 {
   //mUpdatableSectors.Update();
 
-
-  mSectorLoader.Update();
-
+  // Сначала выгружаем сектора.
   if (!mUnloadSectors.empty())
   {
     for (const auto &pos : mUnloadSectors)
@@ -269,6 +267,9 @@ void World::Update()
 
     mUnloadSectors.clear();
   }
+
+  // Затем загружаем.
+  mSectorLoader.Update();
 }
 
 
