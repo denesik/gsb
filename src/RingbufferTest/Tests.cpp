@@ -217,6 +217,7 @@ BOOST_AUTO_TEST_CASE(resize_test)
     return std::make_unique<Storage>();
   };
 
+
   size_t c = 0;
   bool ok = true;
   auto del = [&c, &ok](std::unique_ptr<Storage> &s, const SPos &p) {
