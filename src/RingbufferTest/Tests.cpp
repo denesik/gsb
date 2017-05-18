@@ -174,3 +174,63 @@ BOOST_AUTO_TEST_CASE(almost_full_replace_test)
   BOOST_TEST(seqAdd.empty());
   BOOST_TEST(seqDel.empty());
 }
+
+static Magnum::Vector3i atZeroSeq5[] = {
+  { -2,  0, -2 },
+  { -2,  0, -1 },
+  { -2,  0,  0 },
+  { -2,  0,  1 },
+  { -2,  0,  2 },
+
+  { -1,  0, -2 },
+  { -1,  0, -1 },
+  { -1,  0,  0 },
+  { -1,  0,  1 },
+  { -1,  0,  2 },
+
+  {  0,  0, -2 },
+  {  0,  0, -1 },
+  {  0,  0,  0 },
+  {  0,  0,  1 },
+  {  0,  0,  2 },
+
+  {  1,  0, -2 },
+  {  1,  0, -1 },
+  {  1,  0,  0 },
+  {  1,  0,  1 },
+  {  1,  0,  2 },
+
+  {  2,  0, -2 },
+  {  2,  0, -1 },
+  {  2,  0,  0 },
+  {  2,  0,  1 },
+  {  2,  0,  2 },
+};
+
+BOOST_AUTO_TEST_CASE(resize_test)
+{
+  size_t c5 = 0;
+  bool ok5 = true;
+  auto add = [&ok5, &c5](const SPos &p) -> std::unique_ptr<Storage> {
+    if (atZeroSeq[c5] != p)
+      ok5 = false;
+    return std::make_unique<Storage>();
+  };
+
+  size_t c = 0;
+  bool ok = true;
+  auto del = [&c, &ok](std::unique_ptr<Storage> &s, const SPos &p) {
+    if (atZeroSeq5[c] != p)
+      ok = false;
+  };
+
+  RingBuffer<std::unique_ptr<Storage>> rb(Magnum::Vector2i(2, 2), add, del);
+
+  ok = ok5 = true;
+  c = c5 = 0;
+
+  rb.SetSize({ 1, 1 });
+
+  BOOST_TEST(ok);
+  BOOST_TEST(ok5);
+}
