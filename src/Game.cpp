@@ -106,8 +106,11 @@ void Game::drawEvent()
   mWorld->mPlayer.Rotate(mCameraAngle * 0.003f);
   mWorld->mPlayer.Update();
 
-  mDrawableArea->SetPos(cs::WtoS(mWorld->mPlayer.Pos()));
-  mSectorLoader->SetPos(cs::WtoS(mWorld->mPlayer.Pos()));
+  auto p_sec = cs::WtoS(mWorld->mPlayer.Pos());
+  p_sec.y() = 0;
+
+  mDrawableArea->SetPos(p_sec);
+  mSectorLoader->SetPos(p_sec);
 
   auto spos = Vector3{ std::sin(mTimeline.previousFrameTime()) * 100, 111, std::cos(mTimeline.previousFrameTime()) * 100 };
   mSun.SetPos(spos);
