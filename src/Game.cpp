@@ -57,17 +57,14 @@ Game::Game(const Arguments & arguments)
 
   //mWorld->SetLoader(std::move(mapgen));
 
-  mDrawableArea = std::make_unique<DrawableArea>(*mWorld, SPos{}, tmp_area_size);
+  mDrawableArea = std::make_unique<DrawableArea>(*mWorld);
   mWorld->GetWorldSectorObserver().attach(*mDrawableArea);
-  mWorld->LoadSector({ -1, 0, -1 });
-  mWorld->LoadSector({ -1, 0, 0 });
-  mWorld->LoadSector({ -1, 0, 1 });
-  mWorld->LoadSector({ 0, 0, -1 });
-  mWorld->LoadSector({ 0, 0, 0 });
-  mWorld->LoadSector({ 0, 0, 1 });
-  mWorld->LoadSector({ 1, 0, -1 });
-  mWorld->LoadSector({ 1, 0, 0 });
-  mWorld->LoadSector({ 1, 0, 1 });
+  mSectorLoader = std::make_unique<SectorLoader>(*mWorld);
+
+  mDrawableArea->SetPos(SPos{});
+  mDrawableArea->SetRadius(tmp_area_size);
+  mSectorLoader->SetPos(SPos{});
+  mSectorLoader->SetRadius(tmp_area_size);
 
   //mUpdatableArea = std::make_unique<UpdatableArea>(*mWorld, SPos{}, tmp_area_size);
 
@@ -78,7 +75,7 @@ Game::Game(const Arguments & arguments)
   mSunCamera = std::make_unique<Camera>(mSun, Range2Di{ {},{ 512, 512 } }, Camera::Type::Ortho);
   mCurrentCamera = mCamera.get();
 
-  mWorld->mPlayer.SetPos({ 0, 70, 0 });
+  mWorld->mPlayer.SetPos({ 0, 150, 0 });
 
   mShadowTexture.setImage(0, TextureFormat::DepthComponent, ImageView2D{ PixelFormat::DepthComponent, PixelType::Float,{ 512, 512 }, nullptr })
 	  .setMaxLevel(0)
@@ -191,7 +188,7 @@ void Game::drawEvent()
       int uas = updatable_area_size;
       ImGui::SliderInt("Updatable area size", &updatable_area_size, 0, 10);
       if (uas != updatable_area_size)
-        mUpdatableArea->SetRadius(updatable_area_size);
+        mSectorLoader->SetRadius(updatable_area_size);
     }
 
     // 2. Show another simple window, this time using an explicit Begin/End pair

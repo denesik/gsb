@@ -27,24 +27,24 @@ public:
   using AddFunction = std::function<T(const SPos &)>;
   using DeleteFunction = std::function<void(T &, const SPos &)>;
 
-  RingBuffer<T>(Magnum::Vector2i size, AddFunction add, DeleteFunction del)
+  RingBuffer<T>(AddFunction add, DeleteFunction del)
     : onAdding(add)
     , onDeletting(del)
   {
-    SetSize(size);
+    //SetSize(size);
   }
 
   RingBuffer<T> &SetSize(Magnum::Vector2i size)
   {
     if (!mStorage.empty())
     {
-      SPos unoffseted = { -size.x(), 0, -size.y() };
+      SPos unoffseted = { -mRadius.x(), 0, -mRadius.y() };
       for (int i = 0; i < mDim.x() * mDim.y(); i++)
       {
         SPos spos = mPos + unoffseted;
         onDeletting(mStorage[i], spos);
 
-        StoreOrderedInc(unoffseted, size);
+        StoreOrderedInc(unoffseted, mRadius);
       }
     }
 
@@ -52,14 +52,14 @@ public:
     mDim = size * 2 + Magnum::Vector2i(1, 1);
     mStorage.clear();
 
-    SPos unoffseted = { -size.x(), 0, -size.y() };
+    SPos unoffseted = { -mRadius.x(), 0, -mRadius.y() };
     for (int i = 0; i < mDim.x() * mDim.y(); i++)
     {
       SPos spos = mPos + unoffseted;
 
       mStorage.emplace_back(onAdding(spos));
 
-      StoreOrderedInc(unoffseted, size);
+      StoreOrderedInc(unoffseted, mRadius);
     }
 
     return *this;
@@ -72,7 +72,7 @@ public:
 
     Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
     Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - sec_pos * mDim;
-
+    auto t = wpos.y() * mDim.x() + wpos.x();
     return mStorage[wpos.y() * mDim.x() + wpos.x()];
   }
 

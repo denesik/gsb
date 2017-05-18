@@ -9,16 +9,22 @@
 
 using namespace Magnum;
 
-DrawableArea::DrawableArea(World &world, const SPos &pos, unsigned int radius)
-  : mWorld(world), mPos(pos), 
+static int sector_count = 0;
+
+DrawableArea::DrawableArea(World &world)
+  : mWorld(world),
   mCompiler(1, 1, world.GetBlocksDataBase()),
-  mBufferData({1, 1}, 
+  mBufferData(
     [this](const SPos &pos)
     {
+      ++sector_count;
+      //LOG(trace) << "Draw sector [" << pos.x() << " " << pos.z() << "]. Count: " << sector_count;
       return OnBufferAdd(pos);
     },
     [this](BufferData &data, const SPos &pos)
     {
+      --sector_count;
+      //LOG(trace) << "Undraw sector [" << pos.x() << " " << pos.z() << "]. Count: " << sector_count;
       OnBufferRemove(data, pos);
     })
 {
@@ -40,6 +46,7 @@ DrawableArea::~DrawableArea()
 
 void DrawableArea::SetRadius(unsigned int radius)
 {
+  mBufferData.SetSize({ static_cast<int>(radius), static_cast<int>(radius) });
 }
 
 void DrawableArea::SetPos(const SPos &pos)
@@ -124,6 +131,7 @@ void DrawableArea::Draw(const Camera & camera, const Camera & sun, const Vector3
       {
         sector->NeedCompile(false);
         mCompiler.Push(sector->GetPos());
+        UseSector(sector->GetPos());
       }
 
       data.drawable.Draw(frustum, matrix, sun_matrix, lightdir, shader);
@@ -176,9 +184,10 @@ DrawableArea::BufferData DrawableArea::OnBufferAdd(const SPos &pos)
   UseSector(pos);
 
   auto &data = GetSectorData(pos);
-  if (!data.added)
+  if (data.sector && !data.added)
   {
     data.added = true;
+    data.sector->NeedCompile(false);
     mCompiler.Push(pos);
     UseSector(pos);
   }
@@ -191,20 +200,25 @@ void DrawableArea::OnBufferRemove(BufferData &data, const SPos &pos)
   UnuseSector(pos);
 }
 
+static int sector_count1 = 0;
+
 void DrawableArea::Load(Sector &sector)
 {
-  // Добавляем сектор.Если не поставлен на компиляцию, ставим на компиляцию.
+  // Добавляем сектор. Если сектор есть в буфере и не поставлен на компиляцию, ставим на компиляцию.
   const auto &pos = sector.GetPos();
   UseSector(pos);
 
   auto &data = GetSectorData(pos);
   data.sector = sector;
-  if (!data.added)
+  if (mBufferData.Get(pos) && !data.added)
   {
     data.added = true;
+    sector.NeedCompile(false);
     mCompiler.Push(pos);
     UseSector(pos);
   }
+  ++sector_count1;
+  //LOG(trace) << "Load sector [" << pos.x() << " " << pos.z() << "]. Count: " << sector_count1;
 }
 
 void DrawableArea::UnLoad(Sector &sector)
@@ -213,10 +227,19 @@ void DrawableArea::UnLoad(Sector &sector)
   const auto &pos = sector.GetPos();
   GetSectorData(pos).sector.reset();
   UnuseSector(pos);
+
+  --sector_count1;
+  //LOG(trace) << "Unload sector [" << pos.x() << " " << pos.z() << "]. Count: " << sector_count1;
 }
 
+static int sector_count2 = 0;
 void DrawableArea::UseSector(const SPos &pos)
 {
+  if (pos == SPos{0, 0, 0})
+  {
+    ++sector_count2;
+    LOG(trace) << "Use sector [" << pos.x() << " " << pos.z() << "]. Count: " << sector_count2;
+  }
   auto it = mSectors.find(pos);
   if (it == mSectors.end())
   {
@@ -231,6 +254,11 @@ void DrawableArea::UseSector(const SPos &pos)
 
 void DrawableArea::UnuseSector(const SPos &pos)
 {
+  if (pos == SPos{0, 0, 0})
+  {
+    --sector_count2;
+    LOG(trace) << "Unuse sector [" << pos.x() << " " << pos.z() << "]. Count: " << sector_count2;
+  }
   auto it = mSectors.find(pos);
   if (it != mSectors.end())
   {
@@ -258,6 +286,7 @@ SectorRenderData::SectorRenderData()
 
 void SectorRenderData::SetPos(const SPos &pos)
 {
+  m_pos = pos;
   WPos wpos = cs::StoW(pos);
   model = {};
   model = model * Math::Matrix4<Float>::translation(Vector3::xAxis(wpos.x()));

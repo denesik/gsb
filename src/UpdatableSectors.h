@@ -35,6 +35,4 @@ private:
 
 };
 
-
-
 #endif // UpdatableSectors_h__

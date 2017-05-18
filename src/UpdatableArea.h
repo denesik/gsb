@@ -6,6 +6,7 @@
 #include "tools\CoordSystem.h"
 #include <vector>
 #include <tuple>
+#include "RingBuffer.h"
 
 class UpdatableSectors;
 class World;
@@ -32,6 +33,23 @@ private:
   void UpdatePos(const SPos &pos);
 };
 
+
+class SectorLoader
+{
+public:
+  SectorLoader(World &world);
+  ~SectorLoader();
+
+  void SetPos(const SPos &pos);
+
+  void SetRadius(unsigned int radius);
+
+private:
+  RingBuffer<int> mBufferData;
+  World &mWorld;
+
+private:
+};
 
 
 #endif // UpdatableArea_h__
