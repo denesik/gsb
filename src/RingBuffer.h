@@ -97,7 +97,7 @@ public:
       SPos newPos = pos + unoffseted;
       if (std::abs(mPos.x() - newPos.x()) > mRadius.x() || std::abs(mPos.z() - newPos.z()) > mRadius.y())
       {
-        onAdding(newPos);
+        mStorage[i] = onAdding(newPos);
       }
 
       StoreOrderedInc(unoffseted, mRadius);

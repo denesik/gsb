@@ -18,13 +18,13 @@ DrawableArea::DrawableArea(World &world)
     [this](const SPos &pos)
     {
       ++sector_count;
-      //LOG(trace) << "Draw sector [" << pos.x() << " " << pos.z() << "]. Count: " << sector_count;
+      LOG(trace) << "Draw sector [" << pos.x() << " " << pos.z() << "]. Count: " << sector_count;
       return OnBufferAdd(pos);
     },
     [this](BufferData &data, const SPos &pos)
     {
       --sector_count;
-      //LOG(trace) << "Undraw sector [" << pos.x() << " " << pos.z() << "]. Count: " << sector_count;
+      LOG(trace) << "Undraw sector [" << pos.x() << " " << pos.z() << "]. Count: " << sector_count;
       OnBufferRemove(data, pos);
     })
 {
@@ -218,7 +218,7 @@ void DrawableArea::Load(Sector &sector)
     UseSector(pos);
   }
   ++sector_count1;
-  //LOG(trace) << "Load sector [" << pos.x() << " " << pos.z() << "]. Count: " << sector_count1;
+  LOG(trace) << "Load sector [" << pos.x() << " " << pos.z() << "]. Count: " << sector_count1;
 }
 
 void DrawableArea::UnLoad(Sector &sector)
@@ -229,17 +229,11 @@ void DrawableArea::UnLoad(Sector &sector)
   UnuseSector(pos);
 
   --sector_count1;
-  //LOG(trace) << "Unload sector [" << pos.x() << " " << pos.z() << "]. Count: " << sector_count1;
+  LOG(trace) << "Unload sector [" << pos.x() << " " << pos.z() << "]. Count: " << sector_count1;
 }
 
-static int sector_count2 = 0;
 void DrawableArea::UseSector(const SPos &pos)
 {
-  if (pos == SPos{0, 0, 0})
-  {
-    ++sector_count2;
-    LOG(trace) << "Use sector [" << pos.x() << " " << pos.z() << "]. Count: " << sector_count2;
-  }
   auto it = mSectors.find(pos);
   if (it == mSectors.end())
   {
@@ -254,11 +248,6 @@ void DrawableArea::UseSector(const SPos &pos)
 
 void DrawableArea::UnuseSector(const SPos &pos)
 {
-  if (pos == SPos{0, 0, 0})
-  {
-    --sector_count2;
-    LOG(trace) << "Unuse sector [" << pos.x() << " " << pos.z() << "]. Count: " << sector_count2;
-  }
   auto it = mSectors.find(pos);
   if (it != mSectors.end())
   {
