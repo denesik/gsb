@@ -70,9 +70,15 @@ public:
     if ((std::abs(mPos.x() - spos.x()) > mRadius.x()) || (std::abs(mPos.z() - spos.z()) > mRadius.y()))
       return{};
 
-    const SPos spos2 = (spos - mPos) + SPos(mRadius.x(), 0, mRadius.y());
-    auto t = spos2.x() * mDim.y() + spos2.z();
+    auto sposInternal = spos - mPos + SPos(mRadius.x(), 0, mRadius.y());
+    Magnum::Vector2i sec_pos = WrapSPos({ sposInternal.x(), sposInternal.z() });
+    Magnum::Vector2i wpos = Magnum::Vector2i(sposInternal.x(), sposInternal.z()) - sec_pos * mDim;
+    auto t = wpos.x() * mDim.x() + wpos.y();
     return mStorage[t];
+
+    /*const SPos spos2 = (mPos - spos) + SPos(mRadius.x(), 0, mRadius.y());
+    auto t = spos2.x() * mDim.y() + spos2.z();
+    return mStorage[t];*/
   }
 
   template <typename T> int sgn(T val) {
@@ -89,15 +95,11 @@ public:
     for (int i = 0; i < mDim.x() * mDim.y(); i++)
     {
       SPos oldPos = mPos + unoffseted;
+      SPos newPos = pos + unoffseted;
       if (std::abs(oldPos.x() - pos.x()) > mRadius.x() || std::abs(oldPos.z() - pos.z()) > mRadius.y())
       {
         onDeletting(mStorage[i], oldPos);
-      }
-
-      SPos newPos = pos + unoffseted;
-      if (std::abs(mPos.x() - newPos.x()) > mRadius.x() || std::abs(mPos.z() - newPos.z()) > mRadius.y())
-      {
-        onAdding(newPos);
+        mStorage[i] = onAdding(newPos);
       }
 
       StoreOrderedInc(unoffseted, mRadius);

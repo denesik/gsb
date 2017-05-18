@@ -262,27 +262,37 @@ BOOST_AUTO_TEST_CASE(get_test)
   RingBuffer<std::unique_ptr<StorageCoord>> rb(add, del);
   rb.SetSize({ 3, 3 });
 
-  auto atZero = rb.Get({ -3, 0, 2 });
-  BOOST_CHECK(atZero.is_initialized());
-  auto &element = atZero.value();
-  BOOST_TEST(element->spos.x() == -3);
-  BOOST_TEST(element->spos.z() == 2);
+  {
+    auto atZero = rb.Get({ 0, 0, 0 });
+    BOOST_CHECK(atZero.is_initialized());
+    auto &element = atZero.value();
+    BOOST_TEST(element->spos.x() == 0);
+    BOOST_TEST(element->spos.z() == 0);
+  }
 
-  auto atZero2 = rb.Get({ 1, 0, 2 });
-  BOOST_CHECK(atZero2.is_initialized());
-  auto &element2 = atZero2.value();
-  BOOST_TEST(element2->spos.x() == 1);
-  BOOST_TEST(element2->spos.z() == 2);
+  {
+    auto atZero = rb.Get({ 1, 0, 2 });
+    BOOST_CHECK(atZero.is_initialized());
+    auto &element = atZero.value();
+    BOOST_TEST(element->spos.x() == 1);
+    BOOST_TEST(element->spos.z() == 2);
+  }
+  
+  {
+    auto atZero = rb.Get({ -3, 0, -3 });
+    BOOST_CHECK(atZero.is_initialized());
+    auto &element = atZero.value();
+    BOOST_TEST(element->spos.x() == -3);
+    BOOST_TEST(element->spos.z() == -3);
+  }
 
-  auto atZero3 = rb.Get({ -3, 0, -3 });
-  BOOST_CHECK(atZero3.is_initialized());
-  auto &element3 = atZero3.value();
-  BOOST_TEST(element3->spos.x() == -3);
-  BOOST_TEST(element3->spos.z() == -3);
+  rb.UpdatePos({ 2, 0, 2 });
 
-  auto atZero4 = rb.Get({ 0, 0, 0 });
-  BOOST_CHECK(atZero4.is_initialized());
-  auto &element4 = atZero4.value();
-  BOOST_TEST(element4->spos.x() == 0);
-  BOOST_TEST(element4->spos.z() == 0);
+  {
+    auto atZero = rb.Get({ 0, 0, 5 });
+    BOOST_CHECK(atZero.is_initialized());
+    auto &element = atZero.value();
+    BOOST_TEST(element->spos.x() == 0);
+    BOOST_TEST(element->spos.z() == 5);
+  }
 }
