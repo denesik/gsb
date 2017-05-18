@@ -70,10 +70,9 @@ public:
     if ((std::abs(mPos.x() - spos.x()) > mRadius.x()) || (std::abs(mPos.z() - spos.z()) > mRadius.y()))
       return{};
 
-    Magnum::Vector2i sec_pos = WrapSPos({ spos.x(), spos.z() });
-    Magnum::Vector2i wpos = Magnum::Vector2i(spos.x(), spos.z()) - sec_pos * mDim;
-    auto t = wpos.y() * mDim.x() + wpos.x();
-    return mStorage[wpos.y() * mDim.x() + wpos.x()];
+    const SPos spos2 = (spos - mPos) + SPos(mRadius.x(), 0, mRadius.y());
+    auto t = spos2.x() * mDim.y() + spos2.z();
+    return mStorage[t];
   }
 
   template <typename T> int sgn(T val) {
