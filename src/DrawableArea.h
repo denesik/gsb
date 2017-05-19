@@ -50,7 +50,7 @@ struct SectorRenderData
 
   void SetPos(const SPos &pos);
 
-  void Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, const Magnum::Matrix4 &sun_matrix, const Magnum::Vector3 &lightdir, StandartShader& shader);
+  void Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, SunCamera &sun_matrix, const Magnum::Vector3 &lightdir, StandartShader& shader);
   void DrawShadowPass(const Magnum::Frustum &frustum, const Magnum::Matrix4 &sun_matrix, ShadowShader& shader);
 };
 
@@ -66,8 +66,8 @@ public:
   void SetPos(const SPos &pos);
 
   //TODO: Не компилировать сектор, если он компилируется в данный момент.
-  void Draw(const Camera &camera, const Camera &sun, const Vector3 &lightdir, StandartShader& shader);
-  //void DrawShadowPass(const Camera &sun, ShadowShader& shader);
+  void Draw(const ICamera &camera, SunCamera &sun, const Magnum::Vector3 &lightdir, StandartShader& shader);
+  void DrawShadowPass(const ICamera &sun, ShadowShader& shader);
 
 private:
   World &mWorld;

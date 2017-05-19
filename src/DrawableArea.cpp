@@ -54,6 +54,11 @@ void DrawableArea::SetPos(const SPos &pos)
   mBufferData.UpdatePos(pos);
 }
 
+void DrawableArea::DrawShadowPass(const ICamera & sun, ShadowShader & shader)
+{
+
+}
+
 // void DrawableArea::DrawShadowPass(const Camera & sun, ShadowShader & shader)
 // {
 //   // Обновляем список видимых секторов N раз в сек.
@@ -104,7 +109,7 @@ void DrawableArea::SetPos(const SPos &pos)
 //   mCompilerWorker.Update();
 // }
 
-void DrawableArea::Draw(const Camera & camera, const Camera & sun, const Vector3 &lightdir, StandartShader & shader)
+void DrawableArea::Draw(const ICamera &camera, SunCamera &sun, const Vector3 &lightdir, StandartShader & shader)
 {
   // Обновляем список видимых секторов N раз в сек.
 
@@ -134,7 +139,7 @@ void DrawableArea::Draw(const Camera & camera, const Camera & sun, const Vector3
         UseSector(sector->GetPos());
       }
 
-      data.drawable.Draw(frustum, matrix, sun_matrix, lightdir, shader);
+      data.drawable.Draw(frustum, matrix, sun, lightdir, shader);
     }
   }
 
@@ -286,9 +291,9 @@ void SectorRenderData::SetPos(const SPos &pos)
   aabb.max() = wpos + WPos(static_cast<WPosType>(gSectorSize.x()), static_cast<WPosType>(gSectorSize.y()), static_cast<WPosType>(gSectorSize.z()));
 }
 
-void SectorRenderData::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, const Magnum::Matrix4 &sun_matrix, const Magnum::Vector3 &lightdir, StandartShader& shader)
+void SectorRenderData::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix4 &matrix, SunCamera &sun_matrix, const Magnum::Vector3 &lightdir, StandartShader& shader)
 {
-  constexpr const Matrix4 bias
+  constexpr const Magnum::Matrix4 bias
   { { 0.5f, 0.0f, 0.0f, 0.0f },
   { 0.0f, 0.5f, 0.0f, 0.0f },
   { 0.0f, 0.0f, 0.5f, 0.0f },
@@ -296,9 +301,17 @@ void SectorRenderData::Draw(const Magnum::Frustum &frustum, const Magnum::Matrix
 
   if (Math::Geometry::Intersection::boxFrustum(aabb, frustum))
   {
-    shader.setProjection(matrix * model);
-    shader.setLightVector(lightdir);
-    shader.setShadowMatrix(bias * sun_matrix * model);
+    shader.setProjection(matrix * model)
+      .setLightVector(lightdir);
+
+    Containers::Array<Matrix4> shadowMatrices{ Containers::NoInit, StandartShader::ShadowMapLevels };
+    for (std::size_t layerIndex = 0; layerIndex < StandartShader::ShadowMapLevels; ++layerIndex)
+    {
+      auto pv = sun_matrix.GetLayer(layerIndex).Project() * sun_matrix.GetLayer(layerIndex).View();
+      shadowMatrices[layerIndex] = bias * pv * model;
+    }
+
+    shader.setShadowMatrix(shadowMatrices);
     mesh.draw(shader);
   }
 }

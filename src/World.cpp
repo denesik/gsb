@@ -1,6 +1,5 @@
 ﻿#include "World.h"
 #include "MapLoader.h"
-#include "BiomeMapGenerator.h"
 #include "WorldGeneratorTest.h"
 #include "WorldGeneratorFlat.h"
 #include "ChunkHelper.h"
@@ -15,8 +14,9 @@ World::World(const DataBase &blocksDataBase)
   mFakeSector(*this, SPos{}),
   mUpdatableSectors(*this), 
   mPlayer(*this), 
-  mWorldGenerator(std::make_unique<WorldGeneratorFlat>(blocksDataBase)),
-  mSectorLoader(1, 1, *mWorldGenerator)
+  mWorldGenerator(std::make_unique<WorldGeneratorFlat>()),
+  mWorldLoader(std::make_unique<MapLoaderFromGenerator>(*mWorldGenerator, blocksDataBase)),
+  mSectorLoader(1, 1, *mWorldLoader)
 {
   mSectorLoader.SetBeginCallback([this](Worker &worker, Sector &sector)
   {

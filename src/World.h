@@ -85,6 +85,7 @@ private:
   const DataBase &mBlocksDataBase;
 
   std::unique_ptr<IMapGenerator> mWorldGenerator;
+  std::unique_ptr<IMapLoader> mWorldLoader;
 
   UpdatableSectors mUpdatableSectors;
 
@@ -96,18 +97,18 @@ private:
 
   struct Worker
   {
-    Worker(IMapGenerator &generator)
-      : generator(generator)
+    Worker(IMapLoader &loader)
+      : loader(loader)
     {
 
     }
 
     void Process(std::reference_wrapper<Sector> sector)
     {
-      generator.Generate(sector.get());
+      loader.Process(sector.get());
     }
 
-    IMapGenerator &generator;
+    IMapLoader &loader;
   };
 
   ThreadProcess<Worker, std::reference_wrapper<Sector>> mSectorLoader;

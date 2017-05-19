@@ -159,23 +159,23 @@ void Game::drawEvent()
     }
   }
 
-  static float pressedT = 0;
-  if (centering && ImGui::IsMouseDown(0) && !ImGui::IsAnyItemHovered())
-  {
-    pressedT -= mTimeline.previousFrameDuration();
-    if (pressedT <= 0)
-    {
-      if (selId && selItem->GetBlock())
-        mWorld->CreateBlock(picked, selItem->GetBlock());
-      else
-        mWorld->DestroyBlock(picked);
-      pressedT = 0.3f;
-    }
-  }
-  else
-  {
-    pressedT = 0;
-  }
+//   static float pressedT = 0;
+//   if (centering && ImGui::IsMouseDown(0) && !ImGui::IsAnyItemHovered())
+//   {
+//     pressedT -= mTimeline.previousFrameDuration();
+//     if (pressedT <= 0)
+//     {
+//       if (selId && selItem->GetBlock())
+//         mWorld->CreateBlock(picked, selItem->GetBlock());
+//       else
+//         mWorld->DestroyBlock(picked);
+//       pressedT = 0.3f;
+//     }
+//   }
+//   else
+//   {
+//     pressedT = 0;
+//   }
 
   auto sunref = Vector3(picked); // mWorld->mPlayer.Pos(); // 
   auto spos = sunref + Vector3{ std::sin(mTimeline.previousFrameTime() / 10.f) * 100, 111, std::cos(mTimeline.previousFrameTime() / 10.f) * 100 };
@@ -195,8 +195,8 @@ void Game::drawEvent()
   mShader.setShadowDepthTexture(mShadowTextureArray);
   mDrawableArea->Draw(*mCurrentCamera, *mSunCamera, mSun.Direction(), mShader);
 
-  mDrawableArea->SetPos(cs::WtoS(mWorld->mPlayer.Pos()));
-  mUpdatableArea->SetPos(cs::WtoS(mWorld->mPlayer.Pos()));
+//  mDrawableArea->SetPos(cs::WtoS(mWorld->mPlayer.Pos()));
+//  mUpdatableArea->SetPos(cs::WtoS(mWorld->mPlayer.Pos()));
 
   mWorld->Update();
 

@@ -6,14 +6,14 @@
 #include "IMapGenerator.h"
 
 
-class WorldGeneratorTest : public IMapGenerator
-{
-public:
-  WorldGeneratorTest(const DataBase &db);
-  ~WorldGeneratorTest();
-
-  void Generate(Sector &sector) const override;
-};
+// class WorldGeneratorTest : public IMapGenerator
+// {
+// public:
+//   WorldGeneratorTest(const DataBase &db);
+//   ~WorldGeneratorTest();
+// 
+//   void Generate(Sector &sector) const override;
+// };
 
 
 

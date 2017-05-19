@@ -12,7 +12,7 @@ class MapLoaderFromGenerator : public IMapLoader
 public:
   MapLoaderFromGenerator(const IMapGenerator &generator, const DataBase &db);
 
-  void Process() override;
+  void Process(Sector &sector) override;
 
 private:
   const IMapGenerator &mGenerator;
@@ -23,7 +23,7 @@ class MapLoaderFromDisk : public IMapLoader
 public:
   MapLoaderFromDisk(boost::filesystem::path path, const DataBase &db);
 
-  void Process() override;
+  void Process(Sector &sector) override;
 
 private:
   boost::filesystem::path mPath;
@@ -40,13 +40,13 @@ private:
 //  boost::asio::ip::address mAddress;
 //};
 
-class MapSaverToDisk : public IMapSaver
-{
-public:
-  MapSaverToDisk(boost::filesystem::path path, const DataBase &db);
-
-  void Process() override;
-
-private:
-  boost::filesystem::path mPath;
-};
+// class MapSaverToDisk : public IMapSaver
+// {
+// public:
+//   MapSaverToDisk(boost::filesystem::path path, const DataBase &db);
+// 
+//   void Process() override;
+// 
+// private:
+//   boost::filesystem::path mPath;
+// };

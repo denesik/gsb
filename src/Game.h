@@ -89,7 +89,7 @@ private:
 
   std::unique_ptr<DataBase> mBlocksDataBase;
   std::unique_ptr<World> mWorld;
-  std::unique_ptr<UpdatableArea> mUpdatableArea;
+//  std::unique_ptr<UpdatableArea> mUpdatableArea;
   std::unique_ptr<DrawableArea> mDrawableArea; 
   std::unique_ptr<SectorLoader> mSectorLoader;
 
