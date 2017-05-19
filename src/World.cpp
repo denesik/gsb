@@ -1,4 +1,4 @@
-#include "World.h"
+ï»¿#include "World.h"
 #include "MapLoader.h"
 #include "BiomeMapGenerator.h"
 #include "WorldGeneratorTest.h"
@@ -6,9 +6,9 @@
 #include "ChunkHelper.h"
 #include "Sector.h"
 
-// 1. Ñîçäàåì 9 ñåêòîðîâ.
-// 2. Çàãðóæàåì 9 ñåêòîðîâ.
-// 3. Åñëè âñå 9 ñåêòîðîâ çàãðóæåíû - êåøèðóåì ñåêòîðà è âûçûâàåì ñîáûòèå çàãðóçêè.
+// 1. Ð¡Ð¾Ð·Ð´Ð°ÐµÐ¼ 9 ÑÐµÐºÑ‚Ð¾Ñ€Ð¾Ð².
+// 2. Ð—Ð°Ð³Ñ€ÑƒÐ¶Ð°ÐµÐ¼ 9 ÑÐµÐºÑ‚Ð¾Ñ€Ð¾Ð².
+// 3. Ð•ÑÐ»Ð¸ Ð²ÑÐµ 9 ÑÐµÐºÑ‚Ð¾Ñ€Ð¾Ð² Ð·Ð°Ð³Ñ€ÑƒÐ¶ÐµÐ½Ñ‹ - ÐºÐµÑˆÐ¸Ñ€ÑƒÐµÐ¼ ÑÐµÐºÑ‚Ð¾Ñ€Ð° Ð¸ Ð²Ñ‹Ð·Ñ‹Ð²Ð°ÐµÐ¼ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ðµ Ð·Ð°Ð³Ñ€ÑƒÐ·ÐºÐ¸.
 
 World::World(const DataBase &blocksDataBase)
   : mBlocksDataBase(blocksDataBase), 
@@ -35,8 +35,8 @@ World::~World()
 }
 
 
-// Ñîçäàåì ñåáÿ è âñåõ ñîñåäåé.
-// Åñëè êòî òî íå áûë ïîñòàâëåí íà çàãðóçêó, ñòàâèì íà çàãðóçêó.
+// Ð¡Ð¾Ð·Ð´Ð°ÐµÐ¼ ÑÐµÐ±Ñ Ð¸ Ð²ÑÐµÑ… ÑÐ¾ÑÐµÐ´ÐµÐ¹.
+// Ð•ÑÐ»Ð¸ ÐºÑ‚Ð¾ Ñ‚Ð¾ Ð½Ðµ Ð±Ñ‹Ð» Ð¿Ð¾ÑÑ‚Ð°Ð²Ð»ÐµÐ½ Ð½Ð° Ð·Ð°Ð³Ñ€ÑƒÐ·ÐºÑƒ, ÑÑ‚Ð°Ð²Ð¸Ð¼ Ð½Ð° Ð·Ð°Ð³Ñ€ÑƒÐ·ÐºÑƒ.
 void World::LoadSector(const SPos &pos)
 {
   for (const auto &offset : gSectorNeighboard)
@@ -55,7 +55,7 @@ void World::LoadSector(const SPos &pos)
   }
 }
 
-// Îñâîáîæäàåì ñåáÿ è âñåõ ñîñåäåé.
+// ÐžÑÐ²Ð¾Ð±Ð¾Ð¶Ð´Ð°ÐµÐ¼ ÑÐµÐ±Ñ Ð¸ Ð²ÑÐµÑ… ÑÐ¾ÑÐµÐ´ÐµÐ¹.
 void World::UnLoadSector(const SPos &pos)
 {
   mUnloadSectors.emplace_back(pos);
@@ -73,7 +73,7 @@ void World::UseSector(const SPos &pos)
     if (!res.second)
       return;
     it = res.first;
-    // Ñîçäàëè ñåêòîð, ñîîáùèì åìó è âñåì åãî ñîñåäÿì îá ýòîì.
+    // Ð¡Ð¾Ð·Ð´Ð°Ð»Ð¸ ÑÐµÐºÑ‚Ð¾Ñ€, ÑÐ¾Ð¾Ð±Ñ‰Ð¸Ð¼ ÐµÐ¼Ñƒ Ð¸ Ð²ÑÐµÐ¼ ÐµÐ³Ð¾ ÑÐ¾ÑÐµÐ´ÑÐ¼ Ð¾Ð± ÑÑ‚Ð¾Ð¼.
   }
   ++it->second.count;
 }
@@ -85,7 +85,7 @@ void World::UnuseSector(const SPos &pos)
   {
     if (it->second.count == 1 && it->second.loaded)
     {
-        // Åñëè ñåêòîð íóæíî âûãðóçèòü, êåøèðóåì è ïîñûëàåì ñîáûòèÿ åìó è åãî ñîñåäÿì, åñëè îíè áûëè çàãðóæåíû.
+        // Ð•ÑÐ»Ð¸ ÑÐµÐºÑ‚Ð¾Ñ€ Ð½ÑƒÐ¶Ð½Ð¾ Ð²Ñ‹Ð³Ñ€ÑƒÐ·Ð¸Ñ‚ÑŒ, ÐºÐµÑˆÐ¸Ñ€ÑƒÐµÐ¼ Ð¸ Ð¿Ð¾ÑÑ‹Ð»Ð°ÐµÐ¼ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ñ ÐµÐ¼Ñƒ Ð¸ ÐµÐ³Ð¾ ÑÐ¾ÑÐµÐ´ÑÐ¼, ÐµÑÐ»Ð¸ Ð¾Ð½Ð¸ Ð±Ñ‹Ð»Ð¸ Ð·Ð°Ð³Ñ€ÑƒÐ¶ÐµÐ½Ñ‹.
         for (const auto &offset : gSectorNeighboard)
         {
           auto jt = mSectors.find(pos + offset);
@@ -128,9 +128,9 @@ void World::CacheSector(const SPos &pos, Sector::CacheState state)
   auto it = mSectors.find(pos);
   if (it != mSectors.end())
   {
-    // Ñîîáùàåì òåêóùåìó ñåêòîðó ÷òî îí çàãðóæåí.
-    // Ñîîáùàåì âñåì ñîñåäÿì òåêóùåãî ñåêòîðà ÷òî ñåêòîð çàãðóæåí.
-    // Ñîîáùàåì òåêóùåìó ñåêòîðó î âñåõ åãî ñîñåäÿõ.
+    // Ð¡Ð¾Ð¾Ð±Ñ‰Ð°ÐµÐ¼ Ñ‚ÐµÐºÑƒÑ‰ÐµÐ¼Ñƒ ÑÐµÐºÑ‚Ð¾Ñ€Ñƒ Ñ‡Ñ‚Ð¾ Ð¾Ð½ Ð·Ð°Ð³Ñ€ÑƒÐ¶ÐµÐ½.
+    // Ð¡Ð¾Ð¾Ð±Ñ‰Ð°ÐµÐ¼ Ð²ÑÐµÐ¼ ÑÐ¾ÑÐµÐ´ÑÐ¼ Ñ‚ÐµÐºÑƒÑ‰ÐµÐ³Ð¾ ÑÐµÐºÑ‚Ð¾Ñ€Ð° Ñ‡Ñ‚Ð¾ ÑÐµÐºÑ‚Ð¾Ñ€ Ð·Ð°Ð³Ñ€ÑƒÐ¶ÐµÐ½.
+    // Ð¡Ð¾Ð¾Ð±Ñ‰Ð°ÐµÐ¼ Ñ‚ÐµÐºÑƒÑ‰ÐµÐ¼Ñƒ ÑÐµÐºÑ‚Ð¾Ñ€Ñƒ Ð¾ Ð²ÑÐµÑ… ÐµÐ³Ð¾ ÑÐ¾ÑÐµÐ´ÑÑ….
     it->second.sector.Cache(it->second.sector, state);
     for (size_t i = 0; i < SectorAround::pos.size(); ++i)
     {
@@ -166,13 +166,13 @@ bool World::OnSectorLoadEnd(Worker &worker, Sector &sector)
     }
   }
 
-  // Ïðîáåãàåì ïî âñåì ñåêòîðàì â îáëàñòè è ôîðìèðóåì ñîáûòèÿ åñëè íàäî.
+  // ÐŸÑ€Ð¾Ð±ÐµÐ³Ð°ÐµÐ¼ Ð¿Ð¾ Ð²ÑÐµÐ¼ ÑÐµÐºÑ‚Ð¾Ñ€Ð°Ð¼ Ð² Ð¾Ð±Ð»Ð°ÑÑ‚Ð¸ Ð¸ Ñ„Ð¾Ñ€Ð¼Ð¸Ñ€ÑƒÐµÐ¼ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ñ ÐµÑÐ»Ð¸ Ð½Ð°Ð´Ð¾.
   for (const auto &offset : gSectorNeighboard)
   {
     auto it = mSectors.find(pos + offset);
     if (it != mSectors.end())
     {
-      // Ñåêòîð è âñå åãî ñîñåäè çàãðóæåíû.
+      // Ð¡ÐµÐºÑ‚Ð¾Ñ€ Ð¸ Ð²ÑÐµ ÐµÐ³Ð¾ ÑÐ¾ÑÐµÐ´Ð¸ Ð·Ð°Ð³Ñ€ÑƒÐ¶ÐµÐ½Ñ‹.
       if (CountLoaded(pos + offset) == gSectorNeighboard.size())
       {
         CacheSector(pos + offset, Sector::CACHE_LOAD);
@@ -254,7 +254,7 @@ void World::Update()
 {
   //mUpdatableSectors.Update();
 
-  // Ñíà÷àëà âûãðóæàåì ñåêòîðà.
+  // Ð¡Ð½Ð°Ñ‡Ð°Ð»Ð° Ð²Ñ‹Ð³Ñ€ÑƒÐ¶Ð°ÐµÐ¼ ÑÐµÐºÑ‚Ð¾Ñ€Ð°.
   if (!mUnloadSectors.empty())
   {
     for (const auto &pos : mUnloadSectors)
@@ -268,7 +268,7 @@ void World::Update()
     mUnloadSectors.clear();
   }
 
-  // Çàòåì çàãðóæàåì.
+  // Ð—Ð°Ñ‚ÐµÐ¼ Ð·Ð°Ð³Ñ€ÑƒÐ¶Ð°ÐµÐ¼.
   mSectorLoader.Update();
 }
 

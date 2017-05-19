@@ -6,8 +6,9 @@
 #include <memory>
 #include "Tesselator.h"
 #include <boost\optional\optional.hpp>
+#include <include\mapgen_types.h>
+#include <tools\Common.h>
 
-typedef uint16_t BlockId;
 class Model;
 class DataBase;
 
@@ -31,9 +32,13 @@ public:
 
   boost::optional<const Model &> GetModel() const;
 
+  const std::vector<ItemId> & GetDropList();
+  void SetDropList(const std::vector<ItemId> &);
+
 private:
   std::unique_ptr<Tesselator> mTesselator;
   std::unique_ptr<Model> mModel;
+  std::vector<ItemId> mDrop;
 };
 
 

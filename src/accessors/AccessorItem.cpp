@@ -9,31 +9,42 @@
 #include "../imgui/imgui_widgets.h"
 #include <string>
 #include <algorithm>
-
-
-
+#include "../../InventorySlot.h"
+#include <ItemContainerContext.h>
 
 AccessorItem::AccessorItem(const AccessorItem &other)
   : ParentType(other)
-{}
+{
+  mItems.resize(other.mItems.size());
+}
 
 AccessorItem::AccessorItem(AccessorItem &&other)
   : ParentType(std::move(other))
-{}
+{
+  mItems = std::move(other.mItems);
+}
 
 AccessorItem::AccessorItem(const AccessorItem &other, Block &parent)
   : ParentType(other, parent)
-{}
+{
+  mItems.resize(other.mItems.size());
+}
 
 AccessorItem::AccessorItem(AccessorItem &&other, Block &parent)
   : ParentType(std::move(other), parent)
-{}
+{
+  mItems = std::move(other.mItems);
+}
 
 AccessorItem::AccessorItem(const DataBase &db, const rapidjson::Value &val, Block &parent)
   : ParentType(db, val, parent)
-{}
+{
+  int size = 1;
+  JSONLOAD(sge::make_nvp("size", size));
+  mItems.resize(size);
+}
 
-void AccessorItem::DrawGui(const Magnum::Timeline &dt)
+void AccessorItem::DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx, IContext & context)
 {
   ImGui::BeginGroup();
 
@@ -48,27 +59,7 @@ void AccessorItem::DrawGui(const Magnum::Timeline &dt)
   }
 
   const auto &db = mParent.GetDataBase();
-  ImDrawList* draw_list = ImGui::GetWindowDrawList();
-  for (size_t i = 0; i < 4; i++)
-  {
-    ImVec2 base_pos = ImGui::GetCursorScreenPos();
-    //ImGui::PushID(i);
-    if (i < mItems.size())
-    {
-      const auto &coord = static_cast<const Item &>(*(db.GetItem(std::get<0>(mItems[i])))).TextureCoord();
-      const auto &db_item = db.GetItem(std::get<0>(mItems[i]));
-      ImGui::Image(ImTextureID(1), std::to_string(std::get<1>(mItems[i])).c_str(), ImVec2(32, 32), ImVec2(coord.left(), coord.top()), ImVec2(coord.right(), coord.bottom()));
-      if (ImGui::IsItemHovered())
-        ImGui::SetTooltip("%s x%d\n%s", db_item->GetName().c_str(), std::get<1>(mItems[i]), db_item->GetDescription().c_str());
-    }
-    else
-    {
-      ImGui::Dummy(ImVec2(32, 32));
-    }
-    draw_list->AddRect(base_pos, ImVec2(base_pos.x + 32, base_pos.y + 32), IM_COL32(255, 255, 255, 100));
-    if ((i % 2) < 1) ImGui::SameLine();
-    //ImGui::PopID();
-  }
+  gui::DrawInventory::DrawInventorySlots(mItems, db, ItemContainerContext(), 2);
   ImGui::EndGroup();
 }
 
@@ -80,7 +71,13 @@ size_t AccessorItem::AddItem(ItemId id, size_t count)
   }
   else
   {
-    mItems.emplace_back(id, count);
+    if (auto empty = find_item(0))
+    {
+      std::get<0>(mItems[*empty]) = id;
+      std::get<1>(mItems[*empty]) = count;
+    }
+    else
+      return 0;
   }
 
   return count;
@@ -90,12 +87,12 @@ size_t AccessorItem::RemoveItem(ItemId id, size_t count)
 {
   if (auto index = find_item(id))
   {
-    if (count <= std::get<1>(mItems[*index])) std::get<1>(mItems[*index]) -= count;
+    if (count <= std::get<1>(mItems[*index])) 
+      std::get<1>(mItems[*index]) -= count;
 
     if (std::get<1>(mItems[*index]) == 0)
     {
-      std::swap(mItems[*index], mItems.back());
-      mItems.resize(mItems.size() - 1);
+      std::get<0>(mItems[*index]) = 0;
     }
   }
 
@@ -111,7 +108,7 @@ size_t AccessorItem::ItemCount(ItemId id) const
   return 0;
 }
 
-const AccessorItem::ItemList & AccessorItem::Items() const
+const ItemList & AccessorItem::Items() const
 {
   return mItems;
 }

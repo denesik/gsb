@@ -23,10 +23,11 @@
 #include <Magnum/Version.h>
 
 static const int tmp_area_size = 1;
+#include "../GuiInventory.h"
+
 
 Game::Game(const Arguments & arguments)
   : Platform::Application{ arguments, Configuration{}.setTitle("sge").setWindowFlags(Configuration::WindowFlag::Resizable).setVersion(Magnum::Version::GL330) }
-  , mShadowFramebuffer{ Range2Di{{}, {512, 512}} }
   , test_texgen{ test_texgenshader, {200, 200} }
 {
   test();
@@ -50,12 +51,12 @@ Game::Game(const Arguments & arguments)
   mBlocksDataBase->ApplyLoader(std::make_unique<JsonDataBase>("data/json"));
 
   mWorld = std::make_unique<World>(*mBlocksDataBase);
+  mWorld->mPlayer.Inventory()[10] = std::make_pair(mBlocksDataBase->ItemIdFromName("white bricks").value_or(0), 10);
+  mWorld->mPlayer.Inventory()[11] = std::make_pair(mBlocksDataBase->ItemIdFromName("yellow bricks").value_or(0), 10);
+  mWorld->mPlayer.Inventory()[12] = std::make_pair(mBlocksDataBase->ItemIdFromName("red bricks").value_or(0), 10);
 
-  //auto mapgen = std::make_unique<MapLoader>(std::make_unique<PrimitivaMountains>(*mBlocksDataBase, 1.f));
-  //auto mapgen = std::make_unique<MapLoader>(std::make_unique<WorldGeneratorFlat>(*mBlocksDataBase));
-  //mapgen->SetWorld(mWorld.get());
-
-  //mWorld->SetLoader(std::move(mapgen));
+  modalWindow = std::make_unique<GuiWindow>(*mBlocksDataBase, "Selected");
+  inventoryWindow = std::make_unique<GuiWindowPlayerInventory>(mWorld->mPlayer, *mBlocksDataBase);
 
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld);
   mWorld->GetWorldSectorObserver().attach(*mDrawableArea);
@@ -72,24 +73,21 @@ Game::Game(const Arguments & arguments)
   setSwapInterval(0);
   setMouseLocked(true);
 
-  mCamera = std::make_unique<Camera>(mWorld->mPlayer, defaultFramebuffer.viewport());
-  mSunCamera = std::make_unique<Camera>(mSun, Range2Di{ {},{ 512, 512 } }, Camera::Type::Ortho);
-  mCurrentCamera = mCamera.get();
-
+  playerHead = std::make_unique<MovableOffseted>(mWorld->mPlayer, Vector3{ 0, 1.8f, 0 });
+  mCamera = std::make_unique<Camera>(*playerHead, defaultFramebuffer.viewport());
   mWorld->mPlayer.SetPos({ 0, 400, 0 });
 
-  mShadowTexture.setImage(0, TextureFormat::DepthComponent, ImageView2D{ PixelFormat::DepthComponent, PixelType::Float,{ 512, 512 }, nullptr })
-	  .setMaxLevel(0)
-	  .setCompareFunction(Sampler::CompareFunction::LessOrEqual)
+  mShadowTextureArray.setImage(0, TextureFormat::DepthComponent, ImageView3D{ PixelFormat::DepthComponent, PixelType::Float,{ 1024, 1024, Int(StandartShader::ShadowMapLevels) }, nullptr })
+    .setMaxLevel(0)
+    .setCompareFunction(Sampler::CompareFunction::LessOrEqual)
     .setCompareMode(Sampler::CompareMode::CompareRefToTexture)
     .setMinificationFilter(Sampler::Filter::Linear, Sampler::Mipmap::Base)
     .setMagnificationFilter(Sampler::Filter::Linear);
 
-  mShadowFramebuffer.attachTexture(Framebuffer::BufferAttachment::Depth, mShadowTexture, 0)
-	  .mapForDraw(Framebuffer::DrawAttachment::None)
-	  .bind();
+  mSunCamera = std::make_unique<SunCamera>(mSun, Range2Di{ {},{ 1024, 1024 } }, Camera::Type::Ortho, mShadowTextureArray);
+  mCurrentCamera = mCamera.get();
 
-  CORRADE_INTERNAL_ASSERT(mShadowFramebuffer.checkStatus(FramebufferTarget::Draw) == Framebuffer::Status::Complete);
+  mWorld->mPlayer.SetPos({ 0, 70, 0 });
 
   mTimeline.start();
 }
@@ -102,9 +100,9 @@ void Game::drawEvent()
   Renderer::enable(Renderer::Feature::FaceCulling);
   Renderer::setClearColor({ clear_color.x, clear_color.y, clear_color.z, clear_color.w });
 
-  mWorld->mPlayer.Move(mCameraVelocity * 0.006f);
+  mWorld->mPlayer.MoveRelative(mCameraVelocity * 0.006f);
   mWorld->mPlayer.Rotate(mCameraAngle * 0.003f);
-  mWorld->mPlayer.Update();
+  mWorld->mPlayer.Update(mTimeline);
 
   auto p_sec = cs::WtoS(mWorld->mPlayer.Pos());
   p_sec.y() = 0;
@@ -112,25 +110,28 @@ void Game::drawEvent()
   mDrawableArea->SetPos(p_sec);
   mSectorLoader->SetPos(p_sec);
 
-  auto spos = Vector3{ std::sin(mTimeline.previousFrameTime()) * 100, 111, std::cos(mTimeline.previousFrameTime()) * 100 };
-  mSun.SetPos(spos);
-  mSun.LookAt({});
-  mSun.Update();
-
   auto ray = mCamera->Ray({ static_cast<Float>(defaultFramebuffer.viewport().centerX()) ,
-    static_cast<Float>(defaultFramebuffer.viewport().centerY()) });
+    static_cast<Float>(defaultFramebuffer.viewport().centerY()) }).normalized();
 
-  auto blocks = voxel_traversal(mWorld->mPlayer.Pos(), mWorld->mPlayer.Pos() + ray.normalized() * 100.0f);
+  auto blocks = voxel_traversal(playerHead->Pos(), playerHead->Pos() + ray * 100.0f);
+  auto selId = inventoryWindow->HotbarSelection();
+  auto &selItem = mBlocksDataBase->GetItem(selId);
 
+  Vector3i prepicked;
   Vector3i picked;
   for (auto &i : blocks)
   {
-    if (mWorld->GetBlockId(i) != 0)
+    auto selid = mWorld->GetBlockId(i);
+    if (selid != 0 && selid != 1)
     {
       picked = i;
       break;
     }
+
+    prepicked = i;
   }
+
+  picked = (selId && selItem->GetBlock()) ? prepicked : picked;
 
   debugLines.addLine(picked, picked + Vector3i{ 1,0,0 }, { 1,0,0 });
   debugLines.addLine(picked, picked + Vector3i{ 0,1,0 }, { 0,1,0 });
@@ -140,21 +141,50 @@ void Game::drawEvent()
   debugLines.addLine(picked + Vector3i{ 1,1,1 }, picked + Vector3i{ 1,0,1 }, { 1,1,1 });
   debugLines.addLine(picked + Vector3i{ 1,1,1 }, picked + Vector3i{ 1,1,0 }, { 1,1,1 });
 
-  debugLines.addLine(mWorld->mPlayer.Pos(), mWorld->mPlayer.Pos() + ray * 1, { 1,1,1 });
+  debugLines.addLine(playerHead->Pos(), playerHead->Pos() + ray * 100.0f, { 1,1,1 });
 
-  if (ImGui::IsMouseClicked(0))
+  if (centering && ImGui::IsMouseClicked(1) && !ImGui::IsAnyItemHovered())
   {
     auto p = mWorld->GetBlockDynamic(picked);
     if (p)
-      mDrawModal = picked;
+    {
+      modalWindow->Reset();
+      modalWindow->AddGui(*p);
+      modalWindow->Open();
+    }
     else
-      mDrawModal = {};
+    {
+      modalWindow->Reset();
+      modalWindow->Close();
+    }
   }
 
+  static float pressedT = 0;
+  if (centering && ImGui::IsMouseDown(0) && !ImGui::IsAnyItemHovered())
+  {
+    pressedT -= mTimeline.previousFrameDuration();
+    if (pressedT <= 0)
+    {
+      if (selId && selItem->GetBlock())
+        mWorld->CreateBlock(picked, selItem->GetBlock());
+      else
+        mWorld->DestroyBlock(picked);
+      pressedT = 0.3f;
+    }
+  }
+  else
+  {
+    pressedT = 0;
+  }
+
+  auto sunref = Vector3(picked); // mWorld->mPlayer.Pos(); // 
+  auto spos = sunref + Vector3{ std::sin(mTimeline.previousFrameTime() / 10.f) * 100, 111, std::cos(mTimeline.previousFrameTime() / 10.f) * 100 };
+  mSun.SetPos(spos);
+  mSun.LookAt(sunref);
+  mSun.Update(mTimeline);
+
   //shadow pass
-  mShadowFramebuffer.clear(FramebufferClear::Depth).bind();
-  Renderer::setColorMask(false, false, false, false);
-  Renderer::setFaceCullingMode(Magnum::Renderer::PolygonFacing::Front);
+  mSunCamera->Draw(*mDrawableArea, mShadowPass);
 //  mDrawableArea->DrawShadowPass(*mSunCamera, mShadowPass);
 
   //forward pass
@@ -162,8 +192,11 @@ void Game::drawEvent()
   defaultFramebuffer.clear(FramebufferClear::Color | FramebufferClear::Depth).bind();
   Renderer::setFaceCullingMode(Magnum::Renderer::PolygonFacing::Back);
   mShader.setTexture(mTexture);
-  mShader.setShadowDepthTexture(mShadowTexture);
+  mShader.setShadowDepthTexture(mShadowTextureArray);
   mDrawableArea->Draw(*mCurrentCamera, *mSunCamera, mSun.Direction(), mShader);
+
+  mDrawableArea->SetPos(cs::WtoS(mWorld->mPlayer.Pos()));
+  mUpdatableArea->SetPos(cs::WtoS(mWorld->mPlayer.Pos()));
 
   mWorld->Update();
 
@@ -177,25 +210,32 @@ void Game::drawEvent()
     // 1. Show a simple window
     // Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets appears in a window automatically called "Debug"
     {
-	  //ImGui::Image(ImTextureID(mShadowTexture.id()), {200,200});
+      //ImGui::Image(ImTextureID(mShadowTexture.id()), {200,200});
 
       ImGui::ColorEdit3("clear color", (float*)&clear_color);
       if (ImGui::Button("Test Window")) show_test_window ^= 1;
       if (ImGui::Button("Another Window")) show_another_window ^= 1;
       ImGui::Text("fps: %i; max: %i; min: %i; long frame: %i%%",
         mFpsCounter.GetCount(), mFpsCounter.GetMaxFps(), mFpsCounter.GetMinFps(), mFpsCounter.GetPercentLongFrame());
+      ImGui::Text("player pos %g %g %g",
+        mWorld->mPlayer.Pos().x(), mWorld->mPlayer.Pos().y(), mWorld->mPlayer.Pos().z());
+
+      ImGui::PlotLines("", &mFpsCounter.GetFramesLength()[0], 100, mFpsCounter.GetFramesLengthCurrent(), "", 0, 0.018f, { 100,50 });
+
+      ImGui::SliderFloat("Movement speed", &move_speed, 500, 10000);
 
       static int drawable_area_size = tmp_area_size;
       int das = drawable_area_size;
-      ImGui::SliderInt("Drawable area size", &drawable_area_size, 0, 10);
+      ImGui::SliderInt("Drawable area size", &drawable_area_size, 0, 15);
       if (das != drawable_area_size)
         mDrawableArea->SetRadius(drawable_area_size);
 
       static int updatable_area_size = tmp_area_size;
       int uas = updatable_area_size;
-      ImGui::SliderInt("Updatable area size", &updatable_area_size, 0, 10);
+      ImGui::SliderInt("Updatable area size", &updatable_area_size, 0, 15);
       if (uas != updatable_area_size)
         mSectorLoader->SetRadius(updatable_area_size);
+
     }
 
     // 2. Show another simple window, this time using an explicit Begin/End pair
@@ -214,20 +254,11 @@ void Game::drawEvent()
       ImGui::ShowTestWindow(&show_test_window);
     }
 
-    if (mDrawModal != WBPos{})
-    {
-      ImGui::SetNextWindowSize(ImVec2(500, 100), ImGuiSetCond_FirstUseEver);
-      ImGui::Begin("Selected");
-      auto p = mWorld->GetBlockDynamic(mDrawModal);
-      if (p)
-        p->DrawGui(mTimeline);
-      ImGui::End();
-    }
+    inventoryWindow->Draw(mTimeline);
+    modalWindow->Draw(mTimeline);
 
-	mWorld->GetWorldGenerator().DrawGui(mTimeline);
-
-	if (ImGui::Button("wipe all"))
-		mWorld->Wipe();
+    if (ImGui::Button("wipe all"))
+      mWorld->Wipe();
 
     mImguiPort.Draw();
   }
@@ -248,19 +279,28 @@ void Game::keyPressEvent(KeyEvent& event)
   mImguiPort.keyPressEvent(event);
 
   if (event.key() == KeyEvent::Key::A)
-    mCameraVelocity.x() = -1000.0f * mTimeline.previousFrameDuration();
+    mCameraVelocity.x() = -move_speed * mTimeline.previousFrameDuration();
   if (event.key() == KeyEvent::Key::D)
-    mCameraVelocity.x() = 1000.0f * mTimeline.previousFrameDuration();
+    mCameraVelocity.x() = move_speed * mTimeline.previousFrameDuration();
 
   if (event.key() == KeyEvent::Key::W)
-    mCameraVelocity.z() = -1000.0f * mTimeline.previousFrameDuration();
+    mCameraVelocity.z() = -move_speed * mTimeline.previousFrameDuration();
 
   if (event.key() == KeyEvent::Key::S)
-    mCameraVelocity.z() = 1000.0f * mTimeline.previousFrameDuration();
+    mCameraVelocity.z() = move_speed * mTimeline.previousFrameDuration();
+
+  if (event.key() == KeyEvent::Key::Space)
+    mWorld->mPlayer.SetAcceleration({0, 6, 0});
 
   if (event.key() == KeyEvent::Key::F5)
     mCurrentCamera = (mCurrentCamera == mCamera.get()) ? mSunCamera.get() : mCamera.get();
 
+  if (event.key() == KeyEvent::Key::E)
+    inventoryWindow->Toggle();
+
+  if (event.key() == KeyEvent::Key::F6)
+    mSunCamera->SwitchLayerDebug();
+    
   event.setAccepted();
 }
 

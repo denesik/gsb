@@ -1,0 +1,33 @@
+anatase TiO2
+alunite KAl3(SO4)2(OH)6
+andesite SiO2 56-64 %, TiO2 0.5-0.7 %, Al2O3 16-21 %, Fe2O3 3-4 %, FeO 3-5 %, MgO 3-4 %, CaO 6-7 %, Na2O 2-4 %, K2O 1-2 %
+anhydrite CaSO4
+basalt SiO2 (oregen base)
+calcite CaCO3
+cassiterite SnO2
+chalk CaCO3
+magnesiochromite MgCr2O4
+hercynite FeAl2O4
+chromite FeCr2O4
+claystone
+cobaltite CoAsS
+conglomerate
+pyrite FeS2
+cryolite Na3AlF6
+diorite SiO2 53-58 %, ТіO2 0.3-1.5 %, Al2O3 14-20 %, Fe2O3 1.5-5 %, FeO 3-6 %, MgO 0.8-6 %, CaO 4-9 %, Na2O 2-6.5 %, К2О 0.3-2 %
+dolomite CaCO3•MgCO3
+gabbro
+galena PbS
+gibbsite Al(OH)3
+granite
+gypsum
+hematite Fe2O3
+ilmenite FeTiO3
+kaolinite Al2Si2O5(OH)4
+kimberlite (small diamonds)
+lignite C
+limestone CaCO3
+magnetite Fe3O4
+malachite Cu2CO3(OH)2
+marble
+sphalerite (Zn,Fe)S

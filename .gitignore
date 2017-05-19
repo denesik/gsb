@@ -32,7 +32,8 @@ World.VC.opendb
 *.db
 *.opendb
 /.vs/config/applicationhost.config
-/3rdparty
+/3rdparty/msvc14_x86
+/3rdparty/msvc15_x86
 /lib_source/zlib/
 /lib_source/SDL-mirror/
 /lib_source/magnum-plugins/

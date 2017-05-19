@@ -6,78 +6,73 @@
 #include <Magnum/Texture.h>
 #include <Magnum/Math/Color.h>
 #include <Magnum/Math/Matrix4.h>
+#include <Magnum/Framebuffer.h>
+#include <Magnum/TextureArray.h>
 
-using namespace Magnum;
-
-class StandartShader : public AbstractShaderProgram {
+class StandartShader : public Magnum::AbstractShaderProgram
+{
 public:
-  typedef Attribute<0, Vector3> Position;
-  typedef Attribute<1, Vector2> TextureCoordinates;
-  typedef Attribute<2, Vector3> Normal;
+  using Position = Magnum::Attribute<0, Magnum::Vector3>;
+  using TextureCoordinates = Magnum::Attribute<1, Magnum::Vector2>;
+  using Normal = Magnum::Attribute<2, Magnum::Vector3>;
+  constexpr static size_t ShadowMapLevels = 5;
 
   explicit StandartShader();
 
-  StandartShader& setProjection(const Matrix4& mat) {
-    setUniform(mUniformProjection, mat);
-    return *this;
-  }
+  StandartShader& setProjection(const Magnum::Matrix4& mat);
 
-  StandartShader& setShadowMatrix(const Matrix4& mat) {
-    setUniform(mShadowProjection, mat);
-    return *this;
-  }
+  StandartShader& setShadowMatrix(const Magnum::Containers::ArrayView<const Magnum::Matrix4>& mat);
 
-  StandartShader& setLightVector(const Vector3& light) {
-    setUniform(mLightVector, light);
-    return *this;
-  }
+  StandartShader& setLightVector(const Magnum::Vector3& light);
 
-  StandartShader& setTexture(Texture2D& texture) {
-    texture.bind(TextureLayer);
-    return *this;
-  }
+  StandartShader& setTexture(Magnum::Texture2D& texture);
 
-  StandartShader& setShadowDepthTexture(Texture2D& shadowDepth) {
-    shadowDepth.bind(ShadowDepth);
-    return *this;
-  }
+  StandartShader& setShadowDepthTexture(Magnum::Texture2DArray& shadowDepth);
 
 private:
-  enum : Int { TextureLayer = 0, ShadowDepth = 2 };
+  enum : Magnum::Int { TextureLayer = 0, shadowmapTexture = 2 };
 
-  Int mUniformProjection;
-  Int mShadowProjection;
-  Int mLightVector;
+  Magnum::Int mProjectionMatrixUniform;
+  Magnum::Int mShadowmapMatrixUniform;
+  Magnum::Int mLightVectorUniform;
 };
 
-class ShadowShader : public AbstractShaderProgram {
+class SingleFileShader : Magnum::AbstractShaderProgram
+{
+
+};
+
+class ShadowShader : public Magnum::AbstractShaderProgram
+{
 public:
-  typedef Attribute<0, Vector3> Position;
+  typedef Magnum::Attribute<0, Magnum::Vector3> Position;
 
   explicit ShadowShader();
 
-  ShadowShader& setProjection(const Matrix4& mat) {
+  ShadowShader& setProjection(const Magnum::Matrix4& mat)
+  {
     setUniform(mUniformProjection, mat);
     return *this;
   }
 
 private:
-  Int mUniformProjection;
+  Magnum::Int mUniformProjection;
 };
 
-class TexGenShader : public AbstractShaderProgram {
+class TexGenShader : public Magnum::AbstractShaderProgram
+{
 public:
-  typedef Attribute<0, Vector3> Position;
+  typedef Magnum::Attribute<0, Magnum::Vector3> Position;
 
   explicit TexGenShader();
 
-  TexGenShader& setTexture(Texture2D& texture) {
+  TexGenShader& setTexture(Magnum::Texture2D& texture) {
     texture.bind(TextureLayer);
     return *this;
   }
 
 private:
-  enum : Int { TextureLayer = 0 };
+  enum : Magnum::Int { TextureLayer = 0 };
 };
 
 #endif

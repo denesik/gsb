@@ -45,7 +45,7 @@ void UpdatableSectors::Remove(const SPos &pos)
     {
       std::swap(*it, mSectors.back());
       mSectors.resize(mSectors.size() - 1);
-      mWorld.UnLoadSector(pos);
+      mWorld.UnLoadSector(pos); //TODO: это нужно делать по событию от Unloader
     }
   }
 //   else

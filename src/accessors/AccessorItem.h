@@ -16,7 +16,6 @@ class AccessorItem : public NumeredAgent<AccessorItem, gsb::crc32<std::string>()
 {
 public:
   using ParentType = NumeredAgent<AccessorItem, gsb::crc32<std::string>()("AccessorItem")>;
-  using ItemList = std::vector<std::tuple<ItemId, size_t>>;
 
   AccessorItem() = delete;
   ~AccessorItem() override = default;
@@ -35,7 +34,7 @@ public:
   AccessorItem(const DataBase &db, const rapidjson::Value &val, Block &parent);
 
 
-  void DrawGui(const Magnum::Timeline &dt) override;
+  void DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx, IContext & context) override;
 
   // ¬озвращает сколько итемов добавлено
   size_t AddItem(ItemId id, size_t count);

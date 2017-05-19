@@ -3,20 +3,50 @@
 #include "IMapGenerator.h"
 #include <memory>
 #include "ThreadProcess.h"
+#include <DataBase.h>
+#include <boost/filesystem.hpp>
 
-class MapLoader : public ThreadProcess_old<MapLoader>
+//TODO: rename to sector loader
+class MapLoaderFromGenerator : public IMapLoader
 {
 public:
-  MapLoader(const IMapGenerator &generator);
-  ~MapLoader();
+  MapLoaderFromGenerator(const IMapGenerator &generator, const DataBase &db);
 
-  void SetSector(std::weak_ptr<Sector> sector);
-
-  void Process();
+  void Process() override;
 
 private:
-  std::weak_ptr<Sector> mSector;
   const IMapGenerator &mGenerator;
-
 };
 
+class MapLoaderFromDisk : public IMapLoader
+{
+public:
+  MapLoaderFromDisk(boost::filesystem::path path, const DataBase &db);
+
+  void Process() override;
+
+private:
+  boost::filesystem::path mPath;
+};
+
+//class MapLoaderFromNetwork : public IMapLoader
+//{
+//public:
+//  MapLoaderFromNetwork(boost::asio::ip::address address, const DataBase &db);
+//
+//  void Process() override;
+//
+//private:
+//  boost::asio::ip::address mAddress;
+//};
+
+class MapSaverToDisk : public IMapSaver
+{
+public:
+  MapSaverToDisk(boost::filesystem::path path, const DataBase &db);
+
+  void Process() override;
+
+private:
+  boost::filesystem::path mPath;
+};

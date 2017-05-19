@@ -35,22 +35,21 @@ std::unique_ptr<Block> BlockSpriteAnimated::Clone(Sector &parent)
   return std::make_unique<BlockSpriteAnimated>(*this, parent);
 }
 
-void BlockSpriteAnimated::DrawGui(const Magnum::Timeline &dt)
+void BlockSpriteAnimated::DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx, IContext & context)
 {
 }
 
 void BlockSpriteAnimated::Update(const Magnum::Timeline &dt)
-{
-}
-
-void BlockSpriteAnimated::Draw(const Magnum::Matrix4 &vp, Magnum::AbstractShaderProgram& shader)
 {
   auto &world = m_sector.GetWorld();
   const auto &player_pos = world.mPlayer.Pos();
 
   mMovable.SetPos(WPos(cs::SBtoWB(cs::BItoSB(mPos), m_sector.GetPos())) + WPos(0.5f));
   mMovable.LookAt(player_pos);
-  mMovable.Update();
+  mMovable.Update(dt);
+}
 
+void BlockSpriteAnimated::Draw(const Magnum::Matrix4 &vp, Magnum::AbstractShaderProgram& shader)
+{
   GetStaticPart()->GetModel()->Draw(vp * mMovable.Model(), shader, frame);
 }

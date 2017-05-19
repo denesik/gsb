@@ -21,14 +21,13 @@ public:
   Item();
   ~Item();
 
-  void JsonLoad(DataBase & db, const rapidjson::Value & val) override;
+  void JsonLoad(const DataBase & db, const rapidjson::Value & val) override;
 
   const Magnum::Range2D &TextureCoord() const;
 
 private:
   Magnum::Range2D mTextureCoord;
   const size_t mTextId = 1;
-
 };
 
 

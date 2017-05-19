@@ -15,6 +15,9 @@
 #include <Magnum/AbstractShaderProgram.h>
 #include "ChunkHelper.h"
 
+
+#include "Sector_generated.h"
+
 class IMapGenerator;
 class World;
 
@@ -23,6 +26,8 @@ class World;
 class Sector
 {
 public:
+  friend class MapSaverToDisk;
+
   enum CacheState
   {
     CACHE_LOAD,
@@ -45,8 +50,6 @@ public:
   SPos GetPos() const;
 
   World &GetWorld();
-
-  void ApplyGenerator(IMapGenerator &generator);
 
   BlockId GetBlockId(SBPos pos) const;
   Block* GetBlockDynamic(const WBPos& pos) const;
@@ -80,6 +83,8 @@ public:
 //   void UnloadSector(Sector &sector);
 
   void Cache(Sector &sector, CacheState state);
+
+  void FlatbufferLoad(const gsb_flat::Sector &sec);
 
 private:
   std::array<BlockId, gSectorCapacity> mStaticBlocks;

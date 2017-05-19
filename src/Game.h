@@ -33,6 +33,7 @@
 
 #include <Magnum/Timeline.h>
 #include "../TextureGenerator.h"
+#include "../GuiWindow.h"
 
 using namespace Magnum;
 
@@ -78,10 +79,13 @@ private:
 
   Vector3 mCameraVelocity;
   Vector3 mCameraAngle;
+  float move_speed = 1000.f;
 
   Timeline mTimeline;
 
   WBPos mDrawModal;
+  std::unique_ptr<GuiWindow> modalWindow;
+  std::unique_ptr<GuiWindowPlayerInventory> inventoryWindow;
 
   std::unique_ptr<DataBase> mBlocksDataBase;
   std::unique_ptr<World> mWorld;
@@ -93,12 +97,14 @@ private:
   DebugLines debugLines;
   bool centering = true;
 
+  std::unique_ptr<MovableOffseted> playerHead;
   std::unique_ptr<Camera> mCamera;
-  std::unique_ptr<Camera> mSunCamera;
+  std::unique_ptr<SunCamera> mSunCamera;
   Camera * mCurrentCamera;
   Movable mSun;
-  Framebuffer mShadowFramebuffer;
-  Texture2D mShadowTexture;
+
+  Texture2DArray mShadowTextureArray;
+
   TextureGenerator test_texgen;
   TexGenShader test_texgenshader;
 };

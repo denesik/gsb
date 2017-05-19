@@ -1,0 +1,13 @@
+namespace gsb_flat;
+
+struct SPos {
+  x:int;
+  z:int;
+}
+
+table Sector {
+  mPos:SPos;
+  mStaticBlocks:[int];
+}
+
+root_type Sector;

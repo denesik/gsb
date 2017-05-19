@@ -1,6 +1,11 @@
 [
   {
     "section": "block",
+    "name": "air",
+    "id": 1
+  },
+  {
+    "section": "block",
     "name": "grass",
     "id": 2,
     "tesselator": {
@@ -13,7 +18,12 @@
         "data/grass_top.png",
         "data/dirt.png"
       ]
-    }
+    },
+    "generate_item":{
+      "tex":"data/items/grass_side.png",
+      "name":"grass"
+    },
+    "drop":[["grass", 1]]
   },
   {
     "section": "block",
@@ -39,14 +49,19 @@
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [
-        "data/stone.png",
-        "data/stone.png",
-        "data/stone.png",
-        "data/stone.png",
-        "data/stone.png",
-        "data/stone.png"
+        "data/stone_original.png",
+        "data/stone_original.png",
+        "data/stone_original.png",
+        "data/stone_original.png",
+        "data/stone_original.png",
+        "data/stone_original.png"
       ]
-    }
+    },
+    "generate_item":{
+      "tex":"data/items/stone_original.png",
+      "name":"stone"
+    },
+    "drop":[["stone", 1]]
   },
   {
     "section": "block",
@@ -55,7 +70,12 @@
     "tesselator": {
       "type": "TesselatorSolidBlock",
       "tex": [
-        "data/test_white.png","data/test_white.png","data/test_white.png","data/test_white.png","data/test_white.png","data/test_white.png"
+        "data/test_white.png",
+        "data/test_white.png",
+        "data/test_white.png",
+        "data/test_white.png",
+        "data/test_white.png",
+        "data/test_white.png"
       ]
     }
   },
@@ -73,7 +93,12 @@
         "data/dirt.png",
         "data/dirt.png"
       ]
-    }
+    },
+    "generate_item":{
+      "tex":"data/items/dirt.png",
+      "name":"dirt"
+    },
+    "drop":[["dirt", 1]]
   },
   {
     "section": "block",
@@ -90,46 +115,55 @@
         "data/furnance_top_bottom.png"
       ]
     },
-	"type":"BlockAutoCrafter",
+    "type":"BlockAutoCrafter",
     "agents":[
       {
         "type":"AccessorItem",
-		"name":"0"
+		"name":"0",
+                "size":4
       },
 	    {
         "type":"AccessorItem",
-		    "name":"1"
+		    "name":"1",
+                    "size":4
       },
 	    {
         "type":"AccessorItem",
-		    "name":"2"
+		    "name":"2",
+                    "size":4
       },
 	    {
         "type":"AccessorItem",
-		    "name":"3"
+		    "name":"3",
+                    "size":4
       }
     ],
-	"Crafter1":
-	{
-		"Recipe":"RecipeHand",
-		"fast":false,
-		"Input":"1",
-		"Output":"0"
-	},
-	"Crafter2":
-	{
-		"Recipe":"RecipeBurn",
-		"fast":true,
-		"Input":"2",
-		"Output":"2"
-	}
+    "Crafter1":
+    {
+      "Recipe":"RecipeHand",
+      "fast":false,
+      "Input":"1",
+      "Output":"0"
+    },
+    "Crafter2":
+    {
+      "Recipe":"RecipeBurn",
+      "fast":true,
+      "Input":"2",
+      "Output":"2"
+    },
+    "generate_item":{
+      "tex":"data/items/furnance_front.png",
+      "name":"furnance"
+    },
+    "drop":[["furnance", 1]]
   },
   {
     "section": "block",
     "name": "number",
     "id": 8,
     "model": "",
-	  "type":"BlockSpriteAnimated"
+    "type":"BlockSpriteAnimated"
   },
   {
     "section": "block",
@@ -150,22 +184,6 @@
   },
   {
     "section": "block",
-    "name": "sand",
-    "id": 10,
-    "tesselator": {
-      "type": "TesselatorSolidBlock",
-      "tex": [
-        "data/sand.png",
-        "data/sand.png",
-        "data/sand.png",
-        "data/sand.png",
-        "data/sand.png",
-        "data/sand.png"
-      ]
-    }
-  },
-  {
-    "section": "block",
     "name": "rainforest_grass",
     "id": 11,
     "tesselator": {
@@ -178,7 +196,12 @@
         "data/grass_top_w.png",
         "data/dirt.png"
       ]
-    }
+    },
+    "generate_item":{
+      "tex":"data/items/dirt.png",
+      "name":"rainforest_grass"
+    },
+    "drop":[["rainforest_grass", 1]]
   },
   {
     "section": "block",
@@ -194,7 +217,12 @@
         "data/grass_top_t.png",
         "data/dirt.png"
       ]
-    }
+    },
+    "generate_item":{
+      "tex":"data/items/dirt.png",
+      "name":"taiga_grass"
+    },
+    "drop":[["taiga_grass", 1]]
   },
   {
     "section": "block",
@@ -210,7 +238,12 @@
         "data/grass_top_f.png",
         "data/dirt.png"
       ]
-    }
+    },
+    "generate_item":{
+      "tex":"data/items/dirt.png",
+      "name":"seasonforest_grass"
+    },
+    "drop":[["seasonforest_grass", 1]]
   },
   {
     "section": "block",
@@ -226,7 +259,12 @@
         "data/grass_top_s.png",
         "data/grass_top_s.png"
       ]
-    }
+    },
+    "generate_item":{
+      "tex":"data/items/dirt.png",
+      "name":"snow"
+    },
+    "drop":[["snow", 1]]
   },
   {
     "section": "block",
@@ -260,26 +298,340 @@
       ]
     }
   },
+    {
+    "section": "block",
+    "name": "dirt2",
+    "id": 17,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/dirt2.png",
+        "data/dirt2.png",
+        "data/dirt2.png",
+        "data/dirt2.png",
+        "data/dirt2.png",
+        "data/dirt2.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/dirt2.png",
+      "name":"dirt2"
+    },
+    "drop":[["dirt2", 1]]
+  },
+  {
+    "section": "block",
+    "name": "dirt3",
+    "id": 18,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/dirt3.png",
+        "data/dirt3.png",
+        "data/dirt3.png",
+        "data/dirt3.png",
+        "data/dirt3.png",
+        "data/dirt3.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/dirt3.png",
+      "name":"dirt3"
+    },
+    "drop":[["dirt3", 1]]
+  },
+  {
+    "section": "block",
+    "name": "dirt4",
+    "id": 19,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/dirt4.png",
+        "data/dirt4.png",
+        "data/dirt4.png",
+        "data/dirt4.png",
+        "data/dirt4.png",
+        "data/dirt4.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/dirt4.png",
+      "name":"dirt4"
+    },
+    "drop":[["dirt4", 1]]
+  },
+  {
+    "section": "block",
+    "name": "sand",
+    "id": 20,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/sand.png",
+        "data/sand.png",
+        "data/sand.png",
+        "data/sand.png",
+        "data/sand.png",
+        "data/sand.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/sand.png",
+      "name":"sand"
+    },
+    "drop":[["sand", 1]]
+  },
+  {
+    "section": "block",
+    "name": "sand2",
+    "id": 21,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/sand2.png",
+        "data/sand2.png",
+        "data/sand2.png",
+        "data/sand2.png",
+        "data/sand2.png",
+        "data/sand2.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/sand2.png",
+      "name":"sand2"
+    },
+    "drop":[["sand2", 1]]
+  },
+  {
+    "section": "block",
+    "name": "sand3",
+    "id": 22,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/sand3.png",
+        "data/sand3.png",
+        "data/sand3.png",
+        "data/sand3.png",
+        "data/sand3.png",
+        "data/sand3.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/sand3.png",
+      "name":"sand3"
+    },
+    "drop":[["sand3", 1]]
+  },
+  {
+    "section": "block",
+    "name": "peat_grass",
+    "id": 23,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/peat_grass_side.png",
+        "data/peat_grass_side.png",
+        "data/peat_grass_side.png",
+        "data/peat_grass_side.png",
+        "data/grass_top.png",
+        "data/peat.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/peat_grass_side.png",
+      "name":"peat_grass"
+    },
+    "drop":[["peat_grass", 1]]
+  },
+  {
+    "section": "block",
+    "name": "peat",
+    "id": 24,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/peat.png",
+        "data/peat.png",
+        "data/peat.png",
+        "data/peat.png",
+        "data/peat.png",
+        "data/peat.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/peat.png",
+      "name":"peat"
+    },
+    "drop":[["peat", 1]]
+  },
+  {
+    "section": "block",
+    "name": "sapropel",
+    "id": 25,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/sapropel.png",
+        "data/sapropel.png",
+        "data/sapropel.png",
+        "data/sapropel.png",
+        "data/sapropel.png",
+        "data/sapropel.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/sapropel.png",
+      "name":"sapropel"
+    },
+    "drop":[["sapropel", 1]]
+  },
+  {
+    "section": "block",
+    "name": "grassy_stone",
+    "id": 26,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/grassy_stone.png",
+        "data/grassy_stone.png",
+        "data/grassy_stone.png",
+        "data/grassy_stone.png",
+        "data/grassy_stone.png",
+        "data/grassy_stone.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/grassy_stone.png",
+      "name":"grassy_stone"
+    },
+    "drop":[["grassy_stone", 1]]
+  },
+  {
+    "section": "block",
+    "name": "tree_block",
+    "id": 27,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/tree_block.png",
+        "data/tree_block.png",
+        "data/tree_block.png",
+        "data/tree_block.png",
+        "data/tree_block.png",
+        "data/tree_block.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/dirt.png",
+      "name":"tree_block"
+    },
+    "drop":[["tree_block", 1]]
+  },
+  {
+    "section": "block",
+    "name": "leaves_block",
+    "id": 28,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/leaves_block.png",
+        "data/leaves_block.png",
+        "data/leaves_block.png",
+        "data/leaves_block.png",
+        "data/leaves_block.png",
+        "data/leaves_block.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/dirt.png",
+      "name":"leaves_block"
+    }
+  },
+  {
+    "section": "block",
+    "name": "yellow bricks",
+    "id": 29,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/yellow_bricks.png",
+        "data/yellow_bricks.png",
+        "data/yellow_bricks.png",
+        "data/yellow_bricks.png",
+        "data/yellow_bricks.png",
+        "data/yellow_bricks.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/yellow_bricks.png",
+      "name":"yellow bricks"
+    },
+    "drop":[["yellow bricks", 1]]
+  },
+  {
+    "section": "block",
+    "name": "red bricks",
+    "id": 30,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/red_bricks.png",
+        "data/red_bricks.png",
+        "data/red_bricks.png",
+        "data/red_bricks.png",
+        "data/red_bricks.png",
+        "data/red_bricks.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/red_bricks.png",
+      "name":"red bricks"
+    },
+    "drop":[["red bricks", 1]]
+  },
+  {
+    "section": "block",
+    "name": "white bricks",
+    "id": 31,
+    "tesselator": {
+      "type": "TesselatorSolidBlock",
+      "tex": [
+        "data/white_bricks.png",
+        "data/white_bricks.png",
+        "data/white_bricks.png",
+        "data/white_bricks.png",
+        "data/white_bricks.png",
+        "data/white_bricks.png"
+      ]
+    },
+    "generate_item":{
+      "tex":"data/items/white_bricks.png",
+      "name":"white bricks"
+    },
+    "drop":[["white bricks", 1]]
+  },
   {
     "section": "item",
     "type": "Item",
     "id": 1,
     "name": "coal",
-	  "tex": "data/items/coal_lump.png"
+    "tex": "data/items/coal_lump.png"
   },
   {
     "section": "item",
     "type": "Item",
     "id": 2,
     "name": "iron_ingot",
-	  "tex": "data/items/iron_ingot.png"
+    "tex": "data/items/iron_ingot.png"
   },
   {
     "section": "item",
     "type": "Item",
     "id": 3,
     "name": "iron_ore",
-	  "tex": "data/items/iron_ore.png"
+    "tex": "data/items/iron_ore.png"
   },
   {
     "section": "recipe",

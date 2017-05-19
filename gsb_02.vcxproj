@@ -19,31 +19,37 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DragNDrop.cpp" />
     <ClCompile Include="FastNoise\FastNoise.cpp">
       <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</TreatWarningAsError>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
     </ClCompile>
+    <ClCompile Include="GuiInventory.cpp" />
+    <ClCompile Include="GuiWindow.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="InventorySlot.cpp" />
     <ClCompile Include="src\accessors\Accessor.cpp" />
     <ClCompile Include="src\accessors\AccessorItem.cpp" />
-    <ClCompile Include="src\BiomeMapGenerator.cpp" />
     <ClCompile Include="src\BlockAutoCrafter.cpp" />
     <ClCompile Include="src\Block.cpp" />
     <ClCompile Include="src\BlockSpriteAnimated.cpp" />
     <ClCompile Include="src\ChunkHelper.cpp" />
-    <ClCompile Include="src\ConfiguratableMapGenerator.cpp" />
     <ClCompile Include="src\DataBase.cpp" />
+    <ClCompile Include="src\IGui.cpp" />
     <ClCompile Include="src\IItem.cpp" />
+    <ClCompile Include="src\include\IFlatBuffer.cpp" />
+    <ClCompile Include="src\include\IMapGenerator.cpp" />
+    <ClCompile Include="src\include\ItemTools.cpp" />
     <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\ResourceNetwork.cpp" />
     <ClCompile Include="src\StaticBlock.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Crafter.cpp" />
     <ClCompile Include="src\Creature.cpp" />
     <ClCompile Include="src\DrawableArea.cpp" />
     <ClCompile Include="src\Game.cpp" />
-    <ClCompile Include="src\IMapGenerator.cpp" />
     <ClCompile Include="src\IMapLoader.cpp" />
     <ClCompile Include="src\ImguiPort.cpp" />
     <ClCompile Include="src\imgui\imgui_widgets.cpp" />
@@ -71,25 +77,39 @@
     <ClCompile Include="src\UpdatableSectors.cpp" />
     <ClCompile Include="src\World.cpp" />
     <ClCompile Include="src\WorldGeneratorFlat.cpp" />
-    <ClCompile Include="src\WorldGeneratorTest.cpp" />
     <ClCompile Include="TextureGenerator.cpp" />
     <ClCompile Include="WorldSectorObserver.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DragNDrop.h" />
     <ClInclude Include="fwd.h" />
+    <ClInclude Include="GuiInventory.h" />
+    <ClInclude Include="GuiWindow.h" />
+    <ClInclude Include="InventorySlot.h" />
+    <ClInclude Include="RingBuffer.h" />
     <ClInclude Include="src\accessors\Accessor.h" />
     <ClInclude Include="src\accessors\AccessorItem.h" />
-    <ClInclude Include="src\BiomeMapGenerator.h" />
     <ClInclude Include="src\BlockAutoCrafter.h" />
     <ClInclude Include="src\Block.h" />
     <ClInclude Include="src\BlockSpriteAnimated.h" />
     <ClInclude Include="src\ChunkHelper.h" />
-    <ClInclude Include="src\ConfiguratableMapGenerator.h" />
     <ClInclude Include="src\DataBase.h" />
     <ClInclude Include="src\DataBaseFakeData.h" />
+    <ClInclude Include="src\include\IDbHolder.h" />
+    <ClInclude Include="src\include\IGui.h" />
+    <ClInclude Include="src\include\IHolderHelper.h" />
+    <ClInclude Include="src\include\IItem.h" />
+    <ClInclude Include="src\include\IJsonSerializable.h" />
+    <ClInclude Include="src\include\IMapGenerator.h" />
+    <ClInclude Include="src\include\IMapLoader.h" />
+    <ClInclude Include="src\include\IRecipe.h" />
+    <ClInclude Include="src\include\ItemTools.h" />
+    <ClInclude Include="src\include\mapgen_types.h" />
+    <ClInclude Include="src\ItemContainerContext.h" />
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Observer.h" />
     <ClInclude Include="src\RingBuffer.h" />
+    <ClInclude Include="src\ResourceNetwork.h" />
     <ClInclude Include="src\StaticBlock.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\configure.h" />
@@ -97,14 +117,8 @@
     <ClInclude Include="src\Creature.h" />
     <ClInclude Include="src\DrawableArea.h" />
     <ClInclude Include="src\Game.h" />
-    <ClInclude Include="src\IGui.h" />
-    <ClInclude Include="src\IItem.h" />
-    <ClInclude Include="src\IJsonSerializable.h" />
-    <ClInclude Include="src\IMapGenerator.h" />
-    <ClInclude Include="src\IMapLoader.h" />
     <ClInclude Include="src\ImguiPort.h" />
     <ClInclude Include="src\imgui\imgui_widgets.h" />
-    <ClInclude Include="src\IRecipe.h" />
     <ClInclude Include="src\Item.h" />
     <ClInclude Include="src\JsonDataBase.h" />
     <ClInclude Include="src\Log.h" />
@@ -133,7 +147,6 @@
     <ClInclude Include="src\UpdatableSectors.h" />
     <ClInclude Include="src\World.h" />
     <ClInclude Include="src\WorldGeneratorFlat.h" />
-    <ClInclude Include="src\WorldGeneratorTest.h" />
     <ClInclude Include="TextureGenerator.h" />
     <ClInclude Include="WorldSectorObserver.h" />
   </ItemGroup>
@@ -188,20 +201,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)..\3rdparty\msvc15_x86\include;$(ProjectDir)..\3rdparty\msvc15_x86\include\MagnumExternal\OpenGL;$(ProjectDir)..\3rdparty\msvc15_x86\include\SDL2;$(ProjectDir)..\3rdparty\msvc15_x86\include\GLFW;$(ProjectDir)rapidjson\include;$(ProjectDir)..\3rdparty\msvc15_x86\boost;$(ProjectDir)src\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\3rdparty\msvc15_x86\include;$(SolutionDir)..\3rdparty\msvc15_x86\include\MagnumExternal\OpenGL;$(SolutionDir)..\3rdparty\msvc15_x86\include\SDL2;$(SolutionDir)..\3rdparty\msvc15_x86\include\GLFW;$(SolutionDir)rapidjson\include;$(SolutionDir)..\3rdparty\msvc15_x86\boost;$(SolutionDir)src\include\;$(SolutionDir)src\;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)..\3rdparty\msvc15_x86\lib;$(ProjectDir)..\3rdparty\msvc15_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
     <SourcePath>src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)..\3rdparty\msvc15_x86\include;$(ProjectDir)..\3rdparty\msvc15_x86\include\MagnumExternal\OpenGL;$(ProjectDir)..\3rdparty\msvc15_x86\include\SDL2;$(ProjectDir)..\3rdparty\msvc15_x86\include\GLFW;$(ProjectDir)rapidjson\include;$(ProjectDir)..\3rdparty\msvc15_x86\boost;$(ProjectDir)src\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)..\3rdparty\msvc15_x86\lib;$(ProjectDir)..\3rdparty\msvc15_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\3rdparty\msvc15_x86\include;$(SolutionDir)..\3rdparty\msvc15_x86\include\MagnumExternal\OpenGL;$(SolutionDir)..\3rdparty\msvc15_x86\include\SDL2;$(SolutionDir)..\3rdparty\msvc15_x86\include\GLFW;$(SolutionDir)rapidjson\include;$(SolutionDir)..\3rdparty\msvc15_x86\boost;$(SolutionDir)src\include\;$(SolutionDir)src\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolitionDir)..\3rdparty\msvc15_x86\lib;$(SolitionDir)..\3rdparty\msvc15_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;CORRADE_IS_DEBUG_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;CORRADE_IS_DEBUG_BUILD;_MSC_PLATFORM_TOOLSET='$(PlatformToolset)';%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4251;4267;4351;4373;4510;4610;4512;4661;4702;4706;4800;4910</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -225,9 +238,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;_MSC_PLATFORM_TOOLSET='$(PlatformToolset)';%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4251;4267;4351;4373;4510;4610;4512;4661;4702;4706;4800;4910</DisableSpecificWarnings>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>

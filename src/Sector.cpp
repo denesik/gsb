@@ -11,7 +11,7 @@ Sector::Sector(World &world, const SPos &pos)
   mSectorAround(world.FakeSector())
 {
   // generate sector
-  mStaticBlocks.fill(0);
+  mStaticBlocks.fill(1);
 }
 
 
@@ -65,11 +65,6 @@ SPos Sector::GetPos() const
 World & Sector::GetWorld()
 {
   return mWorld;
-}
-
-void Sector::ApplyGenerator(IMapGenerator &generator)
-{
-  generator.Generate(*this);
 }
 
 BlockId Sector::GetBlockId(SBPos pos) const
@@ -126,5 +121,10 @@ void Sector::Cache(Sector &sector, CacheState state)
   {
     mSectorAround.sectors[mSectorAround.to_index(pos)] = state == CACHE_LOAD ? sector : mWorld.FakeSector();
   }
+}
+
+void Sector::FlatbufferLoad(const gsb_flat::Sector & sec)
+{
+  //for(size_t i = 0; i <)
 }
 

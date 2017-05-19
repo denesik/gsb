@@ -40,9 +40,9 @@ bool LoadItem(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &v
   }
 
   if(!name.empty())
-	item->SetName(name);
+	  item->SetName(name);
   else
-	item->SetName(std::string("id") + std::to_string(id));
+	  item->SetName(std::string("id") + std::to_string(id));
 
   if (val.HasMember("description"))
 	  item->SetDescription(val["description"].GetString());
@@ -79,6 +79,32 @@ bool LoadBlock(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &
 
       static_part->SetTesselator(std::move(tess));
     }
+  }
+  if (val.HasMember("generate_item"))
+  {
+    const rapidjson::Value &gen_json = val["generate_item"];
+    if (gen_json.HasMember("name"))
+    {
+      auto item = std::make_unique<Item>();
+      item->JsonLoad(db, gen_json);
+      item->SetBlock(id);
+      item->SetName(name + " block");
+      db.AddItem(gen_json["name"].GetString(), db.NextItemId(), std::move(item));
+    }
+  }
+
+  if (val.HasMember("drop"))
+  {
+    const rapidjson::Value &drop = val["drop"];
+    std::vector<ItemId> dropList;
+    for (const auto &d : drop.GetArray())
+    {
+      const auto &dropElement = d.GetArray();
+      if(auto id = db.ItemIdFromName(dropElement[0].GetString()))
+        dropList.push_back(id.get());
+    }
+
+    static_part->SetDropList(dropList);
   }
 
   db.AddBlock(name, id, std::move(static_part), std::move(dynamic_part));

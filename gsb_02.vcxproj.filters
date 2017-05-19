@@ -5,14 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Заголовочные файлы">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Файлы ресурсов">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Файлы исходного кода\interfaces">
       <UniqueIdentifier>{12691a93-d26e-4734-88af-5aa3f0ea83ee}</UniqueIdentifier>
     </Filter>
@@ -21,6 +13,9 @@
     </Filter>
     <Filter Include="Файлы исходного кода\gui">
       <UniqueIdentifier>{fb83a368-9c09-4f44-9fe6-2651c7d98e2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\include">
+      <UniqueIdentifier>{a753d521-6692-47f3-b260-6e3aa77be4b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,9 +115,6 @@
     <ClCompile Include="src\imgui\imgui_widgets.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="src\IMapGenerator.cpp">
-      <Filter>Файлы исходного кода\interfaces</Filter>
-    </ClCompile>
     <ClCompile Include="src\IMapLoader.cpp">
       <Filter>Файлы исходного кода\interfaces</Filter>
     </ClCompile>
@@ -156,16 +148,7 @@
     <ClCompile Include="src\TesselatorTexturedBlock.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="src\BiomeMapGenerator.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ConfiguratableMapGenerator.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="FastNoise\FastNoise.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="src\WorldGeneratorTest.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\IItem.cpp">
@@ -178,6 +161,33 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="WorldSectorObserver.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiInventory.cpp">
+      <Filter>Файлы исходного кода\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="DragNDrop.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="InventorySlot.cpp">
+      <Filter>Файлы исходного кода\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IGui.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiWindow.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\include\IMapGenerator.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\include\IFlatBuffer.cpp">
+      <Filter>Файлы исходного кода\include</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ResourceNetwork.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\include\ItemTools.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
@@ -269,24 +279,6 @@
     <ClInclude Include="src\tools\Common.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\IItem.h">
-      <Filter>Файлы исходного кода\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\IJsonSerializable.h">
-      <Filter>Файлы исходного кода\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\IMapGenerator.h">
-      <Filter>Файлы исходного кода\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\IMapLoader.h">
-      <Filter>Файлы исходного кода\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\IRecipe.h">
-      <Filter>Файлы исходного кода\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\IGui.h">
-      <Filter>Файлы исходного кода\interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="src\BlockAutoCrafter.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
@@ -335,16 +327,7 @@
     <ClInclude Include="src\ChunkHelper.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\BiomeMapGenerator.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ConfiguratableMapGenerator.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
     <ClInclude Include="src\TesselatorTexturedBlock.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
-    <ClInclude Include="src\WorldGeneratorTest.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\tools\Brezenham3D.h">
@@ -353,11 +336,62 @@
     <ClInclude Include="TextureGenerator.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
+    <ClInclude Include="RingBuffer.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiInventory.h">
+      <Filter>Файлы исходного кода\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="InventorySlot.h">
+      <Filter>Файлы исходного кода\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\mapgen_types.h">
+      <Filter>Файлы исходного кода\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IMapGenerator.h">
+      <Filter>Файлы исходного кода\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IGui.h">
+      <Filter>Файлы исходного кода\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IItem.h">
+      <Filter>Файлы исходного кода\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IJsonSerializable.h">
+      <Filter>Файлы исходного кода\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IMapLoader.h">
+      <Filter>Файлы исходного кода\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IRecipe.h">
+      <Filter>Файлы исходного кода\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IDbHolder.h">
+      <Filter>Файлы исходного кода\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IHolderHelper.h">
+      <Filter>Файлы исходного кода\include</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldSectorObserver.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="DragNDrop.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiWindow.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
     <ClInclude Include="src\Observer.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="WorldSectorObserver.h">
-      <Filter>Заголовочные файлы</Filter>
+    <ClInclude Include="src\ResourceNetwork.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ItemContainerContext.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\ItemTools.h">
+      <Filter>Файлы исходного кода\include</Filter>
     </ClInclude>
     <ClInclude Include="src\RingBuffer.h">
       <Filter>Файлы исходного кода</Filter>

@@ -1,87 +1,52 @@
 #include "UpdatableArea.h"
 #include "UpdatableSectors.h"
 #include "World.h"
+#include <functional>
 
+void UpdatableArea::OnNewSector(SPos s)
+{
+  mWorld.GetUpdatableSectors().Add(s);
+}
 
+void UpdatableArea::OnDeleteSector(SPos s)
+{
+  mWorld.GetUpdatableSectors().Remove(s);
+}
 
-UpdatableArea::UpdatableArea(World &world, const SPos &pos, unsigned int radius)
+UpdatableArea::UpdatableArea(World &world, const SPos &pos, int radius)
   : mWorld(world), mPos(pos)
 {
-  UpdateRadius(radius);
-  UpdatePos(mPos);
+  SetRadius(radius);
+  SetPos(mPos);
 
   for (const auto &site : mPositions)
   {
-    mWorld.GetUpdatableSectors().Add(std::get<1>(site));
+    mWorld.GetUpdatableSectors().Add(site.pos);
   }
-}
 
+  addCon = mPositions.onAdding.connect(std::bind(&UpdatableArea::OnNewSector, this, std::placeholders::_1));
+  delCon = mPositions.onDeletting.connect(std::bind(&UpdatableArea::OnDeleteSector, this, std::placeholders::_1));
+}
 
 UpdatableArea::~UpdatableArea()
 {
   for (const auto &site : mPositions)
   {
-    mWorld.GetUpdatableSectors().Remove(std::get<1>(site));
+    mWorld.GetUpdatableSectors().Remove(site.pos);
   }
+
+  mPositions.onAdding.disconnect(addCon);
+  mPositions.onDeletting.disconnect(delCon);
 }
 
 void UpdatableArea::SetPos(const SPos &pos)
 {
-  if (mPos != pos)
-  {
-    mPos = pos;
-
-    for (const auto &site : mPositions)
-    {
-      mWorld.GetUpdatableSectors().Remove(std::get<1>(site));
-    }
-
-    UpdatePos(mPos);
-
-    for (const auto &site : mPositions)
-    {
-      mWorld.GetUpdatableSectors().Add(std::get<1>(site));
-    }
-  }
+  mPositions.UpdatePos(pos);
 }
 
-void UpdatableArea::SetRadius(unsigned int radius)
+void UpdatableArea::SetRadius(int radius)
 {
-  for (const auto &site : mPositions)
-  {
-    mWorld.GetUpdatableSectors().Remove(std::get<1>(site));
-  }
-
-  UpdateRadius(radius);
-  UpdatePos(mPos);
-
-  for (const auto &site : mPositions)
-  {
-    mWorld.GetUpdatableSectors().Add(std::get<1>(site));
-  }
-}
-
-void UpdatableArea::UpdateRadius(unsigned int radius)
-{
-  mPositions.clear();
-
-  int begin = -static_cast<int>(radius);
-  int end = static_cast<int>(radius);
-  SPos pos(begin);
-  pos.y() = 0;
-  for (pos.z() = begin; pos.z() <= end; ++pos.z())
-    for (pos.x() = begin; pos.x() <= end; ++pos.x())
-    {
-      mPositions.emplace_back(pos, SPos{});
-    }
-}
-
-void UpdatableArea::UpdatePos(const SPos &pos)
-{
-  for (auto &site : mPositions)
-  {
-    std::get<1>(site) = std::get<0>(site) + pos;
-  }
+  mPositions.SetSize({ radius, radius });
 }
 
 SectorLoader::SectorLoader(World &world)

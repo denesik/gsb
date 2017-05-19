@@ -5,7 +5,9 @@
 #include "Tesselator.h"
 #include <string>
 
-static const Magnum::Vector3 gVertexData[] =
+using namespace Magnum;
+
+static const Vector3 gVertexData[] =
 {
   {  0.3f, -0.3f, 0.0f }, //FLB
   { -0.3f, -0.3f, 0.0f }, //FRB
@@ -13,7 +15,7 @@ static const Magnum::Vector3 gVertexData[] =
   {  0.3f,  0.3f, 0.0f }, //FLT
 };
 
-static const Magnum::Vector3 gVertexNormal[] =
+static const Vector3 gVertexNormal[] =
 {
 	{ 0.3f, -0.3f, 0.0f }, //FLB
 	{ -0.3f, -0.3f, 0.0f }, //FRB
@@ -21,7 +23,7 @@ static const Magnum::Vector3 gVertexNormal[] =
 	{ 0.3f,  0.3f, 0.0f }, //FLT
 };
 
-static const Magnum::Vector2 gTextureSide[] =
+static const Vector2 gTextureSide[] =
 {
   { 0.0f + 0.1f, 0.0f + 0.1f },
   { 1.0f - 0.1f, 0.0f + 0.1f },
@@ -29,7 +31,7 @@ static const Magnum::Vector2 gTextureSide[] =
   { 0.0f + 0.1f, 1.0f - 0.1f },
 };
 
-static const Magnum::UnsignedInt gIndexSide[] =
+static const UnsignedInt gIndexSide[] =
 {
   0, 1, 2, 2, 3, 0
 };
@@ -45,7 +47,7 @@ Model::Model(const DataBase &db)
     const auto &coord = *atlas.GetTextureCoord(std::string("data/number_") + std::to_string(i) + ".png");
     for (size_t j = 0; j < 4; ++j)
     {
-      vertex.emplace_back(gVertexData[j], Magnum::Vector2{
+      vertex.emplace_back(gVertexData[j], Vector2{
         gTextureSide[j].x() * (coord.right() - coord.left()) + coord.left(),
         gTextureSide[j].y() * (coord.top() - coord.bottom()) + coord.bottom()
       }, gVertexNormal[j]);
@@ -61,7 +63,7 @@ Model::Model(const DataBase &db)
   }
 }
 
-void Model::Draw(const Magnum::Matrix4 &mvp, Magnum::AbstractShaderProgram& shader, size_t frame) const
+void Model::Draw(const Matrix4 &mvp, AbstractShaderProgram& shader, size_t frame) const
 {
   static_cast<StandartShader &>(shader).setProjection(mvp);
   data[frame].mesh.draw(shader);
