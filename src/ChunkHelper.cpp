@@ -3,46 +3,6 @@
 #include "Sector.h"
 
 
-
-
-void test()
-{
-//   IndexType block_pos = 0;
-// 
-//   static ChunkHelper helper;
-//   static Around around;
-//   SectorAround sector_around;
-// 
-// 
-//   auto chunk = helper.chunk_info[helper.index_chunk_in_sector[block_pos]];
-// 
-//   // Ќаходим сектор и чанк дл€ указанной зоны.
-//   for (size_t i = 0; i < around.middle.size(); ++i)
-//   {
-//     auto sector = sector_around.around[chunk.around[around.middle[i]].sector];
-//     auto index_chunk = chunk.around[around.middle[i]].chunk;
-// 
-//     auto index_blocks = helper.chunk_info[index_chunk].blocks.middle[i];
-//     auto index_tess = helper.chunk_info[index_chunk].tesselators.middle[i];
-//   }
-// 
-//   for (size_t i = 0; i < around.neighbor_1.size(); ++i)
-//   {
-//     auto sector = sector_around.around[chunk.around[around.neighbor_1[i]].sector];
-//     auto index_chunk = chunk.around[around.neighbor_1[i]].chunk;
-// 
-//     auto index_blocks = helper.chunk_info[index_chunk].blocks.neighbor_1[i];
-//     auto index_tess = helper.chunk_info[index_chunk].tesselators.neighbor_1[i];
-//   }
-// 
-//   int t1 = 1;
-//   int t2 = 2;
-//   std::reference_wrapper<int> k = t1;
-//   k = t2;
-// 
-//   int j = 0;
-}
-
 Chunk::Chunk(const Sector &sector)
   : mSector(sector)
 {
@@ -55,13 +15,15 @@ void Chunk::SetCompilerData(SectorCompiler &sectorCompiler)
   auto &tesselators = sectorCompiler.Tesselators();
   auto &tesselators_data = sectorCompiler.TesselatorsData();
 
+  sectorCompiler.SetPos(data.pos);
+
   {
     const auto &sector = sectors[SectorAround::Middle].get();
     for (size_t i = 0; i < data.compilator_middle.size(); ++i)
     {
-      tesselators[data.compilator_middle[i]] = sector.GetBlockId(i);
-      if (sector.GetTesselatorData(i))
-        tesselators_data[data.compilator_middle[i]] = *sector.GetTesselatorData(i);
+      tesselators[data.compilator_middle[i]] = sector.GetBlockId(data.chunk_middle[i]);
+      if (sector.GetTesselatorData(data.chunk_middle[i]))
+        tesselators_data[data.compilator_middle[i]] = *sector.GetTesselatorData(data.chunk_middle[i]);
     }
   }
 
@@ -126,9 +88,7 @@ void Chunk::SetCompilerData(SectorCompiler &sectorCompiler)
   }
 }
 
-const Chunk::Data Chunk::data;
-
-const std::array<SPos, AROUND_CAPACITY> SectorAround::pos =
+const std::array<SPos, SectorAround::AroundCapacity> SectorAround::pos =
 {
   cs::South(cs::East(cs::Down(SPos()))),
   cs::South(cs::Down(SPos())),
@@ -161,7 +121,10 @@ const std::array<SPos, AROUND_CAPACITY> SectorAround::pos =
   cs::North(cs::West(cs::Top(SPos()))),
 };
 
-Chunk::Data::Data()
+const Chunk::Data Chunk::data(SPos{ 0, 0, 0 });
+
+Chunk::Data::Data(const SPos &_pos)
+  : pos(_pos)
 {
   IndexType i;
   
@@ -171,7 +134,7 @@ Chunk::Data::Data()
     for (SBPosType y = 0; y < gChunkSize.y(); ++y)
       for (SBPosType x = 0; x < gChunkSize.x(); ++x)
       {
-        chunk_middle[i++] = cs::SBtoBI({ x, y, z });
+        chunk_middle[i++] = cs::SBtoBI(SPos(x, y, z) + gChunkSize * pos);
       }
 
   i = 0;
@@ -179,21 +142,22 @@ Chunk::Data::Data()
     for (SBPosType y = 1; y < gBlockBatcherSize.y() - 1; ++y)
       for (SBPosType x = 1; x < gBlockBatcherSize.x() - 1; ++x)
       {
-        compilator_middle[i++] = cs::STtoTI({ x, y, z });
+        compilator_middle[i++] = cs::STtoTI(SPos(x, y, z));
       }
+
 
   // east
   i = 0;
   for (SBPosType z = 0; z < gChunkSize.z(); ++z)
     for (SBPosType y = 0; y < gChunkSize.y(); ++y)
     {
-      chunk_east[i++] = cs::SBtoBI({ gChunkSize.x() - 1, y, z });
+      chunk_east[i++] = cs::SBtoBI(SPos(gChunkSize.x() - 1, y, z) + gChunkSize * pos);
     }
   i = 0;
   for (SBPosType z = 1; z < gBlockBatcherSize.z() - 1; ++z)
     for (SBPosType y = 1; y < gBlockBatcherSize.y() - 1; ++y)
     {
-      compilator_east[i++] = cs::STtoTI({ 0, y, z });
+      compilator_east[i++] = cs::STtoTI(SPos(0, y, z));
     }
 
   // west
@@ -201,13 +165,13 @@ Chunk::Data::Data()
   for (SBPosType z = 0; z < gChunkSize.z(); ++z)
     for (SBPosType y = 0; y < gChunkSize.y(); ++y)
     {
-      chunk_west[i++] = cs::SBtoBI({ 0, y, z });
+      chunk_west[i++] = cs::SBtoBI(SPos(0, y, z) + gChunkSize * pos);
     }
   i = 0;
   for (SBPosType z = 1; z < gBlockBatcherSize.z() - 1; ++z)
     for (SBPosType y = 1; y < gBlockBatcherSize.y() - 1; ++y)
     {
-      compilator_west[i++] = cs::STtoTI({ gBlockBatcherSize.x() - 1, y, z });
+      compilator_west[i++] = cs::STtoTI(SPos(gBlockBatcherSize.x() - 1, y, z));
     }
 
   // South
@@ -215,13 +179,13 @@ Chunk::Data::Data()
   for (SBPosType y = 0; y < gChunkSize.y(); ++y)
     for (SBPosType x = 0; x < gChunkSize.x(); ++x)
     {
-      chunk_south[i++] = cs::SBtoBI({ x, y, gChunkSize.z() - 1 });
+      chunk_south[i++] = cs::SBtoBI(SPos(x, y, gChunkSize.z() - 1) + gChunkSize * pos);
     }
   i = 0;
   for (SBPosType y = 1; y < gBlockBatcherSize.y() - 1; ++y)
     for (SBPosType x = 1; x < gBlockBatcherSize.x() - 1; ++x)
     {
-      compilator_south[i++] = cs::STtoTI({ x, y, 0 });
+      compilator_south[i++] = cs::STtoTI(SPos(x, y, 0));
     }
 
   // North
@@ -229,13 +193,13 @@ Chunk::Data::Data()
   for (SBPosType y = 0; y < gChunkSize.y(); ++y)
     for (SBPosType x = 0; x < gChunkSize.x(); ++x)
     {
-      chunk_north[i++] = cs::SBtoBI({ x, y, 0 });
+      chunk_north[i++] = cs::SBtoBI(SPos(x, y, 0) + gChunkSize * pos);
     }
   i = 0;
   for (SBPosType y = 1; y < gBlockBatcherSize.y() - 1; ++y)
     for (SBPosType x = 1; x < gBlockBatcherSize.x() - 1; ++x)
     {
-      compilator_north[i++] = cs::STtoTI({ x, y, gBlockBatcherSize.z() - 1 });
+      compilator_north[i++] = cs::STtoTI(SPos(x, y, gBlockBatcherSize.z() - 1));
     }
 
   // Down
@@ -243,13 +207,13 @@ Chunk::Data::Data()
   for (SBPosType z = 0; z < gChunkSize.z(); ++z)
     for (SBPosType x = 0; x < gChunkSize.x(); ++x)
     {
-      chunk_down[i++] = cs::SBtoBI({ x, gChunkSize.y() - 1, z });
+      chunk_down[i++] = cs::SBtoBI(SPos(x, gChunkSize.y() - 1, z) + gChunkSize * pos);
     }
   i = 0;
   for (SBPosType z = 1; z < gBlockBatcherSize.z() - 1; ++z)
     for (SBPosType x = 1; x < gBlockBatcherSize.x() - 1; ++x)
     {
-      compilator_down[i++] = cs::STtoTI({ x, 0, z });
+      compilator_down[i++] = cs::STtoTI(SPos(x, 0, z));
     }
 
   // top
@@ -257,12 +221,12 @@ Chunk::Data::Data()
   for (SBPosType z = 0; z < gChunkSize.z(); ++z)
     for (SBPosType x = 0; x < gChunkSize.x(); ++x)
     {
-      chunk_top[i++] = cs::SBtoBI({ x, 0, z });
+      chunk_top[i++] = cs::SBtoBI(SPos(x, 0, z) + gChunkSize * pos);
     }
   i = 0;
   for (SBPosType z = 1; z < gBlockBatcherSize.z() - 1; ++z)
     for (SBPosType x = 1; x < gBlockBatcherSize.x() - 1; ++x)
     {
-      compilator_top[i++] = cs::STtoTI({ x, gBlockBatcherSize.y() - 1, z });
+      compilator_top[i++] = cs::STtoTI(SPos(x, gBlockBatcherSize.y() - 1, z));
     }
 }

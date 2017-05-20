@@ -29,8 +29,6 @@ Game::Game(const Arguments & arguments)
   , mShadowFramebuffer{ Range2Di{{}, {512, 512}} }
   , test_texgen{ test_texgenshader, {200, 200} }
 {
-  test();
-
   auto t = std::uncaught_exceptions();
 
   atlas.LoadDirectory("data");
@@ -102,15 +100,15 @@ void Game::drawEvent()
   Renderer::enable(Renderer::Feature::FaceCulling);
   Renderer::setClearColor({ clear_color.x, clear_color.y, clear_color.z, clear_color.w });
 
-  mWorld->mPlayer.Move(mCameraVelocity * 0.006f);
+  mWorld->mPlayer.Move(mCameraVelocity * 0.06f);
   mWorld->mPlayer.Rotate(mCameraAngle * 0.003f);
   mWorld->mPlayer.Update();
 
   auto p_sec = cs::WtoS(mWorld->mPlayer.Pos());
   p_sec.y() = 0;
 
-  mDrawableArea->SetPos(p_sec);
-  mSectorLoader->SetPos(p_sec);
+//   mDrawableArea->SetPos(p_sec);
+//   mSectorLoader->SetPos(p_sec);
 
   auto spos = Vector3{ std::sin(mTimeline.previousFrameTime()) * 100, 111, std::cos(mTimeline.previousFrameTime()) * 100 };
   mSun.SetPos(spos);

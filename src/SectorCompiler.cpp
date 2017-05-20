@@ -63,19 +63,19 @@ void SectorCompiler::ProcessSolidBlock(IndexType index, const STPos &tpos)
   }
 
   const auto *tesselator = static_cast<const TesselatorSolidBlock *>(mDataBase.GetBlockStaticPart(mTesselators[index])->GetTesselator().get());
-  tesselator->PushBack(mVertexData, mIndexData, mIndexOffset, WPos(cs::TItoSB(index)), static_cast<SideFlags>(side));
+  tesselator->PushBack(mVertexData, mIndexData, mIndexOffset, WPos(cs::TItoSB(index) + gChunkSize * mPos), static_cast<SideFlags>(side));
 }
 
 void SectorCompiler::ProcessMicroBlock(IndexType index, const STPos &tpos)
 {
   const auto *tesselator = static_cast<const TesselatorMicroBlock *>(mDataBase.GetBlockStaticPart(mTesselators[index])->GetTesselator().get());
-  tesselator->PushBack(mTesselatorsData[index], mVertexData, mIndexData, mIndexOffset, WPos(cs::TItoSB(index)));
+  tesselator->PushBack(mTesselatorsData[index], mVertexData, mIndexData, mIndexOffset, WPos(cs::TItoSB(index) + gChunkSize * mPos));
 }
 
 void SectorCompiler::ProcessTexturedBlock(IndexType index, const STPos &tpos)
 {
   const auto *tesselator = static_cast<const TesselatorTexturedBlock *>(mDataBase.GetBlockStaticPart(mTesselators[index])->GetTesselator().get());
-  tesselator->PushBack(mTesselatorsData[index], mVertexData, mIndexData, mIndexOffset, WPos(cs::TItoSB(index)));
+  tesselator->PushBack(mTesselatorsData[index], mVertexData, mIndexData, mIndexOffset, WPos(cs::TItoSB(index) + gChunkSize * mPos));
 }
 
 void SectorCompiler::Process()
@@ -108,4 +108,5 @@ void SectorCompiler::Process()
         }
       }
   mTesselators.fill(0);
+  mPos = {};
 }

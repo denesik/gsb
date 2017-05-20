@@ -65,7 +65,9 @@ using IndexType = Magnum::UnsignedInt;
 constexpr SPos gSectorSize(16, 256, 16);
 constexpr Magnum::Int gSectorCapacity = gSectorSize.x() * gSectorSize.y() * gSectorSize.z();
 
-constexpr SPos gChunkSize(gSectorSize.x(), gSectorSize.y(), gSectorSize.z());
+constexpr SPos gChunkCount(1, 1, 1);
+
+constexpr SPos gChunkSize(gSectorSize.x() / gChunkCount.x(), gSectorSize.y() / gChunkCount.y(), gSectorSize.z() / gChunkCount.z());
 constexpr Magnum::Int gChunkCapacity = gChunkSize.x() * gChunkSize.y() * gChunkSize.z();
 
 constexpr SPos gBlockBatcherSize(gChunkSize.x() + 2, gChunkSize.y() + 2, gChunkSize.z() + 2);

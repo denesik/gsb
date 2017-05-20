@@ -34,6 +34,11 @@ public:
     return mTesselatorsData;
   }
 
+  inline void SetPos(const SPos &pos)
+  {
+    mPos = pos;
+  }
+
 private:
   std::array<BlockId, gBlockBatcherCapacity> mTesselators;
   std::array<TesselatorData, gBlockBatcherCapacity> mTesselatorsData;
@@ -43,6 +48,7 @@ private:
   Magnum::UnsignedInt mIndexOffset;
 
   const DataBase &mDataBase;
+  SPos mPos;
 private:
   void ProcessSolidBlock(IndexType index, const STPos &pos);
 
