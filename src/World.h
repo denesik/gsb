@@ -44,7 +44,7 @@ public:
 
   const DataBase &GetBlocksDataBase() const;
 
-  //boost::optional<Sector> GetSector(const SPos &pos) const;
+  boost::optional<Sector &> GetSector(const SPos & pos) const;
 
   BlockId GetBlockId(const WBPos &pos) const;
   Block* GetBlockDynamic(const WBPos &pos) const;

@@ -188,25 +188,24 @@ const DataBase & World::GetBlocksDataBase() const
   return mBlocksDataBase;
 }
 
-// boost::optional<Sector> World::GetSector(const SPos &pos) const
-// {
-//   auto it = mSectors.find(pos);
-//   if (it != mSectors.end())
-//   {
-//     return{ it->second };
-//   }
-//   return{};
-// }
+boost::optional<Sector &> World::GetSector(const SPos &pos) const
+{
+  auto it = mSectors.find(pos);
+  if (it != mSectors.end())
+  {
+    return const_cast<Sector&>(it->second.sector);
+  }
+  return{};
+}
 
 BlockId World::GetBlockId(const WBPos& pos) const
 {
-//   auto spos = cs::WBtoS(pos);
-//   auto sector = GetSector(spos);
-//   if(!sector.expired())
-//   {
-//     auto shared = sector.lock();
-//     return shared->GetBlockId(cs::WBtoSB(pos));
-//   }
+   auto spos = cs::WBtoS(pos);
+   auto sector = GetSector(spos);
+   if(sector.is_initialized())
+   {
+     return sector->GetBlockId(cs::WBtoSB(pos));
+   }
 
   return{};
 }

@@ -74,7 +74,7 @@ Game::Game(const Arguments & arguments)
   setMouseLocked(true);
 
   playerHead = std::make_unique<MovableOffseted>(mWorld->mPlayer, Vector3{ 0, 1.8f, 0 });
-  mCamera = std::make_unique<Camera>(*playerHead, defaultFramebuffer.viewport());
+  mCamera = std::make_unique<Camera>(mWorld->mPlayer, defaultFramebuffer.viewport());
   mWorld->mPlayer.SetPos({ 0, 400, 0 });
 
   mShadowTextureArray.setImage(0, TextureFormat::DepthComponent, ImageView3D{ PixelFormat::DepthComponent, PixelType::Float,{ 1024, 1024, Int(StandartShader::ShadowMapLevels) }, nullptr })
@@ -100,7 +100,8 @@ void Game::drawEvent()
   Renderer::enable(Renderer::Feature::FaceCulling);
   Renderer::setClearColor({ clear_color.x, clear_color.y, clear_color.z, clear_color.w });
 
-  mWorld->mPlayer.MoveRelative(mCameraVelocity * 0.006f);
+  if(mCameraVelocity.length() > 0)
+    mWorld->mPlayer.MoveRelative(mCameraVelocity * 0.006f);
   mWorld->mPlayer.Rotate(mCameraAngle * 0.003f);
   mWorld->mPlayer.Update(mTimeline);
 
@@ -159,23 +160,23 @@ void Game::drawEvent()
     }
   }
 
-//   static float pressedT = 0;
-//   if (centering && ImGui::IsMouseDown(0) && !ImGui::IsAnyItemHovered())
-//   {
-//     pressedT -= mTimeline.previousFrameDuration();
-//     if (pressedT <= 0)
-//     {
-//       if (selId && selItem->GetBlock())
-//         mWorld->CreateBlock(picked, selItem->GetBlock());
-//       else
-//         mWorld->DestroyBlock(picked);
-//       pressedT = 0.3f;
-//     }
-//   }
-//   else
-//   {
-//     pressedT = 0;
-//   }
+   static float pressedT = 0;
+   if (centering && ImGui::IsMouseDown(0) && !ImGui::IsAnyItemHovered())
+   {
+     pressedT -= mTimeline.previousFrameDuration();
+     if (pressedT <= 0)
+     {
+       if (selId && selItem->GetBlock())
+         mWorld->CreateBlock(picked, selItem->GetBlock());
+       else
+         mWorld->CreateBlock(picked, 1);
+       pressedT = 0.3f;
+     }
+   }
+   else
+   {
+     pressedT = 0;
+   }
 
   auto sunref = Vector3(picked); // mWorld->mPlayer.Pos(); // 
   auto spos = sunref + Vector3{ std::sin(mTimeline.previousFrameTime() / 10.f) * 100, 111, std::cos(mTimeline.previousFrameTime() / 10.f) * 100 };
