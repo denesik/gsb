@@ -74,7 +74,7 @@ Game::Game(const Arguments & arguments)
   setMouseLocked(true);
 
   playerHead = std::make_unique<MovableOffseted>(mWorld->mPlayer, Vector3{ 0, 1.8f, 0 });
-  mCamera = std::make_unique<Camera>(mWorld->mPlayer, defaultFramebuffer.viewport());
+  mCamera = std::make_unique<Camera>(*playerHead, defaultFramebuffer.viewport());
   mWorld->mPlayer.SetPos({ 0, 400, 0 });
 
   mShadowTextureArray.setImage(0, TextureFormat::DepthComponent, ImageView3D{ PixelFormat::DepthComponent, PixelType::Float,{ 1024, 1024, Int(StandartShader::ShadowMapLevels) }, nullptr })
@@ -178,7 +178,7 @@ void Game::drawEvent()
      pressedT = 0;
    }
 
-  auto sunref = Vector3(picked); // mWorld->mPlayer.Pos(); // 
+  auto sunref = mWorld->mPlayer.Pos(); // Vector3(picked); // 
   auto spos = sunref + Vector3{ std::sin(mTimeline.previousFrameTime() / 10.f) * 100, 111, std::cos(mTimeline.previousFrameTime() / 10.f) * 100 };
   mSun.SetPos(spos);
   mSun.LookAt(sunref);
@@ -186,7 +186,6 @@ void Game::drawEvent()
 
   //shadow pass
   mSunCamera->Draw(*mDrawableArea, mShadowPass);
-//  mDrawableArea->DrawShadowPass(*mSunCamera, mShadowPass);
 
   //forward pass
   Renderer::setColorMask(true, true, true, true);

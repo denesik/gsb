@@ -56,7 +56,27 @@ void DrawableArea::SetPos(const SPos &pos)
 
 void DrawableArea::DrawShadowPass(const ICamera & sun, ShadowShader & shader)
 {
+  const auto &frustum = sun.Frustum();
+  const auto &matrix = sun.Project() * sun.View();
 
+  for (auto &data : mBufferData)
+  {
+    //Каждый кадр бегаем по всем элементам, если сектор нужно скомпилить, отправляем его на компиляцию.
+    auto &sector = data.sector_data.get().sector;
+    if (sector)
+    {
+      if (sector->NeedCompile())
+      {
+        sector->NeedCompile(false);
+        mCompiler.Push(sector->GetPos());
+        UseSector(sector->GetPos());
+      }
+
+      data.drawable.DrawShadowPass(frustum, matrix, shader);
+    }
+  }
+
+  mCompiler.Update();
 }
 
 // void DrawableArea::DrawShadowPass(const Camera & sun, ShadowShader & shader)
