@@ -11,15 +11,15 @@ struct Storage
 
 static Magnum::Vector3i atZeroSeq[] = {
   { -1,  0, -1 },
-  { -1,  0,  0 },
-  { -1,  0,  1 },
-
   {  0,  0, -1 },
-  {  0,  0,  0 },
-  {  0,  0,  1 },
-
   {  1,  0, -1 },
+
+  { -1,  0,  0 },
+  {  0,  0,  0 },
   {  1,  0,  0 },
+
+  { -1,  0,  1 },
+  {  0,  0,  1 },
   {  1,  0,  1 },
 };
 
@@ -252,7 +252,7 @@ BOOST_AUTO_TEST_CASE(get_test)
     BOOST_TEST(element->spos.x() == 1);
     BOOST_TEST(element->spos.z() == 2);
   }
-  
+
   {
     auto atZero = rb.Get({ -3, 0, -3 });
     BOOST_CHECK(atZero.is_initialized());

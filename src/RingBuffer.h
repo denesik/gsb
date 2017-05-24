@@ -10,11 +10,11 @@ namespace
 {
   inline void StoreOrderedInc(Magnum::Vector2i & pos, Magnum::Vector2i radius)
   {
-    pos.y()++;
-    if (pos.y() > radius.y())
+    pos.x()++;
+    if (pos.x() > radius.x())
     {
-      pos.y() = -radius.y();
-      pos.x()++;
+      pos.x() = -radius.x();
+      pos.y()++;
     }
   }
 }
@@ -145,30 +145,25 @@ public:
   DeleteFunction onDeletting;
 
 private:
-  Magnum::Vector2i WrapSPos(const SPos &val)
-  {
-    return WrapSPos({ val.x(), val.z() });
-  }
-
   Magnum::Vector2i WrapSPos(const Magnum::Vector2i &val)
   {
     Magnum::Vector2i spos;
 
-    spos.x() = (val.x() > mRadius.x()) ? ((val.x() + mRadius.x()) % (mRadius.x() * 2 + 1)) - mRadius.x() : ((val.x() - mRadius.x()) % (mRadius.x() * 2 + 1)) + mRadius.x();
-    spos.y() = (val.y() > mRadius.y()) ? ((val.y() + mRadius.y()) % (mRadius.y() * 2 + 1)) - mRadius.y() : ((val.y() - mRadius.y()) % (mRadius.y() * 2 + 1)) + mRadius.y();
+    spos.x() = (val.x() > mRadius.x()) ? ((val.x() + mRadius.x()) % mDim.x()) - mRadius.x() : ((val.x() - mRadius.x()) % mDim.x()) + mRadius.x();
+    spos.y() = (val.y() > mRadius.y()) ? ((val.y() + mRadius.y()) % mDim.y()) - mRadius.y() : ((val.y() - mRadius.y()) % mDim.y()) + mRadius.y();
 
     return spos;
   }
 
   Magnum::Vector2i ItoPos(int i)
   {
-    return { i % (mRadius.x() * 2 + 1) - mRadius.x(), (i / (mRadius.y() * 2 + 1)) % (mRadius.y() * 2 + 1) - mRadius.y() };
+    return { i % mDim.x() - mRadius.x(), (i / mDim.y()) % mDim.y() - mRadius.y() };
   }
 
   int PosToIndex(const Magnum::Vector2i &val)
   {
     auto valOff = val + mRadius;
-    return valOff.x() * mDim.y() + valOff.y();
+    return valOff.y() * mDim.x() + valOff.x();
   }
 
   std::vector<T> mStorage;
