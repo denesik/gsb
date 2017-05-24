@@ -34,7 +34,7 @@ class Sector;
 
 struct SectorAround
 {
-  enum 
+  enum WorldSide
   {
     SouthEastDown,        // [0 0 0]
     SouthDown,            // [x 0 0]
@@ -123,10 +123,16 @@ private:
     std::array<IndexType, gChunkSize.x() * gChunkSize.z()> compilator_top;
     std::array<IndexType, gChunkSize.y() * gChunkSize.z()> compilator_west;
 
+    std::array<SectorAround::WorldSide, SectorAround::AroundCapacity> around;
+
     SPos pos;
+
+    bool Inside(const SPos &pos);
   };
 
   static const Data data;
+
+
 };
 
 

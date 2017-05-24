@@ -15,7 +15,7 @@ World::World(const DataBase &blocksDataBase)
   mFakeSector(*this, SPos{}),
   mUpdatableSectors(*this), 
   mPlayer(*this), 
-  mWorldGenerator(std::make_unique<WorldGeneratorFlat>(blocksDataBase)),
+  mWorldGenerator(std::make_unique<BiomeMapGenerator>(blocksDataBase)),
   mSectorLoader(1, 1, *mWorldGenerator)
 {
   mSectorLoader.SetBeginCallback([this](Worker &worker, Sector &sector)
