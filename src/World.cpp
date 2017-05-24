@@ -14,7 +14,7 @@ World::World(const DataBase &blocksDataBase)
   mFakeSector(*this, SPos{}),
   mUpdatableSectors(*this), 
   mPlayer(*this), 
-  mWorldGenerator(std::make_unique<WorldGeneratorBiome>()),
+  mWorldGenerator(std::make_unique<WorldGeneratorFlat>()),
   mWorldLoader(std::make_unique<MapLoaderFromGenerator>(*mWorldGenerator, blocksDataBase)),
   mSectorLoader(1, 1, *mWorldLoader)
 {
