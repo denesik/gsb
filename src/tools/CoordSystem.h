@@ -32,7 +32,7 @@ enum SideFlags : int
   TOP = 1 << ITOP,
   DOWN = 1 << IDOWN,
 
-  ALL = SOUTH & EAST & NORTH & WEST & TOP & DOWN,
+  ALL = SOUTH | EAST | NORTH | WEST | TOP | DOWN,
 };
 
 
