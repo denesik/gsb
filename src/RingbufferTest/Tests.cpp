@@ -100,8 +100,8 @@ BOOST_AUTO_TEST_CASE(add_remove_test)
 
   rb.SetSize({ 1, 1 });
 
-  BOOST_TEST(add_c == 9);
-  BOOST_TEST(del_c == 49);
+  BOOST_TEST(add_c == 0);
+  BOOST_TEST(del_c == 40);
   add_c = del_c = 0;
 }
 
@@ -151,14 +151,18 @@ BOOST_AUTO_TEST_CASE(full_replace_test)
 BOOST_AUTO_TEST_CASE(almost_full_replace_test)
 {
   auto seqAdd = addingSet;
-  auto add = [&seqAdd](const SPos &p) -> std::unique_ptr<Storage> {
-    seqAdd.erase(p);
+  decltype(seqAdd) extraAdd;
+  auto add = [&seqAdd, &extraAdd](const SPos &p) -> std::unique_ptr<Storage> {
+    if (seqAdd.erase(p) != 1)
+      extraAdd.insert(p);
     return std::make_unique<Storage>();
   };
 
   auto seqDel = removingSet;
-  auto del = [&seqDel](std::unique_ptr<Storage> &s, const SPos &p) {
-    seqDel.erase(p);
+  decltype(seqDel) extraDel;
+  auto del = [&seqDel, &extraDel](std::unique_ptr<Storage> &s, const SPos &p) {
+    if (seqDel.erase(p) != 1)
+      extraDel.insert(p);
   };
 
   RingBuffer<std::unique_ptr<Storage>> rb(add, del);
@@ -166,11 +170,14 @@ BOOST_AUTO_TEST_CASE(almost_full_replace_test)
 
   seqAdd = addingSet;
   seqDel = removingSet;
+  extraAdd = extraDel = {};
 
   rb.UpdatePos({ 2, 0, 2 });
 
   BOOST_TEST(seqAdd.empty());
   BOOST_TEST(seqDel.empty());
+  BOOST_TEST(extraAdd.empty());
+  BOOST_TEST(extraDel.empty());
 }
 
 static Magnum::Vector3i atZeroSeq5[] = {
@@ -204,38 +211,6 @@ static Magnum::Vector3i atZeroSeq5[] = {
   {  2,  0,  1 },
   {  2,  0,  2 },
 };
-
-BOOST_AUTO_TEST_CASE(resize_test)
-{
-  size_t c = 0;
-  bool ok = true;
-  auto add = [&ok, &c](const SPos &p) -> std::unique_ptr<Storage> {
-    if (atZeroSeq[c] != p)
-      ok = false;
-    ++c;
-    return std::make_unique<Storage>();
-  };
-
-
-  size_t c5 = 0;
-  bool ok5 = true;
-  auto del = [&c5, &ok5](std::unique_ptr<Storage> &s, const SPos &p) {
-    if (atZeroSeq5[c5] != p)
-      ok5 = false;
-    ++c5;
-  };
-
-  RingBuffer<std::unique_ptr<Storage>> rb(add, del);
-  rb.SetSize({ 2, 2 });
-
-  ok = ok5 = true;
-  c = c5 = 0;
-
-  rb.SetSize({ 1, 1 });
-
-  BOOST_TEST(ok);
-  BOOST_TEST(ok5);
-}
 
 struct StorageCoord
 {

@@ -218,11 +218,12 @@ private:
   std::vector<SPos> Generate(const SPos &pos, const Magnum::Vector2i &size)
   {
     std::vector<SPos> data;
-    for (int y = -size.y(); y <= size.y(); ++y)
-      for (int x = -size.x(); x <= size.x(); ++x)
+    for (int x = -size.x(); x <= size.x(); ++x)
+      for (int y = -size.y(); y <= size.y(); ++y)
       {
-        data.emplace_back(pos + SPos{x, 0, y});
+        data.emplace_back(pos + SPos{ x, 0, y });
       }
+
     return data;
   }
 
@@ -286,11 +287,11 @@ private:
 
     for (const auto &pos : new_delta)
     {
-//       auto it = std::find_if(mPositions.begin(), mPositions.end(), [&pos](const SPos &spos)
-//       {
-//         return pos == spos;
-//       });
-//       auto index = std::distance(mPositions.begin(), it);
+      //       auto it = std::find_if(mPositions.begin(), mPositions.end(), [&pos](const SPos &spos)
+      //       {
+      //         return pos == spos;
+      //       });
+      //       auto index = std::distance(mPositions.begin(), it);
       mPositions.emplace_back(pos);
       mStorage.emplace_back(onAdding(pos));
     }
