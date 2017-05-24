@@ -86,7 +86,6 @@
     <ClInclude Include="GuiInventory.h" />
     <ClInclude Include="GuiWindow.h" />
     <ClInclude Include="InventorySlot.h" />
-    <ClInclude Include="RingBuffer.h" />
     <ClInclude Include="src\accessors\Accessor.h" />
     <ClInclude Include="src\accessors\AccessorItem.h" />
     <ClInclude Include="src\BlockAutoCrafter.h" />

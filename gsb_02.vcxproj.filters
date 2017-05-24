@@ -336,9 +336,6 @@
     <ClInclude Include="TextureGenerator.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="RingBuffer.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
     <ClInclude Include="GuiInventory.h">
       <Filter>Файлы исходного кода\gui</Filter>
     </ClInclude>
