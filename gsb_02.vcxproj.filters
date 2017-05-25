@@ -190,6 +190,9 @@
     <ClCompile Include="src\include\ItemTools.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="src\WorldSaveLoad.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -393,5 +396,6 @@
     <ClInclude Include="src\RingBuffer.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
+    <ClInclude Include="src\WorldSaveLoad.h" />
   </ItemGroup>
 </Project>
