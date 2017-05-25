@@ -79,6 +79,7 @@
     <ClCompile Include="src\UpdatableSectors.cpp" />
     <ClCompile Include="src\World.cpp" />
     <ClCompile Include="src\WorldGeneratorFlat.cpp" />
+    <ClCompile Include="src\WorldSaveLoad.cpp" />
     <ClCompile Include="TextureGenerator.cpp" />
     <ClCompile Include="WorldSectorObserver.cpp" />
   </ItemGroup>
@@ -151,6 +152,7 @@
     <ClInclude Include="src\UpdatableSectors.h" />
     <ClInclude Include="src\World.h" />
     <ClInclude Include="src\WorldGeneratorFlat.h" />
+    <ClInclude Include="src\WorldSaveLoad.h" />
     <ClInclude Include="TextureGenerator.h" />
     <ClInclude Include="WorldSectorObserver.h" />
   </ItemGroup>

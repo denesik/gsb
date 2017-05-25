@@ -196,6 +196,9 @@
     <ClCompile Include="src\Marching.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="src\WorldSaveLoad.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -399,6 +402,7 @@
     <ClInclude Include="src\RingBuffer.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
+    <ClInclude Include="src\WorldSaveLoad.h" />
     <ClInclude Include="src\TesselatorFlatBlock.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>

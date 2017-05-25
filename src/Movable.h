@@ -74,7 +74,7 @@ public:
 
 protected:
   Magnum::Vector3 mVelocity;
-  Magnum::Vector3 mGravity = {0, -9.8f, 0};
+  Magnum::Vector3 mGravity = {0, 0/*-9.8f*/, 0};
 };
 
 #endif // Transformation_h__
