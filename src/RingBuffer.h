@@ -149,15 +149,18 @@ private:
   {
     Magnum::Vector2i spos;
 
-    spos.x() = (val.x() > mRadius.x()) ? ((val.x() + mRadius.x()) % mDim.x()) - mRadius.x() : ((val.x() - mRadius.x()) % mDim.x()) + mRadius.x();
-    spos.y() = (val.y() > mRadius.y()) ? ((val.y() + mRadius.y()) % mDim.y()) - mRadius.y() : ((val.y() - mRadius.y()) % mDim.y()) + mRadius.y();
+    if (val.x() >  mRadius.x()) spos.x() = ((val.x() + mRadius.x()) % mDim.x()) - mRadius.x();
+    if (val.x() < -mRadius.x()) spos.x() = ((val.x() - mRadius.x()) % mDim.x()) + mRadius.x();
+
+    if (val.y() >  mRadius.x()) spos.y() = ((val.y() + mRadius.y()) % mDim.y()) - mRadius.y();
+    if (val.y() < -mRadius.x()) spos.y() = ((val.y() - mRadius.y()) % mDim.y()) + mRadius.y();
 
     return spos;
   }
 
   Magnum::Vector2i ItoPos(int i)
   {
-    return { i % mDim.x() - mRadius.x(), (i / mDim.y()) % mDim.y() - mRadius.y() };
+    return { i % mDim.x() - mRadius.x(), (i / mDim.x()) % mDim.y() - mRadius.y() };
   }
 
   int PosToIndex(const Magnum::Vector2i &val)
