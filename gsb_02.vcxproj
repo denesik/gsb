@@ -42,6 +42,7 @@
     <ClCompile Include="src\include\IFlatBuffer.cpp" />
     <ClCompile Include="src\include\IMapGenerator.cpp" />
     <ClCompile Include="src\include\ItemTools.cpp" />
+    <ClCompile Include="src\Marching.cpp" />
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\ResourceNetwork.cpp" />
     <ClCompile Include="src\StaticBlock.cpp" />
@@ -63,6 +64,7 @@
     <ClCompile Include="src\SectorCompiler.cpp" />
     <ClCompile Include="src\TemplateFactory.h" />
     <ClCompile Include="src\Tesselator.cpp" />
+    <ClCompile Include="src\TesselatorFlatBlock.cpp" />
     <ClCompile Include="src\TesselatorMicroBlock.cpp" />
     <ClCompile Include="src\TesselatorSolidBlock.cpp" />
     <ClCompile Include="src\TesselatorTexturedBlock.cpp" />
@@ -105,6 +107,8 @@
     <ClInclude Include="src\include\ItemTools.h" />
     <ClInclude Include="src\include\mapgen_types.h" />
     <ClInclude Include="src\ItemContainerContext.h" />
+    <ClInclude Include="src\Marching.h" />
+    <ClInclude Include="src\MarchingHelper.h" />
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Observer.h" />
     <ClInclude Include="src\RingBuffer.h" />
@@ -127,6 +131,7 @@
     <ClInclude Include="src\SectorCompiler.h" />
     <ClInclude Include="src\Serialize.h" />
     <ClInclude Include="src\Tesselator.h" />
+    <ClInclude Include="src\TesselatorFlatBlock.h" />
     <ClInclude Include="src\TesselatorMicroBlock.h" />
     <ClInclude Include="src\TesselatorSolidBlock.h" />
     <ClInclude Include="src\TesselatorTexturedBlock.h" />

@@ -190,6 +190,12 @@
     <ClCompile Include="src\include\ItemTools.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="src\TesselatorFlatBlock.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Marching.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configure.h">
@@ -391,6 +397,15 @@
       <Filter>Файлы исходного кода\include</Filter>
     </ClInclude>
     <ClInclude Include="src\RingBuffer.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TesselatorFlatBlock.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MarchingHelper.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Marching.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>

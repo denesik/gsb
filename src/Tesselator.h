@@ -37,6 +37,7 @@ public:
     SOLID_BLOCK,
     MICRO_BLOCK,
     TEXTURED_BLOCK,
+    FLAT_BLOCK
   };
 
   Tesselator(TesselatorType type);

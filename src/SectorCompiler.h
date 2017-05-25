@@ -45,8 +45,8 @@ private:
   const DataBase &mDataBase;
 private:
   void ProcessSolidBlock(IndexType index, const STPos &pos);
-
   void ProcessMicroBlock(IndexType index, const STPos &pos);
+  void ProcessFlatBlock(IndexType index, const STPos & tpos);
   void ProcessTexturedBlock(IndexType index, const STPos &pos);
 };
 

@@ -612,6 +612,23 @@
     },
     "drop":[["white bricks", 1]]
   },
+    {
+    "section": "block",
+    "name": "grass_flat",
+    "id": 32,
+    "tesselator": {
+      "type": "TesselatorFlatBlock",
+	  "size": 4,
+      "tex": [
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_side.png",
+        "data/grass_top.png",
+        "data/dirt.png"
+      ]
+    }
+  },
   {
     "section": "item",
     "type": "Item",

@@ -2,6 +2,7 @@
 #include "TesselatorSolidBlock.h"
 #include "TesselatorMicroBlock.h"
 #include "TesselatorTexturedBlock.h"
+#include "TesselatorFlatBlock.h"
 
 SectorCompiler::SectorCompiler(const DataBase &dataBase)
   : mDataBase(dataBase)
@@ -72,6 +73,12 @@ void SectorCompiler::ProcessMicroBlock(IndexType index, const STPos &tpos)
   tesselator->PushBack(mTesselatorsData[index], mVertexData, mIndexData, mIndexOffset, WPos(cs::TItoSB(index)));
 }
 
+void SectorCompiler::ProcessFlatBlock(IndexType index, const STPos &tpos)
+{
+  const auto *tesselator = static_cast<const TesselatorFlatBlock *>(mDataBase.GetBlockStaticPart(mTesselators[index])->GetTesselator().get());
+  tesselator->PushBack(mTesselatorsData[index], mVertexData, mIndexData, mIndexOffset, WPos(cs::TItoSB(index)));
+}
+
 void SectorCompiler::ProcessTexturedBlock(IndexType index, const STPos &tpos)
 {
   const auto *tesselator = static_cast<const TesselatorTexturedBlock *>(mDataBase.GetBlockStaticPart(mTesselators[index])->GetTesselator().get());
@@ -104,6 +111,10 @@ void SectorCompiler::Process()
           if (block->GetTesselator()->Type() == Tesselator::TesselatorType::TEXTURED_BLOCK)
           {
             ProcessTexturedBlock(index, pos);
+          }
+          if (block->GetTesselator()->Type() == Tesselator::TesselatorType::FLAT_BLOCK)
+          {
+            ProcessFlatBlock(index, pos);
           }
         }
       }

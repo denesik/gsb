@@ -25,7 +25,7 @@ Layering WorldGeneratorFlat::GetLayering(const DataBase & db, int x, int z) cons
 
   auto tess = std::make_unique<TesselatorData>();
   auto &data = TesselatorMicroBlock::ToMicroblockData(*tess);
-  
+
   for (int k1 = 0; k1 < 4; ++k1)
   {
     for (int j1 = 0; j1 < 4; ++j1)
@@ -65,6 +65,7 @@ Layering WorldGeneratorHills::GetLayering(const DataBase & db, int x, int z) con
   BlockId water = db.BlockIdFromName("water").value_or(1);
   BlockId furnance = db.BlockIdFromName("furnance").value_or(1);
   BlockId stone = db.BlockIdFromName("stone").value_or(1);
+  BlockId grass_micro = db.BlockIdFromName("grass_micro").value_or(1);
 
   unsigned short hill_level = GetGroundLevel(db, x, z);
   Layering layering;
@@ -234,9 +235,9 @@ int WorldGeneratorBiome::CalcBiome(int x, int z) const
 
 void WorldGeneratorBiome::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IContext & context)
 {
- /* static int ret_type = 0;
-  ImGui::SliderInt("return_type", &ret_type, 0, 7);
-  noise_dist.SetCellularReturnType(static_cast<FastNoise::CellularReturnType>(ret_type));*/
+  /* static int ret_type = 0;
+   ImGui::SliderInt("return_type", &ret_type, 0, 7);
+   noise_dist.SetCellularReturnType(static_cast<FastNoise::CellularReturnType>(ret_type));*/
 
   for (size_t i = 0; i < biomes.size(); ++i)
   {
@@ -402,15 +403,36 @@ Layering WorldGeneratorSwamp::GetLayering(const DataBase & db, int x, int z) con
   BlockId peat = db.BlockIdFromName("peat").value_or(1);
   BlockId peat_grass = db.BlockIdFromName("peat_grass").value_or(1);
   BlockId stone = db.BlockIdFromName("stone").value_or(1);
+  BlockId grass_flat = db.BlockIdFromName("grass_micro").value_or(1);
 
   auto value = static_cast<float>(noise.GetNoise(static_cast<float>(-x), static_cast<float>(-z))) / 2.f + 0.5f;
   auto depth = static_cast<unsigned short>(value * hill_multiplier * 3) + 1;
   Layering layering;
 
-  layering.set({ BlockInterval::right_open(0, 1), peat_grass });
+  layering.set({ BlockInterval::right_open(0, 1), grass_flat });
   layering.set({ BlockInterval::right_open(1, depth), peat });
   layering.set({ BlockInterval::right_open(depth, depth + 2), sapropel });
   layering.set({ BlockInterval::right_open(depth + 2, 999), stone });
+
+  auto tess = std::make_unique<TesselatorData>();
+  auto &data = TesselatorMicroBlock::ToMicroblockData(*tess);
+
+  for (int k1 = 0; k1 < 4; ++k1)
+  {
+    for (int i1 = 0; i1 < 4; ++i1)
+    {
+      auto value = static_cast<float>(noise.GetNoise(static_cast<float>(-x - i1/4.f), static_cast<float>(-z - k1 / 4.f))) / 2.f + 0.5f;
+      auto f = value * hill_multiplier + 50 + 1;
+      auto i = static_cast<unsigned short>(f);
+
+      for (int j1 = 0; j1 < (f - i) * 4.f; ++j1)
+      {
+        data[TesselatorMicroBlock::ToIndex({ i1, j1, k1 }, 4)] = true;
+      }
+    }
+  }
+
+  layering.mTesselatorData.insert(std::make_pair(0, std::move(tess)));
 
   return layering;
 }
@@ -446,41 +468,41 @@ std::list<MapTemplate> WorldGeneratorSwamp::GetProps(const DataBase & db, SPos p
   BlockId t = db.BlockIdFromName("tree_block").value_or(1);
 
   SBPos sbpos = cs::StoSB(pos);
-  
-  for(int i = 0; i < 3; i++)
+
+  for (int i = 0; i < 3; i++)
     for (int j = 0; j < 3; j++)
-  {
-    MapTemplate templ;
-    templ.size = { 3,6,3 };
-    templ.position = sbpos + SBPos(GetSeededInteger(noise, i, j, sbpos) % 32, 0, GetSeededInteger(noise, i, j, sbpos*2) % 32);
+    {
+      MapTemplate templ;
+      templ.size = { 3,6,3 };
+      templ.position = sbpos + SBPos(GetSeededInteger(noise, i, j, sbpos) % 32, 0, GetSeededInteger(noise, i, j, sbpos * 2) % 32);
 
-    //TODO: check biome
-    templ.position.y() = GetGroundLevel(db, templ.position.x(), templ.position.z()) - templ.size.y();
+      //TODO: check biome
+      templ.position.y() = GetGroundLevel(db, templ.position.x(), templ.position.z()) - templ.size.y();
 
-    templ.data =
-    { 0,0,0,
-      0,0,0,
-      0,0,0,
-      0,l,0,
-      l,l,l,
-      0,l,0,
+      templ.data =
+      { 0,0,0,
+        0,0,0,
+        0,0,0,
+        0,l,0,
+        l,l,l,
+        0,l,0,
 
-      0,t,0,
-      0,t,0,
-      0,t,0,
-      l,t,l,
-      l,t,l,
-      l,l,l,
-      
-      0,0,0,
-      0,0,0,
-      0,0,0,
-      0,l,0,
-      l,l,l,
-      0,l,0 };
+        0,t,0,
+        0,t,0,
+        0,t,0,
+        l,t,l,
+        l,t,l,
+        l,l,l,
 
-    templates.emplace_back(std::move(templ));
-  }
+        0,0,0,
+        0,0,0,
+        0,0,0,
+        0,l,0,
+        l,l,l,
+        0,l,0 };
+
+      templates.emplace_back(std::move(templ));
+    }
   return templates;
 }
 
