@@ -147,7 +147,7 @@ public:
 private:
   Magnum::Vector2i WrapSPos(const Magnum::Vector2i &val)
   {
-    Magnum::Vector2i spos;
+    Magnum::Vector2i spos = val;
 
     if (val.x() >  mRadius.x()) spos.x() = ((val.x() + mRadius.x()) % mDim.x()) - mRadius.x();
     if (val.x() < -mRadius.x()) spos.x() = ((val.x() - mRadius.x()) % mDim.x()) + mRadius.x();
