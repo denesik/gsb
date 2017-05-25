@@ -100,8 +100,8 @@ BOOST_AUTO_TEST_CASE(add_remove_test)
 
   rb.SetSize({ 1, 1 });
 
-  BOOST_TEST(add_c == 0);
-  BOOST_TEST(del_c == 40);
+  BOOST_TEST(add_c == 9); // 0 for optimal resize, 9 for trivial
+  BOOST_TEST(del_c == 49); // 40 for optimal resize, 49 for trivial
   add_c = del_c = 0;
 }
 
