@@ -93,7 +93,7 @@ public:
     if (newCenter == mCenter)
       return;
 
-    mOffset += mCenter - newCenter;
+    mOffset -= mCenter - newCenter;
 
     Magnum::Vector2i unoffseted = -mRadius;
     for (int i = 0; i < mDim.x() * mDim.y(); i++)
