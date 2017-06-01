@@ -22,7 +22,7 @@
 #include "ChunkHelper.h"
 #include <Magnum/Version.h>
 
-static const int tmp_area_size = 0;
+static const int tmp_area_size = 1;
 #include "../GuiInventory.h"
 
 
