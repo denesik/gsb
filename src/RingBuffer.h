@@ -6,6 +6,9 @@
 #include <functional>
 #include <boost\optional.hpp>
 
+#define GSB_TEST_BUFFER
+#ifndef GSB_TEST_BUFFER
+
 namespace
 {
   inline void StoreOrderedInc(Magnum::Vector2i & pos, Magnum::Vector2i radius)
@@ -175,3 +178,165 @@ private:
   Magnum::Vector2i mCenter;
   Magnum::Vector2i mOffset;
 };
+
+#else
+
+template<typename T>
+class RingBuffer
+{
+public:
+  using StoredType = T;
+  using AddFunction = std::function<T(const SPos &)>;
+  using DeleteFunction = std::function<void(T &, const SPos &)>;
+
+  RingBuffer<T>(AddFunction add, DeleteFunction del)
+    : onAdding(add)
+    , onDeletting(del)
+  {
+  }
+
+  RingBuffer<T> &SetSize(Magnum::Vector2i size)
+  {
+    if (size == mSize)
+      return *this;
+    mSize = size;
+    Update();
+    return *this;
+  }
+
+  boost::optional<T &> Get(const SPos &spos)
+  {
+    auto it = std::find_if(mPositions.begin(), mPositions.end(), [&spos](const SPos &pos)
+    {
+      return pos == spos;
+    });
+
+    if (it != mPositions.end())
+    {
+      return mStorage[std::distance(mPositions.begin(), it)];
+    }
+
+    return{};
+  }
+
+  void UpdatePos(const SPos &pos)
+  {
+    if (pos == mPos)
+      return;
+    mPos = pos;
+    Update();
+  }
+
+  const SPos &GetPos()
+  {
+    return mPos;
+  }
+
+  auto begin()
+  {
+    return mStorage.begin();
+  }
+
+  auto end()
+  {
+    return mStorage.end();
+  }
+
+  AddFunction onAdding;
+  DeleteFunction onDeletting;
+
+private:
+  std::vector<T> mStorage;
+  std::vector<SPos> mPositions;
+
+  Magnum::Vector2i mSize;
+  SPos mPos;
+
+private:
+  std::vector<SPos> Generate(const SPos &pos, const Magnum::Vector2i &size)
+  {
+    std::vector<SPos> data;
+    for (int y = -size.y(); y <= size.y(); ++y)
+      for (int x = -size.x(); x <= size.x(); ++x)
+      {
+        data.emplace_back(pos + SPos{ x, 0, y });
+      }
+    return data;
+  }
+
+  std::vector<SPos> Association(const std::vector<SPos> &a, const std::vector<SPos> &b)
+  {
+    std::vector<SPos> data;
+    for (const auto &pos : a)
+    {
+      auto it = std::find_if(b.begin(), b.end(), [&pos](const SPos &val)
+      {
+        return val == pos;
+      });
+
+      if (it != b.end())
+      {
+        data.emplace_back(pos);
+      }
+    }
+    return data;
+  }
+
+  std::vector<SPos> Subtraction(const std::vector<SPos> &a, const std::vector<SPos> &b)
+  {
+    std::vector<SPos> data;
+    for (const auto &pos : a)
+    {
+      auto it = std::find_if(b.begin(), b.end(), [&pos](const SPos &val)
+      {
+        return val == pos;
+      });
+
+      if (it == b.end())
+      {
+        data.emplace_back(pos);
+      }
+    }
+    return data;
+  }
+
+  void Update()
+  {
+    auto new_data = Generate(mPos, mSize);
+    auto &old_data = mPositions;
+    auto delta = Association(old_data, new_data);
+    auto old_delta = Subtraction(old_data, delta);
+    auto new_delta = Subtraction(new_data, delta);
+
+    for (const auto &pos : old_delta)
+    {
+      auto it = std::find_if(mPositions.begin(), mPositions.end(), [&pos](const SPos &spos)
+      {
+        return pos == spos;
+      });
+      auto index = std::distance(mPositions.begin(), it);
+      onDeletting(mStorage[index], mPositions[index]);
+      std::swap(mStorage[index], mStorage.back());
+      mStorage.pop_back();
+      std::swap(mPositions[index], mPositions.back());
+      mPositions.pop_back();
+    }
+
+    for (const auto &pos : new_delta)
+    {
+      //       auto it = std::find_if(mPositions.begin(), mPositions.end(), [&pos](const SPos &spos)
+      //       {
+      //         return pos == spos;
+      //       });
+      //       auto index = std::distance(mPositions.begin(), it);
+      mPositions.emplace_back(pos);
+      mStorage.emplace_back(onAdding(pos));
+    }
+  }
+
+};
+
+#undef GSB_TEST_BUFFER
+#endif
+
+
