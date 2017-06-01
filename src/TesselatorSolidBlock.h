@@ -41,6 +41,7 @@ public:
 
   void SetScale(Magnum::Float scale);
 
+  void Process(SectorCompiler &compiler, const STPos &pos) override;
 
 private:
   Magnum::Range2D mTextureCoord[6];

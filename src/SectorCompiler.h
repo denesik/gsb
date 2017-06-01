@@ -19,8 +19,25 @@ public:
   SectorCompiler(const DataBase &dataBase);
   ~SectorCompiler();
 
-  const std::vector<TesselatorVertex> &GetVertexData() const;
-  const std::vector<Magnum::UnsignedInt> &GetIndexData() const;
+  const std::vector<TesselatorVertex> &GetVertexData() const
+  {
+    return mVertexData;
+  }
+
+  std::vector<TesselatorVertex> &GetVertexData()
+  {
+    return mVertexData;
+  }
+
+  const std::vector<Magnum::UnsignedInt> &GetIndexData() const
+  {
+    return mIndexData;
+  }
+
+  std::vector<Magnum::UnsignedInt> &GetIndexData()
+  {
+    return mIndexData;
+  }
 
   void Process();
 
@@ -34,13 +51,17 @@ public:
     return mTesselatorsData;
   }
 
+  const DataBase &GetDataBase() const
+  {
+    return mDataBase;
+  }
+
 private:
   std::array<BlockId, gBlockBatcherCapacity> mTesselators;
   std::array<Tesselator::Data, gBlockBatcherCapacity> mTesselatorsData;
 
   std::vector<TesselatorVertex> mVertexData;
   std::vector<Magnum::UnsignedInt> mIndexData;
-  Magnum::UnsignedInt mIndexOffset;
 
   const DataBase &mDataBase;
 private:

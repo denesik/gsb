@@ -1,5 +1,7 @@
 #include "TesselatorFlatBlock.h"
 #include <Marching.h>
+#include "SectorCompiler.h"
+#include "DataBase.h"
 
 using namespace Magnum;
 
@@ -95,5 +97,18 @@ void TesselatorFlatBlock::JsonLoad(const rapidjson::Value & val, const TextureAt
 bool TesselatorFlatBlock::UseTesselatorData() const
 {
   return true;
+}
+
+void TesselatorFlatBlock::Process(SectorCompiler &compiler, const STPos &pos)
+{
+  auto &vertex = compiler.GetVertexData();
+  auto &index = compiler.GetIndexData();
+  UnsignedInt last_index = vertex.size();
+  auto data_index = cs::STtoTI(pos);
+  const auto &microblock_data = compiler.TesselatorsData()[data_index];
+
+  WPos wpos(cs::TItoSB(data_index));
+
+  PushBack(microblock_data, vertex, index, last_index, wpos);
 }
 

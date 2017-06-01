@@ -1,6 +1,9 @@
 #include "TesselatorTexturedBlock.h"
 
 #include <Magnum/Math/Vector2.h>
+#include "SectorCompiler.h"
+#include "DataBase.h"
+
 using namespace Magnum;
 
 TesselatorTexturedBlock::TesselatorTexturedBlock()
@@ -44,4 +47,17 @@ void TesselatorTexturedBlock::JsonLoad(const rapidjson::Value& val, const Textur
       AddTexture(atlas.GetTextureCoord(arr[i].GetString()).value_or(Range2D{ Vector2{ 0.0f }, Vector2{ 1.0f } }));
     }
   }
+}
+
+void TesselatorTexturedBlock::Process(SectorCompiler &compiler, const STPos &pos)
+{
+  auto &vertex = compiler.GetVertexData();
+  auto &index = compiler.GetIndexData();
+  UnsignedInt last_index = vertex.size();
+  auto data_index = cs::STtoTI(pos);
+  const auto &microblock_data = compiler.TesselatorsData()[data_index];
+
+  WPos wpos(cs::TItoSB(data_index));
+
+  PushBack(microblock_data, vertex, index, last_index, wpos);
 }

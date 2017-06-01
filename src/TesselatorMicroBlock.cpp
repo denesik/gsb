@@ -1,4 +1,6 @@
 #include "TesselatorMicroBlock.h"
+#include "SectorCompiler.h"
+#include "DataBase.h"
 
 using namespace Magnum;
 
@@ -100,5 +102,18 @@ void TesselatorMicroBlock::JsonLoad(const rapidjson::Value & val, const TextureA
 bool TesselatorMicroBlock::UseTesselatorData() const
 {
   return true;
+}
+
+void TesselatorMicroBlock::Process(SectorCompiler &compiler, const STPos &pos)
+{
+  auto &vertex = compiler.GetVertexData();
+  auto &index = compiler.GetIndexData();
+  UnsignedInt last_index = vertex.size();
+  auto data_index = cs::STtoTI(pos);
+  const auto &microblock_data = compiler.TesselatorsData()[data_index];
+
+  WPos wpos(cs::TItoSB(data_index));
+
+  PushBack(microblock_data, vertex, index, last_index, wpos);
 }
 

@@ -10,6 +10,9 @@
 #include <rapidjson/document.h>
 #include "TextureAtlas.h"
 #include <array>
+#include "tools/CoordSystem.h"
+
+class SectorCompiler;
 
 struct TesselatorVertex
 {
@@ -49,6 +52,8 @@ public:
 
   virtual void JsonLoad(const rapidjson::Value & val, const TextureAtlas &atlas) = 0;
   virtual bool UseTesselatorData() const = 0;
+
+  virtual void Process(SectorCompiler &compiler, const STPos &pos) = 0;
 
 protected:
   template<class T>

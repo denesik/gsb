@@ -3,6 +3,8 @@
 #include <Magnum/Math/Vector2.h>
 #include "TextureAtlas.h"
 #include "tools/CoordSystem.h"
+#include "SectorCompiler.h"
+#include "DataBase.h"
 
 using namespace Magnum;
 
@@ -129,6 +131,53 @@ void TesselatorSolidBlock::SetScale(Float scale)
   {
     mVertexData[i] = gVertexData[i] * scale;
   }
+}
+
+void TesselatorSolidBlock::Process(SectorCompiler &compiler, const STPos &pos)
+{
+  const auto &db = compiler.GetDataBase();
+  const auto &tesselators = compiler.Tesselators();
+
+  // Рисовать сторону если тесселятор у смежного блока отсутствует или другого типа.
+  int side = SideFlags::NONE;
+  {
+    const auto &block = db.GetBlockStaticPart(tesselators[cs::STtoTI(cs::West(pos))]);
+    if (!block || !block->GetTesselator() || block->GetTesselator()->id() != TesselatorSolidBlock::id())
+      side |= SideFlags::WEST;
+  }
+  {
+    const auto &block = db.GetBlockStaticPart(tesselators[cs::STtoTI(cs::East(pos))]);
+    if (!block || !block->GetTesselator() || block->GetTesselator()->id() != TesselatorSolidBlock::id())
+      side |= SideFlags::EAST;
+  }
+  {
+    const auto &block = db.GetBlockStaticPart(tesselators[cs::STtoTI(cs::Top(pos))]);
+    if (!block || !block->GetTesselator() || block->GetTesselator()->id() != TesselatorSolidBlock::id())
+      side |= SideFlags::TOP;
+  }
+  {
+    const auto &block = db.GetBlockStaticPart(tesselators[cs::STtoTI(cs::Down(pos))]);
+    if (!block || !block->GetTesselator() || block->GetTesselator()->id() != TesselatorSolidBlock::id())
+      side |= SideFlags::DOWN;
+  }
+  {
+    const auto &block = db.GetBlockStaticPart(tesselators[cs::STtoTI(cs::North(pos))]);
+    if (!block || !block->GetTesselator() || block->GetTesselator()->id() != TesselatorSolidBlock::id())
+      side |= SideFlags::NORTH;
+  }
+  {
+    const auto &block = db.GetBlockStaticPart(tesselators[cs::STtoTI(cs::South(pos))]);
+    if (!block || !block->GetTesselator() || block->GetTesselator()->id() != TesselatorSolidBlock::id())
+      side |= SideFlags::SOUTH;
+  }
+
+  auto &vertex = compiler.GetVertexData();
+  auto &index = compiler.GetIndexData();
+  UnsignedInt last_index = vertex.size();
+
+  WPos wpos(cs::TItoSB(cs::STtoTI(pos)));
+
+  PushBack(vertex, index, last_index, wpos, static_cast<SideFlags>(side));
 }
 
 bool TesselatorSolidBlock::UseTesselatorData() const

@@ -78,6 +78,8 @@ public:
 
   void JsonLoad(const rapidjson::Value& val, const TextureAtlas& atlas) override;
 
+  void Process(SectorCompiler &compiler, const STPos &pos) override;
+
 private:
   std::vector<Magnum::Range2D> mTextures;
   mutable TesselatorSolidBlock m_tesselator;

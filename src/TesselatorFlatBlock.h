@@ -62,6 +62,8 @@ public:
 
   bool UseTesselatorData() const override;
 
+  void Process(SectorCompiler &compiler, const STPos &pos) override;
+
   IndexType ToIndex(const MBPos &pos) const
   {
     return ToIndex(pos, mSize);
