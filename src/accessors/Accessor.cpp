@@ -79,7 +79,7 @@ AccessorId Accessor::Name() const
 
 AccessorId Accessor::NameFromString(const std::string &name)
 {
-  return gsb::crc32<std::string>()(name);
+  return crc32(name.c_str());
 }
 
 AccessorId Accessor::LoadName(const rapidjson::Value &val)

@@ -1,10 +1,11 @@
 #pragma once
 #include <cstdint>
-namespace gsb
-{
+
+// https://gist.github.com/oktal/5573082 Compile-time C++ CRC32
+
   namespace
   {
-    constexpr uint32_t crc_table[256] = {
+    constexpr uint32_t crc32_table[256] = {
       0x00000000L, 0x77073096L, 0xee0e612cL, 0x990951baL, 0x076dc419L,
       0x706af48fL, 0xe963a535L, 0x9e6495a3L, 0x0edb8832L, 0x79dcb8a4L,
       0xe0d5e91eL, 0x97d2d988L, 0x09b64c2bL, 0x7eb17cbdL, 0xe7b82d07L,
@@ -60,18 +61,34 @@ namespace gsb
     };
   }
 
-  template<class T> struct crc32;
 
-  template<> struct crc32<std::string>
-  {
-    std::size_t constexpr operator()(char const *input) const
-    {
-      return *input ? (*this)(input + 1) >> 8 ^ crc_table[((*this)(input + 1) ^ *input) & 0x000000FF] : 0;
-    }
-
-    std::size_t operator()(const std::string& str) const
-    {
-      return (*this)(str.c_str());
-    }
+  template<uint32_t CRC, char ...Chars> struct Crc32Impl {
   };
-} // namespace gsb
+
+  template<uint32_t CRC, char Head, char ...Tail> struct Crc32Impl<CRC, Head, Tail...> {
+    static constexpr uint32_t value = Crc32Impl<
+      crc32_table[static_cast<unsigned char>(CRC) ^ static_cast<unsigned char>(Head)]
+      ^ (CRC >> 8), Tail...>::value;
+  };
+
+  template<uint32_t CRC> struct Crc32Impl<CRC> {
+    static constexpr uint32_t value = CRC ^ 0xFFFFFFFF;
+  };
+
+
+  template<char ...Chars> using Crc32 = Crc32Impl<0xFFFFFFFF, Chars...>;
+
+  constexpr uint32_t crc32_rec(uint32_t crc, const char *s) {
+    return *s == 0 ? crc ^ 0xFFFFFFFF :
+      crc32_rec(crc32_table[static_cast<unsigned char>(crc) ^
+        static_cast<unsigned char>(*s)]
+        ^ (crc >> 8), s + 1);
+  }
+
+  constexpr uint32_t operator "" _crc32(const char *s, size_t len) {
+    return crc32_rec(0xFFFFFFFF, s);
+  }
+
+  constexpr uint32_t crc32(const char *s) {
+    return crc32_rec(0xFFFFFFFF, s);
+  }

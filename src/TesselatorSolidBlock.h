@@ -7,6 +7,7 @@
 #include "Tesselator.h"
 #include "tools/CoordSystem.h"
 #include <array>
+#include "tools/Crc32.h"
 
 class TesselatorSolidBlock;
 namespace
@@ -18,18 +19,28 @@ class TesselatorSolidBlock : public Tesselator
 {
 public:
   TesselatorSolidBlock();
-  ~TesselatorSolidBlock();
+  ~TesselatorSolidBlock() = default;
+
+  TesselatorSolidBlock(const TesselatorSolidBlock &other) = delete;
+  TesselatorSolidBlock(TesselatorSolidBlock &&other) = delete;
+
+  TesselatorSolidBlock &operator=(const TesselatorSolidBlock &other) = delete;
+  TesselatorSolidBlock &operator=(TesselatorSolidBlock &&other) = delete;
+
+  constexpr static const char * name() { return "TesselatorSolidBlock"; }
+  constexpr static uint32_t id() { return crc32(name()); }
+
 
   TesselatorSolidBlock &SetTexture(const Magnum::Range2D &range, SideFlags side = SideFlags::ALL);
 
   void PushBack(std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side = SideFlags::ALL) const;
 
-
   void JsonLoad(const rapidjson::Value& val, const TextureAtlas& atlas) override;
+
+  bool UseTesselatorData() const override;
 
   void SetScale(Magnum::Float scale);
 
-  bool UseTesselatorData() const override;
 
 private:
   Magnum::Range2D mTextureCoord[6];

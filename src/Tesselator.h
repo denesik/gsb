@@ -32,24 +32,36 @@ class Tesselator
 public:
   using factory = TemplateFactory<std::string, Tesselator, void()>;
 
-  enum class TesselatorType
-  {
-    SOLID_BLOCK,
-    MICRO_BLOCK,
-    TEXTURED_BLOCK,
-    FLAT_BLOCK
-  };
+  Tesselator() = delete;
+  virtual ~Tesselator() = default;
 
-  Tesselator(TesselatorType type);
-  virtual ~Tesselator();
+  Tesselator(const Tesselator &other) = delete;
+  Tesselator(Tesselator &&other) = delete;
 
-  TesselatorType Type() const;
+  Tesselator &operator=(const Tesselator &other) = delete;
+  Tesselator &operator=(Tesselator &&other) = delete;
+
+  uint32_t id() const { return m_id; }
+  const char *name() const { return m_name; }
 
   virtual void JsonLoad(const rapidjson::Value & val, const TextureAtlas &atlas) = 0;
   virtual bool UseTesselatorData() const = 0;
 
+protected:
+  template<class T>
+  struct identity
+  {
+    using type = T;
+  };
+
+  template<class T>
+  Tesselator(identity<T>)
+    : m_name(T::name()), m_id(T::id())
+  {}
+
 private:
-  const TesselatorType mType;
+  const uint32_t m_id;
+  const char *m_name;
 };
 
 #endif // Tesselator_h__

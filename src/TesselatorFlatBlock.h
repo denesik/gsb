@@ -28,7 +28,17 @@ public:
   typedef Magnum::Int MBPosType;
 
   TesselatorFlatBlock(size_t size = 4);
-  ~TesselatorFlatBlock();
+  ~TesselatorFlatBlock() = default;
+
+  TesselatorFlatBlock(const TesselatorFlatBlock &other) = delete;
+  TesselatorFlatBlock(TesselatorFlatBlock &&other) = delete;
+
+  TesselatorFlatBlock &operator=(const TesselatorFlatBlock &other) = delete;
+  TesselatorFlatBlock &operator=(TesselatorFlatBlock &&other) = delete;
+
+  constexpr static const char * name() { return "TesselatorFlatBlock"; }
+  constexpr static uint32_t id() { return crc32(name()); }
+
 
   TesselatorFlatBlock &SetSize(size_t size);
   TesselatorFlatBlock &SetTexture(const Magnum::Range2D &range, SideFlags side = ALL);

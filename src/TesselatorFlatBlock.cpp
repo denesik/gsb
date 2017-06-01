@@ -48,20 +48,16 @@ TesselatorFlatBlock &TesselatorFlatBlock::Build()
 }
 
 TesselatorFlatBlock::TesselatorFlatBlock(size_t size)
-  : Tesselator(Tesselator::TesselatorType::FLAT_BLOCK)
+  : Tesselator(identity<TesselatorFlatBlock>())
 {
   SetSize(size);
 }
 
 
-TesselatorFlatBlock::~TesselatorFlatBlock()
-{
-}
-
 TesselatorFlatBlock & TesselatorFlatBlock::SetSize(size_t size)
 {
   mSize = size;
-  mData.resize(mSize * mSize * mSize);
+  mData = decltype(mData)(mSize * mSize * mSize);
   return *this;
 }
 

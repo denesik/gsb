@@ -4,14 +4,12 @@
 using namespace Magnum;
 
 TesselatorTexturedBlock::TesselatorTexturedBlock()
-  : Tesselator(Tesselator::TesselatorType::TEXTURED_BLOCK)
+  : Tesselator(identity<TesselatorTexturedBlock>())
 {
 }
 
 
-TesselatorTexturedBlock::~TesselatorTexturedBlock()
-{
-}
+
 
 TesselatorTexturedBlock & TesselatorTexturedBlock::AddTexture(const Magnum::Range2D &range)
 {

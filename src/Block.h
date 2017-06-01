@@ -35,7 +35,7 @@ public:
   Block(const Block &other);
   Block(Block &&other);
   /// Ќе используем операторы копировани€ и перемещени€.
-  const Block &operator=(const Block &other) = delete;
+  Block &operator=(const Block &other) = delete;
   Block &operator=(Block &&other) = delete;
 
   ///  онструкторы дл€ клонировани€.

@@ -65,15 +65,13 @@ static const Magnum::UnsignedInt gIndexSide[] =
 
 
 TesselatorSolidBlock::TesselatorSolidBlock()
-  : Tesselator(Tesselator::TesselatorType::SOLID_BLOCK)
+  : Tesselator(identity<TesselatorSolidBlock>())
 {
   SetScale(1.0f);
 }
 
 
-TesselatorSolidBlock::~TesselatorSolidBlock()
-{
-}
+
 
 TesselatorSolidBlock &TesselatorSolidBlock::SetTexture(const Magnum::Range2D &range, SideFlags side)
 {

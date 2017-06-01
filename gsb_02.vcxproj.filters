@@ -17,6 +17,9 @@
     <Filter Include="Файлы исходного кода\include">
       <UniqueIdentifier>{a753d521-6692-47f3-b260-6e3aa77be4b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы исходного кода\tesselators">
+      <UniqueIdentifier>{02d73c08-4700-4752-a8dc-fc0059f8de7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Game.cpp">
@@ -37,13 +40,7 @@
     <ClCompile Include="src\TextureAtlas.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tesselator.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="src\ImguiPort.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TesselatorSolidBlock.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\Sector.cpp">
@@ -53,9 +50,6 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\World.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SectorCompiler.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\DrawableArea.cpp">
@@ -86,9 +80,6 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\MapLoader.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TesselatorMicroBlock.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\tools\DebugLines.cpp">
@@ -145,9 +136,6 @@
     <ClCompile Include="src\ChunkHelper.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="src\TesselatorTexturedBlock.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="FastNoise\FastNoise.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
@@ -190,14 +178,26 @@
     <ClCompile Include="src\include\ItemTools.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="src\TesselatorFlatBlock.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="src\Marching.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\WorldSaveLoad.cpp">
       <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TesselatorFlatBlock.cpp">
+      <Filter>Файлы исходного кода\tesselators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TesselatorMicroBlock.cpp">
+      <Filter>Файлы исходного кода\tesselators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TesselatorSolidBlock.cpp">
+      <Filter>Файлы исходного кода\tesselators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TesselatorTexturedBlock.cpp">
+      <Filter>Файлы исходного кода\tesselators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SectorCompiler.cpp">
+      <Filter>Файлы исходного кода\tesselators</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -216,12 +216,6 @@
     <ClInclude Include="src\ImguiPort.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\TesselatorSolidBlock.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tesselator.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
     <ClInclude Include="src\StandartShader.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
@@ -238,9 +232,6 @@
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\Timer.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SectorCompiler.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\UpdatableArea.h">
@@ -268,9 +259,6 @@
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\tools\DebugLines.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TesselatorMicroBlock.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\WorldGeneratorFlat.h">
@@ -334,9 +322,6 @@
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\ChunkHelper.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TesselatorTexturedBlock.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\tools\Brezenham3D.h">
@@ -403,14 +388,29 @@
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\WorldSaveLoad.h" />
-    <ClInclude Include="src\TesselatorFlatBlock.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
     <ClInclude Include="src\MarchingHelper.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\Marching.h">
       <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TesselatorTexturedBlock.h">
+      <Filter>Файлы исходного кода\tesselators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tesselator.h">
+      <Filter>Файлы исходного кода\tesselators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TesselatorFlatBlock.h">
+      <Filter>Файлы исходного кода\tesselators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TesselatorMicroBlock.h">
+      <Filter>Файлы исходного кода\tesselators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TesselatorSolidBlock.h">
+      <Filter>Файлы исходного кода\tesselators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SectorCompiler.h">
+      <Filter>Файлы исходного кода\tesselators</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -34,32 +34,32 @@ void SectorCompiler::ProcessSolidBlock(IndexType index, const STPos &tpos)
   int side = SideFlags::NONE;
   {
     const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::West(tpos))]);
-    if (!block || !block->GetTesselator() || block->GetTesselator()->Type() != Tesselator::TesselatorType::SOLID_BLOCK)
+    if (!block || !block->GetTesselator() || block->GetTesselator()->id() != TesselatorSolidBlock::id())
       side |= SideFlags::WEST;
   }
   {
     const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::East(tpos))]);
-    if (!block || !block->GetTesselator() || block->GetTesselator()->Type() != Tesselator::TesselatorType::SOLID_BLOCK)
+    if (!block || !block->GetTesselator() || block->GetTesselator()->id() != TesselatorSolidBlock::id())
       side |= SideFlags::EAST;
   }
   {
     const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Top(tpos))]);
-    if (!block || !block->GetTesselator() || block->GetTesselator()->Type() != Tesselator::TesselatorType::SOLID_BLOCK)
+    if (!block || !block->GetTesselator() || block->GetTesselator()->id() != TesselatorSolidBlock::id())
       side |= SideFlags::TOP;
   }
   {
     const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::Down(tpos))]);
-    if (!block || !block->GetTesselator() || block->GetTesselator()->Type() != Tesselator::TesselatorType::SOLID_BLOCK)
+    if (!block || !block->GetTesselator() || block->GetTesselator()->id() != TesselatorSolidBlock::id())
       side |= SideFlags::DOWN;
   }
   {
     const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::North(tpos))]);
-    if (!block || !block->GetTesselator() || block->GetTesselator()->Type() != Tesselator::TesselatorType::SOLID_BLOCK)
+    if (!block || !block->GetTesselator() || block->GetTesselator()->id() != TesselatorSolidBlock::id())
       side |= SideFlags::NORTH;
   }
   {
     const auto &block = mDataBase.GetBlockStaticPart(mTesselators[cs::STtoTI(cs::South(tpos))]);
-    if (!block || !block->GetTesselator() || block->GetTesselator()->Type() != Tesselator::TesselatorType::SOLID_BLOCK)
+    if (!block || !block->GetTesselator() || block->GetTesselator()->id() != TesselatorSolidBlock::id())
       side |= SideFlags::SOUTH;
   }
 
@@ -100,19 +100,19 @@ void SectorCompiler::Process()
         const auto &block = mDataBase.GetBlockStaticPart(mTesselators[index]);
         if (block && block->GetTesselator())
         {
-          if (block->GetTesselator()->Type() == Tesselator::TesselatorType::SOLID_BLOCK)
+          if (block->GetTesselator()->id() == TesselatorSolidBlock::id())
           {
             ProcessSolidBlock(index, pos);
           }
-          if (block->GetTesselator()->Type() == Tesselator::TesselatorType::MICRO_BLOCK)
+          if (block->GetTesselator()->id() == TesselatorMicroBlock::id())
           {
             ProcessMicroBlock(index, pos);
           }
-          if (block->GetTesselator()->Type() == Tesselator::TesselatorType::TEXTURED_BLOCK)
+          if (block->GetTesselator()->id() == TesselatorTexturedBlock::id())
           {
             ProcessTexturedBlock(index, pos);
           }
-          if (block->GetTesselator()->Type() == Tesselator::TesselatorType::FLAT_BLOCK)
+          if (block->GetTesselator()->id() == TesselatorFlatBlock::id())
           {
             ProcessFlatBlock(index, pos);
           }

@@ -71,9 +71,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)..\3rdparty\msvc14_x86\include;$(SolutionDir)..\3rdparty\msvc14_x86\include\MagnumExternal\OpenGL;$(SolutionDir)..\3rdparty\msvc14_x86\include\SDL2;$(SolutionDir)..\3rdparty\msvc14_x86\include\GLFW;$(SolutionDir)rapidjson\include;$(SolutionDir)..\3rdparty\msvc14_x86\boost;$(SolutionDir)src\include\;$(SolutionDir)src\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)..\3rdparty\msvc14_x86\lib;$(ProjectDir)..\3rdparty\msvc14_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
-    <SourcePath>src;$(SourcePath)</SourcePath>
+    <IncludePath>$(SolutionDir)..\3rdparty\msvc15_x86\include;$(SolutionDir)..\3rdparty\msvc15_x86\include\MagnumExternal\OpenGL;$(SolutionDir)..\3rdparty\msvc15_x86\include\SDL2;$(SolutionDir)..\3rdparty\msvc15_x86\include\GLFW;$(SolutionDir)rapidjson\include;$(SolutionDir)..\3rdparty\msvc15_x86\boost;$(SolutionDir)src\include\;$(SolutionDir)src\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolitionDir)..\..\..\3rdparty\msvc15_x86\lib;$(SolitionDir)..\..\..\3rdparty\msvc15_x86\boost\stage\lib;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(VC_SourcePath);</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>

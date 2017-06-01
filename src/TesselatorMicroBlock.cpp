@@ -47,20 +47,16 @@ TesselatorMicroBlock &TesselatorMicroBlock::Build()
 }
 
 TesselatorMicroBlock::TesselatorMicroBlock(size_t size)
-  : Tesselator(Tesselator::TesselatorType::MICRO_BLOCK)
+  : Tesselator(identity<TesselatorMicroBlock>())
 {
   SetSize(size);
 }
 
 
-TesselatorMicroBlock::~TesselatorMicroBlock()
-{
-}
-
 TesselatorMicroBlock & TesselatorMicroBlock::SetSize(size_t size)
 {
   mSize = size;
-  mData.resize(mSize * mSize * mSize);
+  mData = decltype(mData)(mSize * mSize * mSize);
   return *this;
 }
 

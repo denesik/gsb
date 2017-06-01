@@ -12,10 +12,10 @@ namespace
   static auto AccessorItemLoaded = Accessor::factory::Register<AccessorItem>::add("AccessorItem");
 }
 
-class AccessorItem : public NumeredAgent<AccessorItem, gsb::crc32<std::string>()("AccessorItem")>
+class AccessorItem : public NumeredAgent<AccessorItem, "AccessorItem"_crc32>
 {
 public:
-  using ParentType = NumeredAgent<AccessorItem, gsb::crc32<std::string>()("AccessorItem")>;
+  using ParentType = NumeredAgent<AccessorItem, "AccessorItem"_crc32>;
 
   AccessorItem() = delete;
   ~AccessorItem() override = default;

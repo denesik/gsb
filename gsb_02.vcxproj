@@ -63,7 +63,6 @@
     <ClCompile Include="src\Sector.cpp" />
     <ClCompile Include="src\SectorCompiler.cpp" />
     <ClCompile Include="src\TemplateFactory.h" />
-    <ClCompile Include="src\Tesselator.cpp" />
     <ClCompile Include="src\TesselatorFlatBlock.cpp" />
     <ClCompile Include="src\TesselatorMicroBlock.cpp" />
     <ClCompile Include="src\TesselatorSolidBlock.cpp" />

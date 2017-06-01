@@ -45,7 +45,17 @@ class TesselatorTexturedBlock : public Tesselator
 {
 public:
   TesselatorTexturedBlock();
-  ~TesselatorTexturedBlock();
+  ~TesselatorTexturedBlock() = default;
+
+  TesselatorTexturedBlock(const TesselatorTexturedBlock &other) = delete;
+  TesselatorTexturedBlock(TesselatorTexturedBlock &&other) = delete;
+
+  TesselatorTexturedBlock &operator=(const TesselatorTexturedBlock &other) = delete;
+  TesselatorTexturedBlock &operator=(TesselatorTexturedBlock &&other) = delete;
+
+  constexpr static const char * name() { return "TesselatorTexturedBlock"; }
+  constexpr static uint32_t id() { return crc32(name()); }
+
 
   TesselatorTexturedBlock &AddTexture(const Magnum::Range2D &range);
 
