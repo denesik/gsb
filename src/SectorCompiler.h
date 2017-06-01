@@ -29,14 +29,14 @@ public:
     return mTesselators;
   }
 
-  inline std::array<TesselatorData, gBlockBatcherCapacity> &TesselatorsData()
+  inline std::array<Tesselator::Data, gBlockBatcherCapacity> &TesselatorsData()
   {
     return mTesselatorsData;
   }
 
 private:
   std::array<BlockId, gBlockBatcherCapacity> mTesselators;
-  std::array<TesselatorData, gBlockBatcherCapacity> mTesselatorsData;
+  std::array<Tesselator::Data, gBlockBatcherCapacity> mTesselatorsData;
 
   std::vector<TesselatorVertex> mVertexData;
   std::vector<Magnum::UnsignedInt> mIndexData;

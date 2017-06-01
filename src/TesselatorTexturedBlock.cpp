@@ -17,9 +17,9 @@ TesselatorTexturedBlock & TesselatorTexturedBlock::AddTexture(const Magnum::Rang
   return *this;
 }
 
-void TesselatorTexturedBlock::PushBack(const TesselatorData &tesselator_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side /*= SideFlags::ALL*/) const
+void TesselatorTexturedBlock::PushBack(const Tesselator::Data &tesselator_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side /*= SideFlags::ALL*/) const
 {
-  const TessTexturedBlockData &data = ToTexturedBlockData(tesselator_data);
+  const auto &data = static_cast<const Data &>(tesselator_data);
 
   for (int i = 0; i < 6; ++i)
   {
@@ -32,16 +32,6 @@ void TesselatorTexturedBlock::PushBack(const TesselatorData &tesselator_data, st
 bool TesselatorTexturedBlock::UseTesselatorData() const
 {
   return true;
-}
-
-TessTexturedBlockData & TesselatorTexturedBlock::ToTexturedBlockData(TesselatorData &data)
-{
-  return reinterpret_cast<TessTexturedBlockData &>(data);
-}
-
-const TessTexturedBlockData & TesselatorTexturedBlock::ToTexturedBlockData(const TesselatorData &data)
-{
-  return reinterpret_cast<const TessTexturedBlockData &>(data);
 }
 
 void TesselatorTexturedBlock::JsonLoad(const rapidjson::Value& val, const TextureAtlas& atlas)

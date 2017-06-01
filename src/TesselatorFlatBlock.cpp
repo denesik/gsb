@@ -19,16 +19,6 @@ static inline Range2D TextureCoordTo(const Range2D &a, const Range2D &b)
   };
 }
 
-TessFlatBlockData & TesselatorFlatBlock::ToMicroblockData(TesselatorData &data)
-{
-  return reinterpret_cast<TessFlatBlockData &>(data);
-}
-
-const TessFlatBlockData & TesselatorFlatBlock::ToMicroblockData(const TesselatorData &data)
-{
-  return reinterpret_cast<const TessFlatBlockData &>(data);
-}
-
 
 TesselatorFlatBlock &TesselatorFlatBlock::Build()
 {
@@ -74,13 +64,13 @@ TesselatorFlatBlock & TesselatorFlatBlock::SetTexture(const Magnum::Range2D &ran
   return *this;
 }
 
-void TesselatorFlatBlock::PushBack(const TesselatorData &microblock_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side /*= SideFlags::ALL*/) const
+void TesselatorFlatBlock::PushBack(const Tesselator::Data &microblock_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side /*= SideFlags::ALL*/) const
 {
   const auto scale = 1.0f / Float(mSize);
 
-  const TessFlatBlockData &data = ToMicroblockData(microblock_data);
+  const auto &data = static_cast<const Data &>(microblock_data);
 
-  MarchingCubes::generate(microblock_data, vertex, index, last_index, pos, mTextureCoord[0], side);
+  MarchingCubes::generate(data, vertex, index, last_index, pos, mTextureCoord[0], side);
 }
 
 void TesselatorFlatBlock::JsonLoad(const rapidjson::Value & val, const TextureAtlas &atlas)

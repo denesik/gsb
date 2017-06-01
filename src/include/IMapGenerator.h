@@ -18,7 +18,7 @@ using BlockInterval = boost::icl::interval<unsigned short>;
 class Layering : public boost::icl::interval_map<unsigned short, BlockId>
 {
 public:
-  boost::container::flat_map<int, std::unique_ptr<TesselatorData>> mTesselatorData;
+  boost::container::flat_map<int, std::unique_ptr<Tesselator::Data>> mTesselatorData;
 };
 
 enum class StructureSize

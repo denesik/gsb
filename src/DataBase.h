@@ -47,7 +47,7 @@ public:
 
   /// —оздает блок.
   /// ≈сли невозможно создать блоксданным ид вернет блок воздуха.
-  std::tuple<BlockId, std::unique_ptr<TesselatorData>,  std::unique_ptr<Block>> CreateBlock(Sector &parent, BlockId id) const;
+  std::tuple<BlockId, std::unique_ptr<Tesselator::Data>,  std::unique_ptr<Block>> CreateBlock(Sector &parent, BlockId id) const;
   
   boost::optional<ItemId> ItemIdFromName(const std::string& name) const;
 

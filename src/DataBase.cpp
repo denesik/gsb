@@ -112,9 +112,9 @@ const DataBase::ItemStorageInterval & DataBase::GetLoadedItemsInterval() const
   return mLoadedItemsInterval;
 }
 
-std::tuple<BlockId, std::unique_ptr<TesselatorData>, std::unique_ptr<Block>> DataBase::CreateBlock(Sector &parent, BlockId id) const
+std::tuple<BlockId, std::unique_ptr<Tesselator::Data>, std::unique_ptr<Block>> DataBase::CreateBlock(Sector &parent, BlockId id) const
 {
-  std::unique_ptr<TesselatorData> tess_data;
+  std::unique_ptr<Tesselator::Data> tess_data;
   std::unique_ptr<Block> block;
 
   const auto &static_block = std::get<0>(mBlocks[id]);
@@ -123,7 +123,7 @@ std::tuple<BlockId, std::unique_ptr<TesselatorData>, std::unique_ptr<Block>> Dat
     const auto &dyn = std::get<1>(mBlocks[id]);
     const auto &tesselator = static_block->GetTesselator();
 
-    tess_data = (tesselator && tesselator->UseTesselatorData()) ? std::make_unique<TesselatorData>() : nullptr;
+    tess_data = (tesselator && tesselator->UseTesselatorData()) ? std::make_unique<Tesselator::Data>() : nullptr;
     block = dyn ? dyn->Clone(parent) : nullptr;
   }
 

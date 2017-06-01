@@ -11,8 +11,6 @@
 #include "TextureAtlas.h"
 #include <array>
 
-typedef std::array<Magnum::Byte, 64> TesselatorData;
-
 struct TesselatorVertex
 {
   TesselatorVertex() = default;
@@ -30,6 +28,11 @@ struct TesselatorVertex
 class Tesselator
 {
 public:
+  struct Data
+  {
+    std::array<Magnum::Byte, 64> data;
+  };
+
   using factory = TemplateFactory<std::string, Tesselator, void()>;
 
   Tesselator() = delete;

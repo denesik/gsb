@@ -1,5 +1,4 @@
 #include "Marching.h"
-#include <TesselatorFlatBlock.h>
 
 void MarchingCubes::Polygonise(GRIDCELL grid, double isolevel, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, const Magnum::Range2D & uv)
 {
@@ -101,10 +100,8 @@ Magnum::Vector3 MarchingCubes::VertexInterp(double isolevel, const Magnum::Vecto
     return(p);
 }
 
-void MarchingCubes::generate(const TesselatorData &microblock_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, const Magnum::Range2D & uv, SideFlags side /*= SideFlags::ALL*/)
+void MarchingCubes::generate(const TesselatorFlatBlock::Data &microblock_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, const Magnum::Range2D & uv, SideFlags side /*= SideFlags::ALL*/)
 {
-  const TessFlatBlockData &data = TesselatorFlatBlock::ToMicroblockData(microblock_data);
-
   int size = 4;
 
   for (int i = 0; i < size - 1; ++i)
@@ -122,7 +119,7 @@ void MarchingCubes::generate(const TesselatorData &microblock_data, std::vector<
         gc.p[7] = { static_cast<float>(i),     static_cast<float>(j),     static_cast<float>(k + 1) };
         for (int mm = 0; mm < 8; mm++)
         {
-          gc.val[mm] = data[TesselatorFlatBlock::ToIndex({ 
+          gc.val[mm] = microblock_data.get()[TesselatorFlatBlock::ToIndex({
             static_cast<int>(gc.p[mm].x()), 
             static_cast<int>(gc.p[mm].y()), 
             static_cast<int>(gc.p[mm].z())

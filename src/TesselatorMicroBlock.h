@@ -12,9 +12,6 @@
 #include <Magnum/Math/Range.h>
 #include "IJsonSerializable.h"
 
-typedef std::bitset<8 * 8 * 8> TessMicroBlockData;
-
-
 class TesselatorMicroBlock;
 namespace
 {
@@ -24,6 +21,19 @@ namespace
 class TesselatorMicroBlock : public Tesselator
 {
 public:
+  struct Data : public Tesselator::Data
+  {
+    std::bitset<8 * 8 * 8> &get()
+    {
+      return reinterpret_cast<std::bitset<8 * 8 * 8> &>(data);
+    }
+
+    const std::bitset<8 * 8 * 8> &get() const
+    {
+      return reinterpret_cast<const std::bitset<8 * 8 * 8> &>(data);
+    }
+  };
+
   typedef Magnum::Vector3i MBPos;
   typedef Magnum::Int MBPosType;
 
@@ -44,7 +54,7 @@ public:
   TesselatorMicroBlock &SetTexture(const Magnum::Range2D &range, SideFlags side = ALL);
   TesselatorMicroBlock &Build();
 
-  void PushBack(const TesselatorData &microblock_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side = ALL) const;
+  void PushBack(const Tesselator::Data &microblock_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side = ALL) const;
 
   void JsonLoad(const rapidjson::Value & val, const TextureAtlas &atlas) override;
 
@@ -82,10 +92,6 @@ public:
   {
     return mSize;
   }
-
-  static TessMicroBlockData &ToMicroblockData(TesselatorData &data);
-
-  static const TessMicroBlockData &ToMicroblockData(const TesselatorData &data);
 
 private:
   std::vector<TesselatorSolidBlock> mData;

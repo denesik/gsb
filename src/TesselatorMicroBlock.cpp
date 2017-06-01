@@ -18,17 +18,6 @@ static inline Range2D TextureCoordTo(const Range2D &a, const Range2D &b)
   };
 }
 
-TessMicroBlockData & TesselatorMicroBlock::ToMicroblockData(TesselatorData &data)
-{
-  return reinterpret_cast<TessMicroBlockData &>(data);
-}
-
-const TessMicroBlockData & TesselatorMicroBlock::ToMicroblockData(const TesselatorData &data)
-{
-  return reinterpret_cast<const TessMicroBlockData &>(data);
-}
-
-
 TesselatorMicroBlock &TesselatorMicroBlock::Build()
 {
   for (MBPosType z = 0; z < mSize; z++)
@@ -73,15 +62,15 @@ TesselatorMicroBlock & TesselatorMicroBlock::SetTexture(const Magnum::Range2D &r
   return *this;
 }
 
-void TesselatorMicroBlock::PushBack(const TesselatorData &microblock_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side /*= SideFlags::ALL*/) const
+void TesselatorMicroBlock::PushBack(const Tesselator::Data &microblock_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side /*= SideFlags::ALL*/) const
 {
   const auto scale = 1.0f / Float(mSize);
 
-  const TessMicroBlockData &data = ToMicroblockData(microblock_data);
+  const auto &data = static_cast<const Data &>(microblock_data);
 
   for (auto i = 0; i < mSize * mSize * mSize; ++i)
   {
-    if (data[i])
+    if (data.get()[i])
     {
       mData[i].PushBack(vertex, index, last_index,
         pos + WPos(FromIndex(i)) *scale);

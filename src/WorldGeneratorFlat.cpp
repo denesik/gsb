@@ -23,8 +23,8 @@ Layering WorldGeneratorFlat::GetLayering(const DataBase & db, int x, int z) cons
   layering.set({ BlockInterval::right_open(0, 1), grass_micro });
   layering.set({ BlockInterval::right_open(1, 2), dirt });
 
-  auto tess = std::make_unique<TesselatorData>();
-  auto &data = TesselatorMicroBlock::ToMicroblockData(*tess);
+  auto tess = std::make_unique<Tesselator::Data>();
+  auto &data = static_cast<TesselatorMicroBlock::Data &>(*tess);
 
   for (int k1 = 0; k1 < 4; ++k1)
   {
@@ -32,7 +32,7 @@ Layering WorldGeneratorFlat::GetLayering(const DataBase & db, int x, int z) cons
     {
       for (int i1 = 0; i1 < 4; ++i1)
       {
-        data[TesselatorMicroBlock::ToIndex({ i1, j1, k1 }, 4)] = (i1 + j1 + k1) % 3 == 0;
+        data.get()[TesselatorMicroBlock::ToIndex({ i1, j1, k1 }, 4)] = (i1 + j1 + k1) % 3 == 0;
       }
     }
   }
@@ -414,8 +414,8 @@ Layering WorldGeneratorSwamp::GetLayering(const DataBase & db, int x, int z) con
   layering.set({ BlockInterval::right_open(depth, depth + 2), sapropel });
   layering.set({ BlockInterval::right_open(depth + 2, 999), stone });
 
-  auto tess = std::make_unique<TesselatorData>();
-  auto &data = TesselatorMicroBlock::ToMicroblockData(*tess);
+  auto tess = std::make_unique<Tesselator::Data>();
+  auto &data = static_cast<TesselatorMicroBlock::Data &>(*tess);
 
   for (int k1 = 0; k1 < 4; ++k1)
   {
@@ -427,7 +427,7 @@ Layering WorldGeneratorSwamp::GetLayering(const DataBase & db, int x, int z) con
 
       for (int j1 = 0; j1 < (f - i) * 4.f; ++j1)
       {
-        data[TesselatorMicroBlock::ToIndex({ i1, j1, k1 }, 4)] = true;
+        data.get()[TesselatorMicroBlock::ToIndex({ i1, j1, k1 }, 4)] = true;
       }
     }
   }

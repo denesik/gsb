@@ -44,8 +44,8 @@ void MapLoaderFromGenerator::Process(Sector &sector)
 
       for (const auto &tess : layering.mTesselatorData)
       {
-        auto &tessData = TesselatorMicroBlock::ToMicroblockData(sector.GetTesselatorData(SBPos{ i, max_h - tess.first, k }).value());
-        tessData = TesselatorMicroBlock::ToMicroblockData(*tess.second);
+        auto &tessData = static_cast<TesselatorMicroBlock::Data &>(sector.GetTesselatorData(SBPos{ i, max_h - tess.first, k }).value());
+        tessData = static_cast<TesselatorMicroBlock::Data &>(*tess.second);
       }
     }
 

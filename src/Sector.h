@@ -59,14 +59,14 @@ public:
 
   void CreateBlock(SBPos pos, BlockId id);
 
-  std::optional<TesselatorData &> GetTesselatorData(SBPos pos);
+  std::optional<Tesselator::Data &> GetTesselatorData(SBPos pos);
 
   inline BlockId GetBlockId(IndexType pos) const
   {
     return mStaticBlocks[pos];
   }
 
-  inline const std::unique_ptr<TesselatorData> &GetTesselatorData(IndexType pos) const
+  inline const std::unique_ptr<Tesselator::Data> &GetTesselatorData(IndexType pos) const
   {
     return mTesselatorData[pos];
   }
@@ -89,7 +89,7 @@ public:
 private:
   std::array<BlockId, gSectorCapacity> mStaticBlocks;
   std::array<std::unique_ptr<Block>, gSectorCapacity> mDinamicBlocks;
-  std::array<std::unique_ptr<TesselatorData>, gSectorCapacity> mTesselatorData;
+  std::array<std::unique_ptr<Tesselator::Data>, gSectorCapacity> mTesselatorData;
   
   const SPos mPos;
 

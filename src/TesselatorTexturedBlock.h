@@ -17,33 +17,46 @@ namespace
   static auto TesselatorTexturedBlockLoaded = Tesselator::factory::Register<TesselatorTexturedBlock>::add("TesselatorTexturedBlock");
 }
 
-struct TessTexturedBlockData
-{
-  uint8_t sides[6] = {0, 0, 0, 0, 0, 0};
-  uint16_t mirror = 0;
-
-  void set_texture(size_t side, uint8_t index)
-  {
-    sides[side] |= (index & FLAG_TEXTURE);
-  }
-
-  uint8_t texture(size_t side) const
-  {
-    return sides[side] & FLAG_TEXTURE;
-  }
-
-private:
-  enum 
-  {
-    FLAG_TEXTURE = 0x3F,
-    FLAG_ROT_X = 0x40,
-    FLAG_ROT_Y = 0x80,
-  };
-};
-
 class TesselatorTexturedBlock : public Tesselator
 {
 public:
+  struct Data : public Tesselator::Data
+  {
+    struct data_type
+    {
+      uint8_t sides[6] = { 0, 0, 0, 0, 0, 0 };
+      uint16_t mirror = 0;
+    };
+
+    void set_texture(size_t side, uint8_t index)
+    {
+      get().sides[side] |= (index & FLAG_TEXTURE);
+    }
+
+    uint8_t texture(size_t side) const
+    {
+      return get().sides[side] & FLAG_TEXTURE;
+    }
+
+    data_type &get()
+    {
+      return reinterpret_cast<data_type &>(data);
+    }
+
+    const data_type &get() const
+    {
+      return reinterpret_cast<const data_type &>(data);
+    }
+
+  private:
+    enum
+    {
+      FLAG_TEXTURE = 0x3F,
+      FLAG_ROT_X = 0x40,
+      FLAG_ROT_Y = 0x80,
+    };
+  };
+
   TesselatorTexturedBlock();
   ~TesselatorTexturedBlock() = default;
 
@@ -59,13 +72,9 @@ public:
 
   TesselatorTexturedBlock &AddTexture(const Magnum::Range2D &range);
 
-  void PushBack(const TesselatorData &tesselator_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side = SideFlags::ALL) const;
+  void PushBack(const Tesselator::Data &tesselator_data, std::vector<TesselatorVertex> &vertex, std::vector<Magnum::UnsignedInt> &index, Magnum::UnsignedInt &last_index, const WPos &pos, SideFlags side = SideFlags::ALL) const;
 
   bool UseTesselatorData() const override;
-
-  static TessTexturedBlockData &ToTexturedBlockData(TesselatorData &data);
-
-  static const TessTexturedBlockData &ToTexturedBlockData(const TesselatorData &data);
 
   void JsonLoad(const rapidjson::Value& val, const TextureAtlas& atlas) override;
 

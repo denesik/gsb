@@ -91,7 +91,7 @@ void Sector::CreateBlock(SBPos pos, BlockId id)
   }
 }
 
-std::optional<TesselatorData &> Sector::GetTesselatorData(SBPos pos)
+std::optional<Tesselator::Data &> Sector::GetTesselatorData(SBPos pos)
 {
   return *mTesselatorData[cs::SBtoBI(pos)];
 }
