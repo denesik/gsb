@@ -20,6 +20,9 @@
     <Filter Include="Файлы исходного кода\tesselators">
       <UniqueIdentifier>{02d73c08-4700-4752-a8dc-fc0059f8de7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы исходного кода\blocks">
+      <UniqueIdentifier>{f7d39644-95aa-473e-9632-3df62d7d8e31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Game.cpp">
@@ -100,20 +103,11 @@
     <ClCompile Include="src\IRecipe.cpp">
       <Filter>Файлы исходного кода\interfaces</Filter>
     </ClCompile>
-    <ClCompile Include="src\BlockAutoCrafter.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="src\imgui\imgui_widgets.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\IMapLoader.cpp">
       <Filter>Файлы исходного кода\interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Crafter.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Block.cpp">
-      <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\StaticBlock.cpp">
       <Filter>Файлы исходного кода</Filter>
@@ -128,9 +122,6 @@
       <Filter>Файлы исходного кода\Accessors</Filter>
     </ClCompile>
     <ClCompile Include="src\Model.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BlockSpriteAnimated.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\ChunkHelper.cpp">
@@ -198,6 +189,18 @@
     </ClCompile>
     <ClCompile Include="src\SectorCompiler.cpp">
       <Filter>Файлы исходного кода\tesselators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Block.cpp">
+      <Filter>Файлы исходного кода\blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BlockAutoCrafter.cpp">
+      <Filter>Файлы исходного кода\blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BlockSpriteAnimated.cpp">
+      <Filter>Файлы исходного кода\blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Crafter.cpp">
+      <Filter>Файлы исходного кода\blocks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -276,25 +279,16 @@
     <ClInclude Include="src\tools\Common.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\BlockAutoCrafter.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
     <ClInclude Include="src\Creature.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\imgui\imgui_widgets.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="src\Block.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
     <ClInclude Include="src\StaticBlock.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\DataBase.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Crafter.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\accessors\Accessor.h">
@@ -316,9 +310,6 @@
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\Model.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
-    <ClInclude Include="src\BlockSpriteAnimated.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\ChunkHelper.h">
@@ -411,6 +402,18 @@
     </ClInclude>
     <ClInclude Include="src\SectorCompiler.h">
       <Filter>Файлы исходного кода\tesselators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Block.h">
+      <Filter>Файлы исходного кода\blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BlockAutoCrafter.h">
+      <Filter>Файлы исходного кода\blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BlockSpriteAnimated.h">
+      <Filter>Файлы исходного кода\blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Crafter.h">
+      <Filter>Файлы исходного кода\blocks</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

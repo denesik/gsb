@@ -119,12 +119,12 @@ void Crafter::Stop()
   m_runned = false;
 }
 
-bool Crafter::Runned() const
+bool Crafter::IsRunned() const
 {
-  return Ready() && m_runned;
+  return IsReady() && m_runned;
 }
 
-bool Crafter::Ready() const
+bool Crafter::IsReady() const
 {
   return m_current_recipe.is_initialized();
 }

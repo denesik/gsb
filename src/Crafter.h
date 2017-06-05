@@ -44,10 +44,10 @@ public:
   void Stop();
 
   // Запущен крафт?
-  bool Runned() const;
+  bool IsRunned() const;
 
   // Можем запустить крафт?
-  bool Ready() const;
+  bool IsReady() const;
 
 private:
   AccessorItem &mInput;

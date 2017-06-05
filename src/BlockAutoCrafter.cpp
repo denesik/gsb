@@ -89,20 +89,20 @@ void BlockAutoCrafter::DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx, IContex
 
 void BlockAutoCrafter::Update(const Magnum::Timeline &dt)
 {
-  if (mGenerator.Ready())
+  if (mGenerator.IsReady())
   {
-    if (mCrafter.Ready())
+    if (mCrafter.IsReady())
     {
-      if (!mGenerator.Runned())
+      if (!mGenerator.IsRunned())
         mGenerator.Run();
 
-      if (mGenerator.Runned() && !mCrafter.Runned())
+      if (mGenerator.IsRunned() && !mCrafter.IsRunned())
         mCrafter.Run();
     }
   }
   else
   {
-    if (mCrafter.Runned())
+    if (mCrafter.IsRunned())
     {
       mCrafter.Stop();
     }
