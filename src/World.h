@@ -48,7 +48,7 @@ public:
 
   BlockId GetBlockId(const WBPos &pos) const;
   Block* GetBlockDynamic(const WBPos &pos) const;
-  void CreateBlock(const WBPos &pos, BlockId id);
+  bool CreateBlock(const WBPos &pos, BlockId id);
 
   UpdatableSectors &GetUpdatableSectors();
   

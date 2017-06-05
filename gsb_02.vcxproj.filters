@@ -142,20 +142,11 @@
     <ClCompile Include="WorldSectorObserver.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="GuiInventory.cpp">
-      <Filter>Файлы исходного кода\gui</Filter>
-    </ClCompile>
     <ClCompile Include="DragNDrop.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="InventorySlot.cpp">
       <Filter>Файлы исходного кода\gui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\IGui.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="GuiWindow.cpp">
-      <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="src\include\IMapGenerator.cpp">
       <Filter>Файлы исходного кода</Filter>
@@ -200,6 +191,21 @@
       <Filter>Файлы исходного кода\blocks</Filter>
     </ClCompile>
     <ClCompile Include="src\Crafter.cpp">
+      <Filter>Файлы исходного кода\blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiOptions.cpp">
+      <Filter>Файлы исходного кода\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiWindow.cpp">
+      <Filter>Файлы исходного кода\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IGui.cpp">
+      <Filter>Файлы исходного кода\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\accessors\AccessorHeat.cpp">
+      <Filter>Файлы исходного кода\Accessors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BlockResourceGenerator.cpp">
       <Filter>Файлы исходного кода\blocks</Filter>
     </ClCompile>
   </ItemGroup>
@@ -321,9 +327,6 @@
     <ClInclude Include="TextureGenerator.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="GuiInventory.h">
-      <Filter>Файлы исходного кода\gui</Filter>
-    </ClInclude>
     <ClInclude Include="InventorySlot.h">
       <Filter>Файлы исходного кода\gui</Filter>
     </ClInclude>
@@ -358,9 +361,6 @@
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="DragNDrop.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
-    <ClInclude Include="GuiWindow.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
     <ClInclude Include="src\Observer.h">
@@ -413,6 +413,18 @@
       <Filter>Файлы исходного кода\blocks</Filter>
     </ClInclude>
     <ClInclude Include="src\Crafter.h">
+      <Filter>Файлы исходного кода\blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiOptions.h">
+      <Filter>Файлы исходного кода\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiWindow.h">
+      <Filter>Файлы исходного кода\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\accessors\AccessorHeat.h">
+      <Filter>Файлы исходного кода\Accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BlockResourceGenerator.h">
       <Filter>Файлы исходного кода\blocks</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,0 +1,978 @@
+[
+    {
+        "Crafter1": {
+            "Input": "1", 
+            "Output": "0", 
+            "Recipe": "RecipeHand", 
+            "fast": false
+        }, 
+        "Crafter2": {
+            "Input": "2", 
+            "Output": "2", 
+            "Recipe": "RecipeBurn", 
+            "fast": true
+        }, 
+        "agents": [
+            {
+                "name": "0", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "1", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "2", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "3", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }
+        ], 
+        "drop": [
+            [
+                "primitive steam turbine", 
+                1
+            ]
+        ], 
+        "generate_item": {
+            "name": "primitive steam turbine", 
+            "tex": "data/items/furnance_front.png"
+        }, 
+        "id": 200, 
+        "name": "primitive steam turbine", 
+        "section": "block", 
+        "tesselator": {
+            "tex": [
+                "data/furnance_front.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_top_bottom.png", 
+                "data/furnance_top_bottom.png"
+            ], 
+            "type": "TesselatorSolidBlock"
+        }, 
+        "type": "BlockAutoCrafter"
+    }, 
+    {
+        "Crafter1": {
+            "Input": "1", 
+            "Output": "0", 
+            "Recipe": "RecipeHand", 
+            "fast": false
+        }, 
+        "Crafter2": {
+            "Input": "2", 
+            "Output": "2", 
+            "Recipe": "RecipeBurn", 
+            "fast": true
+        }, 
+        "agents": [
+            {
+                "name": "0", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "1", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "2", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "3", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }
+        ], 
+        "drop": [
+            [
+                "ultimate steam turbine", 
+                1
+            ]
+        ], 
+        "generate_item": {
+            "name": "ultimate steam turbine", 
+            "tex": "data/items/furnance_front.png"
+        }, 
+        "id": 201, 
+        "name": "ultimate steam turbine", 
+        "section": "block", 
+        "tesselator": {
+            "tex": [
+                "data/furnance_front.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_top_bottom.png", 
+                "data/furnance_top_bottom.png"
+            ], 
+            "type": "TesselatorSolidBlock"
+        }, 
+        "type": "BlockAutoCrafter"
+    }, 
+    {
+        "Crafter1": {
+            "Input": "1", 
+            "Output": "0", 
+            "Recipe": "RecipeHand", 
+            "fast": false
+        }, 
+        "Crafter2": {
+            "Input": "2", 
+            "Output": "2", 
+            "Recipe": "RecipeBurn", 
+            "fast": true
+        }, 
+        "agents": [
+            {
+                "name": "0", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "1", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "2", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "3", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }
+        ], 
+        "drop": [
+            [
+                "advanced steam turbine", 
+                1
+            ]
+        ], 
+        "generate_item": {
+            "name": "advanced steam turbine", 
+            "tex": "data/items/furnance_front.png"
+        }, 
+        "id": 202, 
+        "name": "advanced steam turbine", 
+        "section": "block", 
+        "tesselator": {
+            "tex": [
+                "data/furnance_front.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_top_bottom.png", 
+                "data/furnance_top_bottom.png"
+            ], 
+            "type": "TesselatorSolidBlock"
+        }, 
+        "type": "BlockAutoCrafter"
+    }, 
+    {
+        "Crafter1": {
+            "Input": "1", 
+            "Output": "0", 
+            "Recipe": "RecipeHand", 
+            "fast": false
+        }, 
+        "Crafter2": {
+            "Input": "2", 
+            "Output": "2", 
+            "Recipe": "RecipeBurn", 
+            "fast": true
+        }, 
+        "agents": [
+            {
+                "name": "0", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "1", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "2", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "3", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }
+        ], 
+        "drop": [
+            [
+                "basic steam turbine", 
+                1
+            ]
+        ], 
+        "generate_item": {
+            "name": "basic steam turbine", 
+            "tex": "data/items/furnance_front.png"
+        }, 
+        "id": 203, 
+        "name": "basic steam turbine", 
+        "section": "block", 
+        "tesselator": {
+            "tex": [
+                "data/furnance_front.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_top_bottom.png", 
+                "data/furnance_top_bottom.png"
+            ], 
+            "type": "TesselatorSolidBlock"
+        }, 
+        "type": "BlockAutoCrafter"
+    }, 
+    {
+        "Crafter1": {
+            "Input": "1", 
+            "Output": "0", 
+            "Recipe": "RecipeHand", 
+            "fast": false
+        }, 
+        "Crafter2": {
+            "Input": "2", 
+            "Output": "2", 
+            "Recipe": "RecipeBurn", 
+            "fast": true
+        }, 
+        "agents": [
+            {
+                "name": "0", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "1", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "2", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "3", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }
+        ], 
+        "drop": [
+            [
+                "primitive gas turbine", 
+                1
+            ]
+        ], 
+        "generate_item": {
+            "name": "primitive gas turbine", 
+            "tex": "data/items/furnance_front.png"
+        }, 
+        "id": 204, 
+        "name": "primitive gas turbine", 
+        "section": "block", 
+        "tesselator": {
+            "tex": [
+                "data/furnance_front.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_top_bottom.png", 
+                "data/furnance_top_bottom.png"
+            ], 
+            "type": "TesselatorSolidBlock"
+        }, 
+        "type": "BlockAutoCrafter"
+    }, 
+    {
+        "Crafter1": {
+            "Input": "1", 
+            "Output": "0", 
+            "Recipe": "RecipeHand", 
+            "fast": false
+        }, 
+        "Crafter2": {
+            "Input": "2", 
+            "Output": "2", 
+            "Recipe": "RecipeBurn", 
+            "fast": true
+        }, 
+        "agents": [
+            {
+                "name": "0", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "1", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "2", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "3", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }
+        ], 
+        "drop": [
+            [
+                "ultimate gas turbine", 
+                1
+            ]
+        ], 
+        "generate_item": {
+            "name": "ultimate gas turbine", 
+            "tex": "data/items/furnance_front.png"
+        }, 
+        "id": 205, 
+        "name": "ultimate gas turbine", 
+        "section": "block", 
+        "tesselator": {
+            "tex": [
+                "data/furnance_front.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_top_bottom.png", 
+                "data/furnance_top_bottom.png"
+            ], 
+            "type": "TesselatorSolidBlock"
+        }, 
+        "type": "BlockAutoCrafter"
+    }, 
+    {
+        "Crafter1": {
+            "Input": "1", 
+            "Output": "0", 
+            "Recipe": "RecipeHand", 
+            "fast": false
+        }, 
+        "Crafter2": {
+            "Input": "2", 
+            "Output": "2", 
+            "Recipe": "RecipeBurn", 
+            "fast": true
+        }, 
+        "agents": [
+            {
+                "name": "0", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "1", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "2", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "3", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }
+        ], 
+        "drop": [
+            [
+                "advanced gas turbine", 
+                1
+            ]
+        ], 
+        "generate_item": {
+            "name": "advanced gas turbine", 
+            "tex": "data/items/furnance_front.png"
+        }, 
+        "id": 206, 
+        "name": "advanced gas turbine", 
+        "section": "block", 
+        "tesselator": {
+            "tex": [
+                "data/furnance_front.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_top_bottom.png", 
+                "data/furnance_top_bottom.png"
+            ], 
+            "type": "TesselatorSolidBlock"
+        }, 
+        "type": "BlockAutoCrafter"
+    }, 
+    {
+        "Crafter1": {
+            "Input": "1", 
+            "Output": "0", 
+            "Recipe": "RecipeHand", 
+            "fast": false
+        }, 
+        "Crafter2": {
+            "Input": "2", 
+            "Output": "2", 
+            "Recipe": "RecipeBurn", 
+            "fast": true
+        }, 
+        "agents": [
+            {
+                "name": "0", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "1", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "2", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "3", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }
+        ], 
+        "drop": [
+            [
+                "basic gas turbine", 
+                1
+            ]
+        ], 
+        "generate_item": {
+            "name": "basic gas turbine", 
+            "tex": "data/items/furnance_front.png"
+        }, 
+        "id": 207, 
+        "name": "basic gas turbine", 
+        "section": "block", 
+        "tesselator": {
+            "tex": [
+                "data/furnance_front.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_top_bottom.png", 
+                "data/furnance_top_bottom.png"
+            ], 
+            "type": "TesselatorSolidBlock"
+        }, 
+        "type": "BlockAutoCrafter"
+    }, 
+    {
+        "Crafter1": {
+            "Input": "1", 
+            "Output": "0", 
+            "Recipe": "RecipeHand", 
+            "fast": false
+        }, 
+        "Crafter2": {
+            "Input": "2", 
+            "Output": "2", 
+            "Recipe": "RecipeBurn", 
+            "fast": true
+        }, 
+        "agents": [
+            {
+                "name": "0", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "1", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "2", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "3", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }
+        ], 
+        "drop": [
+            [
+                "primitive diesel engine", 
+                1
+            ]
+        ], 
+        "generate_item": {
+            "name": "primitive diesel engine", 
+            "tex": "data/items/furnance_front.png"
+        }, 
+        "id": 208, 
+        "name": "primitive diesel engine", 
+        "section": "block", 
+        "tesselator": {
+            "tex": [
+                "data/furnance_front.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_top_bottom.png", 
+                "data/furnance_top_bottom.png"
+            ], 
+            "type": "TesselatorSolidBlock"
+        }, 
+        "type": "BlockAutoCrafter"
+    }, 
+    {
+        "Crafter1": {
+            "Input": "1", 
+            "Output": "0", 
+            "Recipe": "RecipeHand", 
+            "fast": false
+        }, 
+        "Crafter2": {
+            "Input": "2", 
+            "Output": "2", 
+            "Recipe": "RecipeBurn", 
+            "fast": true
+        }, 
+        "agents": [
+            {
+                "name": "0", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "1", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "2", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "3", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }
+        ], 
+        "drop": [
+            [
+                "ultimate diesel engine", 
+                1
+            ]
+        ], 
+        "generate_item": {
+            "name": "ultimate diesel engine", 
+            "tex": "data/items/furnance_front.png"
+        }, 
+        "id": 209, 
+        "name": "ultimate diesel engine", 
+        "section": "block", 
+        "tesselator": {
+            "tex": [
+                "data/furnance_front.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_top_bottom.png", 
+                "data/furnance_top_bottom.png"
+            ], 
+            "type": "TesselatorSolidBlock"
+        }, 
+        "type": "BlockAutoCrafter"
+    }, 
+    {
+        "Crafter1": {
+            "Input": "1", 
+            "Output": "0", 
+            "Recipe": "RecipeHand", 
+            "fast": false
+        }, 
+        "Crafter2": {
+            "Input": "2", 
+            "Output": "2", 
+            "Recipe": "RecipeBurn", 
+            "fast": true
+        }, 
+        "agents": [
+            {
+                "name": "0", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "1", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "2", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "3", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }
+        ], 
+        "drop": [
+            [
+                "advanced diesel engine", 
+                1
+            ]
+        ], 
+        "generate_item": {
+            "name": "advanced diesel engine", 
+            "tex": "data/items/furnance_front.png"
+        }, 
+        "id": 210, 
+        "name": "advanced diesel engine", 
+        "section": "block", 
+        "tesselator": {
+            "tex": [
+                "data/furnance_front.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_top_bottom.png", 
+                "data/furnance_top_bottom.png"
+            ], 
+            "type": "TesselatorSolidBlock"
+        }, 
+        "type": "BlockAutoCrafter"
+    }, 
+    {
+        "Crafter1": {
+            "Input": "1", 
+            "Output": "0", 
+            "Recipe": "RecipeHand", 
+            "fast": false
+        }, 
+        "Crafter2": {
+            "Input": "2", 
+            "Output": "2", 
+            "Recipe": "RecipeBurn", 
+            "fast": true
+        }, 
+        "agents": [
+            {
+                "name": "0", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "1", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "2", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "3", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }
+        ], 
+        "drop": [
+            [
+                "basic diesel engine", 
+                1
+            ]
+        ], 
+        "generate_item": {
+            "name": "basic diesel engine", 
+            "tex": "data/items/furnance_front.png"
+        }, 
+        "id": 211, 
+        "name": "basic diesel engine", 
+        "section": "block", 
+        "tesselator": {
+            "tex": [
+                "data/furnance_front.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_top_bottom.png", 
+                "data/furnance_top_bottom.png"
+            ], 
+            "type": "TesselatorSolidBlock"
+        }, 
+        "type": "BlockAutoCrafter"
+    }, 
+    {
+        "Crafter1": {
+            "Input": "1", 
+            "Output": "0", 
+            "Recipe": "RecipeHand", 
+            "fast": false
+        }, 
+        "Crafter2": {
+            "Input": "2", 
+            "Output": "2", 
+            "Recipe": "RecipeBurn", 
+            "fast": true
+        }, 
+        "agents": [
+            {
+                "name": "0", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "1", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "2", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "3", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }
+        ], 
+        "drop": [
+            [
+                "primitive automated furnance", 
+                1
+            ]
+        ], 
+        "generate_item": {
+            "name": "primitive automated furnance", 
+            "tex": "data/items/furnance_front.png"
+        }, 
+        "id": 212, 
+        "name": "primitive automated furnance", 
+        "section": "block", 
+        "tesselator": {
+            "tex": [
+                "data/furnance_front.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_top_bottom.png", 
+                "data/furnance_top_bottom.png"
+            ], 
+            "type": "TesselatorSolidBlock"
+        }, 
+        "type": "BlockAutoCrafter"
+    }, 
+    {
+        "Crafter1": {
+            "Input": "1", 
+            "Output": "0", 
+            "Recipe": "RecipeHand", 
+            "fast": false
+        }, 
+        "Crafter2": {
+            "Input": "2", 
+            "Output": "2", 
+            "Recipe": "RecipeBurn", 
+            "fast": true
+        }, 
+        "agents": [
+            {
+                "name": "0", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "1", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "2", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "3", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }
+        ], 
+        "drop": [
+            [
+                "ultimate automated furnance", 
+                1
+            ]
+        ], 
+        "generate_item": {
+            "name": "ultimate automated furnance", 
+            "tex": "data/items/furnance_front.png"
+        }, 
+        "id": 213, 
+        "name": "ultimate automated furnance", 
+        "section": "block", 
+        "tesselator": {
+            "tex": [
+                "data/furnance_front.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_top_bottom.png", 
+                "data/furnance_top_bottom.png"
+            ], 
+            "type": "TesselatorSolidBlock"
+        }, 
+        "type": "BlockAutoCrafter"
+    }, 
+    {
+        "Crafter1": {
+            "Input": "1", 
+            "Output": "0", 
+            "Recipe": "RecipeHand", 
+            "fast": false
+        }, 
+        "Crafter2": {
+            "Input": "2", 
+            "Output": "2", 
+            "Recipe": "RecipeBurn", 
+            "fast": true
+        }, 
+        "agents": [
+            {
+                "name": "0", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "1", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "2", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "3", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }
+        ], 
+        "drop": [
+            [
+                "advanced automated furnance", 
+                1
+            ]
+        ], 
+        "generate_item": {
+            "name": "advanced automated furnance", 
+            "tex": "data/items/furnance_front.png"
+        }, 
+        "id": 214, 
+        "name": "advanced automated furnance", 
+        "section": "block", 
+        "tesselator": {
+            "tex": [
+                "data/furnance_front.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_top_bottom.png", 
+                "data/furnance_top_bottom.png"
+            ], 
+            "type": "TesselatorSolidBlock"
+        }, 
+        "type": "BlockAutoCrafter"
+    }, 
+    {
+        "Crafter1": {
+            "Input": "1", 
+            "Output": "0", 
+            "Recipe": "RecipeHand", 
+            "fast": false
+        }, 
+        "Crafter2": {
+            "Input": "2", 
+            "Output": "2", 
+            "Recipe": "RecipeBurn", 
+            "fast": true
+        }, 
+        "agents": [
+            {
+                "name": "0", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "1", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "2", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }, 
+            {
+                "name": "3", 
+                "size": 4, 
+                "type": "AccessorItem"
+            }
+        ], 
+        "drop": [
+            [
+                "basic automated furnance", 
+                1
+            ]
+        ], 
+        "generate_item": {
+            "name": "basic automated furnance", 
+            "tex": "data/items/furnance_front.png"
+        }, 
+        "id": 215, 
+        "name": "basic automated furnance", 
+        "section": "block", 
+        "tesselator": {
+            "tex": [
+                "data/furnance_front.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_side.png", 
+                "data/furnance_top_bottom.png", 
+                "data/furnance_top_bottom.png"
+            ], 
+            "type": "TesselatorSolidBlock"
+        }, 
+        "type": "BlockAutoCrafter"
+    }
+]

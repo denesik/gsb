@@ -651,6 +651,13 @@
     "tex": "data/items/iron_ore.png"
   },
   {
+    "section": "item",
+    "type": "Item",
+    "id": 4,
+    "name": "coke",
+    "tex": "data/items/coal_lump.png"
+  },
+  {
     "section": "recipe",
     "type": "RecipeHand",
     "id": 1,
@@ -669,9 +676,17 @@
   {
     "section": "recipe",
     "type": "RecipeBurn",
-    "id": 2,
+    "id": 3,
     "time": 15.0,
     "input": [ [ "coal", 1 ] ],
+    "output": [ ]
+  },
+  {
+    "section": "recipe",
+    "type": "RecipeBurn",
+    "id": 4,
+    "time": 35.0,
+    "input": [ [ "coke", 1 ] ],
     "output": [ ]
   }
 ]

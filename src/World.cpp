@@ -212,26 +212,27 @@ BlockId World::GetBlockId(const WBPos& pos) const
 
 Block* World::GetBlockDynamic(const WBPos& pos) const
 {
-//   auto spos = cs::WBtoS(pos);
-//   auto sector = GetSector(spos);
-//   if (!sector.expired())
-//   {
-//     auto shared = sector.lock();
-//     return shared->GetBlockDynamic(cs::WBtoSB(pos));
-//   }
+  auto spos = cs::WBtoS(pos);
+  auto sector = GetSector(spos);
+  if (sector.is_initialized())
+  {
+    return sector->GetBlockDynamic(cs::WBtoSB(pos));
+  }
 
   return {};
 }
 
-void World::CreateBlock(const WBPos& pos, BlockId id)
+bool World::CreateBlock(const WBPos& pos, BlockId id)
 {
-//   auto spos = cs::WBtoS(pos);
-//   auto sector = GetSector(spos);
-//   if (!sector.expired())
-//   {
-//     auto shared = sector.lock();
-//     return shared->CreateBlock(cs::WBtoSB(pos), id);
-//   }
+  auto spos = cs::WBtoS(pos);
+  auto sector = GetSector(spos);
+  if (sector.is_initialized())
+  {
+    sector->CreateBlock(cs::WBtoSB(pos), id);
+    return true;
+  }
+
+  return false;
 }
 
 UpdatableSectors & World::GetUpdatableSectors()

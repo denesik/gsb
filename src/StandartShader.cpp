@@ -16,8 +16,8 @@ StandartShader::StandartShader()
 
   constexpr char *peamble =
     "\n"
-    "#define GSB_SHADOWMAP_LGHT\n"
-    "#define GSB_NORMAL_LGHT\n"
+    //"#define GSB_SHADOWMAP_LGHT\n"
+    //"#define GSB_NORMAL_LGHT\n"
     //"#define DEBUG_SHADOWMAP_LEVELS"
     ;
 
