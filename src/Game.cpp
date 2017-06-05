@@ -47,6 +47,7 @@ Game::Game(const Arguments & arguments)
 
   mBlocksDataBase = std::make_unique<DataBase>(atlas, mImguiPort.Atlas());
   mBlocksDataBase->ApplyLoader(std::make_unique<JsonDataBase>("data/json"));
+  mBlocksDataBase->ApplyLoader(std::make_unique<JsonDataBase>("data/json/generated"));
 
   mWorld = std::make_unique<World>(*mBlocksDataBase);
   mWorld->mPlayer.Inventory()[10] = std::make_pair(mBlocksDataBase->ItemIdFromName("white bricks").value_or(0), 10);

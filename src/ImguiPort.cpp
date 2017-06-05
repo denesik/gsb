@@ -64,6 +64,7 @@ void ImguiPort::Load()
 
 
   mAtlas.LoadDirectory("data/items");
+  mAtlas.LoadDirectory("data/items/generated");
 
   mTexture[1].setMagnificationFilter(Sampler::Filter::Linear)
     .setMinificationFilter(Sampler::Filter::Linear)

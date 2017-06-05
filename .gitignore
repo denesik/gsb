@@ -43,4 +43,6 @@ World.VC.opendb
 /lib_source/flatbuffers/
 /lib_source/corrade/
 /build.cmd
-/data/json/AutogenMachineryMod.json
+/data/json/generated/*
+/data/generated/*
+/data/items/generated/*

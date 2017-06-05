@@ -9,7 +9,7 @@
     <StartupFile>AutogenMachineryMod.py</StartupFile>
     <SearchPath>
     </SearchPath>
-    <WorkingDirectory>../../../data/json</WorkingDirectory>
+    <WorkingDirectory>../../../data</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>AutogenMachineryMod</Name>
     <RootNamespace>AutogenCoreMod</RootNamespace>

@@ -1,12 +1,13 @@
 import json
 from itertools import izip
+from PIL import Image, ImageEnhance, ImageChops
 
 gearComponent =         ["small_gear", "gear", "big_gear"]
 engineComponent = "electric_engine"
 
-machineTiersMaterials = ["bronze", "iron",  "steel",    "ss",        "titan",    "denisian"]
+machineTiersMaterials = ["copper", "iron",  "steel",    "uranium",   "titanium", "tungsten"]
 machineTiers =          ["denis",  "redis", "redis II", "redis III", "redis IV", "redis V"]
-machineTiersSimpl =     ["0",      "1",     "2",        "3",         "4",        "5"]
+machineTiersSimpl =     ["t0",     "t1",    "t2",       "t3",        "t4",       "t5"]
 machineTiersVol =       [32,       64,      128,        256,         512,        1024]
 
 machineTypes =      ["electric furnance", "macerator",        "plate bending machine", "magnetic separator", "chemical reactor"]
@@ -21,16 +22,67 @@ generatorTiersSimpl = ["0",         "1",     "2",        "3"]
 
 generatorTypesSimpl = ["fuel_engine", "steam_turbine", "gas_turbine", "burner"]
 
-machineTierSides =      ["furnance_side1", "furnance_side2", "furnance_side3", "furnance_side4", "furnance_side5", "furnance_side6"];
-machineTierTopBottoms = ["furnance_top_bottom1", "furnance_top_bottom2", "furnance_top_bottom3", "furnance_top_bottom4", "furnance_top_bottom5", "furnance_top_bottom6"];
+machineTierSides =      [];
+machineTierTopBottoms = [];
 
-generatorTierSides =      [machineTierSides[0],      machineTierSides[2],      machineTierSides[4],      machineTierSides[5]];
-generatorTierTopBottoms = [machineTierTopBottoms[0], machineTierTopBottoms[2], machineTierTopBottoms[4], machineTierTopBottoms[5]];
+metals = ["copper", "cobolt", "iron", "steel", "gold", "lead", "magnesium", "electrum", "platinum", "silver", "solder", "uranium", "tungsten"]
+anvilComponent = "anvil"
+ballComponent = "ball"
+bigSpringComponent = "big_spring"
+gearComponent = "gear"
+hammerHeadComponent = "hammer_head"
+hoeHeadComponent = "hoe_head"
+machineTop = "machine_top_bottom_template"
+machineSide = "machine_side_template"
+metallComponents = [anvilComponent, ballComponent, bigSpringComponent, bigSpringComponent, gearComponent, hammerHeadComponent, hoeHeadComponent]
 
 beginId = 200;
 id = beginId;
 
+for metal, tier in izip(machineTiersMaterials, machineTiersSimpl):
+    name = machineSide + "_" + tier
+    template = Image.open("template_parts/" + machineSide + ".png")
+    material = Image.open("materials/material_" + metal + ".png")
+    output = ImageChops.multiply(template, material)
+    output.save("generated/" + name + ".png")
+    machineTierSides.append(name)
+
+for metal, tier in izip(machineTiersMaterials, machineTiersSimpl):
+    name = machineTop + "_" + tier
+    template = Image.open("template_parts/" + machineTop + ".png")
+    material = Image.open("materials/material_" + metal + ".png")
+    output = ImageChops.multiply(template, material)
+    output.save("generated/" + name + ".png")
+    machineTierTopBottoms.append(name)
+
+generatorTierSides =      [machineTierSides[0],      machineTierSides[2],      machineTierSides[4],      machineTierSides[5]];
+generatorTierTopBottoms = [machineTierTopBottoms[0], machineTierTopBottoms[2], machineTierTopBottoms[4], machineTierTopBottoms[5]];
+        
+for component in metallComponents:
+    for metal in metals:
+        name = component + "_" + metal
+        template = Image.open("template_parts/" + component + ".png")
+        material = Image.open("materials/material_" + metal + ".png")
+        output = ImageChops.multiply(template, material)
+        output.save("items/generated/" + name + ".png")
+    print component + " texgen done"
+
 data = []
+for metal in metals:
+    for component in metallComponents:
+        name = component + "_" + metal
+        full_name = metal + " " + component
+        item = {
+            "section": "item",
+            "id": id,
+            "name": name,
+            "full_name": full_name,
+            "tex": "data/items/generated/"+name+".png"
+        }
+        data.append(item)
+        id += 1
+
+
 for generator, blockType, generatorSimpl in izip(generatorTypes, generatorBlockTypes, generatorTypesSimpl):
     for tier, tierSimpl, sideTex, tbTex in izip(generatorTiers, generatorTiersSimpl, generatorTierSides, generatorTierTopBottoms):
         name = tier + " " + generator
@@ -155,7 +207,7 @@ for machine, blockType, machineSimpl in izip(machineTypes, machineBlockTypes, ma
         data.append(item)
         id += 1
 
-with open('AutogenMachineryMod.json', 'w') as outfile:
+with open('json\generated\AutogenMachineryMod.json', 'w') as outfile:
     json.dump(data, outfile, indent=4, sort_keys=True)
 
 print str(id - beginId) + " objects is done"
