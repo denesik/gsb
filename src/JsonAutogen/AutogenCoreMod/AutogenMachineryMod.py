@@ -1,39 +1,117 @@
 import json
+from itertools import izip
 
-machineTiers =    {"denis", "redis", "redis II", "redis III", "redis IV", "redis V"}
-machineTiersVol = {"32",    "64",    "128",      "256",       "512",      "1024"}
+gearComponent =         ["small_gear", "gear", "big_gear"]
+engineComponent = "electric_engine"
 
-machineTypes = {"electric furnance", "macerator", "plate bending machine", "magnetic separator", "chemical reactor"}
+machineTiersMaterials = ["bronze",       "iron",  "steel",    "ss",        "titan",    "denisian"]
+machineTiers =          ["denis",        "redis", "redis II", "redis III", "redis IV", "redis V"]
+machineTiersSimpl =     ["0",            "1",     "2",        "3",         "4",        "5"]
+machineTiersVol =       ["32",           "64",    "128",      "256",       "512",      "1024"]
 
-generatorTypes = {"combustion engine", "steam turbine", "gas turbine", "automated furnance"}
-generatorTiers = {"primitive", "basic", "advanced", "ultimate"}
+machineTypes =      ["electric furnance", "macerator",        "plate bending machine", "magnetic separator", "chemical reactor"]
+machineTypesSimpl = ["furnance",          "macerator",        "bender",                "mag_separator",      "chemReactor"]
+machineBlockTypes = ["BlockAutoCrafter",  "BlockAutoCrafter", "BlockAutoCrafter",      "BlockAutoCrafter",   "BlockAutoCrafter"]
 
-generatorTypesSimpl = {"fuel_engine", "steam_turbine", "gas_turbine", "burner"}
-generatorTiers = {"0", "1", "2", "3"}
+generatorTypes =      ["combustion engine", "steam turbine",    "gas turbine",      "automated furnance"]
+generatorBlockTypes = ["BlockAutoCrafter",  "BlockAutoCrafter", "BlockAutoCrafter", "BlockAutoCrafter"]
 
-machineTierSides = {};
+generatorTiers =      ["primitive", "basic", "advanced", "ultimate"]
+generatorTiersSimpl = ["0",         "1",     "2",        "3"]
+
+generatorTypesSimpl = ["fuel_engine", "steam_turbine", "gas_turbine", "burner"]
+
+machineTierSides =      ["furnance_side1", "furnance_side2", "furnance_side3", "furnance_side4", "furnance_side5", "furnance_side6"];
+machineTierTopBottoms = ["furnance_top_bottom1", "furnance_top_bottom2", "furnance_top_bottom3", "furnance_top_bottom4", "furnance_top_bottom5", "furnance_top_bottom6"];
+
+generatorTierSides =      [machineTierSides[0],      machineTierSides[2],      machineTierSides[4],      machineTierSides[5]];
+generatorTierTopBottoms = [machineTierTopBottoms[0], machineTierTopBottoms[2], machineTierTopBottoms[4], machineTierTopBottoms[5]];
 
 beginId = 200;
 id = beginId;
 
 data = []
-for generator, generatorSimpl in generatorTypes, generatorTypesSimpl:
-    for tier in generatorTiers:
-        name = tier + " " + generator 
+for generator, blockType, generatorSimpl in izip(generatorTypes, generatorBlockTypes, generatorTypesSimpl):
+    for tier, tierSimpl, sideTex, tbTex in izip(generatorTiers, generatorTiersSimpl, generatorTierSides, generatorTierTopBottoms):
+        name = tier + " " + generator
+        nameSimpl = generatorSimpl + "_t" + tierSimpl
         item = { 
            "section": "block",
-            "name": name,
+            "name": nameSimpl,
+            "full_name" : name,
             "id": id,
             "tesselator": {
               "type": "TesselatorSolidBlock",
-              "tex": ["data/furnance_front.png",
-                "data/furnance_side.png",
-                "data/furnance_side.png",
-                "data/furnance_side.png",
-                "data/furnance_top_bottom.png",
-                "data/furnance_top_bottom.png"]
+              "tex": ["data/"+nameSimpl+".png",
+                "data/"+sideTex+".png",
+                "data/"+sideTex+".png",
+                "data/"+sideTex+".png",
+                "data/"+tbTex+".png",
+                "data/"+tbTex+".png"]
             },
-            "type":"BlockAutoCrafter",
+            "type":blockType,
+            "agents":[{
+                "type":"AccessorItem",
+	        	"name":"0",
+                "size":4
+              },
+	            {
+                "type":"AccessorItem",
+	        	"name":"1",
+                "size":4
+              },
+	            {
+                "type":"AccessorItem",
+	        	"name":"2",
+                "size":4
+              },
+	            {
+                "type":"AccessorItem",
+	        	"name":"3",
+                "size":4
+              }],
+            "Crafter1":
+            {
+              "Recipe":"RecipeHand",
+              "fast":False,
+              "Input":"1",
+              "Output":"0"
+            },
+            "Crafter2":
+            {
+              "Recipe":"RecipeBurn",
+              "fast":True,
+              "Input":"2",
+              "Output":"2"
+            },
+            "generate_item":{
+              "tex":"data/items/furnance_front.png",
+              "name" : name
+            },
+            "drop":[[name, 1]]
+        }
+        data.append(item)
+        id += 1
+
+for machine, blockType, machineSimpl in izip(machineTypes, machineBlockTypes, machineTypesSimpl):
+    for tier, tierSimpl, sideTex, tbTex in izip(machineTiers, machineTiersSimpl, machineTierSides, machineTierTopBottoms):
+        name = tier + " " + machine
+        nameSimpl = machineSimpl + "_t" + tierSimpl
+        item = { 
+           "section": "block",
+            "name": nameSimpl,
+            "full_name" : name,
+            "id": id,
+            "tesselator": {
+              "type": "TesselatorSolidBlock",
+              "tex": ["data/"+nameSimpl+".png",
+                "data/"+sideTex+".png",
+                "data/"+sideTex+".png",
+                "data/"+sideTex+".png",
+                "data/"+tbTex+".png",
+                "data/"+tbTex+".png"]
+            },
+            "type":blockType,
             "agents":[{
                 "type":"AccessorItem",
 	        	"name":"0",
