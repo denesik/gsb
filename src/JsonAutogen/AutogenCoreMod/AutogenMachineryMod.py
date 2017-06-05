@@ -10,7 +10,7 @@ machineTiersSimpl =     ["0",            "1",     "2",        "3",         "4", 
 machineTiersVol =       ["32",           "64",    "128",      "256",       "512",      "1024"]
 
 machineTypes =      ["electric furnance", "macerator",        "plate bending machine", "magnetic separator", "chemical reactor"]
-machineTypesSimpl = ["furnance",          "macerator",        "bender",                "mag_separator",      "chemReactor"]
+machineTypesSimpl = ["furnance",          "macerator",        "bender",                "mag_separator",      "chem_reactor"]
 machineBlockTypes = ["BlockAutoCrafter",  "BlockAutoCrafter", "BlockAutoCrafter",      "BlockAutoCrafter",   "BlockAutoCrafter"]
 
 generatorTypes =      ["combustion engine", "steam turbine",    "gas turbine",      "automated furnance"]
