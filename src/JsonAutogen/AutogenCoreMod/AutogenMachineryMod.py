@@ -4,10 +4,10 @@ from itertools import izip
 gearComponent =         ["small_gear", "gear", "big_gear"]
 engineComponent = "electric_engine"
 
-machineTiersMaterials = ["bronze",       "iron",  "steel",    "ss",        "titan",    "denisian"]
-machineTiers =          ["denis",        "redis", "redis II", "redis III", "redis IV", "redis V"]
-machineTiersSimpl =     ["0",            "1",     "2",        "3",         "4",        "5"]
-machineTiersVol =       ["32",           "64",    "128",      "256",       "512",      "1024"]
+machineTiersMaterials = ["bronze", "iron",  "steel",    "ss",        "titan",    "denisian"]
+machineTiers =          ["denis",  "redis", "redis II", "redis III", "redis IV", "redis V"]
+machineTiersSimpl =     ["0",      "1",     "2",        "3",         "4",        "5"]
+machineTiersVol =       [32,       64,      128,        256,         512,        1024]
 
 machineTypes =      ["electric furnance", "macerator",        "plate bending machine", "magnetic separator", "chemical reactor"]
 machineTypesSimpl = ["furnance",          "macerator",        "bender",                "mag_separator",      "chem_reactor"]
