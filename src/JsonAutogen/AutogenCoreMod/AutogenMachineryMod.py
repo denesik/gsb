@@ -1,15 +1,23 @@
 import json
 
+machineTiers =    {"denis", "redis", "redis II", "redis III", "redis IV", "redis V"}
+machineTiersVol = {"32",    "64",    "128",      "256",       "512",      "1024"}
+
 machineTypes = {"electric furnance", "macerator", "plate bending machine", "magnetic separator", "chemical reactor"}
 
-generatorTypes = {"diesel engine", "steam turbine", "gas turbine", "automated furnance"}
+generatorTypes = {"combustion engine", "steam turbine", "gas turbine", "automated furnance"}
 generatorTiers = {"primitive", "basic", "advanced", "ultimate"}
+
+generatorTypesSimpl = {"fuel_engine", "steam_turbine", "gas_turbine", "burner"}
+generatorTiers = {"0", "1", "2", "3"}
+
+machineTierSides = {};
 
 beginId = 200;
 id = beginId;
 
 data = []
-for generator in generatorTypes:
+for generator, generatorSimpl in generatorTypes, generatorTypesSimpl:
     for tier in generatorTiers:
         name = tier + " " + generator 
         item = { 

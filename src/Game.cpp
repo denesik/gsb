@@ -100,7 +100,6 @@ void Game::drawEvent()
 
   if(mCameraVelocity.length() > 0)
     mWorld->mPlayer.MoveRelative(mCameraVelocity * 0.006f);
-  mWorld->mPlayer.Rotate(mCameraAngle * 0.003f);
   mWorld->mPlayer.Update(mTimeline);
 
   auto p_sec = cs::WtoS(mWorld->mPlayer.Pos());
