@@ -19,12 +19,12 @@ Block::Block(Block &&other)
 Block::Block(const Block &other, Sector &parent)
   : mBlockId(other.mBlockId), mDb(other.mDb), m_sector(parent)
 {
-  for (const auto & ag : other.mAgents)
-    mAgents.push_back(ag->Clone(*this));
+  for (const auto & ag : other.mAccessors)
+    mAccessors.push_back(ag->Clone(*this));
 }
 
 Block::Block(Block &&other, Sector &parent)
-  : mBlockId(other.mBlockId), mDb(other.mDb), m_sector(parent), mAgents(std::move(other.mAgents))
+  : mBlockId(other.mBlockId), mDb(other.mDb), m_sector(parent), mAccessors(std::move(other.mAccessors))
 {
 
 }
@@ -33,10 +33,10 @@ Block::Block(Block &&other, Sector &parent)
 Block::Block(const DataBase &db, const rapidjson::Value &val, Sector &parent, BlockId id)
   : mBlockId(id), mDb(db), m_sector(parent)
 {
-  if (val.HasMember("agents"))
+  if (val.HasMember("accessors"))
   {
-    const rapidjson::Value &arr = val["agents"];
-    if (val["agents"].IsArray())
+    const rapidjson::Value &arr = val["accessors"];
+    if (val["accessors"].IsArray())
     {
       for (decltype(arr.Size()) a = 0; a < arr.Size(); a++)
       {
@@ -49,7 +49,7 @@ Block::Block(const DataBase &db, const rapidjson::Value &val, Sector &parent, Bl
           {
             continue;
           }
-          mAgents.push_back(std::move(accessor));
+          mAccessors.push_back(std::move(accessor));
         }
       }
     }
@@ -68,12 +68,12 @@ const DataBase &Block::GetDataBase() const
 
 boost::optional<Accessor &> Block::GetAgent(AccessorId type, SideIndex side, AccessorDirection dir)
 {
-  auto it = std::find_if(mAgents.begin(), mAgents.end(), [this, type, side, dir](const decltype(mAgents)::value_type &val)
+  auto it = std::find_if(mAccessors.begin(), mAccessors.end(), [this, type, side, dir](const decltype(mAccessors)::value_type &val)
   {
     return val->Id() == type && ((val->GetDirection(side) & dir) == dir);
   });
 
-  if (it != mAgents.end())
+  if (it != mAccessors.end())
   {
     return{ **it };
   }
@@ -93,12 +93,12 @@ void Block::SetPos(IndexType pos)
 
 boost::optional<Accessor &> Block::GetAccessorByName(AccessorId name) const
 {
-  auto it = std::find_if(mAgents.begin(), mAgents.end(), [name](const decltype(mAgents)::value_type &val)
+  auto it = std::find_if(mAccessors.begin(), mAccessors.end(), [name](const decltype(mAccessors)::value_type &val)
   {
     return val->Name() == name;
   });
 
-  if (it != mAgents.end())
+  if (it != mAccessors.end())
   {
     return{ **it };
   }

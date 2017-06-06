@@ -39,6 +39,7 @@
     <ClCompile Include="src\BlockSpriteAnimated.cpp" />
     <ClCompile Include="src\ChunkHelper.cpp" />
     <ClCompile Include="src\DataBase.cpp" />
+    <ClCompile Include="src\Generator.cpp" />
     <ClCompile Include="src\IGui.cpp" />
     <ClCompile Include="src\IItem.cpp" />
     <ClCompile Include="src\include\IFlatBuffer.cpp" />
@@ -100,6 +101,7 @@
     <ClInclude Include="src\ChunkHelper.h" />
     <ClInclude Include="src\DataBase.h" />
     <ClInclude Include="src\DataBaseFakeData.h" />
+    <ClInclude Include="src\Generator.h" />
     <ClInclude Include="src\include\IDbHolder.h" />
     <ClInclude Include="src\include\IGui.h" />
     <ClInclude Include="src\include\IHolderHelper.h" />

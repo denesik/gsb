@@ -2,28 +2,30 @@ import json
 from itertools import izip
 from PIL import Image, ImageEnhance, ImageChops
 
-gearComponent =         ["small_gear", "gear", "big_gear"]
+gearComponent = ["small_gear", "gear", "big_gear"]
 engineComponent = "electric_engine"
 
 machineTiersMaterials = ["copper", "iron",  "steel",    "uranium",   "titanium", "tungsten"]
-machineTiers =          ["denis",  "redis", "redis II", "redis III", "redis IV", "redis V"]
-machineTiersSimpl =     ["t0",     "t1",    "t2",       "t3",        "t4",       "t5"]
-machineTiersVol =       [32,       64,      128,        256,         512,        1024]
+machineTiers = ["denis",  "redis", "redis II", "redis III", "redis IV", "redis V"]
+machineTiersSimpl = ["t0",     "t1",    "t2",       "t3",        "t4",       "t5"]
+machineTiersVol = [32,       64,      128,        256,         512,        1024]
+machineAccCount = [4,        4,       4,          4,           4,          4]
+machineAccSize = [4,        4,       4,          4,           4,          4]
 
-machineTypes =      ["electric furnance", "macerator",        "plate bending machine", "magnetic separator", "chemical reactor"]
+machineTypes = ["electric furnance", "macerator",        "plate bending machine", "magnetic separator", "chemical reactor"]
 machineTypesSimpl = ["furnance",          "macerator",        "bender",                "mag_separator",      "chem_reactor"]
 machineBlockTypes = ["BlockAutoCrafter",  "BlockAutoCrafter", "BlockAutoCrafter",      "BlockAutoCrafter",   "BlockAutoCrafter"]
 
-generatorTypes =      ["combustion engine", "steam turbine",    "gas turbine",      "automated furnance"]
-generatorBlockTypes = ["BlockAutoCrafter",  "BlockAutoCrafter", "BlockAutoCrafter", "BlockAutoCrafter"]
+generatorTypes = ["combustion engine", "steam turbine",    "gas turbine",      "automated furnance"]
+generatorBlockTypes = ["BlockResourceGenerator",  "BlockResourceGenerator", "BlockResourceGenerator", "BlockResourceGenerator"]
 
-generatorTiers =      ["primitive", "basic", "advanced", "ultimate"]
+generatorTiers = ["primitive", "basic", "advanced", "ultimate"]
 generatorTiersSimpl = ["0",         "1",     "2",        "3"]
+generatorAccSize = [1,           4,       9,          16]
 
-generatorTypesSimpl = ["fuel_engine", "steam_turbine", "gas_turbine", "burner"]
-
-machineTierSides =      [];
-machineTierTopBottoms = [];
+generatorTypesSimpl = ["fuel_engine",    "steam_turbine", "gas_turbine",  "burner"]
+generatorResType = ["rotation",       "rotation",      "rotation",     "heat"]
+generatorAccType = ["AccessorItem", "AccessorItem",  "AccessorItem",  "AccessorItem"]
 
 metals = ["copper", "cobolt", "iron", "steel", "gold", "lead", "magnesium", "electrum", "platinum", "silver", "solder", "uranium", "tungsten"]
 anvilComponent = "anvil"
@@ -32,13 +34,16 @@ bigSpringComponent = "big_spring"
 gearComponent = "gear"
 hammerHeadComponent = "hammer_head"
 hoeHeadComponent = "hoe_head"
+oreComponent = "ore"
+ingotComponent = "ingot"
 machineTop = "machine_top_bottom_template"
 machineSide = "machine_side_template"
-metallComponents = [anvilComponent, ballComponent, bigSpringComponent, bigSpringComponent, gearComponent, hammerHeadComponent, hoeHeadComponent]
+metallComponents = [anvilComponent, ballComponent, bigSpringComponent, bigSpringComponent, gearComponent, hammerHeadComponent, hoeHeadComponent, oreComponent, ingotComponent]
 
-beginId = 200;
-id = beginId;
+beginId = 200
+id = beginId
 
+machineTierSides = []
 for metal, tier in izip(machineTiersMaterials, machineTiersSimpl):
     name = machineSide + "_" + tier
     template = Image.open("template_parts/" + machineSide + ".png")
@@ -47,6 +52,7 @@ for metal, tier in izip(machineTiersMaterials, machineTiersSimpl):
     output.save("generated/" + name + ".png")
     machineTierSides.append(name)
 
+machineTierTopBottoms = []
 for metal, tier in izip(machineTiersMaterials, machineTiersSimpl):
     name = machineTop + "_" + tier
     template = Image.open("template_parts/" + machineTop + ".png")
@@ -55,8 +61,8 @@ for metal, tier in izip(machineTiersMaterials, machineTiersSimpl):
     output.save("generated/" + name + ".png")
     machineTierTopBottoms.append(name)
 
-generatorTierSides =      [machineTierSides[0],      machineTierSides[2],      machineTierSides[4],      machineTierSides[5]];
-generatorTierTopBottoms = [machineTierTopBottoms[0], machineTierTopBottoms[2], machineTierTopBottoms[4], machineTierTopBottoms[5]];
+generatorTierSides = [machineTierSides[0],      machineTierSides[2],      machineTierSides[4],      machineTierSides[5]]
+generatorTierTopBottoms = [machineTierTopBottoms[0], machineTierTopBottoms[2], machineTierTopBottoms[4], machineTierTopBottoms[5]]
         
 for component in metallComponents:
     for metal in metals:
@@ -68,6 +74,51 @@ for component in metallComponents:
     print component + " texgen done"
 
 data = []
+
+data.append({
+            "section": "item",
+            "id": id,
+            "name": "heat",
+            "full_name": "heat"
+            })
+id += 1
+
+data.append({
+            "section": "item",
+            "id": id,
+            "name": "rotation",
+            "full_name": "rotation"
+            })
+id += 1
+
+data.append({
+            "section": "item",
+            "id": id,
+            "name": "electricity",
+            "full_name": "electricity"
+            })
+id += 1
+
+data.append(
+  {
+    "section": "recipe",
+    "type": "RecipeResource",
+    "id": 5,
+    "time": 35.0,
+    "input": [ [ "coke", 1 ] ],
+    "output": [ [ "heat", 1] ],
+    "resource": "heat"
+  })
+data.append({
+    "section": "recipe",
+    "type": "RecipeResource",
+    "id": 6,
+    "time": 35.0,
+    "input": [ [ "coal", 1 ] ],
+    "output": [ [ "heat", 1] ],
+    "resource": "heat"
+  })
+
 for metal in metals:
     for component in metallComponents:
         name = component + "_" + metal
@@ -77,13 +128,19 @@ for metal in metals:
             "id": id,
             "name": name,
             "full_name": full_name,
-            "tex": "data/items/generated/"+name+".png"
+            "tex": "data/items/generated/" + name + ".png"
         }
         data.append(item)
         id += 1
 
 
-for generator, blockType, generatorSimpl in izip(generatorTypes, generatorBlockTypes, generatorTypesSimpl):
+for g in range(0, len(generatorTypes)):
+    generator = generatorTypes[g]
+    blockType = generatorBlockTypes[g]
+    generatorSimpl = generatorTypesSimpl[g]
+    accSize = generatorAccSize[g]
+    resType = generatorResType[g]
+    accType = generatorAccType[g]
     for tier, tierSimpl, sideTex, tbTex in izip(generatorTiers, generatorTiersSimpl, generatorTierSides, generatorTierTopBottoms):
         name = tier + " " + generator
         nameSimpl = generatorSimpl + "_t" + tierSimpl
@@ -94,48 +151,37 @@ for generator, blockType, generatorSimpl in izip(generatorTypes, generatorBlockT
             "id": id,
             "tesselator": {
               "type": "TesselatorSolidBlock",
-              "tex": ["data/"+nameSimpl+".png",
-                "data/"+sideTex+".png",
-                "data/"+sideTex+".png",
-                "data/"+sideTex+".png",
-                "data/"+tbTex+".png",
-                "data/"+tbTex+".png"]
+              "tex": ["data/" + nameSimpl + ".png",
+                "data/" + sideTex + ".png",
+                "data/" + sideTex + ".png",
+                "data/" + sideTex + ".png",
+                "data/" + tbTex + ".png",
+                "data/" + tbTex + ".png"]
             },
             "type":blockType,
-            "agents":[{
-                "type":"AccessorItem",
+            "accessors":[{
+                "type":accType,
 	        	"name":"0",
-                "size":4
-              },
-	            {
-                "type":"AccessorItem",
+                "size":accSize
+              },{
+                "type":accType,
 	        	"name":"1",
-                "size":4
-              },
-	            {
-                "type":"AccessorItem",
+                "size":1
+              },{
+                "type":"AccessorResource",
 	        	"name":"2",
-                "size":4
-              },
-	            {
-                "type":"AccessorItem",
-	        	"name":"3",
-                "size":4
-              }],
-            "Crafter1":
+                "size":accSize,
+                "resource":resType
+            }],
+            "Generator1":
             {
-              "Recipe":"RecipeHand",
+              "Recipe":"RecipeResource",
               "fast":False,
               "Input":"1",
-              "Output":"0"
+              "Output":"0",
+              "resource":resType
             },
-            "Crafter2":
-            {
-              "Recipe":"RecipeBurn",
-              "fast":True,
-              "Input":"2",
-              "Output":"2"
-            },
+            "resource":resType,
             "generate_item":{
               "tex":"data/items/furnance_front.png",
               "name" : name
@@ -145,7 +191,7 @@ for generator, blockType, generatorSimpl in izip(generatorTypes, generatorBlockT
         data.append(item)
         id += 1
 
-for machine, blockType, machineSimpl in izip(machineTypes, machineBlockTypes, machineTypesSimpl):
+for machine, blockType, machineSimpl, accCount, accSize in izip(machineTypes, machineBlockTypes, machineTypesSimpl, machineAccCount, machineAccSize):
     for tier, tierSimpl, sideTex, tbTex in izip(machineTiers, machineTiersSimpl, machineTierSides, machineTierTopBottoms):
         name = tier + " " + machine
         nameSimpl = machineSimpl + "_t" + tierSimpl
@@ -156,34 +202,14 @@ for machine, blockType, machineSimpl in izip(machineTypes, machineBlockTypes, ma
             "id": id,
             "tesselator": {
               "type": "TesselatorSolidBlock",
-              "tex": ["data/"+nameSimpl+".png",
-                "data/"+sideTex+".png",
-                "data/"+sideTex+".png",
-                "data/"+sideTex+".png",
-                "data/"+tbTex+".png",
-                "data/"+tbTex+".png"]
+              "tex": ["data/" + nameSimpl + ".png",
+                "data/" + sideTex + ".png",
+                "data/" + sideTex + ".png",
+                "data/" + sideTex + ".png",
+                "data/" + tbTex + ".png",
+                "data/" + tbTex + ".png"]
             },
             "type":blockType,
-            "agents":[{
-                "type":"AccessorItem",
-	        	"name":"0",
-                "size":4
-              },
-	            {
-                "type":"AccessorItem",
-	        	"name":"1",
-                "size":4
-              },
-	            {
-                "type":"AccessorItem",
-	        	"name":"2",
-                "size":4
-              },
-	            {
-                "type":"AccessorItem",
-	        	"name":"3",
-                "size":4
-              }],
             "Crafter1":
             {
               "Recipe":"RecipeHand",
@@ -195,15 +221,19 @@ for machine, blockType, machineSimpl in izip(machineTypes, machineBlockTypes, ma
             {
               "Recipe":"RecipeBurn",
               "fast":True,
-              "Input":"2",
-              "Output":"2"
+              "Input":"1",
+              "Output":"0",
+              "resource":resType
             },
             "generate_item":{
               "tex":"data/items/furnance_front.png",
               "name" : name
             },
-            "drop":[[name, 1]]
+            "drop":[[name, 1]],
         }
+        item["accessors"] = [{"type":"AccessorItem", "name":"0", "size":accSize}]
+        for i in range(1, accCount):
+            item["accessors"].append({"type":"AccessorItem", "name":str(i), "size":accSize})
         data.append(item)
         id += 1
 

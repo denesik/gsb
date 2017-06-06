@@ -116,7 +116,7 @@
       ]
     },
     "type":"BlockAutoCrafter",
-    "agents":[
+    "accessors":[
       {
         "type":"AccessorItem",
 		"name":"0",
@@ -640,14 +640,14 @@
     "section": "item",
     "type": "Item",
     "id": 2,
-    "name": "iron_ingot",
+    "name": "ingot_iron",
     "tex": "data/items/iron_ingot.png"
   },
   {
     "section": "item",
     "type": "Item",
     "id": 3,
-    "name": "iron_ore",
+    "name": "ore_iron",
     "tex": "data/items/iron_ore.png"
   },
   {
@@ -662,8 +662,8 @@
     "type": "RecipeHand",
     "id": 1,
 	  "time": 5.0,
-    "input": [["coal", 1], ["iron_ore", 1]],
-    "output": [["iron_ingot", 1]]
+    "input": [["coal", 1], ["ore_iron", 1]],
+    "output": [["ingot_iron", 1]]
   },
   {
     "section": "recipe",
@@ -671,22 +671,20 @@
     "id": 2,
 	"time": 5.0,
     "input": [["coal", 1]],
-    "output": [["iron_ingot", 1]]
+    "output": [["ingot_iron", 1]]
   },
   {
     "section": "recipe",
     "type": "RecipeBurn",
     "id": 3,
     "time": 15.0,
-    "input": [ [ "coal", 1 ] ],
-    "output": [ ]
+    "input": [ [ "coal", 1 ] ]
   },
   {
     "section": "recipe",
     "type": "RecipeBurn",
     "id": 4,
     "time": 35.0,
-    "input": [ [ "coke", 1 ] ],
-    "output": [ ]
+    "input": [ [ "coke", 1 ] ]
   }
 ]

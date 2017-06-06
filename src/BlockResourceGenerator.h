@@ -7,6 +7,7 @@
 #include "IRecipe.h"
 #include "Crafter.h"
 #include "accessors\AccessorHeat.h"
+#include "Generator.h"
 
 class BlockResourceGenerator;
 namespace
@@ -45,9 +46,7 @@ private:
   Accessor &mGeneratorInput;
   Accessor &mGeneratorOutput;
 
-  Accessor &mResourceOutput;
-
-  Crafter mGenerator;
+  Crafter  mGenerator;
 
 private:
   IRecipe::Tag CrafterType(const char *type, const DataBase & db, const rapidjson::Value &json) const;

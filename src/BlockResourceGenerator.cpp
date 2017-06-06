@@ -19,7 +19,7 @@ BlockResourceGenerator::BlockResourceGenerator(const BlockResourceGenerator &oth
   : Block(other, parent),
   mGeneratorInput(*GetAccessorByName(other.mGeneratorInput.Name())), 
   mGeneratorOutput(*GetAccessorByName(other.mGeneratorOutput.Name())),
-  mResourceOutput(*GetAccessorByName(other.mResourceOutput.Name())),
+  //mResourceOutput(*GetAccessorByName(other.mResourceOutput.Name())),
   mGenerator(other.mGenerator, mGeneratorInput, mGeneratorOutput)
 {
 
@@ -29,7 +29,7 @@ BlockResourceGenerator::BlockResourceGenerator(BlockResourceGenerator &&other, S
   : Block(std::move(other), parent),
   mGeneratorInput(*GetAccessorByName(other.mGeneratorInput.Name())), 
   mGeneratorOutput(*GetAccessorByName(other.mGeneratorOutput.Name())),
-  mResourceOutput(*GetAccessorByName(other.mResourceOutput.Name())),
+  //mResourceOutput(*GetAccessorByName(other.mResourceOutput.Name())),
   mGenerator(std::move(other.mGenerator), mGeneratorInput, mGeneratorOutput)
 {
 
@@ -37,10 +37,9 @@ BlockResourceGenerator::BlockResourceGenerator(BlockResourceGenerator &&other, S
 
 BlockResourceGenerator::BlockResourceGenerator(const DataBase &db, const rapidjson::Value &val, Sector &parent, BlockId id)
   : Block(db, val, parent, id),
-  mGeneratorInput(*GetAccessor("Crafter1", "Input", val)), 
-  mGeneratorOutput(*GetAccessor("Crafter1", "Output", val)),
-  mResourceOutput(*GetAccessor("Generator1", "Output", val)),
-  mGenerator(CrafterType("Crafter1", db, val), CrafterFast("Crafter1", db, val), mGeneratorInput, mGeneratorOutput)
+  mGeneratorInput(*GetAccessor("Generator1", "Input", val)), 
+  mGeneratorOutput(*GetAccessor("Generator1", "Output", val)),
+  mGenerator(CrafterType("Generator1", db, val), CrafterFast("Generator1", db, val), mGeneratorInput, mGeneratorOutput)
 {
 
 }
@@ -56,7 +55,7 @@ void BlockResourceGenerator::DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx, I
   ImGui::PushID(1);
   {
     ImGui::PushID(0);
-    mResourceOutput.DrawGui(dt, ctx, context);
+    //mResourceOutput.DrawGui(dt, ctx, context);
     mGeneratorInput.DrawGui(dt, ctx, context);
     mGeneratorOutput.DrawGui(dt, ctx, context);
     ImGui::PopID();

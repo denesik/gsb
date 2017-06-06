@@ -72,7 +72,7 @@ protected:
   const DataBase &mDb;
   BlockId mBlockId;
   IndexType mPos;
-  std::vector<std::unique_ptr<Accessor>> mAgents;
+  std::vector<std::unique_ptr<Accessor>> mAccessors;
 };
 
 #endif // BlockDinamicPart_h__
