@@ -22,6 +22,7 @@ generatorBlockTypes = ["BlockResourceGenerator",  "BlockResourceGenerator", "Blo
 generatorTiers = ["primitive", "basic", "advanced", "ultimate"]
 generatorTiersSimpl = ["0",         "1",     "2",        "3"]
 generatorAccSize = [1,           4,       9,          16]
+generatorTiersMaterials = [machineTiersMaterials[1], machineTiersMaterials[2], machineTiersMaterials[4], machineTiersMaterials[5]]
 
 generatorTypesSimpl = ["fuel_engine",    "steam_turbine", "gas_turbine",  "burner"]
 generatorResType = ["rotation",       "rotation",      "rotation",     "heat"]
@@ -141,6 +142,7 @@ for g in range(0, len(generatorTypes)):
     accSize = generatorAccSize[g]
     resType = generatorResType[g]
     accType = generatorAccType[g]
+    generatorMaterial = generatorTiersMaterials[g]
     for tier, tierSimpl, sideTex, tbTex in izip(generatorTiers, generatorTiersSimpl, generatorTierSides, generatorTierTopBottoms):
         name = tier + " " + generator
         nameSimpl = generatorSimpl + "_t" + tierSimpl
@@ -152,11 +154,11 @@ for g in range(0, len(generatorTypes)):
             "tesselator": {
               "type": "TesselatorSolidBlock",
               "tex": ["data/" + nameSimpl + ".png",
-                "data/" + sideTex + ".png",
-                "data/" + sideTex + ".png",
-                "data/" + sideTex + ".png",
-                "data/" + tbTex + ".png",
-                "data/" + tbTex + ".png"]
+                "data/generated/" + sideTex + ".png",
+                "data/generated/" + sideTex + ".png",
+                "data/generated/" + sideTex + ".png",
+                "data/generated/" + tbTex + ".png",
+                "data/generated/" + tbTex + ".png"]
             },
             "type":blockType,
             "accessors":[{
@@ -183,7 +185,7 @@ for g in range(0, len(generatorTypes)):
             },
             "resource":resType,
             "generate_item":{
-              "tex":"data/items/furnance_front.png",
+              "tex":"data/items/generated/"+nameSimpl+".png",
               "name" : name
             },
             "drop":[[name, 1]]
@@ -191,8 +193,14 @@ for g in range(0, len(generatorTypes)):
         data.append(item)
         id += 1
 
+        template = Image.open("template_parts/" + generatorSimpl + ".png")
+        material = Image.open("materials/material_" + generatorMaterial + ".png")
+        output = ImageChops.multiply(template, material)
+        output.save("items/generated/" + nameSimpl + ".png")
+        output.save("generated/" + nameSimpl + ".png")
+
 for machine, blockType, machineSimpl, accCount, accSize in izip(machineTypes, machineBlockTypes, machineTypesSimpl, machineAccCount, machineAccSize):
-    for tier, tierSimpl, sideTex, tbTex in izip(machineTiers, machineTiersSimpl, machineTierSides, machineTierTopBottoms):
+    for tier, tierSimpl, sideTex, tbTex, tierMaterial in izip(machineTiers, machineTiersSimpl, machineTierSides, machineTierTopBottoms, machineTiersMaterials):
         name = tier + " " + machine
         nameSimpl = machineSimpl + "_t" + tierSimpl
         item = { 
@@ -202,12 +210,12 @@ for machine, blockType, machineSimpl, accCount, accSize in izip(machineTypes, ma
             "id": id,
             "tesselator": {
               "type": "TesselatorSolidBlock",
-              "tex": ["data/" + nameSimpl + ".png",
-                "data/" + sideTex + ".png",
-                "data/" + sideTex + ".png",
-                "data/" + sideTex + ".png",
-                "data/" + tbTex + ".png",
-                "data/" + tbTex + ".png"]
+              "tex": ["data/generated/" + nameSimpl + ".png",
+                "data/generated/" + sideTex + ".png",
+                "data/generated/" + sideTex + ".png",
+                "data/generated/" + sideTex + ".png",
+                "data/generated/" + tbTex + ".png",
+                "data/generated/" + tbTex + ".png"]
             },
             "type":blockType,
             "Crafter1":
@@ -226,7 +234,7 @@ for machine, blockType, machineSimpl, accCount, accSize in izip(machineTypes, ma
               "resource":resType
             },
             "generate_item":{
-              "tex":"data/items/furnance_front.png",
+              "tex":"data/items/generated/"+nameSimpl+".png",
               "name" : name
             },
             "drop":[[name, 1]],
@@ -236,6 +244,12 @@ for machine, blockType, machineSimpl, accCount, accSize in izip(machineTypes, ma
             item["accessors"].append({"type":"AccessorItem", "name":str(i), "size":accSize})
         data.append(item)
         id += 1
+
+        template = Image.open("template_parts/" + machineSimpl + ".png")
+        material = Image.open("materials/material_" + tierMaterial + ".png")
+        output = ImageChops.multiply(template, material)
+        output.save("items/generated/" + nameSimpl + ".png")
+        output.save("generated/" + nameSimpl + ".png")
 
 with open('json\generated\AutogenMachineryMod.json', 'w') as outfile:
     json.dump(data, outfile, indent=4, sort_keys=True)
