@@ -142,11 +142,21 @@ for g in range(0, len(generatorTypes)):
     accSize = generatorAccSize[g]
     resType = generatorResType[g]
     accType = generatorAccType[g]
-    generatorMaterial = generatorTiersMaterials[g]
-    for tier, tierSimpl, sideTex, tbTex in izip(generatorTiers, generatorTiersSimpl, generatorTierSides, generatorTierTopBottoms):
+    for tier, tierSimpl, sideTex, tbTex, generatorMaterial in izip(generatorTiers, generatorTiersSimpl, generatorTierSides, generatorTierTopBottoms, generatorTiersMaterials):
         name = tier + " " + generator
         nameSimpl = generatorSimpl + "_t" + tierSimpl
-        item = { 
+        item = {
+            "section": "item",
+            "id": id,
+            "name": nameSimpl + "_block",
+            "full_name": name,
+            "tex":"data/items/generated/"+nameSimpl+".png",
+            "block": id + 1
+        }
+        data.append(item)
+        id += 1
+
+        block = { 
            "section": "block",
             "name": nameSimpl,
             "full_name" : name,
@@ -184,13 +194,9 @@ for g in range(0, len(generatorTypes)):
               "resource":resType
             },
             "resource":resType,
-            "generate_item":{
-              "tex":"data/items/generated/"+nameSimpl+".png",
-              "name" : name
-            },
             "drop":[[name, 1]]
         }
-        data.append(item)
+        data.append(block)
         id += 1
 
         template = Image.open("template_parts/" + generatorSimpl + ".png")
@@ -202,7 +208,7 @@ for g in range(0, len(generatorTypes)):
 for machine, blockType, machineSimpl, accCount, accSize in izip(machineTypes, machineBlockTypes, machineTypesSimpl, machineAccCount, machineAccSize):
     for tier, tierSimpl, sideTex, tbTex, tierMaterial in izip(machineTiers, machineTiersSimpl, machineTierSides, machineTierTopBottoms, machineTiersMaterials):
         name = tier + " " + machine
-        nameSimpl = machineSimpl + "_t" + tierSimpl
+        nameSimpl = machineSimpl + "_" + tierSimpl
         item = { 
            "section": "block",
             "name": nameSimpl,

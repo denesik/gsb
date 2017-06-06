@@ -88,7 +88,7 @@ bool LoadBlock(const TextureAtlas &atlas, DataBase &db, const rapidjson::Value &
       auto item = std::make_unique<Item>();
       item->JsonLoad(db, gen_json);
       item->SetBlock(id);
-      item->SetName(name + " block");
+      item->SetName(name + "_block");
       db.AddItem(gen_json["name"].GetString(), db.NextItemId(), std::move(item));
     }
   }

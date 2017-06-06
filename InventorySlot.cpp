@@ -35,7 +35,7 @@ void gui::DrawInventory::DrawInventorySlots(ItemList &slots, const DataBase &db,
 
     if (has_item)
     {
-      coord = static_cast<const Item &>(*db_item).TextureCoord();
+        coord = static_cast<const Item &>(*db_item).TextureCoord();
     }
 
     ImGui::ImageButton(
