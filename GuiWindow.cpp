@@ -67,7 +67,6 @@ GuiWindowPlayerInventory::GuiWindowPlayerInventory(Creature &player, DataBase & 
   : GuiWindow(db, name)
   , mPlayer(player)
   , mTransformLink(AddGui(mTransformGui))
-  , mItemDBLink(AddGui(mItemDBGui))
   , mSort(std::make_unique<SortItemList>(mTransformLink.Context<ItemListTransformGui::ContextType>().SortParams))
   , mPlayerGui(AddGui(player))
 {
@@ -159,4 +158,18 @@ void ItemDBGui::DrawGui(const Magnum::Timeline & dt, GuiCtx & ctx, IContext & co
       curItem++;
     }
   }
+}
+
+GuiWindowDb::GuiWindowDb(DataBase & db, const std::string & name)
+  : GuiWindow(db, name)
+  , mItemDBLink(AddGui(mItemDBGui))
+{
+}
+
+void GuiWindowDb::Draw(const Magnum::Timeline & dt)
+{
+  if (IsClosed())
+    return;
+
+  GuiWindow::Draw(dt);
 }

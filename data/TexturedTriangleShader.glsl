@@ -115,6 +115,24 @@ float ShadowMapPCF(vec2 center, float pixel_z, int pcf_size, int layer)
 }
 
 void main() {
+  #ifdef DISABLED
+  vec3 local_light_pos = (view_matrix * (/*world_matrix */ light_pos)).xyz;
+  
+  // light attenuation
+  float A = 20.0 / dot(local_light_pos - v_pos, local_light_pos - v_pos);
+  
+  // L, V, H vectors
+  vec3 L = normalize(local_light_pos - v_pos);
+  vec3 V = normalize(-v_pos);
+  vec3 H = normalize(L + V);
+  vec3 nn = normalize(v_normal);
+  
+  #if GSB_USE_NORMAL_MAP
+  vec3 nb = normalize(v_binormal);
+  mat3x3 tbn = mat3x3(nb, cross(nn, nb), nn);
+  #endif
+  #endif
+
   vec4 textureSample = texture(textureData, frag_uv);
   vec3 albedo = textureSample.rgb;
   vec3 ambient = vec3(0.2, 0.2, 0.2);
@@ -172,6 +190,26 @@ void main() {
   }
   #else
   inverseShadow = 1.0;
+  #endif
+  
+  #ifdef DISABLED
+  #if GSB_USE_NORMAL_MAP
+  vec3 N = tbn * (texture2D(norm, texcoord).xyz * 2.0 - 1.0);
+  #else
+  vec3 N = nn;
+  #endif
+  
+  #if GSB_USE_ALBEDO_MAP
+  vec3 base = texture2D(tex, texcoord).xyz;
+  #else
+  vec3 base = albedo.xyz;
+  #endif
+  
+  #if GSB_USE_ROUGHNESS_MAP
+  float roughness = texture2D(spec, texcoord).y * material.y;
+  #else
+  float roughness = material.y;
+  #endif
   #endif
   
   frag_out = vec4((ambient + vec3(intensity * inverseShadow)) * albedo, 1.0);

@@ -56,6 +56,7 @@ Game::Game(const Arguments & arguments)
 
   modalWindow = std::make_unique<GuiWindow>(*mBlocksDataBase, "Selected");
   inventoryWindow = std::make_unique<GuiWindowPlayerInventory>(mWorld->mPlayer, *mBlocksDataBase);
+  dbWindow = std::make_unique<GuiWindowDb>(*mBlocksDataBase);
 
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld);
   mWorld->GetWorldSectorObserver().attach(*mDrawableArea);
@@ -252,6 +253,7 @@ void Game::drawEvent()
       ImGui::ShowTestWindow(&show_test_window);
     }
 
+    dbWindow->Draw(mTimeline);
     inventoryWindow->Draw(mTimeline);
     modalWindow->Draw(mTimeline);
 
@@ -295,6 +297,9 @@ void Game::keyPressEvent(KeyEvent& event)
 
   if (event.key() == KeyEvent::Key::E)
     inventoryWindow->Toggle();
+
+  if (event.key() == KeyEvent::Key::R)
+    dbWindow->Toggle();
 
   if (event.key() == KeyEvent::Key::F6)
     mSunCamera->SwitchLayerDebug();

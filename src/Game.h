@@ -85,6 +85,7 @@ private:
   WBPos mDrawModal;
   std::unique_ptr<GuiWindow> modalWindow;
   std::unique_ptr<GuiWindowPlayerInventory> inventoryWindow;
+  std::unique_ptr<GuiWindowDb> dbWindow;
 
   std::unique_ptr<DataBase> mBlocksDataBase;
   std::unique_ptr<World> mWorld;

@@ -84,11 +84,19 @@ private:
   ItemListTransformGui mTransformGui;
   GuiCtx::GuiLinkage &mTransformLink;
 
-  ItemDBGui mItemDBGui;
-  GuiCtx::GuiLinkage &mItemDBLink;
-
   std::unique_ptr<SortItemList> mSort;
 
   GuiCtx::GuiLinkage &mPlayerGui;
 };
 
+class GuiWindowDb : public GuiWindow
+{
+  public:
+    GuiWindowDb(DataBase &db, const std::string &name = "Data Base");
+
+    void Draw(const Magnum::Timeline & dt) override;
+
+private:
+  ItemDBGui mItemDBGui;
+  GuiCtx::GuiLinkage &mItemDBLink;
+};
