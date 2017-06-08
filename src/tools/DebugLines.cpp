@@ -35,17 +35,27 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Magnum {
 
-  DebugLines::DebugLines() : _mesh{ MeshPrimitive::Lines } {
+  DebugLines::DebugLines() 
+    : _mesh{ MeshPrimitive::Lines } 
+    , _meshDepth{ MeshPrimitive::Lines }
+  {
     _mesh.addVertexBuffer(_buffer, 0, Shader::Position(), Shader::Color(Shader::Color::Components::Three));
+    _meshDepth.addVertexBuffer(_bufferDepth, 0, Shader::Position(), Shader::Color(Shader::Color::Components::Three));
   }
 
-  void DebugLines::reset() {
+  void DebugLines::reset() 
+  {
     _lines.clear();
     _buffer.invalidateData();
+
+    _linesDepth.clear();
+    _bufferDepth.invalidateData();
   }
 
-  void DebugLines::draw(const Matrix4& transformationProjectionMatrix) {
-    if (!_lines.empty()) {
+  void DebugLines::draw(const Matrix4& transformationProjectionMatrix) 
+  {
+    if (!_lines.empty()) 
+    {
       Renderer::disable(Renderer::Feature::DepthTest);
       _buffer.setData(_lines, BufferUsage::StreamDraw);
       _mesh.setCount(_lines.size());
@@ -53,13 +63,23 @@ namespace Magnum {
       _mesh.draw(_shader);
       Renderer::enable(Renderer::Feature::DepthTest);
     }
+
+    if (!_linesDepth.empty())
+    {
+      _bufferDepth.setData(_linesDepth, BufferUsage::StreamDraw);
+      _meshDepth.setCount(_linesDepth.size());
+      _shader.setTransformationProjectionMatrix(transformationProjectionMatrix);
+      _meshDepth.draw(_shader);
+    }
   }
 
-  void DebugLines::addFrustum(const Matrix4& imvp, const Color3& col) {
+  void DebugLines::addFrustum(const Matrix4& imvp, const Color3& col) 
+  {
     addFrustum(imvp, col, 1.0f, -1.0f);
   }
 
-  void DebugLines::addFrustum(const Matrix4& imvp, const Color3& col, const Float z0, const Float z1) {
+  void DebugLines::addFrustum(const Matrix4& imvp, const Color3& col, const Float z0, const Float z1) 
+  {
     /*auto worldPointsToCover = ShadowLight::frustumCorners(imvp, z0, z1);
 
     auto nearMid = (worldPointsToCover[0] +

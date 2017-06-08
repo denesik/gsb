@@ -173,3 +173,114 @@ void GuiWindowDb::Draw(const Magnum::Timeline & dt)
 
   GuiWindow::Draw(dt);
 }
+
+GuiWindowAutocraft::GuiWindowAutocraft(Creature &player, DataBase & db, const std::string & name)
+  : GuiWindow(db, name)
+  , mPlayer(player)
+{
+}
+
+void DrawSome(const DataBase &db, const ItemId &s, const Magnum::Timeline & dt, ImColor c = { 0,0,0,0 })
+{
+  //static float tt = 0;
+  //tt += gt;
+
+  //if (s.find("tag_") != -1)
+  //{
+  //  auto list = DB::Get().Taglist(s);
+  //  srand(int(tt));
+  //  if (!list.empty())
+  //    ss = list[0];
+  //}
+
+
+  const auto &db_item = db.GetItem(s);
+  if (db_item)
+  {
+    ImDrawList* draw_list = ImGui::GetWindowDrawList();
+    const auto &coord = static_cast<const Item &>(*db_item).TextureCoord();
+
+    ImGui::ImageButton(
+      ImTextureID(1),
+      { 32, 32 },
+      { coord.left(), coord.top() },
+      { coord.right(), coord.bottom() },
+      -1,
+      { 0, 0, 0, 0 }
+    );
+
+    if (ImGui::IsItemHovered())
+    {
+      //ImGui::SetTooltip("%s\n%s", a->first.get().c_str(), std::get<0>(a.second)->GetDescription().c_str());
+    }
+  }
+}
+
+
+void DrawGui(const IRecipe &recipe, const Magnum::Timeline & dt, GuiCtx & ctx)
+{
+  bool first = true;
+  bool pressed = false;
+  for (const auto &inp : recipe.Components())
+  {
+    if (first)
+      first = false;
+    else
+      ImGui::SameLine();
+
+    DrawSome(ctx.GetDataBase(), inp.id, dt);
+    auto draw_list = ImGui::GetWindowDrawList();
+    auto rectMax = ImGui::GetItemRectMax();
+    if (inp.count >= 100)
+      draw_list->AddText(ImVec2(rectMax.x - 22, rectMax.y - 13), ImGui::GetColorU32(ImGuiCol_Text), std::to_string(inp.count).c_str());
+    else if (inp.count >= 10)
+      draw_list->AddText(ImVec2(rectMax.x - 16, rectMax.y - 13), ImGui::GetColorU32(ImGuiCol_Text), std::to_string(inp.count).c_str());
+    else
+      draw_list->AddText(ImVec2(rectMax.x - 10, rectMax.y - 13), ImGui::GetColorU32(ImGuiCol_Text), std::to_string(inp.count).c_str());
+  }
+
+  //{
+  //  auto atl = TextureManager::Get().GetTexture("arrow_right");
+  //  auto &tex = std::get<0>(atl);
+  //  auto &atluv = std::get<1>(atl);
+
+  //  auto uv = glm::vec2(atluv.x, atluv.y);
+  //  auto uv2 = glm::vec2(atluv.z, atluv.w);
+
+  //  ImGui::SameLine();
+  //  ImGui::ImageButton(reinterpret_cast<ImTextureID>(tex->GetId()), { 32,32 }, uv2, uv);
+  //  if (ImGui::IsItemHovered())
+  //  {
+  //    ImGui::SetTooltip("craft this recipe");
+  //    if (ImGui::IsMouseClicked(0))
+  //      pressed = true;
+  //  }
+  //}
+
+  for (const auto &out : recipe.Results())
+  {
+    ImGui::SameLine();
+    DrawSome(ctx.GetDataBase(), out.id, dt);
+    auto draw_list = ImGui::GetWindowDrawList();
+    auto rectMax = ImGui::GetItemRectMax();
+    if (out.count >= 100)
+      draw_list->AddText(ImVec2(rectMax.x - 22, rectMax.y - 13), ImGui::GetColorU32(ImGuiCol_Text), std::to_string(out.count).c_str());
+    else if (out.count >= 10)
+      draw_list->AddText(ImVec2(rectMax.x - 16, rectMax.y - 13), ImGui::GetColorU32(ImGuiCol_Text), std::to_string(out.count).c_str());
+    else
+      draw_list->AddText(ImVec2(rectMax.x - 10, rectMax.y - 13), ImGui::GetColorU32(ImGuiCol_Text), std::to_string(out.count).c_str());
+  }
+
+}
+
+void GuiWindowAutocraft::Draw(const Magnum::Timeline & dt)
+{
+  if (IsClosed())
+    return;
+
+  const auto deque = mPlayer.GetRecipeDeque();
+  const auto & top = (*deque.begin()).get();
+  DrawGui(top, dt, *mCtx);
+
+  GuiWindow::Draw(dt);
+}

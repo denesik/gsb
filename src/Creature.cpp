@@ -2,6 +2,7 @@
 #include "World.h"
 #include "../InventorySlot.h"
 #include "../imgui/imgui.h"
+#include <IRecipe.h>
 
 Creature::Creature(World &world)
   : mWorld(world)
@@ -90,4 +91,9 @@ ItemList & Creature::Inventory()
 ItemList & Creature::Hotbar()
 {
   return mHotbar;
+}
+
+const std::deque<std::reference_wrapper<IRecipe>>& Creature::GetRecipeDeque() const
+{
+  return mRecipeDeque;
 }

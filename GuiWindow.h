@@ -25,7 +25,7 @@ public:
   const std::string &GetName();
   bool IsClosed();
 
-private:
+protected:
 
   std::list<std::unique_ptr<GuiCtx::GuiLinkage>> mLinkages;
   std::shared_ptr<GuiCtx> mCtx;
@@ -99,4 +99,15 @@ class GuiWindowDb : public GuiWindow
 private:
   ItemDBGui mItemDBGui;
   GuiCtx::GuiLinkage &mItemDBLink;
+};
+
+class GuiWindowAutocraft : public GuiWindow
+{
+public:
+  GuiWindowAutocraft(Creature &player, DataBase &db, const std::string &name = "Autocraft");
+
+  void Draw(const Magnum::Timeline & dt) override;
+
+private:
+  Creature &mPlayer;
 };

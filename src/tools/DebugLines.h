@@ -63,6 +63,19 @@ namespace Magnum {
       addLine({ Vector3(p0), col }, { Vector3(p1), col });
     }
 
+    void addLineDepth(const Point& p0, const Point& p1) {
+      _linesDepth.push_back(p0);
+      _linesDepth.push_back(p1);
+    }
+
+    void addLineDepth(const Vector3& p0, const Vector3& p1, const Color3& col) {
+      addLineDepth({ p0, col }, { p1, col });
+    }
+
+    void addLineDepth(const Vector3i& p0, const Vector3i& p1, const Color3& col) {
+      addLineDepth({ Vector3(p0), col }, { Vector3(p1), col });
+    }
+
     void addFrustum(const Matrix4& imvp, const Color3& col);
     void addFrustum(const Matrix4& imvp, const Color3& col, Float z0, Float z1);
 
@@ -73,6 +86,10 @@ namespace Magnum {
     Buffer _buffer;
     Mesh _mesh;
     Shader _shader;
+
+    std::vector<Point> _linesDepth;
+    Buffer _bufferDepth;
+    Mesh _meshDepth;
   };
 
 }

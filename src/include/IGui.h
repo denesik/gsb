@@ -34,7 +34,7 @@ class IGui
 {
 public:
   virtual void DrawGui(const Magnum::Timeline &dt, GuiCtx & ctx, IContext & context) = 0;
-  virtual std::unique_ptr<IContext> CreateContext() = 0;
+  virtual std::unique_ptr<IContext> CreateContext() const = 0;
   virtual ~IGui() = default;
 };
 
@@ -42,7 +42,7 @@ template <typename Context>
 class ContextGui : public IGui
 {
 public:
-  std::unique_ptr<IContext> CreateContext() override
+  std::unique_ptr<IContext> CreateContext() const override
   {
     return std::make_unique<Context>();
   }

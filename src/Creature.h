@@ -6,7 +6,9 @@
 #include <IGui.h>
 #include <vector>
 #include <ItemContainerContext.h>
+#include <deque>
 
+class IRecipe;
 class World;
 
 class Creature : public Acceleratable, public ContextGui<PlayerInventoryContext>
@@ -24,11 +26,16 @@ public:
   ItemList & Inventory();
   ItemList & Hotbar();
 
+  //move to player
+  const std::deque<std::reference_wrapper<IRecipe>> & GetRecipeDeque() const;
+  void EnqueRecipe(const IRecipe &recipe);
+
 private:
   World &mWorld;
   ItemList mInventory;
   ItemList mHotbar;
   int hotSelection;
+  std::deque<std::reference_wrapper<IRecipe>> mRecipeDeque;
 };
 
 

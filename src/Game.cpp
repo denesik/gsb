@@ -57,6 +57,7 @@ Game::Game(const Arguments & arguments)
   modalWindow = std::make_unique<GuiWindow>(*mBlocksDataBase, "Selected");
   inventoryWindow = std::make_unique<GuiWindowPlayerInventory>(mWorld->mPlayer, *mBlocksDataBase);
   dbWindow = std::make_unique<GuiWindowDb>(*mBlocksDataBase);
+  autocraftWindow = std::make_unique<GuiWindowAutocraft>(mWorld->mPlayer, *mBlocksDataBase);
 
   mDrawableArea = std::make_unique<DrawableArea>(*mWorld);
   mWorld->GetWorldSectorObserver().attach(*mDrawableArea);
@@ -133,15 +134,36 @@ void Game::drawEvent()
 
   picked = (selId && selItem->GetBlock()) ? prepicked : picked;
 
-  debugLines.addLine(picked, picked + Vector3i{ 1,0,0 }, { 1,0,0 });
-  debugLines.addLine(picked, picked + Vector3i{ 0,1,0 }, { 0,1,0 });
-  debugLines.addLine(picked, picked + Vector3i{ 0,0,1 }, { 0,0,1 });
+  static std::vector<Magnum::Vector3i> vertices = {
+    { 1, 1, 1},
+    { 0, 1, 1},
+    { 0, 0, 1},
+    { 1, 0, 1},
+    { 1, 1, 0},
+    { 0, 1, 0},
+    { 0, 0, 0},
+    { 1, 0, 0}
+  };
 
-  debugLines.addLine(picked + Vector3i{ 1,1,1 }, picked + Vector3i{ 0,1,1 }, { 1,1,1 });
-  debugLines.addLine(picked + Vector3i{ 1,1,1 }, picked + Vector3i{ 1,0,1 }, { 1,1,1 });
-  debugLines.addLine(picked + Vector3i{ 1,1,1 }, picked + Vector3i{ 1,1,0 }, { 1,1,1 });
+  static std::vector<size_t> indices = {
+    0, 1,
+    1, 2,
+    2, 3,
+    3, 0,
+    4, 5,
+    5, 6,
+    6, 7,
+    7, 4,
+    0, 4,
+    1, 5,
+    2, 6,
+    3, 7
+  };
 
-  debugLines.addLine(playerHead->Pos(), playerHead->Pos() + ray * 100.0f, { 1,1,1 });
+  for(int i = 0; i < indices.size(); i += 2)
+    debugLines.addLineDepth(Magnum::Vector3(picked) + Magnum::Vector3(vertices[indices[i]]) * 1.001, Magnum::Vector3(picked) + Magnum::Vector3(vertices[indices[i+1]]) * 1.001, { 1,1,1 });
+
+  debugLines.addLineDepth(playerHead->Pos(), playerHead->Pos() + ray * 100.0f, { 1,1,1 });
 
   if (centering && ImGui::IsMouseClicked(1) && !ImGui::IsAnyItemHovered())
   {
@@ -256,6 +278,7 @@ void Game::drawEvent()
     dbWindow->Draw(mTimeline);
     inventoryWindow->Draw(mTimeline);
     modalWindow->Draw(mTimeline);
+    autocraftWindow->Draw(mTimeline);
 
     if (ImGui::Button("wipe all"))
       mWorld->Wipe();
